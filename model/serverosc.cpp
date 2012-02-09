@@ -176,7 +176,7 @@ void ServerOSC::record(){
               * repere : body
               * Donnees : x, y, z
               */
-            QList<JointMvt*>* listJointsMvt = this->listMovements->last()->getListJointsMvt(); //remplir le dernier movement enregistre
+	    QList<JointMvt*>* listJointsMvt = movement->getListJointsMvt(); //remplir le dernier movement enregistre
             if (message->match("/tracking_skeleton").popBool(d).isOkNoMoreArgs()) {
                 //tracking ok ...
             }
@@ -291,6 +291,12 @@ void ServerOSC::record(){
 void ServerOSC::setListJoints(QList<Joint *> *list) {
     this->listJoints = list;
 }
+
+void ServerOSC::setMovement(Movement *movement)
+{
+    this->movement = movement;
+}
+
 void ServerOSC::setListMovements(QList<Movement*> *list) {
     this->listMovements = list;
 }

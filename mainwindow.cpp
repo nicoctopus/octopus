@@ -393,6 +393,7 @@ void MainWindow::slotRecordNewMovement(){
 	ui->nommouvement->setVisible(true);
 	ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/save.png)");
 	ui->pushButton_enregistrermouvement->setEnabled(true);
+	this->movement = this->controller->recordMovement(this->movement);
 	isRecording = false;
     }
 
@@ -400,6 +401,7 @@ void MainWindow::slotRecordNewMovement(){
 }
 
 void MainWindow::slotStopRecordNewMovement(){
+    this->controller->stopRecord();
     //ui->pushButton_stoprecord->setVisible(false);
     //ui->pushButton_enregistrermouvement->setVisible(true);
     //ui->nommouvement->setVisible(true);
