@@ -120,7 +120,7 @@ void Movement::save()
 {
     /* Pour chaque JointMvt, on recupere la derniere Position enregistree du Joint pere */
     foreach (JointMvt *jointMvt, *listJointsMvt) {
-	jointMvt->savePositionFixe();
+        jointMvt->savePositionFixe();
     }
 }
 

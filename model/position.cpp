@@ -28,9 +28,9 @@ Position::Position(const float &x, const float &y, const float &z)
     this->x = (qint32) COEF_FLOAT2INT * x;
     this->y = (qint32) COEF_FLOAT2INT * y;
     this->z = (qint32) COEF_FLOAT2INT * z;
-    this->dx = this->x;
-    this->dy = this->y;
-    this->dz = this->z;
+    this->dx = 0;//std::abs(this->x)/INTERVAL_TIME;
+    this->dy = 0;//std::abs(this->y)/INTERVAL_TIME;
+    this->dz = 0;//std::abs(this->z)/INTERVAL_TIME;
 }
 
 Position::Position (const quint16 &idJoinMvt, const float &x, const float &y, const float &z, const float &a, const float &b, const float &c)
@@ -43,9 +43,9 @@ Position::Position (const quint16 &idJoinMvt, const float &x, const float &y, co
     this->a = (qint32) COEF_FLOAT2INT * a;
     this->b = (qint32) COEF_FLOAT2INT * b;
     this->c = (qint32) COEF_FLOAT2INT * c;
-    this->dx = this->x;
-    this->dy = this->y;
-    this->dz = this->z;
+    this->dx = 0;
+    this->dy = 0;
+    this->dz = 0;
 }
 
 Position::Position(const quint16 &idJoinMvt, const float &x, const float &y, const float &z,

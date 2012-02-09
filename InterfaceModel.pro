@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     view/blackboard.cpp \
     model/soundplayer.cpp \
     view/jointgraphic.cpp \
-    view/stickman.cpp
+    view/stickman.cpp \
+    model/analyse.cpp
 
 HEADERS  += mainwindow.h \
     model/utils.h \
@@ -79,7 +80,8 @@ HEADERS  += mainwindow.h \
     FMOD/api/inc/fmod_errors.h \
     FMOD/api/inc/fmod_dsp.h \
     FMOD/api/inc/fmod_codec.h \
-    view/jointgraphic.h
+    view/jointgraphic.h \
+    model/analyse.h
 
 FORMS    += mainwindow.ui
 
@@ -105,6 +107,8 @@ else:macx: LIBS += -L$$PWD/FMOD/api/lib/ -lfmodex
 
 INCLUDEPATH += $$PWD/FMOD/api/inc
 DEPENDPATH += $$PWD/FMOD/api/inc
+
+
 
 
 

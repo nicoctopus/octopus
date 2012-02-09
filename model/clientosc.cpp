@@ -36,10 +36,10 @@ bool ClientOSC::sendDataBITG() {
 bool ClientOSC::sendMsgSynapse() {
     bool b = true;
     for(int i=0;i<msg->size(); i++) {
-	this->cleanMessage(); //nettoyer le message pour en envoyer un nouveau
-	this->setMessage(this->msg->at(i)->getStart()); //Debut du message (exemple : "/lefthand_trackjointpos")
-	this->pushQInt32(this->msg->at(i)->getParams());
-	b *= (this->connectTo(&host, portNumber)*(this->Outputable::send()));
+        this->cleanMessage(); //nettoyer le message pour en envoyer un nouveau
+        this->setMessage(this->msg->at(i)->getStart()); //Debut du message (exemple : "/lefthand_trackjointpos")
+        this->pushQInt32(this->msg->at(i)->getParams());
+        b *= (this->connectTo(&host, portNumber)*(this->Outputable::send()));
     }
     return b;
 }
@@ -57,15 +57,15 @@ const char* ClientOSC::className() {
   */
 void ClientOSC::run() {
     while(runnable) {
-	//requetes pour Synapse
-	if(this->msg->size()>0) {
-	    this->sendMsgSynapse();
-	}
-	//message BITG
-	else if (this->datas->getIdMovement()>-1) {
-	    this->sendDataBITG();
-	}
-	sleep(2);
+        //requetes pour Synapse
+        if(this->msg->size()>0) {
+            this->sendMsgSynapse();
+        }
+        //message BITG
+        else if (this->datas->getIdMovement()>-1) {
+            this->sendDataBITG();
+        }
+        sleep(2);
     }
     exec();
 }
