@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     //Forme *forme = new Forme();
     //forme->resize(100, 100);
     //forme->show();
-	//JE PREFERE LES GROS ZBOUBI
+	//JE PREFERE LES GROS ZBOUBI ça fait mal au cul
 	
     return a.exec();
 }
