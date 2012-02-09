@@ -4,16 +4,38 @@ ManagerJoints::ManagerJoints() : Manager()
 {
     this->listJoints = new QList<Joint*>();
 
-    this->listJoints->append(new Joint("lefthand"));
-    this->listJoints->append(new Joint("leftelbow"));
-    this->listJoints->append(new Joint("righthand"));
-    this->listJoints->append(new Joint("rightelbow"));
-    this->listJoints->append(new Joint("head"));
-    this->listJoints->append(new Joint("torso"));
-    this->listJoints->append(new Joint("leftfoot"));
-    this->listJoints->append(new Joint("rightfoot"));
-    this->listJoints->append(new Joint("leftknee"));
-    this->listJoints->append(new Joint("rightknee"));
+    Joint* lefthand = new Joint("lefthand");
+    Joint* leftelbow = new Joint("leftelbow");
+    Joint* leftknee = new Joint("leftknee");
+    Joint* leftfoot = new Joint("leftfoot");
+    Joint* righthand = new Joint("righthand");
+    Joint* rightelbow = new Joint("rightelbow");
+    Joint* rightknee = new Joint("rightknee");
+    Joint* rightfoot = new Joint("rightfoot");
+    Joint* head = new Joint("head");
+    Joint* torso = new Joint("torso");
+/*
+    lefthand->initializeBuffer();
+    leftelbow->initializeBuffer();
+    leftknee->initializeBuffer();
+    leftfoot->initializeBuffer();
+    righthand->initializeBuffer();
+    rightelbow->initializeBuffer();
+    rightknee->initializeBuffer();
+    rightfoot->initializeBuffer();
+    head->initializeBuffer();
+    torso->initializeBuffer();
+*/
+    this->listJoints->append(lefthand);
+    this->listJoints->append(leftelbow);
+    this->listJoints->append(leftknee);
+    this->listJoints->append(leftfoot);
+    this->listJoints->append(righthand);
+    this->listJoints->append(rightelbow);
+    this->listJoints->append(rightknee);
+    this->listJoints->append(rightfoot);
+    this->listJoints->append(head);
+    this->listJoints->append(torso);
 
     //Initialisation de la serialisation des joints
     this->initSystem();

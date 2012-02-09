@@ -15,10 +15,11 @@ JointMvt::JointMvt(const JointMvt &jointMvt)
     this->idJointMvt = jointMvt.idJointMvt;
     this->idJointRef = jointMvt.idJointRef;
     this->idMovement = jointMvt.idMovement;
-    this->jointReference = new Joint(*(jointMvt.jointReference));
+    //this->jointReference = new Joint(*(jointMvt.jointReference));
+    this->jointReference = new Joint();
     this->listPositions = new QList<Position*>();
     for(int i = 0 ; i < jointMvt.listPositions->size() ; i++)
-	this->listPositions->append(new Position(*(jointMvt.listPositions->at(i))));
+        this->listPositions->append(new Position(*(jointMvt.listPositions->at(i))));
 }
 
 JointMvt::JointMvt(const quint32 &idJointRef, const quint32 &idMovement)

@@ -63,6 +63,7 @@ public:
     QList<SampleVideo*>* getListSamplesVideos();
     QList<ClientOSC*>* getListPorts();
     QList<ClientOSC*>* getListPortsActive();
+    QList<Position*> *getListPositionTemp(){return this->listPositionsTemp;}
     QList<JointMvt*>* getListJointsMvts();
 
     //Methodes

@@ -5,10 +5,11 @@
 #include "managerelements.h"
 #include "serverosc.h"
 #include "soundplayer.h"
+#include "clientosc.h"
+#include "analyse.h"
 
 class Controller
 {
-
 private:
     ManagerJoints *managerJoints;
     SoundPlayer *playerlive;
@@ -22,6 +23,12 @@ public:
     void linkJointToJointMvt();
     SoundPlayer *getPlayerDemo();
     SoundPlayer *getPlayerLive();
+    void recordMovement();
+    void analizeRecord();
+
+    void bubble(QList<Movement *> *moves);
+    void troncage(Movement* move);
+
 };
 
 #endif // CONTROLLER_H
