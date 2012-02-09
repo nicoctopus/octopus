@@ -23,7 +23,7 @@ public:
     void linkJointToJointMvt();
     SoundPlayer *getPlayerDemo();
     SoundPlayer *getPlayerLive();
-    void recordMovement();
+    void recordMovement(Movement *movement);
     void analizeRecord();
 
     void bubble(QList<Movement *> *moves);

@@ -11,7 +11,7 @@ Controller::Controller()
     //this->analizeRecord();
 }
 
-void Controller::recordMovement()
+void Controller::recordMovement(Movement *movement)
 {
     // SERVEUR OSC
     Movement* move = new Movement("test"); // mouvement a enregistrer
