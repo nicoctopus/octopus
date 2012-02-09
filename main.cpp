@@ -2,7 +2,7 @@
 #include <QtCore>
 #include <QtGui>
 #include "mainwindow.h"
-
+// SALUT Robin!!!
 int main(int argc, char *argv[])
 {
    QApplication a(argc, argv);
