@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>images_boutons/cadenas.png</file>
+        <file>images_boutons/creermouvement.png</file>
+        <file>images_boutons/delete.png</file>
+        <file>images_boutons/enlever.png</file>
+        <file>images_boutons/nouveau.png</file>
+        <file>images_boutons/play.png</file>
+        <file>images_boutons/record.png</file>
+        <file>images_boutons/recordnouveau.png</file>
+        <file>images_boutons/save.png</file>
+        <file>images_boutons/stop.png</file>
+        <file>images_boutons/pause.png</file>
+        <file>images_boutons/cadenasgris.png</file>
+        <file>images_boutons/creermouvementgris.png</file>
+        <file>images_boutons/deletegris.png</file>
+        <file>images_boutons/playgris.png</file>
+        <file>images_boutons/recordgris.png</file>
+        <file>images_boutons/savegris.png</file>
+        <file>images_boutons/stopgris.png</file>
+        <file>images_boutons/screenVisuels.png</file>
+        <file>images_boutons/visuelSynapse.png</file>
+    </qresource>
+</RCC>

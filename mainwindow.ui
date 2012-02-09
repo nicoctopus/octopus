@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1191</width>
+    <height>770</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>660</width>
+    <height>480</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton#pushButton_stoprecord{
+
+	background:url(:/new/prefix1/images_boutons/stopgris.png);
+	border-radius: 10px;
+	color: rgb(255, 255, 255);
+}
+
+QPushButton#ButtonAdd{
+
+	background:url(:/new/prefix1/images_boutons/nouveau.png);
+	border-radius: 10px;
+	color: rgb(255, 255, 255);
+}
+
+QPushButton#ButtonDelete{
+
+	background:url(:/new/prefix1/images_boutons/enlevergris.png);
+	border-radius: 10px;
+  
+	color: rgb(255, 255, 255);
+}
+
+
+
+QPushButton#pushButton_creermouvement{
+
+	background:url(:/new/prefix1/images_boutons/creermouvement.png);
+	border-radius: 13px;
+	
+	color: rgb(255, 255, 255);
+  
+}
+
+QPushButton#pushButton_verrouiller{
+
+	background:url(:/new/prefix1/images_boutons/cadenasgris.png);
+	border-radius: 13px;
+  
+	color: rgb(255, 255, 255);
+	
+}
+
+QPushButton#pushButton_recordmouvement{
+
+	background:url(:/new/prefix1/images_boutons/recordgris.png);
+	border-radius: 13px;
+
+	color: rgb(255, 255, 255);
+}
+QPushButton#pushButton_playmouvement{
+
+	background:url(:/new/prefix1/images_boutons/playgris.png);
+	border-radius: 13px;
+	
+	color: rgb(255, 255, 255);
+}
+
+QPushButton#pushButton_enregistrermouvement{
+
+	background:url(:/new/prefix1/images_boutons/savegris.png);
+	border-radius: 13px;
+	
+  
+	color: rgb(255, 255, 255);
+}
+
+
+QPushButton#pushButton_supprimermouvement{
+
+	background:url(:/new/prefix1/images_boutons/deletegris.png);
+	border-radius: 13px;
+	
+	color: rgb(255, 255, 255);
+	
+}
+
+QPushButton#pushButton_playlecteur{
+
+	background:url(:/new/prefix1/images_boutons/play.png);
+	border-radius: 13px;
+	
+	color: rgb(255, 255, 255);
+}
+
+QPushButton#pushButton_stoplecteur{
+
+	background:url(:/new/prefix1/images_boutons/stop.png);
+	border-radius: 13px;
+	
+}
+
+QPushButton#pushButton_stoplecteur{
+
+	background:url(:/new/prefix1/images_boutons/stop.png);
+	border-radius: 13px;
+	
+	color: rgb(255, 255, 255);
+}
+
+QTreeView {
+     show-decoration-selected: 1;
+ }
+
+ QLineEdit {
+        border: 2px solid white;
+     border-radius: 10px;
+     padding: 0 8px;
+    
+     selection-background-color: darkgray;
+ }
+
+
+QTableWidgetItem{
+border: 1px solid #d9d9d9;
+ show-decoration-selected: 1;
+     border-top-color: transparent;
+     border-bottom-color: transparent;
+}
+
+ QTreeView::item {
+      border: 1px solid #d9d9d9;
+     border-top-color: transparent;
+     border-bottom-color: transparent;
+ }
+
+ QTreeView::item:hover {
+     /*background: rgb(241, 94, 34); */
+     border: 1px solid #bfcde4;
+ }
+
+ QTreeView::item:selected {
+     border: 1px solid #567dbc;
+ }
+
+ QTreeView::item:selected:active{
+    background: rgb(87, 141, 153); 
+ }
+
+ QTreeView::item:selected:!active {
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6b9be8, stop: 1 #577fbf);
+ }
+
+LCDNumber:: {
+
+background-color: rgb(81, 255, 255);
+
+}</string>
+  </property>
+  <property name="dockNestingEnabled">
+   <bool>true</bool>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="styleSheet">
+    <string notr="true">background-color : rgb(87, 141, 153);</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="0">
+     <widget class="BlackBoard" name="blackboard" native="true">
+      <property name="styleSheet">
+       <string notr="true">background-color : rgb(185, 185, 185);</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1191</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QDockWidget" name="dockLeftTree">
+   <property name="minimumSize">
+    <size>
+     <width>262</width>
+     <height>255</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.008 rgba(219, 223, 224, 255), stop:1 rgba(196, 199, 200, 255));</string>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable</set>
+   </property>
+   <property name="windowTitle">
+    <string/>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLineEdit" name="textEdit">
+       <property name="styleSheet">
+        <string notr="true">background-color : rgb(255, 255, 255);
+border-radius: 25px;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="ButtonAdd">
+         <property name="minimumSize">
+          <size>
+           <width>15</width>
+           <height>15</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="MyLeftTree" name="leftTree" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockSynapse">
+   <property name="minimumSize">
+    <size>
+     <width>183</width>
+     <height>190</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.008 rgba(219, 223, 224, 255), stop:1 rgba(196, 199, 200, 255));</string>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Synapse Flux</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>4</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_2">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <widget class="QGraphicsView" name="graphicsView">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);
+border-radius: 25px;</string>
+       </property>
+       <property name="backgroundBrush">
+        <brush brushstyle="NoBrush">
+         <color alpha="255">
+          <red>85</red>
+          <green>170</green>
+          <blue>127</blue>
+         </color>
+        </brush>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockSkeleton">
+   <property name="minimumSize">
+    <size>
+     <width>439</width>
+     <height>290</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color : qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.008 rgba(219, 223, 224, 255), stop:1 rgba(196, 199, 200, 255));</string>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Skeleton &amp; Record New Movements</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>4</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_3">
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <widget class="StickMan" name="stickMan" native="true">
+       <property name="styleSheet">
+        <string notr="true">
+background-color :rgb(87, 141, 153);
+border-radius: 25px;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QPushButton" name="pushButton_creermouvement">
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>27</width>
+           <height>27</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_verrouiller">
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>27</width>
+           <height>27</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_recordmouvement">
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>27</width>
+           <height>27</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_stoprecord">
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>27</width>
+           <height>27</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_playmouvement">
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>27</width>
+           <height>27</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_enregistrermouvement">
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>27</width>
+           <height>27</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_supprimermouvement">
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>27</width>
+           <height>27</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="nommouvement">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockVideo">
+   <property name="minimumSize">
+    <size>
+     <width>357</width>
+     <height>219</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.008 rgba(219, 223, 224, 255), stop:1 rgba(196, 199, 200, 255));</string>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Samples &amp; Videos Player </string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>4</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_4">
+    <layout class="QVBoxLayout" name="verticalLayout_6">
+     <item>
+      <widget class="QTextBrowser" name="textBrowser_2">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);
+
+border-radius: 25px;</string>
+       </property>
+       <property name="html">
+        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QPushButton" name="pushButton_playlecteur">
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>27</width>
+           <height>27</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_stoplecteur">
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>27</width>
+           <height>27</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLCDNumber" name="timerMusic">
+         <property name="styleSheet">
+          <string notr="true">
+
+
+
+
+font: 14pt &quot;Fengardo&quot;;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="labelTitleSong">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>30</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockConfig">
+   <property name="minimumSize">
+    <size>
+     <width>145</width>
+     <height>246</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.008 rgba(219, 223, 224, 255), stop:1 rgba(196, 199, 200, 255));</string>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Informations</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_5">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QTextBrowser" name="textBrowser">
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBox">
+       <property name="text">
+        <string>Lier les elements</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockStartPerformance">
+   <property name="minimumSize">
+    <size>
+     <width>120</width>
+     <height>165</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.008 rgba(219, 223, 224, 255), stop:1 rgba(196, 199, 200, 255));</string>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable</set>
+   </property>
+   <property name="windowTitle">
+    <string/>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_6">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QPushButton" name="start">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>START</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="record">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>RECORD</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLCDNumber" name="timer">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>40</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <zorder>dockSynapse</zorder>
+  <zorder>dockSkeleton</zorder>
+  <zorder>dockVideo</zorder>
+  <zorder>dockConfig</zorder>
+  <zorder>dockStartPerformance</zorder>
+  <zorder>dockLeftTree</zorder>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>StickMan</class>
+   <extends>QWidget</extends>
+   <header>stickman.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BlackBoard</class>
+   <extends>QWidget</extends>
+   <header>blackboard.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MyLeftTree</class>
+   <extends>QWidget</extends>
+   <header>mylefttree.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
