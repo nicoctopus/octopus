@@ -5,7 +5,7 @@
 #include <QtGui>
 
 #include "square.h"
-#include "ellipseduprojet.h".h"
+#include "ellipseduprojet.h"
 #include "triangle.h"
 #include "diamond.h"
 
