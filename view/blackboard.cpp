@@ -23,10 +23,10 @@ void BlackBoard::selectedItems(){
     itemsToLink.append(this->scene()->selectedItems().at(0));
     qDebug() << this->itemsToLink.size() << endl;
     if(this->itemsToLink.size() == 2){
-	Ellipse *ellipse;
-	if(this->itemsToLink.at(0)->type() == 65537)
+    EllipseDuProjet *ellipse;
+    if(this->itemsToLink.at(0)->type() == 65537)
 	{
-	    ellipse = (Ellipse*)this->itemsToLink.at(0);
+        ellipse = (EllipseDuProjet*)this->itemsToLink.at(0);
 	    if(this->itemsToLink.at(1)->type() == 65539)
 	    {
 		Triangle *triangle = (Triangle*)(this->itemsToLink.at(1));
@@ -44,7 +44,7 @@ void BlackBoard::selectedItems(){
 	}
 	else if(this->itemsToLink.at(1)->type() == 65537)
 	{
-	    ellipse = (Ellipse*)this->itemsToLink.at(1);
+        ellipse = (EllipseDuProjet*)this->itemsToLink.at(1);
 	    if(this->itemsToLink.at(0)->type() == 65539)
 	    {
 		Triangle *triangle = (Triangle*)(this->itemsToLink.at(0));
@@ -182,7 +182,7 @@ void BlackBoard::refresh()
 	this->xEllipse = 0;this->yEllipse = DEPLACEMENT_VERTICAL;
 	for(int i = 0 ; i < this->listMovements->size() ; i++)
 	{
-	    this->listEllipse.append(new Ellipse(this->xEllipse, this->yEllipse,50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->at(i)));
+        this->listEllipse.append(new EllipseDuProjet(this->xEllipse, this->yEllipse,50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->at(i)));
 	    this->xEllipse += DEPLACEMENT_HORIZONTAL;
 	}
     }
@@ -195,7 +195,7 @@ void BlackBoard::refresh()
 	if(isInTheList == false)
 	{
 	   // this->xEllipse = this->listEllipse.last()->pos().x() + DEPLACEMENT_HORIZONTAL;
-	    this->listEllipse.append(new Ellipse(this->xEllipse, this->yEllipse,50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->last()));
+        this->listEllipse.append(new EllipseDuProjet(this->xEllipse, this->yEllipse,50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->last()));
 	    this->xEllipse += DEPLACEMENT_HORIZONTAL;
 	}
     }

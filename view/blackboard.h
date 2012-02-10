@@ -5,7 +5,7 @@
 #include <QtGui>
 
 #include "square.h"
-#include "ellipse.h"
+#include "ellipseduprojet.h".h"
 #include "triangle.h"
 #include "diamond.h"
 
@@ -41,7 +41,7 @@ private:
     QList<Movement*> *listMovements;
     QList<SampleAudio*> *listSamplesAudio;
     QList<ClientOSC*> *listPorts;
-    QList<Ellipse*> listEllipse;
+    QList<EllipseDuProjet*> listEllipse;
     QList<Triangle*> listTriangle;
     QList<Diamond*> listDiamond;
     QList<QGraphicsItem*> itemsToLink;
