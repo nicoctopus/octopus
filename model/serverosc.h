@@ -6,6 +6,7 @@
 
 #include "movement.h"
 #include "joint.h"
+#include "analyse.h"
 
 class ServerOSC : public Port, public Inputable
 {
@@ -25,12 +26,15 @@ public:
     void setListMovements(QList<Movement*> *list);
     void setRecording(const bool &b);
     bool isRecording();
+    void setAnalyse();
+    bool allBuffersSameSize();
 
 
 private :
     QList<Joint*> *listJoints; //liste de tous les joints possibles
     QList<Movement*> *listMovements; //liste des mouvements enregistres
     bool recording;
+    Analyse *analyse; //objet Analyse pour analyser en mode record
 };
 
 #endif // SERVEROSC_H

@@ -1,6 +1,7 @@
 #ifndef JOINT_H
 #define JOINT_H
 
+#include <QDebug>
 #include <QWidget>
 #include "position.h"
 #include <QMetaType>
@@ -15,6 +16,7 @@ public:
     quint16 getId();
     QString getNom();
     QList<Position*>* getBufferPositions();
+    void initializeBuffer();
 
     ~Joint();
 

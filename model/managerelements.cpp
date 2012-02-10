@@ -5,24 +5,7 @@ ManagerElements::ManagerElements() : Manager()
     //Initialisation de la serialisation des joints
     this->initSystem();
 
-    /**
-   * Test enregistrement mouvement
-   */
-    // Creation d'un mouvement sur 2 joints
     this->listMovements = new QList<Movement*>();
-    /* Movement* move = new Movement("test");
-    move->setActive(true);
-    JointMvt* j1 = new JointMvt(1, 1);
-    JointMvt* j2= new JointMvt(2,1);
-    move->addJointMvt(j1);
-    move->addJointMvt(j2);
-    this->listMovements->append(move);
-    this->listMovements->append((new Movement("Movement 2")));
-    /**
-   * Fin enregistrement
-   */
-
-
     this->listPorts = new QList<ClientOSC*>();
     ClientOSC *port = new ClientOSC(1234, "localhost", false);
     // port->setActive(true);
@@ -32,17 +15,12 @@ ManagerElements::ManagerElements() : Manager()
    *
    **/
     this->listSamplesAudios = new QList<SampleAudio*>();
-    this->listSamplesAudios->append(new SampleAudio("01 By the Way", "/Users/edewilliencourt/Desktop/01 By the Way.mp3", 0, false));
-    this->listSamplesAudios->append(new SampleAudio("03 Scar Tissue", "/Users/edewilliencourt/Desktop/03 Scar Tissue.mp3", 0, false));
+    this->listSamplesAudios->append(new SampleAudio("01 By the Way", "../../../01 By the Way.mp3", 0, false));
+    this->listSamplesAudios->append(new SampleAudio("03 Scar Tissue", "../../../03 Scar Tissue.mp3", 0, false));
     //this->listSamplesAudios->append(new SampleAudio("Sample 3", "URL3", 0, false));
 
     this->listSamplesVideos = new QList<SampleVideo*>();
 
-    /**
-   *
-   **/
-   // this->saveAll();
-    this->loadAll();
 
 }
 
@@ -55,7 +33,7 @@ void ManagerElements::loadAll()
     this->loadSamplesAudios();
     this->loadSamplesVideos();
     this->loadAllMovements();
-    std::cout << "   ...fin loadAll()" << std::endl;
+    qDebug() << "   ...fin loadAll()" << endl;
 
 }
 
@@ -79,15 +57,15 @@ void ManagerElements::saveAll()
   **/
 void ManagerElements::saveAllMovements()
 {
-    std::cout << "      debut saveAllMovements()..." << std::endl;
+    qDebug() << "      debut saveAllMovements()..." << endl;
 
     //SAUVEGARDE DES MOUVEMENTS
     QSettings fichierMovement("movement.ini", QSettings::IniFormat);
 
     for(int i = 0 ; i < this->listMovements->size() ; i++)
-	this->saveMovement(this->listMovements->at(i), fichierMovement);
+        this->saveMovement(this->listMovements->at(i), fichierMovement);
     fichierMovement.sync();
-    std::cout << "      ...fin saveAllMovements()" << std::endl;
+    qDebug() << "      ...fin saveAllMovements()" << endl;
 }
 
 /**
@@ -95,12 +73,12 @@ void ManagerElements::saveAllMovements()
   **/
 void ManagerElements::loadAllMovements()
 {
-    std::cout << "      debut loadMovements()..." << std::endl;
+    //qDebug() << "      debut loadMovements()..." << endl;
     //CHARGEMENT LISTE MOVEMENTS
     this->listMovements = new QList<Movement*>();
     QSettings fichierMovement("movement.ini", QSettings::IniFormat);
     for(int i = 0 ; i < fichierMovement.allKeys().size() ; i++)
-	this->listMovements->append(new Movement(fichierMovement.value(fichierMovement.allKeys().at(i), qVariantFromValue(Movement())).value<Movement>()));
+        this->listMovements->append(new Movement(fichierMovement.value(fichierMovement.allKeys().at(i), qVariantFromValue(Movement())).value<Movement>()));
 
     //CHARGEMENT DE LA LISTE TEMPORAIRE DES JOINTS MOUVEMENTS ET ASSIGNEMENT DE CHACUN DANS LEUR MOUVEMENT RESPECTIF
     // CHARGEMENT DE LA LISTE TEMPORAIRE DES POSITIONS ET ASSIGNEMENT DE CHACUN DANS LEUR JOINT MOUVEMENT RESPECTIF
@@ -135,59 +113,67 @@ void ManagerElements::loadAllMovements()
 		this->listMovements->at(i)->setSampleVideo(this->listSamplesVideos->at(j));
     }
     if(this->listPositionsTemp->isEmpty())
-	Position::idPositionsStatic = 0;
+        Position::idPositionsStatic = 0;
     else{
-	int tmp = 0;
-	for(int i=0; i<listPositionsTemp->size();i++)
-	    if (tmp < listPositionsTemp->at(i)->getId()) tmp = listPositionsTemp->at(i)->getId();
-	Position::idPositionsStatic = tmp;
+        int tmp = 0;
+        for(int i=0; i<listPositionsTemp->size();i++)
+            if (tmp < listPositionsTemp->at(i)->getId()) tmp = listPositionsTemp->at(i)->getId();
+        Position::idPositionsStatic = tmp;
     }
     if(this->listJointsMvts->isEmpty())
-	JointMvt::idJointMvtStatic = 0;
+        JointMvt::idJointMvtStatic = 0;
     else{
-	int tmp = 0;
-	for(int i=0; i<listJointsMvts->size();i++)
-	    if(tmp < listJointsMvts->at(i)->getIdJointMvt()) tmp = listJointsMvts->at(i)->getIdJointMvt();
-	JointMvt::idJointMvtStatic = tmp;
+        int tmp = 0;
+        for(int i=0; i<listJointsMvts->size();i++)
+            if(tmp < listJointsMvts->at(i)->getIdJointMvt()) tmp = listJointsMvts->at(i)->getIdJointMvt();
+        JointMvt::idJointMvtStatic = tmp;
 
     }if(this->listMovements->isEmpty())
-	Movement::idMovementStatic = 0;
+        Movement::idMovementStatic = 0;
     else {
-	int tmp = 0;
-	for(int i=0; i<listMovements->size(); i++)
-	    if(tmp < listMovements->at(i)->getId()) tmp = listMovements->at(i)->getId();
-	Movement::idMovementStatic = tmp;
+        int tmp = 0;
+        for(int i=0; i<listMovements->size(); i++)
+            if(tmp < listMovements->at(i)->getId()) tmp = listMovements->at(i)->getId();
+        Movement::idMovementStatic = tmp;
     }if(this->listSamplesAudios->isEmpty())
-	SampleAudio::idSampleAudioStatic = 0;
+        SampleAudio::idSampleAudioStatic = 0;
     else {
-	int tmp = 0;
-	for(int i=0; i<listSamplesAudios->size(); i++)
-	    if(tmp < listSamplesAudios->at(i)->getId()) tmp = listSamplesAudios->at(i)->getId();
-	SampleAudio::idSampleAudioStatic = tmp;
+        int tmp = 0;
+        for(int i=0; i<listSamplesAudios->size(); i++)
+            if(tmp < listSamplesAudios->at(i)->getId()) tmp = listSamplesAudios->at(i)->getId();
+        SampleAudio::idSampleAudioStatic = tmp;
     }if(this->listSamplesVideos->isEmpty())
-	SampleVideo::idSampleVideoStatic = 0;
+        SampleVideo::idSampleVideoStatic = 0;
     else {
-	int tmp = 0;
-	for(int i=0; i<listSamplesVideos->size(); i++)
-	    if(tmp < listSamplesVideos->at(i)->getId()) tmp = listSamplesVideos->at(i)->getId();
-	SampleVideo::idSampleVideoStatic = tmp;
+        int tmp = 0;
+        for(int i=0; i<listSamplesVideos->size(); i++)
+            if(tmp < listSamplesVideos->at(i)->getId()) tmp = listSamplesVideos->at(i)->getId();
+        SampleVideo::idSampleVideoStatic = tmp;
     }
 }
 
 void ManagerElements::saveMovement(Movement *movement, QSettings &fichierMovement)
 {
-    std::cout << "         debut saveMovement..." << std::endl;
     QSettings fichierJointMvt("jointmvt.ini", QSettings::IniFormat);
     QSettings fichierPosition("position.ini", QSettings::IniFormat);
     QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
     QSettings fichierSampleVideo("samplevideo.ini", QSettings::IniFormat);
+
+    // enregistrer en fonction du jointmvt ayant le moins de positions
+    int size = movement->getListJointsMvt()->at(0)->getListPositions()->size();
+    for(int i=0; i<movement->getListJointsMvt()->size();i++) {
+        if(movement->getListJointsMvt()->at(i)->getListPositions()->size() < size)
+            size = movement->getListJointsMvt()->at(i)->getListPositions()->size();
+    }
+
     for(int j = 0 ; j < movement->getListJointsMvt()->size() ; j++)
     {
-	JointMvt *jointMvtTemp = movement->getListJointsMvt()->at(j);
-	for(int k = 0 ; k < jointMvtTemp->getListPositions()->size() ; k++){
-	    this->savePosition(jointMvtTemp->getListPositions()->at(k), fichierPosition);
-	}
-	this->saveJointMvt(jointMvtTemp, fichierJointMvt);
+        JointMvt *jointMvtTemp = movement->getListJointsMvt()->at(j);
+        //parcourir jusqu'a la position SIZE correspondant a l'indice max du tableau de positions le plus petit
+        for(int k = 0 ; k < size ; k++){
+            this->savePosition(jointMvtTemp->getListPositions()->at(k), fichierPosition);
+        }
+        this->saveJointMvt(jointMvtTemp, fichierJointMvt);
     }
     if(movement->getSampleAudio() != NULL)
 	this->saveSampleAudio(movement->getSampleAudio(), fichierSampleAudio);
@@ -199,17 +185,16 @@ void ManagerElements::saveMovement(Movement *movement, QSettings &fichierMovemen
     fichierPosition.sync();
     fichierSampleAudio.sync();
     fichierSampleVideo.sync();
-    std::cout << "         ... fin saveMovement" << std::endl;
 }
 
 void ManagerElements::removeMovement(Movement *movement)
 {
-    std::cout << "         debut removeMovement..." << std::endl;
+    qDebug() << "         debut removeMovement..." << endl;
     quint32 idTemp = movement->getId();
     //On remove la liste de joint mouvement du fichier de serialisation
     this->removeJointsMvts(movement->getListJointsMvt());
     for(int i = 0 ;  i < movement->getListJointsMvt()->size() ; i++)
-	movement->getListJointsMvt()->removeAt(i);
+        movement->getListJointsMvt()->removeAt(i);
     QSettings fichierMovement("movement.ini", QSettings::IniFormat);
 
     //On supprime le mouvement du fichier de serialisation
@@ -218,11 +203,11 @@ void ManagerElements::removeMovement(Movement *movement)
     fichierMovement.remove(QString(this->getListMovements()->last()->getId()));
     //ON SUPPRIME LE MOUVEMENT ET SES COMPOSANTES de la liste
     for(int i = 0 ; i < this->listMovements->size() ; i++)
-	if(this->listMovements->at(i)->getId() == movement->getId())
-	{
-	    delete(this->listMovements->at(i));
-	    this->listMovements->removeAt(i);
-	}
+        if(this->listMovements->at(i)->getId() == movement->getId())
+        {
+            delete(this->listMovements->at(i));
+            this->listMovements->removeAt(i);
+        }
     //On met a jour l'id du denier mouvement de la liste
     this->getListMovements()->last()->updateId(idTemp);
     //On le sauvegarde update
@@ -230,7 +215,7 @@ void ManagerElements::removeMovement(Movement *movement)
     fichierMovement.sync();
 
     Movement::idMovementStatic--;
-    std::cout << "         ...fin removeMovement" << std::endl;
+    qDebug() << "         ...fin removeMovement" << endl;
 }
 
 /**
@@ -241,7 +226,7 @@ void ManagerElements::loadJointMvt(){
     this->listJointsMvts = new QList<JointMvt*>();
     //CHARGEMENT LISTE JOINTMOVEMENTS
     QSettings fichierJointMvt("jointmvt.ini", QSettings::IniFormat);
-    for(int i = 0 ; i < fichierJointMvt.allKeys().length() ; i++)
+    for(int i = 0 ; i < fichierJointMvt.allKeys().size() ; i++)
     {
 	this->listJointsMvts->append(new JointMvt(fichierJointMvt.value(fichierJointMvt.allKeys().at(i), qVariantFromValue(JointMvt())).value<JointMvt>()));
     }
@@ -257,21 +242,21 @@ void ManagerElements::removeJointsMvts(QList<JointMvt*> *listJointsMvtsToDelete)
     QSettings fichierJointMvt("jointmvt.ini", QSettings::IniFormat);
     for(int i = 0 ; i < listJointsMvtsToDelete->size() ; i++)
     {
-	JointMvt *jointMvtTemp = listJointsMvtsToDelete->at(i);
-	//On supprime toutes les positions du joint mouvement dans le fichier
-	this->removePositions(jointMvtTemp->getListPositions());
-	//on supprime chaque position dans la liste de position du joint mouvement
-	for(int i = 0 ; i < jointMvtTemp->getListPositions()->size() ; i++)
-	    jointMvtTemp->getListPositions()->removeAt(i);
-	//on supprime le joint mouvement du fichier
-	fichierJointMvt.remove(QString(jointMvtTemp->getIdJointMvt()));
-	//on supprime le dernier joint du fichier
-	fichierJointMvt.remove(QString(this->listJointsMvts->last()->getIdJointMvt()));
-	//on update son id avec celle du joint mouvement a supprimer
-	this->listJointsMvts->last()->updateIdJointMvt(jointMvtTemp->getIdJointMvt());
-	//on le save a nouveau update en memoire
-	this->saveJointMvt(this->listJointsMvts->last(), fichierJointMvt);
-	JointMvt::idJointMvtStatic--;
+        JointMvt *jointMvtTemp = listJointsMvtsToDelete->at(i);
+        //On supprime toutes les positions du joint mouvement dans le fichier
+        this->removePositions(jointMvtTemp->getListPositions());
+        //on supprime chaque position dans la liste de position du joint mouvement
+        for(int i = 0 ; i < jointMvtTemp->getListPositions()->size() ; i++)
+            jointMvtTemp->getListPositions()->removeAt(i);
+        //on supprime le joint mouvement du fichier
+        fichierJointMvt.remove(QString(jointMvtTemp->getIdJointMvt()));
+        //on supprime le dernier joint du fichier
+        fichierJointMvt.remove(QString(this->listJointsMvts->last()->getIdJointMvt()));
+        //on update son id avec celle du joint mouvement a supprimer
+        this->listJointsMvts->last()->updateIdJointMvt(jointMvtTemp->getIdJointMvt());
+        //on le save a nouveau update en memoire
+        this->saveJointMvt(this->listJointsMvts->last(), fichierJointMvt);
+        JointMvt::idJointMvtStatic--;
     }
     fichierJointMvt.sync();
 }
@@ -279,7 +264,6 @@ void ManagerElements::removeJointsMvts(QList<JointMvt*> *listJointsMvtsToDelete)
 /**
   *   FONCTIONS LOAD ET DELETE ET SAVE POSITIONS
   **/
-
 void ManagerElements::savePosition(Position *position, QSettings &fichierPosition)
 {
     QString key = QString::number(position->getId());
@@ -293,9 +277,23 @@ void ManagerElements::loadPositions()
     QSettings fichierPosition("position.ini", QSettings::IniFormat);
     for(int i = 0 ; i < fichierPosition.allKeys().size() ; i++)
     {
-	Position *temp = new Position(fichierPosition.value(fichierPosition.allKeys().at(i), qVariantFromValue(Position())).value<Position>());
-	this->listPositionsTemp->append(temp);
+        Position *temp = new Position(fichierPosition.value(fichierPosition.allKeys().at(i), qVariantFromValue(Position())).value<Position>());
+        this->listPositionsTemp->append(temp);
     }
+    //trier les positions par idPosition
+
+
+    for(int i=0; i<this->listPositionsTemp->size(); i++){
+
+        for(int j=i+1; j<this->listPositionsTemp->size(); j++){
+
+            if(this->listPositionsTemp->at(i)->getId() > this->listPositionsTemp->at(j)->getId()){
+                this->listPositionsTemp->swap(i,j);
+            }
+    }
+
+  }
+
 }
 
 void ManagerElements::removePositions(QList<Position*> *listPositionsToDelete)
@@ -303,11 +301,11 @@ void ManagerElements::removePositions(QList<Position*> *listPositionsToDelete)
     QSettings fichierPosition("position.ini", QSettings::IniFormat);
     for(int i = 0 ; i < listPositionsToDelete->size() ; i++)
     {
-	fichierPosition.remove(QString(listPositionsToDelete->at(i)->getId()));
-	fichierPosition.remove(QString(this->listPositionsTemp->last()->getId()));
-	this->listPositionsTemp->last()->updateId(listPositionsToDelete->at(i)->getId());
-	this->savePosition(this->listPositionsTemp->last(), fichierPosition);
-	Position::idPositionsStatic--;
+        fichierPosition.remove(QString(listPositionsToDelete->at(i)->getId()));
+        fichierPosition.remove(QString(this->listPositionsTemp->last()->getId()));
+        this->listPositionsTemp->last()->updateId(listPositionsToDelete->at(i)->getId());
+        this->savePosition(this->listPositionsTemp->last(), fichierPosition);
+        Position::idPositionsStatic--;
     }
     fichierPosition.sync();
 }
@@ -339,8 +337,8 @@ void ManagerElements::loadSamplesAudios()
     QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
     for(int i = 0 ; i < fichierSampleAudio.allKeys().length() ; i++)
     {
-	SampleAudio *temp = new SampleAudio(fichierSampleAudio.value(fichierSampleAudio.allKeys().at(i), qVariantFromValue(SampleAudio())).value<SampleAudio>());
-	this->listSamplesAudios->append(temp);
+        SampleAudio *temp = new SampleAudio(fichierSampleAudio.value(fichierSampleAudio.allKeys().at(i), qVariantFromValue(SampleAudio())).value<SampleAudio>());
+        this->listSamplesAudios->append(temp);
     }
 }
 
@@ -380,8 +378,8 @@ void ManagerElements::loadSamplesVideos()
     QSettings fichierSampleVideo("samplevideo.ini", QSettings::IniFormat);
     for(int i = 0 ; i < fichierSampleVideo.allKeys().length() ; i++)
     {
-	SampleVideo *temp = new SampleVideo(fichierSampleVideo.value(fichierSampleVideo.allKeys().at(i), qVariantFromValue(SampleVideo())).value<SampleVideo>());
-	this->listSamplesVideos->append(temp);
+        SampleVideo *temp = new SampleVideo(fichierSampleVideo.value(fichierSampleVideo.allKeys().at(i), qVariantFromValue(SampleVideo())).value<SampleVideo>());
+        this->listSamplesVideos->append(temp);
     }
 }
 
@@ -459,11 +457,8 @@ QList<ClientOSC*>* ManagerElements::getListPortsActive()
     QList<ClientOSC*>*listPortsActive = new QList<ClientOSC*>();
     for(int i = 0 ; i < this->listPorts->size() ; i++)
 	if(this->listPorts->at(i)->isActive() == true)
-	{
 	    listPortsActive->append(this->listPorts->at(i));
-	}
     return listPortsActive;
-
 }
 
 QList<JointMvt*>* ManagerElements::getListJointsMvts()
@@ -474,9 +469,9 @@ QList<JointMvt*>* ManagerElements::getListJointsMvts()
 void ManagerElements::sortMovements()
 {
     for(int i = 1 ; i < this->listMovements->size() ; i++)
-	if(this->listMovements->at(i - 1)->getListJointsMvt()->at(0)->getListPositions()->size() >
-		this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->size())
-	    this->listMovements->swap(i, i - 1);
+    if(this->listMovements->at(i - 1)->getListJointsMvt()->at(0)->getListPositions()->size() >
+       this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->size())
+        this->listMovements->swap(i, i - 1);
 }
 
 
@@ -500,19 +495,18 @@ void ManagerElements::addSample(QString name, QString url)
 /**
   *    DESTRUCTEURS
   **/
-
 ManagerElements::~ManagerElements()
 {
     for(int i = 0 ; i < this->listMovements->size() ; i++)
-	delete(this->listMovements->at(i));
+        delete(this->listMovements->at(i));
     delete(this->listMovements);
     for(int i = 0 ; i < this->listSamplesAudios->size() ; i++)
-	delete(this->listSamplesAudios->at(i));
+        delete(this->listSamplesAudios->at(i));
     delete(this->listSamplesAudios);
     for(int i = 0 ; i < this->listSamplesVideos->size() ; i++)
-	delete(this->listSamplesVideos->at(i));
+        delete(this->listSamplesVideos->at(i));
     delete(this->listSamplesVideos);
     for(int i = 0 ; i < this->listPorts->size() ; i++)
-	delete(this->listPorts->at(i));
+        delete(this->listPorts->at(i));
     delete(this->listPorts);
 }

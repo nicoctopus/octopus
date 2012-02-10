@@ -60,7 +60,7 @@ QList<Position*>* Joint::getBufferPositions()
 Joint::~Joint()
 {
     for(int i = 0 ; i < this->bufferPositions->size() ; i++)
-	delete(this->bufferPositions->at(i));
+        delete(this->bufferPositions->at(i));
     delete(this->bufferPositions);
 }
 
@@ -71,20 +71,25 @@ Joint::~Joint()
 // une derivee grace a la valeur a  t-1
 void Joint::addPosition(const float &x, const float &y, const float &z)
 {
-    std::cout << "entree addPosition  " << std::endl;
     if(this->bufferPositions->length() < SIZE_MAX_BUFFERS && this->bufferPositions->length() >= 1){
-	this->bufferPositions->append(new Position(x, y, z, *this->bufferPositions->last()));
-	std::cout << "cas normal" << std::endl;
+        this->bufferPositions->append(new Position(x, y, z, *this->bufferPositions->last()));
     }
     else if (this->bufferPositions->length() == 0){
-	this->bufferPositions->append((new Position(x, y, z)));
-	std::cout << "moins de un element" << std::endl;
+        this->bufferPositions->append((new Position(x, y, z)));
     }
     else if(this->bufferPositions->length() >= SIZE_MAX_BUFFERS)
     {
-	std::cout << "liste trop grande" << std::endl;
-	this->bufferPositions->removeFirst();
-	this->bufferPositions->append(new Position(x, y, z, *(this->bufferPositions->last())));
+        this->bufferPositions->removeFirst();
+        this->bufferPositions->append(new Position(x, y, z, *(this->bufferPositions->last())));
+    }
+}
+
+/**
+  Initialiser le buffer avec des positions a 0
+  **/
+void Joint::initializeBuffer() {
+    for(int i=0; i<SIZE_MAX_BUFFERS; i++) {
+        bufferPositions->append(new Position(0,0,0,0,0,0,0,0,0,0));
     }
 }
 
