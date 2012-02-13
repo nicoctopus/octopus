@@ -3,17 +3,42 @@
 Controller::Controller()
 {
     this->managerJoints = new ManagerJoints();
-    this->movement = new ManagerElements();
+    this->managerElements = new ManagerElements();
     this->playerlive = new SoundPlayer(32);
     this->playerdemo = new SoundPlayer(1);
-    this->movement->sortMovements();
+    this->managerElements->sortMovements();
     //this->recordMovement();
     //this->analizeRecord();
 }
 
-void Controller::stopRecord()
+void Controller::stopRecord(Movement *movement)
 {
     this->serveurOSC->setRunnable(false);
+    /**
+      *AFFICHAGE des infos sur le MVT
+      **/
+    qDebug() << movement->getName() << endl;
+    for(int j=0;j<movement->getListJointsMvt()->size();j++) {
+	qDebug() << "Taille du joint mouvement "
+		 << movement->getListJointsMvt()->at(j)->getJointRef()->getNom() << " :"
+		 << movement->getListJointsMvt()->at(j)->getListPositions()->size()
+		 << endl;
+    }
+
+    qDebug() << movement->getName() << endl;
+    for(int j=0;j<movement->getListJointsMvt()->size();j++) {
+	qDebug() << movement->getListJointsMvt()->at(j)->getJointRef()->getNom() << endl;
+	for(int k=0; k<movement->getListJointsMvt()->at(j)->getListPositions()->size();k++){
+	    qDebug() << "Position : " << k << endl
+		     << "X : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getX() << endl
+		     << "DX : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDx() << endl
+		     << "Y : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getY() << endl
+		     << "DY : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDy() << endl
+		     << "Z : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getZ() << endl
+		     << "DZ : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDz() << endl
+		     << endl<<endl;
+	}
+    }
 }
 
 Movement* Controller::recordMovement(Movement *movement)
@@ -46,38 +71,13 @@ Movement* Controller::recordMovement(Movement *movement)
 
     this->troncage(movement);
 
-    /**
-      *AFFICHAGE des infos sur le MVT
-      **/
-    qDebug() << movement->getName() << endl;
-    for(int j=0;j<movement->getListJointsMvt()->size();j++) {
-	qDebug() << "Taille du joint mouvement "
-		 << movement->getListJointsMvt()->at(j)->getJointRef()->getNom() << " :"
-		 << movement->getListJointsMvt()->at(j)->getListPositions()->size()
-		 << endl;
-    }
-
-    qDebug() << movement->getName() << endl;
-    for(int j=0;j<movement->getListJointsMvt()->size();j++) {
-	qDebug() << movement->getListJointsMvt()->at(j)->getJointRef()->getNom() << endl;
-	for(int k=0; k<movement->getListJointsMvt()->at(j)->getListPositions()->size();k++){
-	    qDebug() << "Position : " << k << endl
-		     << "X : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getX() << endl
-		     << "DX : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDx() << endl
-		     << "Y : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getY() << endl
-		     << "DY : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDy() << endl
-		     << "Z : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getZ() << endl
-		     << "DZ : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDz() << endl
-		     << endl<<endl;
-	}
-    }
-   return movement;
+    return movement;
 }
 
 void Controller::analizeRecord()
 {
     //TEMPORAIRE **********////
-    this->movement->loadAll();
+    this->managerElements->loadAll();
     this->linkJointToJointMvt();
 
 
@@ -87,7 +87,7 @@ void Controller::analizeRecord()
     createMove->setRecording(false); //mode analyze
     createMove->setAnalyse();
     createMove->setListJoints(managerJoints->getListJoints());
-    createMove->setListMovements(movement->getListMovements());
+    createMove->setListMovements(managerElements->getListMovements());
     createMove->start();
 
     //CLIENT OSC
@@ -122,7 +122,7 @@ ManagerJoints* Controller::getManagerJoints()
 
 ManagerElements* Controller::getManagerElements()
 {
-    return this->movement;
+    return this->managerElements;
 }
 
 SoundPlayer * Controller::getPlayerDemo() {
@@ -133,9 +133,9 @@ SoundPlayer * Controller::getPlayerDemo() {
 void Controller::linkJointToJointMvt()
 {
     for(int i = 0 ; i < this->managerJoints->getListJoints()->size() ; i++)
-	for(int j = 0 ; j < this->movement->getListJointsMvts()->size() ; j++)
-	    if(this->managerJoints->getListJoints()->at(i)->getId() ==  this->movement->getListJointsMvts()->at(j)->getIdJointRef())
-		this->movement->getListJointsMvts()->at(j)->setJointRef(this->managerJoints->getListJoints()->at(i));
+	for(int j = 0 ; j < this->managerElements->getListJointsMvts()->size() ; j++)
+	    if(this->managerJoints->getListJoints()->at(i)->getId() ==  this->managerElements->getListJointsMvts()->at(j)->getIdJointRef())
+		this->managerElements->getListJointsMvts()->at(j)->setJointRef(this->managerJoints->getListJoints()->at(i));
 }
 
 void Controller::bubble(QList<Movement*>* moves) {

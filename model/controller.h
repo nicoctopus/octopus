@@ -14,7 +14,7 @@ private:
     ManagerJoints *managerJoints;
     SoundPlayer *playerlive;
     SoundPlayer *playerdemo;
-    ManagerElements *movement;
+    ManagerElements *managerElements;
     ServerOSC *serveurOSC;
 
 public:
@@ -24,8 +24,8 @@ public:
     void linkJointToJointMvt();
     SoundPlayer *getPlayerDemo();
     SoundPlayer *getPlayerLive();
-    Movement * recordMovement(Movement *movement);
-    void stopRecord();
+    Movement * recordMovement(Movement *managerElements);
+    void stopRecord(Movement *movement);
     void analizeRecord();
 
     void bubble(QList<Movement *> *moves);
