@@ -1,5 +1,5 @@
 #include "triangle.h"
-
+#include <time.h>
 
 static int R1=166;
 static int V1=198;

@@ -253,7 +253,7 @@ void MainWindow::slotDisplayInfos()
     {
 	if(itemsSelected.at(i)->type() == 65537)
 	{
-	    Ellipse *ellipse = (Ellipse*)itemsSelected.at(i);
+	    EllipseDuProjet *ellipse = (EllipseDuProjet*)itemsSelected.at(i);
 	    text = this->textDisplay(ellipse->getMovement());
 	}
 	if(itemsSelected.at(i)->type() == 65539)
