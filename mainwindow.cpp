@@ -384,6 +384,8 @@ void MainWindow::slotRecordNewMovement(){
 
     if(isRecording == false){
 	ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/stop.png)");
+	//RECORD UN MOVEMENT
+	this->movement = this->controller->recordMovement(this->movement);
 	//START RECORD
 	isRecording = true;
     }
@@ -393,17 +395,15 @@ void MainWindow::slotRecordNewMovement(){
 	ui->nommouvement->setVisible(true);
 	ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/save.png)");
 	ui->pushButton_enregistrermouvement->setEnabled(true);
+
+	//ON STOP LE RECORD
+	this->controller->stopRecord(this->movement);
 	isRecording = false;
     }
 
 
 }
 
-void MainWindow::slotStopRecordNewMovement(){
-    //ui->pushButton_stoprecord->setVisible(false);
-    //ui->pushButton_enregistrermouvement->setVisible(true);
-    //ui->nommouvement->setVisible(true);
-}
 void MainWindow::slotValidNewMovement(){
     movement->setName(ui->nommouvement->text());
     controller->getManagerElements()->addMovement(movement);

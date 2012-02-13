@@ -15,6 +15,7 @@ private:
     SoundPlayer *playerlive;
     SoundPlayer *playerdemo;
     ManagerElements *managerElements;
+    ServerOSC *serveurOSC;
 
 public:
     Controller();
@@ -23,7 +24,8 @@ public:
     void linkJointToJointMvt();
     SoundPlayer *getPlayerDemo();
     SoundPlayer *getPlayerLive();
-    void recordMovement();
+    Movement * recordMovement(Movement *managerElements);
+    void stopRecord(Movement *movement);
     void analizeRecord();
 
     void bubble(QList<Movement *> *moves);

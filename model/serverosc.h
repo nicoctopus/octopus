@@ -28,11 +28,13 @@ public:
     bool isRecording();
     void setAnalyse();
     bool allBuffersSameSize();
+    void setMovement(Movement *movement);
 
 
 private :
     QList<Joint*> *listJoints; //liste de tous les joints possibles
     QList<Movement*> *listMovements; //liste des mouvements enregistres
+    Movement *movement; //movement pout le record
     bool recording;
     Analyse *analyse; //objet Analyse pour analyser en mode record
 };

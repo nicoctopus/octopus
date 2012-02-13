@@ -15,6 +15,7 @@ public:
     Joint(const QString &nom, QList<Position*> *bufferPositions);
     quint16 getId();
     QString getNom();
+    QString getMessageSynapse();
     QList<Position*>* getBufferPositions();
     void initializeBuffer();
 
@@ -29,6 +30,7 @@ private:
     quint16 id;
     QString nom;
     QList<Position*> *bufferPositions;
+    QString messageSynapse;
     friend QDataStream & operator << (QDataStream &, const Joint &);
     friend QDataStream & operator >> (QDataStream &, Joint &);
 };
