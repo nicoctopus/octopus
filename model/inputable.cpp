@@ -13,3 +13,8 @@ Inputable::Inputable()
 void Inputable::setRunnable(const bool &b) {
     this->runnable = b;
 }
+
+Inputable::~Inputable()
+{
+
+}
