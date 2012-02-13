@@ -4,23 +4,29 @@ ManagerElements::ManagerElements() : Manager()
 {
     //Initialisation de la serialisation des joints
     this->initSystem();
-
     this->listMovements = new QList<Movement*>();
     this->listPorts = new QList<ClientOSC*>();
+    this->listSamplesAudios = new QList<SampleAudio*>();
+    this->listSamplesVideos = new QList<SampleVideo*>();
+
     ClientOSC *port = new ClientOSC(1234, "localhost", false);
     // port->setActive(true);
     this->listPorts->append(port);
     this->listPorts->append(new ClientOSC(5678, "localhost", false));
     /**
-   *
-   **/
-    this->listSamplesAudios = new QList<SampleAudio*>();
+      *
+      **
     this->listSamplesAudios->append(new SampleAudio("01 By the Way", "../../../01 By the Way.mp3", 0, false));
     this->listSamplesAudios->append(new SampleAudio("03 Scar Tissue", "../../../03 Scar Tissue.mp3", 0, false));
     //this->listSamplesAudios->append(new SampleAudio("Sample 3", "URL3", 0, false));
 
-    this->listSamplesVideos = new QList<SampleVideo*>();
-    //this->loadAllMovements();
+    /**
+      *
+      **/
+    this->loadAllMovements();
+    /**
+      *
+      **/
 
 }
 

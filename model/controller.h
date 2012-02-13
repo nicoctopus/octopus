@@ -24,7 +24,8 @@ public:
     void linkJointToJointMvt();
     SoundPlayer *getPlayerDemo();
     SoundPlayer *getPlayerLive();
-    Movement * recordMovement(Movement *managerElements);
+    ServerOSC *getServerOsc();
+    void recordMovement(Movement *managerElements);
     void stopRecord(Movement *movement);
     void analizeRecord();
 

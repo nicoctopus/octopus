@@ -34,7 +34,7 @@ SOURCES += main.cpp\
     view/triangle.cpp \
     view/square.cpp \
     view/mylefttree.cpp \
-    view/ellipse.cpp \
+    view/ellipseduprojet.cpp \
     view/diamond.cpp \
     view/blackboard.cpp \
     model/soundplayer.cpp \
@@ -69,7 +69,7 @@ HEADERS  += mainwindow.h \
     view/stickman.h \
     view/square.h \
     view/mylefttree.h \
-    view/ellipse.h \
+    view/ellipseduprojet.h \
     view/diamond.h \
     view/blackboard.h \
     model/soundplayer.h \

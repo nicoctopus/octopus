@@ -10,6 +10,10 @@
 
 class ServerOSC : public Port, public Inputable
 {
+   // Q_OBJECT
+//signals:
+    //void jointMvtTooBig();
+
 public:
     ServerOSC();
     ServerOSC(const quint16 &portNb, const bool &active);

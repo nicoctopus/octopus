@@ -135,7 +135,7 @@ const char* Movement::className()
 //Save
 QDataStream & operator << (QDataStream &out, const Movement &valeur)
 {
-    //std::cout << "Entrée operator << Movement" << std::endl;
+    //std::cout << "Entree operator << Movement" << std::endl;
     out << valeur.idElement << valeur.nameElement << valeur.active;
     return out;
 }
@@ -144,7 +144,7 @@ QDataStream & operator << (QDataStream &out, const Movement &valeur)
 QDataStream & operator << (QDataStream &out, Movement *valeur)
 {
     out.writeRawData((char*)&valeur, sizeof(valeur));
-    //std::cout << "Entrée operator << Movement" << std::endl;
+    //std::cout << "Entree operator << Movement" << std::endl;
     return out;
 }
 
@@ -152,14 +152,14 @@ QDataStream & operator << (QDataStream &out, Movement *valeur)
 QDataStream & operator >> (QDataStream &in, Movement *&valeur)
 {
     in.readRawData((char*)&valeur, sizeof(valeur));
-    //std::cout << "Entrée operator << Movement" << std::endl;
+    //std::cout << "Entree operator << Movement" << std::endl;
     return in;
 }
 
 //Load
 QDataStream & operator >> (QDataStream & in, Movement &valeur)
 {
-    //std::cout << "Entrée operator >> Movement" << std::endl;
+    //std::cout << "Entree operator >> Movement" << std::endl;
     in >> valeur.idElement;
     in >> valeur.nameElement;
     in >> valeur.active;

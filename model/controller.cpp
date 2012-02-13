@@ -4,16 +4,16 @@ Controller::Controller()
 {
     this->managerJoints = new ManagerJoints();
     this->managerElements = new ManagerElements();
+    this->linkJointToJointMvt();
     this->playerlive = new SoundPlayer(32);
     this->playerdemo = new SoundPlayer(1);
     this->managerElements->sortMovements();
-    //this->recordMovement();
-    //this->analizeRecord();
 }
 
 void Controller::stopRecord(Movement *movement)
 {
     this->serveurOSC->setRunnable(false);
+    this->troncage(movement);
     /**
       *AFFICHAGE des infos sur le MVT
       **/
@@ -41,38 +41,29 @@ void Controller::stopRecord(Movement *movement)
     }
 }
 
-Movement* Controller::recordMovement(Movement *movement)
+void Controller::recordMovement(Movement *movement)
 {
-
+    /**
+      *   SERVEUR OSC
+      **/
     this->serveurOSC = new ServerOSC(12345, false); //Serveur "ecouteur" de synapse
     this->serveurOSC->setRunnable(true);
     this->serveurOSC->setRecording(true); //mode record
     this->serveurOSC->setListJoints(managerJoints->getListJoints());
     this->serveurOSC->setMovement(movement);
     this->serveurOSC->start();
-    //CLIENT OSC
-    ClientOSC* client = new ClientOSC(12346, QString("localhost"), false);
 
     /**
-      *A CHANGER AUTOMAITQUEMENT EN FONCTION DE LA LISTE DE JOINTS MVTS DU MOUVEMENT
+      *  CLIENT OSC
       **/
+    ClientOSC* client = new ClientOSC(12346, QString("localhost"), false);
+    //Chargement de la liste des messages
     QList<MessageSynapse*>* msg = new QList<MessageSynapse*>();
     for(int i = 0 ; i < movement->getListJointsMvt()->size() ; i++)
 	msg->append(new MessageSynapse(movement->getListJointsMvt()->at(i)->getJointRef()->getMessageSynapse(), 1));
-    //msg->append(new MessageSynapse(QString("/leftelbow_trackjointpos"), 1));
-
-    //msg->append(new MessageSynapse(QString("/righthand_trackjointpos"), 1));
-    //msg->append(new MessageSynapse(QString("/rightelbow_trackjointpos"), 1));
-    /**
-  *
-  **/
     client->setMsgSynapse(msg);
     client->setRunnable(true);
     client->start();
-
-    this->troncage(movement);
-
-    return movement;
 }
 
 void Controller::analizeRecord()
@@ -172,5 +163,10 @@ void Controller::troncage(Movement* movement) {
 	    movement->getListJointsMvt()->at(j)->getListPositions()->removeLast();
 	}
     }
+}
+
+ServerOSC* Controller::getServerOsc()
+{
+    return this->serveurOSC;
 }
 

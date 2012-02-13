@@ -16,12 +16,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->timer->start(1000);
 
     this->setWindowTitle("Octopus");
-    //ui->pushButton_enregistrermouvement->setVisible(false);
-    //ui->pushButton_playmouvement->setVisible(false);
-    //ui->pushButton_recordmouvement->setVisible(false);
-    //ui->pushButton_supprimermouvement->setVisible(false);
-    //ui->pushButton_verrouiller->setVisible(false);
-    //ui->pushButton_stoprecord->setVisible(false);
     ui->nommouvement->setVisible(false);
 
     ui->pushButton_enregistrermouvement->setEnabled(false);
@@ -39,37 +33,25 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/play.png)");
     ui->pushButton_stoplecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/stop.png)");
 
-    //this->controller->getPlayerDemo()->playDemo(this->controller->getManagerElements()->getListSamplesAudios()->at(0));
-
     connect(ui->pushButton_playlecteur,SIGNAL(pressed()),this,SLOT(slotPlayPause()));
-    //connect(ui->pushButton_pause,SIGNAL(pressed()),this,SLOT(slotPlayPause()));
 
     connect(ui->pushButton_stoplecteur,SIGNAL(pressed()),this,SLOT(slotStop()));
 
-    //ui->pushButton_pause->setVisible(false);
-
-    //sleep(10);
-    //this->controller->getPlayerDemo()->Stop();
     //-------------------------------------------
     connect(ui->stickMan->scene(), SIGNAL(selectionChanged()), this, SLOT(slotNewSelectionOnStickMan()));
     connect(ui->pushButton_creermouvement, SIGNAL(clicked()), this, SLOT(slotUnlockStickMan()));
     connect(ui->pushButton_verrouiller, SIGNAL(clicked()), this, SLOT(slotLockNodesForNewMouvement()));
     connect(ui->pushButton_recordmouvement, SIGNAL(clicked()), this, SLOT(slotRecordNewMovement()));
-    //connect(ui->pushButton_recordmouvement, SIGNAL(clicked()), this, SLOT(slotStopRecordNewMovement()));
     connect(ui->pushButton_enregistrermouvement, SIGNAL(clicked()), this, SLOT(slotValidNewMovement()));
     connect(ui->pushButton_supprimermouvement, SIGNAL(clicked()), this, SLOT(slotEscNewMovement()));
     connect(ui->leftTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(slotDisplayInfos(QTreeWidgetItem*,int)));
     connect(ui->blackboard->scene(), SIGNAL(selectionChanged()), this, SLOT(slotDisplayInfos()));
     connect(ui->ButtonAdd, SIGNAL(clicked()), this, SLOT(boutonAddSample()));
 
+//    connect(this->controller->getServerOsc(), SIGNAL(jointMvtTooBig()), this, SLOT(slotRecordNewMovement()));
 
     this->initBlackBoard();
     this->initTreeView();
-
-    //QPushButton *start = new QPushButton();
-    //ui->layoutDockPerformance->addWidget(start);
-
-
 
 }
 
@@ -385,7 +367,7 @@ void MainWindow::slotRecordNewMovement(){
     if(isRecording == false){
 	ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/stop.png)");
 	//RECORD UN MOVEMENT
-	this->movement = this->controller->recordMovement(this->movement);
+	this->controller->recordMovement(this->movement);
 	//START RECORD
 	isRecording = true;
     }
