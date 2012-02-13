@@ -50,7 +50,6 @@ public slots :
     void slotDisplayInfos();
     void slotRecordNewMovement();
     void slotValidNewMovement();
-    void slotStopRecordNewMovement();
     void slotEscNewMovement();
     void slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int column);
     void decocherCheckBoxLink();

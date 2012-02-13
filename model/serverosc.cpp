@@ -176,13 +176,13 @@ void ServerOSC::record(){
               * repere : body
               * Donnees : x, y, z
               */
-	    QList<JointMvt*>* listJointsMvt = movement->getListJointsMvt(); //remplir le dernier movement enregistre
+	    QList<JointMvt*>* listJointsMvt = movement->getListJointsMvt();
             if (message->match("/tracking_skeleton").popBool(d).isOkNoMoreArgs()) {
                 //tracking ok ...
             }
             else if (message->match("/lefthand_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
                 //chercher le joint correspondant dans le mouvement
-                for (int i=0; i<listJointsMvt->size(); i++){
+		for (int i=0; i<listJointsMvt->size(); i++){
                     if(listJointsMvt->at(i)->getJointRef()->getNom() == "lefthand")
                     {
                         if(listJointsMvt->at(i)->getListPositions()->isEmpty())

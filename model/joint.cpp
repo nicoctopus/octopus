@@ -15,6 +15,26 @@ Joint::Joint(const QString &nom, QList<Position*> *bufferPositions)
     this->id = ++idJointStatic;
     this->nom = nom;
     this->bufferPositions = bufferPositions;
+    if(this->nom == "lefthand")
+	this->messageSynapse = "/lefthand_trackjointpos";
+    else if(this->nom == "righthand")
+	this->messageSynapse = "/righthand_trackjointpos";
+    else if(this->nom == "leftelbow")
+	this->messageSynapse = "/leftelbow_trackjointpos";
+    else if(this->nom == "rightelbow")
+	this->messageSynapse = "/rightelbow_trackjointpos";
+    else if(this->nom == "leftfoot")
+	this->messageSynapse = "/leftfoot_trackjointpos";
+    else if(this->nom == "rightfoot")
+	this->messageSynapse = "/rightfoot_trackjointpos";
+    else if(this->nom == "leftknee")
+	this->messageSynapse = "/leftknee_trackjointpos";
+    else if(this->nom == "rightnknee")
+	this->messageSynapse = "/rightknee_trackjointpos";
+    else if(this->nom == "head")
+	this->messageSynapse = "/head_trackjointpos";
+    else if(this->nom == "torso")
+	this->messageSynapse = "/torso_trackjointpos";
 }
 Joint::Joint(const Joint &joint)
 {
@@ -28,6 +48,26 @@ Joint::Joint(const QString &nom)
     this->id = ++idJointStatic;
     this->nom = nom;
     this->bufferPositions = new QList<Position*>();
+    if(this->nom == "lefthand")
+	this->messageSynapse = "/lefthand_trackjointpos";
+    else if(this->nom == "righthand")
+	this->messageSynapse = "/righthand_trackjointpos";
+    else if(this->nom == "leftelbow")
+	this->messageSynapse = "/leftelbow_trackjointpos";
+    else if(this->nom == "rightelbow")
+	this->messageSynapse = "/rightelbow_trackjointpos";
+    else if(this->nom == "leftfoot")
+	this->messageSynapse = "/leftfoot_trackjointpos";
+    else if(this->nom == "rightfoot")
+	this->messageSynapse = "/rightfoot_trackjointpos";
+    else if(this->nom == "leftknee")
+	this->messageSynapse = "/leftknee_trackjointpos";
+    else if(this->nom == "rightknee")
+	this->messageSynapse = "/rightknee_trackjointpos";
+    else if(this->nom == "head")
+	this->messageSynapse = "/head_trackjointpos";
+    else if(this->nom == "torso")
+	this->messageSynapse = "/torso_trackjointpos";
 }
 
 /**
@@ -91,6 +131,11 @@ void Joint::initializeBuffer() {
     for(int i=0; i<SIZE_MAX_BUFFERS; i++) {
         bufferPositions->append(new Position(0,0,0,0,0,0,0,0,0,0));
     }
+}
+
+QString Joint::getMessageSynapse()
+{
+    return this->messageSynapse;
 }
 
 //Pour save

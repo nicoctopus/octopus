@@ -57,7 +57,8 @@ Movement* Controller::recordMovement(Movement *movement)
       *A CHANGER AUTOMAITQUEMENT EN FONCTION DE LA LISTE DE JOINTS MVTS DU MOUVEMENT
       **/
     QList<MessageSynapse*>* msg = new QList<MessageSynapse*>();
-    msg->append(new MessageSynapse(QString("/lefthand_trackjointpos"), 1));
+    for(int i = 0 ; i < movement->getListJointsMvt()->size() ; i++)
+	msg->append(new MessageSynapse(movement->getListJointsMvt()->at(i)->getJointRef()->getMessageSynapse(), 1));
     //msg->append(new MessageSynapse(QString("/leftelbow_trackjointpos"), 1));
 
     //msg->append(new MessageSynapse(QString("/righthand_trackjointpos"), 1));
