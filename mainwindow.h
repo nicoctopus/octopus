@@ -36,7 +36,7 @@ public:
 
 
 public slots :
-    //void slotUpdateLeftTreeMovement(Movement* movementChange);
+    void slotTimeOutRecord();
     void slotNewSelectionOnStickMan();
     void save(Movement *movement);
     void save(SampleAudio *sampleAudio);

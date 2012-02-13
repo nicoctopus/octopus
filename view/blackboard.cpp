@@ -12,7 +12,6 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent)
     QGraphicsScene *scene = new QGraphicsScene();
     this->setScene(scene);
     connect(this, SIGNAL(refreshSignal()), this, SLOT(refresh()));
-    connect(this, SIGNAL(clearBlackBoard()), this->scene(), SLOT(clear()));
 }
 
 // -----------------------------------------------------------

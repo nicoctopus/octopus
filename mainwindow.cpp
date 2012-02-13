@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->blackboard->scene(), SIGNAL(selectionChanged()), this, SLOT(slotDisplayInfos()));
     connect(ui->ButtonAdd, SIGNAL(clicked()), this, SLOT(boutonAddSample()));
 
-//    connect(this->controller->getServerOsc(), SIGNAL(jointMvtTooBig()), this, SLOT(slotRecordNewMovement()));
+    connect(this->controller->getServerOsc(), SIGNAL(jointMvtTooBig()), this, SLOT(slotTimeOutRecord()));
 
     this->initBlackBoard();
     this->initTreeView();
@@ -361,8 +361,6 @@ int MainWindow::slotLockNodesForNewMouvement(){
 }
 
 void MainWindow::slotRecordNewMovement(){
-    //ui->pushButton_recordmouvement->setVisible(false);
-    //ui->pushButton_stoprecord->setVisible(true);
 
     if(isRecording == false){
 	ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/stop.png)");
@@ -382,8 +380,21 @@ void MainWindow::slotRecordNewMovement(){
 	this->controller->stopRecord(this->movement);
 	isRecording = false;
     }
+}
 
+void MainWindow::slotTimeOutRecord()
+{
+    qDebug() << "test"<< endl;
+    //ON STOP LE RECORD
+    this->controller->stopRecord(this->movement);
+    //ON AFFICHE LES BOUTONS
+    ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/recordgris.png)");
+    ui->pushButton_recordmouvement->setEnabled(false);
+    ui->nommouvement->setVisible(true);
+    ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/save.png)");
+    ui->pushButton_enregistrermouvement->setEnabled(true);
 
+    isRecording = false;
 }
 
 void MainWindow::slotValidNewMovement(){

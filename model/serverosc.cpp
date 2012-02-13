@@ -291,7 +291,7 @@ void ServerOSC::record(){
     }
     else
     {
-	//emit jointMvtTooBig();
+	emit jointMvtTooBig();
     }
 }
 
@@ -332,4 +332,16 @@ bool ServerOSC::allBuffersSameSize() {
 	i++;
     }
     return sameSize;
+}
+
+ServerOSC::~ServerOSC()
+{
+    delete(this->analyse);
+    delete(this->movement);
+    for(int i = 0 ; this->listJoints->size(); i++)
+	delete(this->listJoints->at(i));
+    delete(this->listJoints);
+    for(int i = 0 ; i < this->listMovements->size() ; i++)
+	delete(this->listMovements->at(i));
+    delete(this->listMovements);
 }

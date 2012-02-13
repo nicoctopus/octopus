@@ -8,15 +8,16 @@
 #include "joint.h"
 #include "analyse.h"
 
-class ServerOSC : public Port, public Inputable
+class ServerOSC : public Inputable, public Port
 {
-   // Q_OBJECT
-//signals:
-    //void jointMvtTooBig();
+    Q_OBJECT
+signals:
+    void jointMvtTooBig();
 
 public:
     ServerOSC();
     ServerOSC(const quint16 &portNb, const bool &active);
+    ~ServerOSC();
     virtual const char* className();
     virtual void run();
 

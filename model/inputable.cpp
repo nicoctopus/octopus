@@ -16,5 +16,7 @@ void Inputable::setRunnable(const bool &b) {
 
 Inputable::~Inputable()
 {
-
+    delete(this->message);
+    delete(this->reader);
+    delete(this->socket);
 }
