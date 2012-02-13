@@ -20,7 +20,7 @@ ManagerElements::ManagerElements() : Manager()
     //this->listSamplesAudios->append(new SampleAudio("Sample 3", "URL3", 0, false));
 
     this->listSamplesVideos = new QList<SampleVideo*>();
-
+    this->loadAllMovements();
 
 }
 
