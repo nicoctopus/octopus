@@ -41,7 +41,10 @@ SOURCES += main.cpp\
     view/jointgraphic.cpp \
     view/stickman.cpp \
     model/analyse.cpp \
-    model/managerclientosc.cpp
+    model/managerclientosc.cpp \
+    model/managersampleaudio.cpp \
+    model/managerjointmvt.cpp \
+    model/managerposition.cpp
 
 HEADERS  += mainwindow.h \
     model/utils.h \
@@ -83,7 +86,10 @@ HEADERS  += mainwindow.h \
     FMOD/api/inc/fmod_codec.h \
     view/jointgraphic.h \
     model/analyse.h \
-    model/managerclientosc.h
+    model/managerclientosc.h \
+    model/managersampleaudio.h \
+    model/managerjointmvt.h \
+    model/managerposition.h
 
 FORMS    += mainwindow.ui
 
@@ -109,6 +115,12 @@ else:macx: LIBS += -L$$PWD/FMOD/api/lib/ -lfmodex
 
 INCLUDEPATH += $$PWD/FMOD/api/inc
 DEPENDPATH += $$PWD/FMOD/api/inc
+
+
+
+
+
+
 
 
 

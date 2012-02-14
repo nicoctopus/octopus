@@ -126,9 +126,9 @@ SoundPlayer * Controller::getPlayerDemo() {
 void Controller::linkJointToJointMvt()
 {
     for(int i = 0 ; i < this->managerJoints->getListJoints()->size() ; i++)
-	for(int j = 0 ; j < this->managerElements->getListJointsMvts()->size() ; j++)
-	    if(this->managerJoints->getListJoints()->at(i)->getId() ==  this->managerElements->getListJointsMvts()->at(j)->getIdJointRef())
-		this->managerElements->getListJointsMvts()->at(j)->setJointRef(this->managerJoints->getListJoints()->at(i));
+	for(int j = 0 ; j < this->managerElements->getManagerJointMvt()->getListJointsMvts()->size() ; j++)
+	    if(this->managerJoints->getListJoints()->at(i)->getId() ==  this->managerElements->getManagerJointMvt()->getListJointsMvts()->at(j)->getIdJointRef())
+		this->managerElements->getManagerJointMvt()->getListJointsMvts()->at(j)->setJointRef(this->managerJoints->getListJoints()->at(i));
 }
 
 void Controller::bubble(QList<Movement*>* moves) {

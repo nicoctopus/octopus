@@ -61,7 +61,7 @@ void MainWindow::initTreeView()
     connect(this, SIGNAL(refreshLeftTree()), ui->leftTree, SLOT(refresh()));
     ui->leftTree->setListMovements(this->controller->getManagerElements()->getListMovements());
     ui->leftTree->setListPorts(this->controller->getManagerElements()->getManagerClientOSC()->getListClientsOSC());
-    ui->leftTree->setListSamplesAudio(this->controller->getManagerElements()->getListSamplesAudios());
+    ui->leftTree->setListSamplesAudio(this->controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudios());
     emit refreshLeftTree();
 }
 
@@ -69,7 +69,7 @@ void MainWindow::initBlackBoard()
 {
     ui->blackboard->setListMovements(controller->getManagerElements()->getListMovementsActive());
     ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
-    ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getListSamplesAudiosActive());
+    ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
     connect(ui->blackboard, SIGNAL(save(Movement*)), this, SLOT(save(Movement*)));
     connect(ui->blackboard, SIGNAL(save(ClientOSC*)), this, SLOT(save(ClientOSC*)));
     connect(ui->blackboard, SIGNAL(save(SampleAudio*)), this, SLOT(save(SampleAudio*)));
@@ -120,14 +120,14 @@ void MainWindow::save(Movement *movement)
 void MainWindow::save(ClientOSC *clientOSC)
 {
     QSettings fichierClientOSC("clientOSC.ini", QSettings::IniFormat);
-    controller->getManagerElements()->getManagerClientOSC()->saveClientOSC(clientOSC, fichierClientOSC);
+    controller->getManagerElements()->getManagerClientOSC()->save(clientOSC, fichierClientOSC);
     fichierClientOSC.sync();
 }
 
 void MainWindow::save(SampleAudio *sampleAudio)
 {
     QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
-    controller->getManagerElements()->saveSampleAudio(sampleAudio, fichierSampleAudio);
+    controller->getManagerElements()->getManagetSampleAudio()->save(sampleAudio, fichierSampleAudio);
     fichierSampleAudio.sync();
 }
 
@@ -454,7 +454,7 @@ void MainWindow::boutonAddSample()
     {
 	for(int i = 0 ; i < files.size() ; i++)
 	{
-	    this->controller->getManagerElements()->addSample(files.at(i).split("/").last(), files.at(i));
+	    this->controller->getManagerElements()->getManagetSampleAudio()->addSample(files.at(i).split("/").last(), files.at(i));
 	}
     }
     emit refreshLeftTree();

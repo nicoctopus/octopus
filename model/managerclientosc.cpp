@@ -33,7 +33,7 @@ void ManagerClientOSC::loadAll()
     }
 }
 
-void ManagerClientOSC::saveClientOSC(ClientOSC *clientOSC, QSettings &fichierClientOSC)
+void ManagerClientOSC::save(ClientOSC *clientOSC, QSettings &fichierClientOSC)
 {
     QString key = QString::number(clientOSC->getId());
     fichierClientOSC.setValue(key, qVariantFromValue(*clientOSC));
@@ -44,12 +44,12 @@ void ManagerClientOSC::saveAll()
     QSettings fichierClientsOSC("clientOSC.ini", QSettings::IniFormat);
     for(int i = 0 ; i < this->listClientOSC->size() ; i++)
     {
-	this->saveClientOSC(this->listClientOSC->at(i), fichierClientsOSC);
+	this->save(this->listClientOSC->at(i), fichierClientsOSC);
     }
     fichierClientsOSC.sync();
 }
 
-void ManagerClientOSC::removeClientOSC(QList<ClientOSC*> *listClientOSCToDelete)
+void ManagerClientOSC::remove(QList<ClientOSC*> *listClientOSCToDelete)
 {
     QSettings fichierClientOSC("clientOSC.ini", QSettings::IniFormat);
     for(int i = 0 ; i < listClientOSCToDelete->size() ; i++)
