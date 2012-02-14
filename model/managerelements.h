@@ -6,8 +6,7 @@
 #include "jointmvt.h"
 #include "sampleaudio.h"
 #include "samplevideo.h"
-#include "port.h"
-
+#include "managerclientosc.h"
 class ManagerElements : public Manager
 {
 
@@ -15,9 +14,9 @@ private :
     QList<Movement*> *listMovements;
     QList<SampleAudio*> *listSamplesAudios;
     QList<SampleVideo*> *listSamplesVideos;
-    QList<ClientOSC*> *listPorts;
     QList<Position*> *listPositionsTemp;
     QList<JointMvt*> *listJointsMvts;
+    ManagerClientOSC *managerClientOSC;
 
 public:
     ManagerElements();
@@ -61,10 +60,9 @@ public:
     QList<SampleAudio*>* getListSamplesAudios();
     QList<SampleAudio*>* getListSamplesAudiosActive();
     QList<SampleVideo*>* getListSamplesVideos();
-    QList<ClientOSC*>* getListPorts();
-    QList<ClientOSC*>* getListPortsActive();
     QList<Position*> *getListPositionTemp(){return this->listPositionsTemp;}
     QList<JointMvt*>* getListJointsMvts();
+    ManagerClientOSC* getManagerClientOSC();
 
     //Methodes
     void sortMovements();

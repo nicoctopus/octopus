@@ -44,9 +44,6 @@ private:
 
 };
 
-//Q_DECLARE_METATYPE(Movement*)
-
-
 Q_DECLARE_METATYPE(Movement)
 QDataStream & operator << (QDataStream & out, const Movement &valeur);
 QDataStream & operator >> (QDataStream & in, Movement &valeur);

@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     model/soundplayer.cpp \
     view/jointgraphic.cpp \
     view/stickman.cpp \
-    model/analyse.cpp
+    model/analyse.cpp \
+    model/managerclientosc.cpp
 
 HEADERS  += mainwindow.h \
     model/utils.h \
@@ -81,7 +82,8 @@ HEADERS  += mainwindow.h \
     FMOD/api/inc/fmod_dsp.h \
     FMOD/api/inc/fmod_codec.h \
     view/jointgraphic.h \
-    model/analyse.h
+    model/analyse.h \
+    model/managerclientosc.h
 
 FORMS    += mainwindow.ui
 
@@ -107,6 +109,8 @@ else:macx: LIBS += -L$$PWD/FMOD/api/lib/ -lfmodex
 
 INCLUDEPATH += $$PWD/FMOD/api/inc
 DEPENDPATH += $$PWD/FMOD/api/inc
+
+
 
 
 

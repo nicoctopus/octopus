@@ -31,7 +31,7 @@ public:
 signals:
     void save(Movement *movement);
     void save(SampleAudio *sampleAudio);
-    void save(ClientOSC *port);
+    void save(ClientOSC *clientOSC);
     void refreshSignal();
     void decocherCheckBoxLink();
 

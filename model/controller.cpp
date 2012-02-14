@@ -8,6 +8,7 @@ Controller::Controller()
     this->playerlive = new SoundPlayer(32);
     this->playerdemo = new SoundPlayer(1);
     this->managerElements->sortMovements();
+    this->serveurOSC = new ServerOSC(123456, false);
 }
 
 void Controller::stopRecord(Movement *movement)

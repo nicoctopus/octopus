@@ -2,7 +2,8 @@
 
 quint32 Port::idPortStatic = 0;
 
-Port::Port() {
+Port::Port() : Element()
+{
 }
 
 Port::Port(const quint16 &portNb, const bool &active) : Element(++idPortStatic, QString::number(portNb), active)

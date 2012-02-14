@@ -120,7 +120,7 @@ JointMvt::~JointMvt()
  //Pour save
  QDataStream & operator << (QDataStream & out, const JointMvt &valeur)
  {
-    // std::cout << "Entrée operator << JointMvt" << std::endl;
+    // std::cout << "Entree operator << JointMvt" << std::endl;
      out << valeur.idJointMvt;
      out << valeur.idJointRef;
      out << valeur.idMovement;
@@ -130,7 +130,7 @@ JointMvt::~JointMvt()
  // Pour load
  QDataStream & operator >> (QDataStream & in, JointMvt &valeur)
  {
-    // std::cout << "Entrée operator >> JointMvt" << std::endl;
+    // std::cout << "Entree operator >> JointMvt" << std::endl;
      in >> valeur.idJointMvt;
      in >> valeur.idJointRef;
      in >> valeur.idMovement;

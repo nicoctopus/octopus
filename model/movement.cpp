@@ -7,8 +7,8 @@ quint32 Movement::idMovementStatic = 0;
   **/
 Movement::Movement() : Element()
 {
-    this->sampleAudio = NULL;//new SampleAudio();
-    this->sampleVideo = NULL;//new SampleVideo();
+    this->sampleAudio = NULL;
+    this->sampleVideo = NULL;
     this->listClients = new QList<ClientOSC*>();
     this->listJointsMvt = new QList<JointMvt*>();
     this->active = false;

@@ -60,7 +60,7 @@ void MainWindow::initTreeView()
     //Initialisation du TreeView
     connect(this, SIGNAL(refreshLeftTree()), ui->leftTree, SLOT(refresh()));
     ui->leftTree->setListMovements(this->controller->getManagerElements()->getListMovements());
-    ui->leftTree->setListPorts(this->controller->getManagerElements()->getListPorts());
+    ui->leftTree->setListPorts(this->controller->getManagerElements()->getManagerClientOSC()->getListClientsOSC());
     ui->leftTree->setListSamplesAudio(this->controller->getManagerElements()->getListSamplesAudios());
     emit refreshLeftTree();
 }
@@ -68,7 +68,7 @@ void MainWindow::initTreeView()
 void MainWindow::initBlackBoard()
 {
     ui->blackboard->setListMovements(controller->getManagerElements()->getListMovementsActive());
-    ui->blackboard->setListPorts(controller->getManagerElements()->getListPortsActive());
+    ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
     ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getListSamplesAudiosActive());
     connect(ui->blackboard, SIGNAL(save(Movement*)), this, SLOT(save(Movement*)));
     connect(ui->blackboard, SIGNAL(save(ClientOSC*)), this, SLOT(save(ClientOSC*)));
@@ -117,9 +117,11 @@ void MainWindow::save(Movement *movement)
     fichierMovement.sync();
 }
 
-void MainWindow::save(ClientOSC *port)
+void MainWindow::save(ClientOSC *clientOSC)
 {
-    // controller->getManagerElements()
+    QSettings fichierClientOSC("clientOSC.ini", QSettings::IniFormat);
+    controller->getManagerElements()->getManagerClientOSC()->saveClientOSC(clientOSC, fichierClientOSC);
+    fichierClientOSC.sync();
 }
 
 void MainWindow::save(SampleAudio *sampleAudio)
