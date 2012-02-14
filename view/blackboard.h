@@ -22,6 +22,7 @@ public:
     void dragMoveEvent(QDragMoveEvent *event);
     void addLineItem(const quint16 x1, const quint16 y1, const quint16 x2, const quint16 y2);
     void updateSampleAudioOfMovement(Movement *movement, SampleAudio *newSampleAudio);
+    void updateClientOSCOfMovement(Movement *movement, ClientOSC *clientOSC);
     void setListMovements(QList<Movement*> *listMovements);
     void setListPorts(QList<ClientOSC*> *listPorts);
     void setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio);

@@ -96,6 +96,11 @@ void Movement::addJointMvt(Joint *ref) {
     listJointsMvt->append(new JointMvt(ref->getId(), this->idElement, ref));
 }
 
+void Movement::addClientOSC(ClientOSC *clientOSC)
+{
+    this->listClients->append(clientOSC);
+}
+
 void Movement::addJointMvt(JointMvt *jointMvt) {
     listJointsMvt->append(jointMvt);
 }

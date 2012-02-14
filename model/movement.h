@@ -25,6 +25,7 @@ public:
     void setSampleVideo(SampleVideo *sampleVideo);
     QList<JointMvt*> *getListJointsMvt();
     void addJointMvt(JointMvt* jointMvt);
+    void addClientOSC(ClientOSC *clientOSC);
     void save();
     void updateId(const quint32 &id);
     const char* className();
