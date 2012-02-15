@@ -20,10 +20,14 @@ private:
     SampleAudio * music;
 
 
+
 public:
     Analyse();
+    ~Analyse();
     Analyse(float,float);
     void calculBITG(QList<Movement *> *);
+
+
 private :
     QList<Position*> modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt);
     Position* moyenne(Position* p1, Position *p2);

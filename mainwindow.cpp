@@ -3,6 +3,7 @@
 #include <QtGui>
 
 bool isRecording = false;
+bool isLive = false;
 //------------------------------------------------
 //              Constructeur Main Window
 //------------------------------------------------
@@ -49,6 +50,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->ButtonAdd, SIGNAL(clicked()), this, SLOT(boutonAddSample()));
 
 //    connect(this->controller->getServerOsc(), SIGNAL(jointMvtTooBig()), this, SLOT(slotRecordNewMovement()));
+
+
+    connect(ui->start, SIGNAL(clicked()), this,SLOT(slotStartLivePerformance()));
 
     this->initBlackBoard();
     this->initTreeView();
@@ -424,6 +428,25 @@ void MainWindow::slotEscNewMovement(){
     ui->pushButton_verrouiller->setStyleSheet("background:url(:/new/prefix1/images_boutons/cadenasgris.png)");
     ui->stickMan->reCreateStickMan();
 }
+
+
+void MainWindow::slotStartLivePerformance(){
+
+    if(isLive==false){
+         this->controller->analizeRecord();
+         isLive=true;
+    }else if(isLive==true){
+
+        this->controller->stopAnalize();
+         isLive=false;
+    }
+
+
+
+
+}
+
+
 
 void MainWindow::decocherCheckBoxLink()
 {

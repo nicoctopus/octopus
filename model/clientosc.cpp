@@ -7,6 +7,8 @@ ClientOSC::ClientOSC() {
 ClientOSC::ClientOSC(const quint16 &portNb, const QString &host, const bool &active) : Port(portNb, active) {
     this->nameElement = QString::number(portNb);
     this->host = host;
+    this->setRunnable(false);
+
 }
 
 void ClientOSC::setHost(const QString &h) {
@@ -56,7 +58,13 @@ const char* ClientOSC::className() {
   * Thread
   */
 void ClientOSC::run() {
+
+    //qDebug()<< "Alloooo ca tourne AUSSI !! " << endl;
+
+
     while(runnable) {
+        //qDebug()<< "Alloooo ça tourne grave AUSSI !! " << runnable << endl;
+
         //requetes pour Synapse
         if(this->msg->size()>0) {
             this->sendMsgSynapse();
@@ -67,7 +75,8 @@ void ClientOSC::run() {
         }
         sleep(2);
     }
-    exec();
+
+   // exec();
 }
 
 void ClientOSC::updateIdMovement(quint16 idMovement)

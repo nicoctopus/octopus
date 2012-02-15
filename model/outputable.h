@@ -34,6 +34,7 @@ protected:
     // thread
     bool runnable;
 
+
 };
 
 #endif // OUTPUTABLE_H

@@ -212,7 +212,7 @@ struct UdpSocket {
       The datagram is available with the getDatagramData() / getDatagramSize() functions,
       the sender address can be retrieved with getDatagramOrigin().
   */
-  bool receiveNextPacket(int timeout_ms = -1) {
+  bool receiveNextPacket(int timeout_ms = 100) {
     if (!isOk() || handle == -1) { setErr("not opened.."); return false; }
     /* 128k seems to be a reasonable value -- on linux, the max
        datagram size appears to be a little bit less than 65536 */
