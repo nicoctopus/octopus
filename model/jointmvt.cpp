@@ -75,6 +75,7 @@ void JointMvt::setJointRef(Joint *JointReference)
 
 void JointMvt::addPosition(Position *position)
 {
+    position->setIdJointMvt((quint16)(this->idJointMvt));
     this->listPositions->append(position);
 }
 

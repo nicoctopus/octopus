@@ -21,7 +21,39 @@ ManagerElements::ManagerElements() : Manager()
       *
       **/
     //this->saveAll();
+    //this->loadAll();
+    this->listMovements->append(new Movement("bonjour"));
+    JointMvt *j = new JointMvt(1, 1);
+    j->addPosition(new Position(1,3,0,5,0,0,0));
+    j->addPosition(new Position(1,1,0,0,0,0,0));
+    this->listMovements->at(0)->addJointMvt(j);
+    this->saveAll();
     this->loadAll();
+    /**
+      *AFFICHAGE des infos sur le MVT
+      **/
+    qDebug() <<  this->listMovements->at(0)->getName() << endl;
+    for(int j=0;j<this->listMovements->at(0)->getListJointsMvt()->size();j++) {
+	qDebug() << "Taille du joint mouvement "
+		 << this->listMovements->at(0)->getListJointsMvt()->at(j)->getJointRef()->getNom() << " :"
+		 << this->listMovements->at(0)->getListJointsMvt()->at(j)->getListPositions()->size()
+		 << endl;
+    }
+
+    qDebug() << this->listMovements->at(0)->getName() << endl;
+    for(int j=0;j<this->listMovements->at(0)->getListJointsMvt()->size();j++) {
+	qDebug() << this->listMovements->at(0)->getListJointsMvt()->at(j)->getJointRef()->getNom() << endl;
+	for(int k=0; k<this->listMovements->at(0)->getListJointsMvt()->at(j)->getListPositions()->size();k++){
+	    qDebug() << "Position : " << k << endl
+		     << "X : " << this->listMovements->at(0)->getListJointsMvt()->at(j)->getListPositions()->at(k)->getX() << endl
+		     << "DX : " << this->listMovements->at(0)->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDx() << endl
+		     << "Y : " << this->listMovements->at(0)->getListJointsMvt()->at(j)->getListPositions()->at(k)->getY() << endl
+		     << "DY : " << this->listMovements->at(0)->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDy() << endl
+		     << "Z : " << this->listMovements->at(0)->getListJointsMvt()->at(j)->getListPositions()->at(k)->getZ() << endl
+		     << "DZ : " << this->listMovements->at(0)->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDz() << endl
+		     << endl<<endl;
+	}
+    }
     /**
       *
       **/

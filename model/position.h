@@ -10,7 +10,7 @@ class Position
 {
 private:
     quint16 id;
-    quint16 idJoinMvt;
+    quint32 idJoinMvt;
     qint32 x;
     qint32 y;
     qint32 z;
@@ -26,10 +26,10 @@ private:
 public:
     Position();
     Position (const Position &position);
-    Position (const quint16 &idJoinMvt, const float &x, const float &y, const float &z, const float &a, const float &b, const float &c);
-    Position(const quint16 &idJoinMvt, const float &x, const float &y, const float &z,
+    Position (const quint32 &idJoinMvt, const float &x, const float &y, const float &z, const float &a, const float &b, const float &c);
+    Position(const quint32 &idJoinMvt, const float &x, const float &y, const float &z,
 	     const Position &previousPosition, const float &a, const float &b, const float &c);
-    Position(const quint16 &idJoinMvt, const qint32 &x, const qint32 &y, const qint32 &z,
+    Position(const quint32 &idJoinMvt, const qint32 &x, const qint32 &y, const qint32 &z,
 	     const qint32 &dx, const qint32 &dy, const qint32 &dz, const qint32 &a, const qint32 &b, const qint32 &c);
     Position(const float &x, const float &y, const float &z, const Position &previousPosition);
     Position(const float &x, const float &y, const float &z);
@@ -52,6 +52,7 @@ public:
     void setDx(const qint32 &a);
     void setDy(const qint32 &a);
     void setDz(const qint32 &a);
+    void setIdJointMvt(const quint32 &idJointMvt);
 
     quint16 getIdJointMvt();
     ~Position();
