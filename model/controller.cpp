@@ -8,7 +8,6 @@ Controller::Controller()
     this->playerlive = new SoundPlayer(32);
     this->playerdemo = new SoundPlayer(1);
     this->managerElements->getManagerMovements()->sortMovements();
-    this->serveurOSC = new ServerOSC(123456, false);
     /**
       *AFFICHAGE des infos sur le MVT
       **
@@ -37,7 +36,6 @@ Controller::Controller()
     /**
       *
       **/
-    this->managerElements->sortMovements();
 
     this->serveurOSC = new ServerOSC(12345, false); //Serveur "ecouteur" de synapse
     this->serveurOSC->start();
@@ -116,7 +114,7 @@ void Controller::analizeRecord()
     this->serveurOSC->setRecording(false); //mode analyze
     this->serveurOSC->setAnalyse();
     this->serveurOSC->setListJoints(managerJoints->getListJoints());
-    this->serveurOSC->setListMovements(managerElements->getListMovements());
+    this->serveurOSC->setListMovements(managerElements->getManagerMovements()->getListMovements());
     this->serveurOSC->start();
 
     //CLIENT OSC

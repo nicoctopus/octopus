@@ -316,7 +316,7 @@ void ServerOSC::record(){
     }
     else
     {
-	emit jointMvtTooBig();
+        //emit jointMvtTooBig();
     }
 }
 
