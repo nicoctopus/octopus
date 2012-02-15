@@ -34,7 +34,7 @@ ManagerElements::ManagerElements() : Manager()
     /**
       *
       **/
-    this->saveAll();
+    //this->saveAll();
     this->loadAll();
     this->managerMovements->sortMovementsById();
     //this->removeMovement(this->managerMovements->getListMovements()->at(1));
@@ -102,6 +102,15 @@ void ManagerElements::dispacher()
 		    qDebug() << "link movment clientOSC" << this->managerMovements->getListMovements()->at(i)->getName() << this->managerClientOSC->getListClientsOSC()->at(j)->getName() << endl;
 		}
 	}
+    }
+    if(this->managerClientOSC->getListClientsOSC()->isEmpty())
+	ClientOSC::idClientOSCStatic = 0;
+    else{
+	int tmp = 0;
+	for(int i = 0 ; i < this->managerClientOSC->getListClientsOSC()->size() ; i++)
+	    if(tmp < this->managerClientOSC->getListClientsOSC()->at(i)->getId())
+		tmp = this->managerClientOSC->getListClientsOSC()->at(i)->getId();
+	ClientOSC::idClientOSCStatic = tmp;
     }
     if(this->managerSampleAudio->getListSamplesAudios()->isEmpty())
         SampleAudio::idSampleAudioStatic = 0;

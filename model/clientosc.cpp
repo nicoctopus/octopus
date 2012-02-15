@@ -1,4 +1,5 @@
 #include "clientosc.h"
+quint32 ClientOSC::idClientOSCStatic = 0;
 
 ClientOSC::ClientOSC() : Port()
 {
@@ -8,7 +9,7 @@ ClientOSC::ClientOSC() : Port()
     this->active = false;
 }
 
-ClientOSC::ClientOSC(const quint16 &portNb, const QString &host, const bool &active) : Port(portNb, active) {
+ClientOSC::ClientOSC(const quint16 &portNb, const QString &host, const bool &active) : Port(++idClientOSCStatic,  portNb, active) {
     this->host = host;
     this->datas = new DataBITG();
     this->msg = new QList<MessageSynapse*>();
@@ -17,7 +18,7 @@ ClientOSC::ClientOSC(const quint16 &portNb, const QString &host, const bool &act
 
 }
 
-ClientOSC::ClientOSC(const ClientOSC &copie) : Port(copie.portNumber, copie.active)
+ClientOSC::ClientOSC(const ClientOSC &copie) : Port(copie.idElement, copie.portNumber, copie.active)
 {
     this->host = copie.host;
     this->listIdMovement = new QList<quint16>();

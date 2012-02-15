@@ -27,6 +27,7 @@ public:
 
     virtual const char* className();
     virtual void run();
+    static quint32 idClientOSCStatic;
 
 private:
     QList<MessageSynapse*>* msg;
