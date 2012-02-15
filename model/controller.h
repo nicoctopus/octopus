@@ -8,8 +8,10 @@
 #include "clientosc.h"
 #include "analyse.h"
 
-class Controller
+class Controller : public QObject
 {
+    Q_OBJECT
+
 private:
     ManagerJoints *managerJoints;
     SoundPlayer *playerlive;

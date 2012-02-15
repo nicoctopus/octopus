@@ -11,7 +11,7 @@ using namespace oscpkt;
 
 class Inputable : public QThread
 {
-   // Q_OBJECT
+    Q_OBJECT
 
 public:
     Inputable();

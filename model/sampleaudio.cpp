@@ -16,7 +16,7 @@ SampleAudio::SampleAudio(const SampleAudio &copie) : Sample(copie.idElement, cop
 //save
 QDataStream & operator << (QDataStream & out, const SampleAudio &valeur)
 {
-    //std::cout << "Entree operator << SampleAudio" << std::endl;
+    //qDebug() << "Entree operator << SampleAudio" << endl;
     out << valeur.idElement;
     out << valeur.idMovement;
     out << valeur.nameElement;
@@ -28,7 +28,7 @@ QDataStream & operator << (QDataStream & out, const SampleAudio &valeur)
 //load
 QDataStream & operator >> (QDataStream & in, SampleAudio &valeur)
 {
-    //std::cout << "Entree operator >> SampleAudio" << std::endl;
+    //qDebug() << "Entree operator >> SampleAudio" << endl;
     in >> valeur.idElement;
     in >> valeur.idMovement;
     in >> valeur.nameElement;

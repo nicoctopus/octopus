@@ -66,7 +66,6 @@ void ServerOSC::fillBuffers(){
     bool launchAnalyze; // savoir s'il faut lancer l'analyse ou s'il s'agit d'un message "inutile"
     //qDebug()<< "CACA ANALYSE "<< endl;
 
-
     if (socket->receiveNextPacket()) {
 
         reader->init(socket->packetData(), socket->packetSize());
@@ -317,7 +316,7 @@ void ServerOSC::record(){
     }
     else
     {
-        //emit jointMvtTooBig();
+	emit jointMvtTooBig();
     }
 }
 
@@ -368,4 +367,16 @@ bool ServerOSC::allBuffersSameSize() {
         i++;
     }
     return sameSize;
+}
+
+ServerOSC::~ServerOSC()
+{
+    delete(this->analyse);
+    delete(this->movement);
+    for(int i = 0 ; this->listJoints->size(); i++)
+	delete(this->listJoints->at(i));
+    delete(this->listJoints);
+    for(int i = 0 ; i < this->listMovements->size() ; i++)
+	delete(this->listMovements->at(i));
+    delete(this->listMovements);
 }

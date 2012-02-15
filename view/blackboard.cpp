@@ -12,7 +12,6 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent)
     QGraphicsScene *scene = new QGraphicsScene();
     this->setScene(scene);
     connect(this, SIGNAL(refreshSignal()), this, SLOT(refresh()));
-    connect(this, SIGNAL(clearBlackBoard()), this->scene(), SLOT(clear()));
 }
 
 // -----------------------------------------------------------
@@ -36,9 +35,7 @@ void BlackBoard::selectedItems(){
 	    else if(this->itemsToLink.at(1)->type() == 65538)
 	    {
 		Diamond *diamond = (Diamond*)(this->itemsToLink.at(1));
-		ellipse->getMovement()->getListClients()->append(diamond->getPort());
-		emit save(ellipse->getMovement());
-		emit refreshSignal();
+		this->updateClientOSCOfMovement(ellipse->getMovement(), diamond->getPort());
 		emit decocherCheckBoxLink();
 	    }
 	}
@@ -54,15 +51,25 @@ void BlackBoard::selectedItems(){
 	    else if(this->itemsToLink.at(0)->type() == 65538)
 	    {
 		Diamond *diamond = (Diamond*)(this->itemsToLink.at(0));
-		ellipse->getMovement()->getListClients()->append(diamond->getPort());
-		emit save(ellipse->getMovement());
-		emit refreshSignal();
+		this->updateClientOSCOfMovement(ellipse->getMovement(), diamond->getPort());
 		emit decocherCheckBoxLink();
 	    }
 	}
 	this->itemsToLink.clear();
     }
 
+}
+
+void BlackBoard::updateClientOSCOfMovement(Movement *movement, ClientOSC *clientOSC)
+{
+    clientOSC->updateIdMovement(movement->getId());
+    /**
+      *    BIZARRRREEEEEEEEEEE
+      **/
+    //emit save(clientOSC);
+    movement->addClientOSC(clientOSC);
+    emit save(movement);
+    emit refreshSignal();
 }
 
 void BlackBoard::updateSampleAudioOfMovement(Movement *movement, SampleAudio *newSampleAudio)

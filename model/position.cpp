@@ -33,7 +33,7 @@ Position::Position(const float &x, const float &y, const float &z)
     this->dz = 0;//std::abs(this->z)/INTERVAL_TIME;
 }
 
-Position::Position (const quint16 &idJoinMvt, const float &x, const float &y, const float &z, const float &a, const float &b, const float &c)
+Position::Position (const quint32 &idJoinMvt, const float &x, const float &y, const float &z, const float &a, const float &b, const float &c)
 {
     this->id = ++idPositionsStatic;
     this->idJoinMvt = idJoinMvt;
@@ -48,7 +48,7 @@ Position::Position (const quint16 &idJoinMvt, const float &x, const float &y, co
     this->dz = 0;
 }
 
-Position::Position(const quint16 &idJoinMvt, const float &x, const float &y, const float &z,
+Position::Position(const quint32 &idJoinMvt, const float &x, const float &y, const float &z,
 		   const Position &previousPosition, const float &a, const float &b, const float &c)
 {
     this->id = ++idPositionsStatic;
@@ -64,7 +64,7 @@ Position::Position(const quint16 &idJoinMvt, const float &x, const float &y, con
     this->dz = std::abs((int)(this->z - previousPosition.z)) / INTERVAL_TIME;
 }
 
-Position::Position(const quint16 &idJoinMvt, const qint32 &x, const qint32 &y, const qint32 &z,
+Position::Position(const quint32 &idJoinMvt, const qint32 &x, const qint32 &y, const qint32 &z,
 		   const qint32 &dx, const qint32 &dy, const qint32 &dz, const qint32 &a, const qint32 &b, const qint32 &c)
 {
     this->id = ++idPositionsStatic;
@@ -190,6 +190,11 @@ void Position::setDy(const qint32 &a) {
 }
 void Position::setDz(const qint32 &a) {
     this->dz = a;
+}
+
+void Position::setIdJointMvt(const quint32 &idJointMvt)
+{
+    this->idJoinMvt = idJointMvt;
 }
 
 
