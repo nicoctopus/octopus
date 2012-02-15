@@ -18,6 +18,7 @@ private:
     SoundPlayer *playerdemo;
     ManagerElements *managerElements;
     ServerOSC *serveurOSC;
+    ClientOSC* client;
 
 public:
     Controller();
@@ -30,6 +31,7 @@ public:
     void recordMovement(Movement *managerElements);
     void stopRecord(Movement *movement);
     void analizeRecord();
+    void stopAnalize();
 
     void bubble(QList<Movement *> *moves);
     void troncage(Movement* move);

@@ -34,7 +34,7 @@ public:
     void setAnalyse();
     bool allBuffersSameSize();
     void setMovement(Movement *movement);
-
+    void deleteAnalyse();
 
 private :
     QList<Joint*> *listJoints; //liste de tous les joints possibles

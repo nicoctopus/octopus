@@ -7,6 +7,7 @@ Outputable::Outputable() {
 
     // thread
     runnable = false;
+
 }
 
  /* ajouter, formatter puis envoyer le message sur le reseau */
@@ -51,3 +52,5 @@ void Outputable::pushQInt64(const quint64 &i) {
 void Outputable::setRunnable(const bool &b) {
     this->runnable = b;
 }
+
+

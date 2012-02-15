@@ -8,7 +8,6 @@ Controller::Controller()
     this->playerlive = new SoundPlayer(32);
     this->playerdemo = new SoundPlayer(1);
     this->managerElements->getManagerMovements()->sortMovements();
-    this->serveurOSC = new ServerOSC(123456, false);
     /**
       *AFFICHAGE des infos sur le MVT
       **
@@ -37,11 +36,20 @@ Controller::Controller()
     /**
       *
       **/
+
+    this->serveurOSC = new ServerOSC(12345, false); //Serveur "ecouteur" de synapse
+    this->serveurOSC->start();
+    this->client = new ClientOSC(12346, QString("localhost"), false);
+    this->client->start();
+
+
 }
 
 void Controller::stopRecord(Movement *movement)
 {
     this->serveurOSC->setRunnable(false);
+    this->client->setRunnable(false);
+
     this->troncage(movement);
     /**
       *AFFICHAGE des infos sur le MVT
@@ -75,7 +83,7 @@ void Controller::recordMovement(Movement *movement)
     /**
       *   SERVEUR OSC
       **/
-    this->serveurOSC = new ServerOSC(12345, false); //Serveur "ecouteur" de synapse
+
     this->serveurOSC->setRunnable(true);
     this->serveurOSC->setRecording(true); //mode record
     this->serveurOSC->setListJoints(managerJoints->getListJoints());
@@ -85,55 +93,47 @@ void Controller::recordMovement(Movement *movement)
     /**
       *  CLIENT OSC
       **/
-    ClientOSC* client = new ClientOSC(12346, QString("localhost"), false);
+
+
     //Chargement de la liste des messages
     QList<MessageSynapse*>* msg = new QList<MessageSynapse*>();
     for(int i = 0 ; i < movement->getListJointsMvt()->size() ; i++)
 	msg->append(new MessageSynapse(movement->getListJointsMvt()->at(i)->getJointRef()->getMessageSynapse(), 1));
-    client->setMsgSynapse(msg);
-    client->setRunnable(true);
-    client->start();
+    this->client->setMsgSynapse(msg);
+    this->client->setRunnable(true);
+    this->client->start();
+
 }
 
 void Controller::analizeRecord()
 {
-    //TEMPORAIRE **********////
-    this->managerElements->loadAll();
-    this->linkJointToJointMvt();
-
 
     // SERVEUR OSC
-    ServerOSC *createMove = new ServerOSC(12345, false); //Serveur "ecouteur" de synapse
-    createMove->setRunnable(true);
-    createMove->setRecording(false); //mode analyze
-    createMove->setAnalyse();
-    createMove->setListJoints(managerJoints->getListJoints());
-    createMove->setListMovements(managerElements->getManagerMovements()->getListMovements());
-    createMove->start();
+
+    this->serveurOSC->setRunnable(true);
+    this->serveurOSC->setRecording(false); //mode analyze
+    this->serveurOSC->setAnalyse();
+    this->serveurOSC->setListJoints(managerJoints->getListJoints());
+    this->serveurOSC->setListMovements(managerElements->getManagerMovements()->getListMovements());
+    this->serveurOSC->start();
 
     //CLIENT OSC
-    ClientOSC* client = new ClientOSC(12346, QString("localhost"), false);
+
     QList<MessageSynapse*>* msg = new QList<MessageSynapse*>();
-    msg->append(new MessageSynapse(QString("/lefthand_trackjointpos"), 1));
-    msg->append(new MessageSynapse(QString("/leftelbow_trackjointpos"), 1));
-    msg->append(new MessageSynapse(QString("/leftknee_trackjointpos"), 1));
-    msg->append(new MessageSynapse(QString("/leftfoot_trackjointpos"), 1));
-    msg->append(new MessageSynapse(QString("/righthand_trackjointpos"), 1));
-    msg->append(new MessageSynapse(QString("/rightelbow_trackjointpos"), 1));
-    msg->append(new MessageSynapse(QString("/rightknee_trackjointpos"), 1));
-    msg->append(new MessageSynapse(QString("/rightfoot_trackjointpos"), 1));
-    msg->append(new MessageSynapse(QString("/head_trackjointpos"), 1));
-    msg->append(new MessageSynapse(QString("/torso_trackjointpos"), 1));
+    for(int i = 0 ; i < this->managerJoints->getListJoints()->size() ; i++)
+        msg->append(new MessageSynapse(this->managerJoints->getListJoints()->at(i)->getMessageSynapse(), 1));
 
-    client->setMsgSynapse(msg);
-    client->setRunnable(true);
-    client->start();
+    this->client->setMsgSynapse(msg);
+    this->client->setRunnable(true);
+    this->client->start();
 
-    // MacOSX :
-    sleep(10);
-    //Windows
-    //Sleep(3000);
-    createMove->setRunnable(false); // arreter l'analyse
+}
+
+void Controller::stopAnalize(){
+
+    this->serveurOSC->setRunnable(false);
+    this->client->setRunnable(false);
+
 }
 
 ManagerJoints* Controller::getManagerJoints()

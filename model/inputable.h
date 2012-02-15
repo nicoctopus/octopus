@@ -27,6 +27,7 @@ protected:
 
     // thread
     bool runnable;
+
 };
 
 #endif // INPUTABLE_H

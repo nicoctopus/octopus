@@ -13,6 +13,8 @@ ClientOSC::ClientOSC(const quint16 &portNb, const QString &host, const bool &act
     this->datas = new DataBITG();
     this->msg = new QList<MessageSynapse*>();
     this->listIdMovement = new QList<quint16>();
+    this->setRunnable(false);
+
 }
 
 ClientOSC::ClientOSC(const ClientOSC &copie) : Port(copie.portNumber, copie.active)
@@ -64,10 +66,10 @@ bool ClientOSC::sendDataBITG() {
 bool ClientOSC::sendMsgSynapse() {
     bool b = true;
     for(int i=0;i<msg->size(); i++) {
-	this->cleanMessage(); //nettoyer le message pour en envoyer un nouveau
-	this->setMessage(this->msg->at(i)->getStart()); //Debut du message (exemple : "/lefthand_trackjointpos")
-	this->pushQInt32(this->msg->at(i)->getParams());
-	b *= (this->connectTo(&host, portNumber)*(this->Outputable::send()));
+        this->cleanMessage(); //nettoyer le message pour en envoyer un nouveau
+        this->setMessage(this->msg->at(i)->getStart()); //Debut du message (exemple : "/lefthand_trackjointpos")
+        this->pushQInt32(this->msg->at(i)->getParams());
+        b *= (this->connectTo(&host, portNumber)*(this->Outputable::send()));
     }
     return b;
 }
@@ -84,18 +86,25 @@ const char* ClientOSC::className() {
   * Thread
   */
 void ClientOSC::run() {
+
+    //qDebug()<< "Alloooo ca tourne AUSSI !! " << endl;
+
+
     while(runnable) {
-	//requetes pour Synapse
-	if(this->msg->size()>0) {
-	    this->sendMsgSynapse();
-	}
-	//message BITG
-	else if (this->datas->getIdMovement()>-1) {
-	    this->sendDataBITG();
-	}
-	sleep(2);
+        //qDebug()<< "Alloooo ça tourne grave AUSSI !! " << runnable << endl;
+
+        //requetes pour Synapse
+        if(this->msg->size()>0) {
+            this->sendMsgSynapse();
+        }
+        //message BITG
+        else if (this->datas->getIdMovement()>-1) {
+            this->sendDataBITG();
+        }
+        sleep(2);
     }
-    exec();
+
+   // exec();
 }
 
 void ClientOSC::updateIdMovement(const quint16 &newId)

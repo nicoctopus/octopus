@@ -57,6 +57,9 @@ public slots :
     void boutonAddSample();
     void updateLCDTimer();
 
+    void slotStartLivePerformance();
+
+
 signals :
     void refreshLeftTree();
     void refreshBlackBoard();
