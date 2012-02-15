@@ -41,6 +41,7 @@ void ManagerClientOSC::save(ClientOSC *clientOSC, QSettings &fichierClientOSC)
 
 void ManagerClientOSC::saveAll()
 {
+    QFile::remove("clientOSC.ini");
     QSettings fichierClientsOSC("clientOSC.ini", QSettings::IniFormat);
     for(int i = 0 ; i < this->listClientOSC->size() ; i++)
     {

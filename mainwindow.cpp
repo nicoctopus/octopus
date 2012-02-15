@@ -59,7 +59,7 @@ void MainWindow::initTreeView()
 {
     //Initialisation du TreeView
     connect(this, SIGNAL(refreshLeftTree()), ui->leftTree, SLOT(refresh()));
-    ui->leftTree->setListMovements(this->controller->getManagerElements()->getListMovements());
+    ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovements());
     ui->leftTree->setListPorts(this->controller->getManagerElements()->getManagerClientOSC()->getListClientsOSC());
     ui->leftTree->setListSamplesAudio(this->controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudios());
     emit refreshLeftTree();
@@ -67,7 +67,7 @@ void MainWindow::initTreeView()
 
 void MainWindow::initBlackBoard()
 {
-    ui->blackboard->setListMovements(controller->getManagerElements()->getListMovementsActive());
+    ui->blackboard->setListMovements(controller->getManagerElements()->getManagerMovements()->getListMovementsActive());
     ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
     ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
     connect(ui->blackboard, SIGNAL(save(Movement*)), this, SLOT(save(Movement*)));
@@ -112,9 +112,7 @@ void MainWindow::slotNewSelectionOnStickMan(){
 //------------------------------------------------
 void MainWindow::save(Movement *movement)
 {
-    QSettings fichierMovement("movement.ini", QSettings::IniFormat);
-    controller->getManagerElements()->saveMovement(movement, fichierMovement);
-    fichierMovement.sync();
+    controller->getManagerElements()->saveMovement(movement);
 }
 
 void MainWindow::save(ClientOSC *clientOSC)

@@ -3,21 +3,19 @@
 
 #include "QWidget"
 #include "manager.h"
-#include "jointmvt.h"
-#include "samplevideo.h"
 #include "managerclientosc.h"
 #include "managersampleaudio.h"
-#include "managerjointmvt.h"
+#include "managersamplevideo.h"
+#include "managermovements.h"
 
 class ManagerElements : public Manager
 {
 
 private :
-    QList<Movement*> *listMovements;
-    QList<SampleVideo*> *listSamplesVideos;
     ManagerClientOSC *managerClientOSC;
     ManagerSampleAudio *managerSampleAudio;
-    ManagerJointMvt *managerJointMvt;
+    ManagerSampleVideo *managerSampleVideo;
+    ManagerMovements *managerMovements;
 
 public:
     ManagerElements();
@@ -27,29 +25,18 @@ public:
     void loadAll();
     void saveAll();
     void initSystem();
-    //Movements
-    void saveAllMovements();
-    void loadAllMovements();
-    void saveMovement(Movement *movement, QSettings &fichierMovement);
-    void removeMovement(Movement *movement);
 
-    //Samples Video
-    void saveAllSamplesVideos();
-    void saveSampleVideo(SampleVideo *sampleVideo, QSettings &fichierSampleVideo);
-    void loadSamplesVideos();
-    void removeSampleVideo(SampleVideo *sampleVideo);
+    void dispacher();
+    void saveMovement(Movement *movement);
 
     //Getters
-    QList<Movement*>* getListMovements();
-    QList<Movement*>* getListMovementsActive();
-    QList<SampleVideo*>* getListSamplesVideos();
     ManagerClientOSC* getManagerClientOSC();
     ManagerSampleAudio* getManagetSampleAudio();
-    ManagerJointMvt* getManagerJointMvt();
+    ManagerSampleVideo* getManagerSampleVideo();
+    ManagerMovements* getManagerMovements();
 
-    //Methodes
-    void sortMovements();
-    void addMovement(Movement *movement);
+    void addMovement(Movement *movemement);
+    void removeMovement(Movement *movement);
 };
 
 #endif // MANAGERELEMENTS_H

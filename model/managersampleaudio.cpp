@@ -8,11 +8,10 @@ ManagerSampleAudio::ManagerSampleAudio() : Manager()
 
 void ManagerSampleAudio::saveAll()
 {
+    QFile::remove("sampleaudio.ini");
     QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
     for (int i = 0 ; i < this->listSamplesAudios->size() ; i++)
-    {
 	this->save(this->listSamplesAudios->at(i), fichierSampleAudio);
-    }
     fichierSampleAudio.sync();
 }
 

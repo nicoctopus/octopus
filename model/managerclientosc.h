@@ -1,8 +1,6 @@
 #ifndef MANAGERCLIENTOSC_H
 #define MANAGERCLIENTOSC_H
 
-#include <QList>
-#include <QSettings>
 #include "clientosc.h"
 #include "manager.h"
 
@@ -14,6 +12,7 @@ private:
 public:
     ManagerClientOSC();
     ~ManagerClientOSC();
+
     QList<ClientOSC*>* getListClientsOSC();
     QList<ClientOSC*>* getListClientsOSCActive();
 

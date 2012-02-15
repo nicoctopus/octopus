@@ -19,6 +19,7 @@ void ManagerJointMvt::loadAll(){
 
 void ManagerJointMvt::saveAll()
 {
+    QFile::remove("jointmvt.ini");
     QSettings fichierJointMvt("jointmvt.ini", QSettings::IniFormat);
     for(int i = 0 ; i < this->listJointsMvts->size() ; i++)
     {
