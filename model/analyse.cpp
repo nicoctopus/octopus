@@ -131,11 +131,12 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
                             moyenneZ += abs(EnregistrementVite.at(r-t)->getDz() - mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->getDz());
                             sommeZ += EnregistrementVite.at(r-t)->getDz();
 
-/*
+
                           qDebug()<< "X  enr : " << EnregistrementVite.at(r-t)->getX() << endl;
                           qDebug()<< "X  buf : " << mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->getX()<< endl;
                           qDebug()<< "DX  enr : " << EnregistrementVite.at(r-t)->getDx() << endl;
                           qDebug()<< "DX buf: " << mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->getDx()<<endl<<endl;
+                      /*
                           qDebug()<< "Y  enr : " << EnregistrementVite.at(r-t)->getY() << endl;
                           qDebug()<< "Y  buf : " << mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->getY()<< endl;
                           qDebug()<< "Dy  enr : " << EnregistrementVite.at(r-t)->getDz() << endl;
@@ -145,8 +146,8 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
                           qDebug()<< "DZ  enr : " << EnregistrementVite.at(r-t)->getDz() << endl;
                           qDebug()<< "DZ buf: " << mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->getDz()<<endl<<endl;
 */
-                            //qDebug()<< "Moyenne X : " << moyenneX << endl;
-                            //qDebug()<< "SommeX : " << sommeX << endl;
+                            qDebug()<< "Moyenne X : " << moyenneX << endl;
+                            qDebug()<< "SommeX : " << sommeX << endl;
                             //qDebug()<< "Dy : " << EnregistrementVite.at(r-t)->getDy() << endl;
 
                         }
@@ -217,8 +218,8 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
                                     qDebug() << "CORRESPONDANCE VRAIMENT OK :) !" << endl;
                                     p->playDemo(music);
                                     sleep(9);
-                                    exit(-1);
-                                    return;
+                                    //exit(-1);
+                                    //return;
                                 //}
                             }
                         }

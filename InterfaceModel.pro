@@ -97,19 +97,9 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-OTHER_FILES += \
-    FMOD/api/lib/libfmodex.dylib
 
 RESOURCES += \
     ressources.qrc
-
-
-
-
-
-
-
-
 
 
 
@@ -119,6 +109,7 @@ else:macx: LIBS += -L$$PWD/FMOD/api/lib/ -lfmodex
 
 INCLUDEPATH += $$PWD/FMOD/api/inc
 DEPENDPATH += $$PWD/FMOD/api/inc
+
 
 
 
