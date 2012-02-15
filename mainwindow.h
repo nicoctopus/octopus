@@ -41,6 +41,7 @@ public slots :
     void save(Movement *movement);
     void save(SampleAudio *sampleAudio);
     void save(ClientOSC *clientOSC);
+    void remove(Movement *movement);
     void slotPlayPause();
     void slotStop();
     void slotNewSelectionOnBlackBoard();
@@ -55,7 +56,6 @@ public slots :
     void decocherCheckBoxLink();
     void boutonAddSample();
     void updateLCDTimer();
-
 
 signals :
     void refreshLeftTree();

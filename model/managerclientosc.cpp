@@ -35,8 +35,19 @@ void ManagerClientOSC::loadAll()
 
 void ManagerClientOSC::save(ClientOSC *clientOSC, QSettings &fichierClientOSC)
 {
+    qDebug() << "TEST2" << endl;
     QString key = QString::number(clientOSC->getId());
     fichierClientOSC.setValue(key, qVariantFromValue(*clientOSC));
+}
+
+void ManagerClientOSC::save(QList<ClientOSC*> *listClientOSC)
+{
+    QSettings fichierClientsOSC("clientOSC.ini", QSettings::IniFormat);
+    for(int i = 0 ; i < listClientOSC->size() ; i++)
+    {
+	this->save(listClientOSC->at(i), fichierClientsOSC);
+    }
+    fichierClientsOSC.sync();
 }
 
 void ManagerClientOSC::saveAll()

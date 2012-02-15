@@ -22,7 +22,6 @@ void ManagerMovements::saveAll()
     for(int i = 0 ; i < this->listMovements->size() ; i++)
 	this->save(this->listMovements->at(i), fichierMovement);
     fichierMovement.sync();
-    this->managerJointMvt->saveAll();
 }
 
 void ManagerMovements::loadAll()
@@ -91,33 +90,37 @@ void ManagerMovements::remove(Movement *movement)
     qDebug() << "         debut removeMovement..." << endl;
     quint32 idTemp = movement->getId();
     this->managerJointMvt->remove(movement->getListJointsMvt());
-    for(int i = 0 ;  i < movement->getListJointsMvt()->size() ; i++)
-	movement->getListJointsMvt()->removeAt(i);
+    movement->getListJointsMvt()->clear();
 
     QSettings fichierMovement("movement.ini", QSettings::IniFormat);
-
     //On supprime le mouvement du fichier de serialisation
-    fichierMovement.remove(QString::number(movement->getId()));
-    //On supprime le dernier mouvement de la liste de mouvement du fichier de serialisation
-    fichierMovement.remove(QString::number(this->getListMovements()->last()->getId()));
+
+    fichierMovement.remove(QString::number(idTemp));
     //ON SUPPRIME LE MOUVEMENT ET SES COMPOSANTES de la liste
     for(int i = 0 ; i < this->listMovements->size() ; i++)
-	if(this->listMovements->at(i)->getId() == movement->getId())
+	if(this->listMovements->at(i)->getId() == idTemp)
 	{
-	    delete(this->listMovements->at(i));
+	    //delete(this->listMovements->at(i));
 	    this->listMovements->removeAt(i);
 	}
-    //On met a jour l'id du denier mouvement de la liste
-    this->getListMovements()->last()->updateId(idTemp);
-    //On le sauvegarde update
-    this->save(this->listMovements->last(), fichierMovement);
+    if(this->getListMovements()->isEmpty() != true)
+    {
+	int idTemp2 = this->listMovements->at(0)->getId();
+	for(int i = 1 ; i < this->listMovements->size() ; i++)
+	    if(this->listMovements->at(i)->getId() > this->listMovements->at(i - 1)->getId())
+		idTemp2 = this->listMovements->at(i)->getId();
+	//On supprime le dernier mouvement de la liste de mouvement du fichier de serialisation
+	fichierMovement.remove(QString::number(idTemp2));
+	for(int i = 0 ; i < this->listMovements->size() ; i++)
+	    if(this->listMovements->at(i)->getId() == idTemp2)
+	    {
+		this->getListMovements()->at(i)->updateId(idTemp);
+		this->save(this->getListMovements()->at(i), fichierMovement);
+	    }
+    }
     fichierMovement.sync();
 
     Movement::idMovementStatic--;
-
-    for(int i = 0 ; i < this->listMovements->size() ; i++)
-	if(this->listMovements->at(i)->getId() == movement->getId())
-	    this->listMovements->removeAt(i);
     qDebug() << "         ...fin removeMovement" << endl;
 }
 
@@ -132,6 +135,13 @@ void ManagerMovements::sortMovements()
     for(int i = 1 ; i < this->listMovements->size() ; i++)
 	if(this->listMovements->at(i - 1)->getListJointsMvt()->at(0)->getListPositions()->size() >
 		this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->size())
+	    this->listMovements->swap(i, i - 1);
+}
+
+void ManagerMovements::sortMovementsById()
+{
+    for(int i = 1 ; i < this->listMovements->size() ; i++)
+	if(this->listMovements->at(i - 1)->getId() > this->listMovements->at(i)->getId())
 	    this->listMovements->swap(i, i - 1);
 }
 
