@@ -34,10 +34,10 @@ ManagerElements::ManagerElements() : Manager()
     /**
       *
       **/
-    //this->saveAll();
+    this->saveAll();
     this->loadAll();
     this->managerMovements->sortMovementsById();
-    this->removeMovement(this->managerMovements->getListMovements()->at(1));
+    //this->removeMovement(this->managerMovements->getListMovements()->at(1));
     /**
       *
       **/
