@@ -261,6 +261,12 @@ QString MainWindow::textDisplay(Movement *movement)
     text.append("<b>Nombre de joints mouvements : </b>");
     text.append(QString::number(movement->getListJointsMvt()->size()));
     text.append("<br/>");
+    text.append("<b>Nombre de positions : </b>");
+    text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size()));
+    text.append("<br/>");
+    text.append("<b>Temps du mouvement : </b>");
+    text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size() * INTERVAL_TIME));
+    text.append(" ms <br/>");
     for(int i = 0 ; i < movement->getListJointsMvt()->size() ; i++)
     {
 	text.append("- ");
