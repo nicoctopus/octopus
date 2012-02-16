@@ -48,6 +48,7 @@ private:
     QList<QGraphicsItem*> itemsToLink;
     QList<QGraphicsLineItem*> listLines;
     quint16 xEllipse, yEllipse, xDiamond, yDiamond, xTriangle, yTriangle;
+
 };
 
 #endif // BLACKBOARD_H

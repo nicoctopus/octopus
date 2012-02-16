@@ -22,6 +22,7 @@ public:
     void save(QList<ClientOSC*> *listClientOSC);
     void save(ClientOSC *clientOSC, QSettings &fichierClientOSC);
     void remove(QList<ClientOSC*> *listClientsOSC);
+    void remove(ClientOSC *clientOSC);
 
 };
 

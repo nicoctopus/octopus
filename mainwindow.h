@@ -42,6 +42,8 @@ public slots :
     void save(SampleAudio *sampleAudio);
     void save(ClientOSC *clientOSC);
     void remove(Movement *movement);
+    void remove(SampleAudio *sampleAudio);
+    void remove(ClientOSC *clientOSC);
     void slotPlayPause();
     void slotStop();
     void slotNewSelectionOnBlackBoard();

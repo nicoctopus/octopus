@@ -67,6 +67,9 @@ void MainWindow::initTreeView()
     ui->leftTree->setListPorts(this->controller->getManagerElements()->getManagerClientOSC()->getListClientsOSC());
     ui->leftTree->setListSamplesAudio(this->controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudios());
     emit refreshLeftTree();
+    connect(ui->leftTree, SIGNAL(remove(Movement*)), this, SLOT(remove(Movement*)));
+    connect(ui->leftTree, SIGNAL(remove(SampleAudio*)), this, SLOT(remove(SampleAudio*)));
+    connect(ui->leftTree, SIGNAL(remove(ClientOSC*)), this, SLOT(remove(ClientOSC*)));
 }
 
 void MainWindow::initBlackBoard()
@@ -117,6 +120,8 @@ void MainWindow::slotNewSelectionOnStickMan(){
 void MainWindow::save(Movement *movement)
 {
     controller->getManagerElements()->saveMovement(movement);
+    //ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
+    //emit refreshBlackBoard();
 }
 
 void MainWindow::save(ClientOSC *clientOSC)
@@ -129,13 +134,36 @@ void MainWindow::save(ClientOSC *clientOSC)
 void MainWindow::save(SampleAudio *sampleAudio)
 {
     QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
+    //qDebug() << "test" << endl;
     controller->getManagerElements()->getManagetSampleAudio()->save(sampleAudio, fichierSampleAudio);
     fichierSampleAudio.sync();
+    //emit refreshBlackBoard();
 }
 
 void MainWindow::remove(Movement *movement)
 {
     this->controller->getManagerElements()->removeMovement(movement);
+    ui->blackboard->setListMovements(controller->getManagerElements()->getManagerMovements()->getListMovementsActive());
+    ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
+    ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
+    emit refreshLeftTree();
+    emit refreshBlackBoard();
+}
+
+void MainWindow::remove(SampleAudio *sampleAudio)
+{
+    this->controller->getManagerElements()->getManagetSampleAudio()->remove(sampleAudio);
+    ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
+    emit refreshLeftTree();
+    emit refreshBlackBoard();
+}
+
+void MainWindow::remove(ClientOSC *clientOSC)
+{
+    this->controller->getManagerElements()->getManagerClientOSC()->remove(clientOSC);
+    ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
+    emit refreshLeftTree();
+    emit refreshBlackBoard();
 }
 
 void MainWindow::slotNewSelectionOnBlackBoard(){
@@ -282,6 +310,11 @@ QString MainWindow::textDisplay(Movement *movement)
 	text.append(movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
 	text.append("<br/>");
     }
+    text.append("<br/><b>SampleAudio : </b>");
+    text.append(movement->getSampleAudio()->getName());
+    text.append("<br/><b>Clients OSC : </b>");
+    for(int i = 0 ; i < movement->getListClients()->size() ; i++)
+	text.append(movement->getListClients()->at(i)->getName());
     return text;
 }
 
@@ -294,6 +327,12 @@ QString MainWindow::textDisplay(SampleAudio *sampleAudio)
     text.append("<b>URL : </b>");
     text.append(sampleAudio->getFileURL());
     text.append("<br/>");
+    text.append("<b>Mouvements liés : </b>");
+    for(int i = 0 ; i < sampleAudio->getListIdMovement()->size() ; i ++)
+    {
+	text.append(QString::number(sampleAudio->getListIdMovement()->at(i)));
+	text.append("<br/>");
+    }
     return text;
 }
 
@@ -305,6 +344,13 @@ QString MainWindow::textDisplay(ClientOSC *port)
     text.append("<br/>");
     text.append("<b>Serveur : </b>");
     text.append(port->getHost());
+    text.append("<br/>");
+    text.append("<b>Mouvements liés : </b>");
+    for(int i = 0 ; i < port->getListIdMovement()->size() ; i ++)
+    {
+	text.append(QString::number(port->getListIdMovement()->at(i)));
+	text.append("<br/>");
+    }
     return text;
 }
 
@@ -399,7 +445,7 @@ void MainWindow::slotRecordNewMovement(){
 
 void MainWindow::slotTimeOutRecord()
 {
-    qDebug() << "test"<< endl;
+    //qDebug() << "test"<< endl;
     //ON STOP LE RECORD
     this->controller->stopRecord(this->movement);
     //ON AFFICHE LES BOUTONS
@@ -416,7 +462,7 @@ void MainWindow::slotValidNewMovement(){
     movement->setName(ui->nommouvement->text());
     controller->getManagerElements()->addMovement(movement);
     this->refreshLeftTree();
-    qDebug() << movement->getName() << endl;
+    //qDebug() << movement->getName() << endl;
 
 
     //ui->pushButton_enregistrermouvement->setVisible(false);
