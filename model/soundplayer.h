@@ -6,9 +6,7 @@
 
 
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
-
 #include <QList>
 #include <QDebug>
 #include "sampleaudio.h"

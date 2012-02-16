@@ -216,7 +216,7 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
                                     moyenneG=0;
                                     qDebug() << "CORRESPONDANCE VRAIMENT OK :) !" << endl;
                                     p->playDemo(music);
-                                    sleep(9);
+                                    Sleep(9);
                                     exit(-1);
                                     return;
                                 //}
