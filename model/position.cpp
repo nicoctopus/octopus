@@ -94,6 +94,22 @@ Position::Position (const Position &position)
     this->dy = position.dy;
     this->dz = position.dz;
 }
+
+
+Position* Position::EcartPivot(const Position &pos){
+
+    Position * posEcart = new Position();
+    posEcart->setX(this->x-pos.x);
+    posEcart->setY(this->y-pos.y);
+    posEcart->setZ(this->z-pos.z);
+    posEcart->setDx(0);
+    posEcart->setDy(0);
+    posEcart->setDz(0);
+
+    return posEcart;
+}
+
+
 /**
 *      GETTERS
 **/
@@ -234,3 +250,6 @@ QDataStream & operator >> (QDataStream & in, Position &valeur)
     in >> valeur.dz;
     return in;
 }
+
+
+

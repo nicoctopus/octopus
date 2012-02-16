@@ -41,7 +41,9 @@ void ServerOSC::run() {
             }
 
         }
+        if(!recording){
         this->deleteAnalyse();
+        }
     }
 
     // exec();
@@ -340,7 +342,7 @@ bool ServerOSC::isRecording() {
 }
 
 void ServerOSC::setAnalyse() {
-    this->analyse = new Analyse(0,80);
+    this->analyse = new Analyse(0,40);
 }
 
 void ServerOSC::deleteAnalyse(){

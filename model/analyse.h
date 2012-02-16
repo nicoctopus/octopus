@@ -28,9 +28,14 @@ public:
     void calculBITG(QList<Movement *> *);
 
 
+
 private :
-    QList<Position*> modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt);
+    QList<Position*>* modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt);
     Position* moyenne(Position* p1, Position *p2);
+    qint8 NbPivots(QList<Position*> *);
+    float EcartRelatif(QList<Position*> *,QList<Position*> *);
+
+
 };
 
 #endif // ANALYSE_H
