@@ -66,8 +66,8 @@ void BlackBoard::updateClientOSCOfMovement(Movement *movement, ClientOSC *client
     /**
       *    BIZARRRREEEEEEEEEEE
       **/
-    //emit save(clientOSC);
     movement->addClientOSC(clientOSC);
+    //emit save(clientOSC);
     emit save(movement);
     emit refreshSignal();
 }
@@ -76,7 +76,7 @@ void BlackBoard::updateSampleAudioOfMovement(Movement *movement, SampleAudio *ne
 {
     if(movement->getSampleAudio() != NULL)
     {
-	movement->getSampleAudio()->updateIdMovement(0);
+	movement->getSampleAudio()->removeId(movement->getId());
 	emit save(movement->getSampleAudio());
     }
     movement->setSampleAudio(newSampleAudio);
@@ -86,7 +86,7 @@ void BlackBoard::updateSampleAudioOfMovement(Movement *movement, SampleAudio *ne
 }
 
 // -----------------------------------------------------------
-// Réimplementation des méthode de QGraphicsView pour assurer le Drag & drop
+// Réimplementation des méthodes de QGraphicsView pour assurer le Drag & drop
 // -----------------------------------------------------------
 void BlackBoard::dragMoveEvent(QDragMoveEvent *event){
     event->acceptProposedAction();

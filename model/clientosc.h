@@ -18,19 +18,22 @@ public:
     QString getHost(){return this->host;}
     void setDataBITG(DataBITG* d);
     void setMsgSynapse(QList<MessageSynapse*>* messages);
-    void updateIdMovement(quint16 idMovement);
+    void updateIdMovement(const quint16 &newId);
+    void removeIdMovement(const quint16 &idMovement);
     bool sendDataBITG();
     bool sendMsgSynapse();
     bool send(QString *host);
+    QList<quint16>* getListIdMovement();
 
     virtual const char* className();
     virtual void run();
+    static quint32 idClientOSCStatic;
 
 private:
     QList<MessageSynapse*>* msg;
     DataBITG *datas;
     QString host;
-    quint16 idMovement;
+    QList<quint16> *listIdMovement;
     friend QDataStream & operator << (QDataStream &, const ClientOSC &);
     friend QDataStream & operator >> (QDataStream &, ClientOSC &);
 };

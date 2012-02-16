@@ -133,6 +133,11 @@ void MainWindow::save(SampleAudio *sampleAudio)
     fichierSampleAudio.sync();
 }
 
+void MainWindow::remove(Movement *movement)
+{
+    this->controller->getManagerElements()->removeMovement(movement);
+}
+
 void MainWindow::slotNewSelectionOnBlackBoard(){
     if((ui->checkBox->checkState() == 2)&&(ui->blackboard->scene()->selectedItems().isEmpty() == false)){
 	ui->blackboard->selectedItems();
