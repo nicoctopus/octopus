@@ -28,6 +28,7 @@ public:
 
     //Methodes
     void sortMovements();
+    void sortMovementsById();
     void addMovement(Movement *movement);
 };
 

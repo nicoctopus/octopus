@@ -8,17 +8,19 @@ class Sample : public Element
 {
 protected:
     QString fileURL;
-    quint32 idMovement;
+    QList<quint32> *listIdMovement;
 public:
     Sample();
     Sample(const quint32 &id, const QString &name, const QString &fileURL, const quint32 &idMovement, const bool &active);
+    Sample(const quint32 &id, const QString &name, const QString &fileURL, const QList<quint32> &listIdMovement, const bool &active);
 
     /* Getters */
     QString getFileURL();
-    quint32 getIdMovement();
+    QList<quint32>* getListIdMovement();
     /* Setters */
     void setFileURL(const QString &file);
-    void updateIdMovement(const quint32 &idMovement);
+    void updateIdMovement(const quint32 &newId);
+    void removeId(const quint32 &idMovement);
     const char* className();
 };
 

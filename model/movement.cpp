@@ -107,13 +107,26 @@ void Movement::addJointMvt(JointMvt *jointMvt) {
 
 void Movement::updateId(const quint32 &id)
 {
+    int idTemp = this->idElement;
     this->idElement = id;
     for(int i = 0 ; i < this->listJointsMvt->size() ; i++)
 	this->listJointsMvt->at(i)->updateIdMovement(id);
-    this->sampleAudio->updateIdMovement(id);
-    this->sampleVideo->updateIdMovement(id);
-    for(int i = 0 ; i < this->listClients->size() ; i++)
-	this->listClients->at(i)->updateIdMovement(id);
+    if(this->sampleAudio != NULL)
+    {
+	this->sampleAudio->removeId(idTemp);
+	this->sampleAudio->updateIdMovement(id);
+    }
+    if(this->sampleVideo != NULL)
+    {
+	this->sampleVideo->removeId(idTemp);
+	this->sampleVideo->updateIdMovement(id);
+    }
+    if(this->listClients != NULL)
+	for(int i = 0 ; i < this->listClients->size() ; i++)
+	{
+	    this->listClients->at(i)->removeIdMovement(idTemp);
+	    this->listClients->at(i)->updateIdMovement(id);
+	}
 }
 
 /**
@@ -141,7 +154,8 @@ const char* Movement::className()
 QDataStream & operator << (QDataStream &out, const Movement &valeur)
 {
     //std::cout << "Entree operator << Movement" << std::endl;
-    out << valeur.idElement << valeur.nameElement << valeur.active;
+    out << valeur.idElement << valeur.nameElement << valeur.active /*<< static_cast<QList <ClientOSC*> >(*(valeur.listClients))*/;
+;
     return out;
 }
 
@@ -153,7 +167,7 @@ QDataStream & operator << (QDataStream &out, Movement *valeur)
     return out;
 }
 
-//Save
+//Load
 QDataStream & operator >> (QDataStream &in, Movement *&valeur)
 {
     in.readRawData((char*)&valeur, sizeof(valeur));
@@ -168,5 +182,8 @@ QDataStream & operator >> (QDataStream & in, Movement &valeur)
     in >> valeur.idElement;
     in >> valeur.nameElement;
     in >> valeur.active;
+    /*QList<ClientOSC> *list = new QList<ClientOSC>();
+    in >> *list;
+    valeur.getListClients()->append(*list);*/
     return in;
 }

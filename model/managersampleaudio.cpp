@@ -70,6 +70,9 @@ void ManagerSampleAudio::initSystem()
 {
     qRegisterMetaTypeStreamOperators<SampleAudio>("SampleAudio");
     qMetaTypeId<SampleAudio>();
+
+   // qRegisterMetaTypeStreamOperators<QList<quint32> >("QList<quint32>");
+    //qMetaTypeId<QList<quint32> >();
 }
 
 ManagerSampleAudio::~ManagerSampleAudio()
