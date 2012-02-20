@@ -185,7 +185,7 @@ void MainWindow::slotPlayPause(){
     if(ok == true)
     {
 	bool temp = false;
-	temp = controller->getPlayerDemo()->playDemo(sampleAudio);
+//	temp = controller->getPlayerDemo()->playDemo(sampleAudio);
 	ui->labelTitleSong->setText(sampleAudio->getName());
 	if(temp==true){
 	    //ui->pushButton_pause->setVisible(true);
@@ -203,7 +203,7 @@ void MainWindow::slotPlayPause(){
 }
 
 void MainWindow::slotStop(){
-    controller->getPlayerDemo()->Stop();
+    //controller->getPlayerDemo()->Stop();
     ui->labelTitleSong->setText("");
        ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/play.png)");
     //ui->pushButton_pause->setVisible(false);
@@ -468,7 +468,7 @@ void MainWindow::boutonAddSample()
 void MainWindow::updateLCDTimer()
 {
     int m, s;
-    s = controller->getPlayerDemo()->currentTime() / 1000;
+    //s = controller->getPlayerDemo()->currentTime() / 1000;
     m = s/60;
     s = s%60;
     QString time = QString::number(m) + ":" + QString::number(s);
