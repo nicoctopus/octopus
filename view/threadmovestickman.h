@@ -12,10 +12,9 @@ class ThreadMoveStickman : public QThread
     Q_OBJECT
 
 public:
+    ThreadMoveStickman();
     ThreadMoveStickman(Movement* movement);
     void run();
-
-
 
 signals:
     void sigMoveNode(QString nameOfNodeToMove, int x, int y, int z);

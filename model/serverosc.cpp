@@ -36,12 +36,15 @@ void ServerOSC::run() {
             if(!isRecording()) { // si on enregistre pas
 
                 fillBuffers(); // on remplit les buffers
+
             } else {
                 record(); // on enregistre le mouvement
             }
 
-        }
-        this->deleteAnalyse();
+	}
+	if(!recording)
+	    this->deleteAnalyse();
+
     }
 
     // exec();

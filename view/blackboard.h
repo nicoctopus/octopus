@@ -35,9 +35,11 @@ signals:
     void save(ClientOSC *clientOSC);
     void refreshSignal();
     void decocherCheckBoxLink();
+    void clearScene();
 
 public slots:
     void refresh();
+
 private:
     QList<Movement*> *listMovements;
     QList<SampleAudio*> *listSamplesAudio;

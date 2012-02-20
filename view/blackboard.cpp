@@ -12,6 +12,7 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent)
     QGraphicsScene *scene = new QGraphicsScene();
     this->setScene(scene);
     connect(this, SIGNAL(refreshSignal()), this, SLOT(refresh()));
+    connect(this, SIGNAL(clearScene()), this->scene(), SLOT(clear()));
 }
 
 // -----------------------------------------------------------
@@ -182,16 +183,12 @@ void BlackBoard::setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio)
 // -----------------------------------------------------------
 void BlackBoard::refresh()
 {
-    for(int i = 0 ; i < this->scene()->items().size() ; i++)
-    {
-	this->scene()->removeItem(this->scene()->items().at(i));
-    }
+    emit clearScene();
     this->listEllipse.clear();
     this->listDiamond.clear();
     this->listTriangle.clear();
-    for (int i = 0 ; i < this->listLines.size() ; i++)
-	this->listLines.removeAt(i);
-    //this->listLines.clear();
+    this->listLines.clear();
+
     //MOVEMENT/ELLIPSE
     if(this->listEllipse.isEmpty())
     {
@@ -312,4 +309,6 @@ void BlackBoard::addLineItem(const quint16 x1, const quint16 y1, const quint16 x
     this->listLines.append(new QGraphicsLineItem(line));
     this->listLines.last()->setPen(pen);
 }
+
+
 

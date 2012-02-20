@@ -34,51 +34,53 @@ void StickMan::slotMoveStickMan(Movement* movement){
 
 void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
     for(int i=0;i<nodes.size();++i){
-        if(nodes.at(i)->getName()==nameOfNodeToMove){
+	//qDebug() << nodes.size() << endl;
+	//qDebug() << nodes.at(i)->getName() << endl;
+	if(nodes.at(i)->getName()==nameOfNodeToMove){
 
-            // ==== DEPLACMENTS JOINTS =====
+	    // ==== DEPLACMENTS JOINTS =====
 
-            //On déplace le noeud
-            //qreal newX = (x-(nodes.at(i)->getXOrigin()))/RESIZE;
-            //qreal newY = (y-(nodes.at(i)->getYOrigin()))/RESIZE;
-            //nodes.at(i)->setPos(newX, newY);
-            int modifSize = 0;
-            if(z<0) modifSize = -(z/10);
-            else if(z>0) modifSize = -(z/20);
-            //qDebug(QString(nameOfNodeToMove + " z:"+QString::number(z) + "  modifSize= " + QString::number(modifSize)).toAscii());
-            nodes.at(i)->setRect(x/RESIZE-((WIDTH_JOINTS+modifSize)/2), y/RESIZE-((HEIGHT_JOINTS+modifSize)/2) , WIDTH_JOINTS+modifSize, HEIGHT_JOINTS+modifSize);
+	    //On déplace le noeud
+	    //qreal newX = (x-(nodes.at(i)->getXOrigin()))/RESIZE;
+	    //qreal newY = (y-(nodes.at(i)->getYOrigin()))/RESIZE;
+	    //nodes.at(i)->setPos(newX, newY);
+	    int modifSize = 0;
+	    if(z<0) modifSize = -(z/10);
+	    else if(z>0) modifSize = -(z/20);
+	    //qDebug(QString(nameOfNodeToMove + " z:"+QString::number(z) + "  modifSize= " + QString::number(modifSize)).toAscii());
+	    nodes.at(i)->setRect(x/RESIZE-((WIDTH_JOINTS+modifSize)/2), y/RESIZE-((HEIGHT_JOINTS+modifSize)/2) , WIDTH_JOINTS+modifSize, HEIGHT_JOINTS+modifSize);
 
-            // ==== DEPLACMENTS LIGNES =====
+	    // ==== DEPLACMENTS LIGNES =====
 
-            //On récupere la liste des lines liée au noeud que l'on déplace
-            QList<MyQLine*> listOfLinesLinkedToThisNode = linesLinkedAtThisNode.value(nodes.at(i)->getName());
-            //On parcours cette liste pour déplacer les lignes
-            for(int j=0;j<listOfLinesLinkedToThisNode.size();++j)
-            {
-                MyQLine* temp = listOfLinesLinkedToThisNode.at(j);
-                //Si le nom la ligne a une extremité qui a bougé on déplace le point A ou B en fct
-                if((temp->getNamePointA()) == (nodes.at(i)->getName()))
-                {
-                    //qDebug("TEST A");
-                    temp->getGraphicsLine()->setLine(x/RESIZE,y/RESIZE,temp->getLastXb()/RESIZE,temp->getLastYb()/RESIZE);
-                    temp->setLastXa(x);
-                    temp->setLastYa(y);
+	    //On récupere la liste des lines liée au noeud que l'on déplace
+	    QList<MyQLine*> listOfLinesLinkedToThisNode = linesLinkedAtThisNode.value(nodes.at(i)->getName());
+	    //On parcours cette liste pour déplacer les lignes
+	    for(int j=0;j<listOfLinesLinkedToThisNode.size();++j)
+	    {
+		MyQLine* temp = listOfLinesLinkedToThisNode.at(j);
+		//Si le nom la ligne a une extremité qui a bougé on déplace le point A ou B en fct
+		if((temp->getNamePointA()) == (nodes.at(i)->getName()))
+		{
+		    //qDebug("TEST A");
+		    temp->getGraphicsLine()->setLine(x/RESIZE,y/RESIZE,temp->getLastXb()/RESIZE,temp->getLastYb()/RESIZE);
+		    temp->setLastXa(x);
+		    temp->setLastYa(y);
 
-                }
-                else if((temp->getNamePointB()) == (nodes.at(i)->getName()))
-                {
-                    // qDebug("TEST B");
-                    temp->getGraphicsLine()->setLine(temp->getLastXa()/RESIZE,temp->getLastYa()/RESIZE,x/RESIZE,y/RESIZE);
-                    temp->setLastXb(x);
-                    temp->setLastYb(y);
-                }
-            }
-        }
+		}
+		else if((temp->getNamePointB()) == (nodes.at(i)->getName()))
+		{
+		    // qDebug("TEST B");
+		    temp->getGraphicsLine()->setLine(temp->getLastXa()/RESIZE,temp->getLastYa()/RESIZE,x/RESIZE,y/RESIZE);
+		    temp->setLastXb(x);
+		    temp->setLastYb(y);
+		}
+	    }
+	}
     }
 }
 
 void StickMan::slotEndOfMoveStickman(){
-    reCreateStickMan();
+    this->reCreateStickMan();
 }
 //-----------------------------------------------------------
 
@@ -280,26 +282,26 @@ void StickMan::createStickMan(){
 
     //Creer les lines
     for (int j = 0; j < lines.size(); ++j) {
-        QGraphicsLineItem *line = new QGraphicsLineItem(*(lines.at(j)));
-        lines.at(j)->setGraphicsLine(line);
-        line->setPen(pen);
-        this->scene()->addItem(line);
+	QGraphicsLineItem *line = new QGraphicsLineItem(*(lines.at(j)));
+	lines.at(j)->setGraphicsLine(line);
+	line->setPen(pen);
+	this->scene()->addItem(line);
 
     }
 
     //Creer les noeuds
     QMap<QString, QPoint>::const_iterator it = coord.constBegin();
     while (it != coord.constEnd()) {
-        JointGraphic *node = new JointGraphic();
-        nodes.push_back(node);
-        node->setName(it.key());
-        node->setXOrigin((it.value().x())*RESIZE);
-        node->setYOrigin((it.value().y())*RESIZE);
-        //node->setFlag(QGraphicsItem::ItemIsSelectable);
-        node->setRect((it.value().x())-(WIDTH_JOINTS/2), (it.value().y())-(HEIGHT_JOINTS/2) , WIDTH_JOINTS, HEIGHT_JOINTS);
-        node->setBrush(QColor(4,138,191,255));
-        this->scene()->addItem(node);
-        ++it;
+	JointGraphic *node = new JointGraphic();
+	node->setName(it.key());
+	node->setXOrigin((it.value().x())*RESIZE);
+	node->setYOrigin((it.value().y())*RESIZE);
+	//node->setFlag(QGraphicsItem::ItemIsSelectable);
+	node->setRect((it.value().x())-(WIDTH_JOINTS/2), (it.value().y())-(HEIGHT_JOINTS/2) , WIDTH_JOINTS, HEIGHT_JOINTS);
+	node->setBrush(QColor(4,138,191,255));
+	nodes.push_back(node);
+	this->scene()->addItem(node);
+	++it;
     }
 
 
@@ -309,9 +311,10 @@ void StickMan::createStickMan(){
 //-----------------------------------------------------------
 void StickMan::reCreateStickMan(){
     emit clearStickMan();
+    this->nodes.clear();
+    this->lines.clear();
     this->createStickMan();
     nodesSelected.clear();
-
 }
 
 
@@ -322,15 +325,15 @@ void StickMan::selectedNodes(){
     QList<QGraphicsItem*> itemsSelected = this->scene()->selectedItems();
 
     for (int i = 0; i < itemsSelected.size(); ++i) {
-        //Si le joint est deja selectionne on le deselectionne (liste des joints actuelement selectionne dans la QList nodesSelected
-        if(nodesSelected.contains(qgraphicsitem_cast<JointGraphic*>(itemsSelected.at(i))) == true){
-            qgraphicsitem_cast<JointGraphic*>(itemsSelected.at(i))->setBrush(QColor(4,138,191,255));
-            nodesSelected.removeOne(qgraphicsitem_cast<JointGraphic*>(itemsSelected.at(i)));
-        }
-        else{
-            qgraphicsitem_cast<JointGraphic*>(itemsSelected.at(i))->setBrush(QColor(242,93,0,255));
-            nodesSelected.push_back(qgraphicsitem_cast<JointGraphic*>(itemsSelected.at(i)));
-        }
+	//Si le joint est deja selectionne on le deselectionne (liste des joints actuelement selectionne dans la QList nodesSelected
+	if(nodesSelected.contains(qgraphicsitem_cast<JointGraphic*>(itemsSelected.at(i))) == true){
+	    qgraphicsitem_cast<JointGraphic*>(itemsSelected.at(i))->setBrush(QColor(4,138,191,255));
+	    nodesSelected.removeOne(qgraphicsitem_cast<JointGraphic*>(itemsSelected.at(i)));
+	}
+	else{
+	    qgraphicsitem_cast<JointGraphic*>(itemsSelected.at(i))->setBrush(QColor(242,93,0,255));
+	    nodesSelected.push_back(qgraphicsitem_cast<JointGraphic*>(itemsSelected.at(i)));
+	}
 
     }
 

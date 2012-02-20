@@ -17,26 +17,29 @@ ManagerElements::ManagerElements() : Manager()
     this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(1234, "localhost", false));
     this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(5678, "localhost", false));
     this->managerMovements->getListMovements()->append(new Movement("bonjour"));
-   /* JointMvt *j = new JointMvt(1, 1);
+    JointMvt *j = new JointMvt(1, 1);
     j->addPosition(new Position(1,3,0,5,0,0,0));
     j->addPosition(new Position(1,1,0,0,0,0,0));
-    this->managerMovements->getListMovements()->at(0)->addJointMvt(j);*/
+    this->managerMovements->getListMovements()->at(0)->addJointMvt(j);
     this->managerMovements->getListMovements()->append(new Movement("bonjour2"));
-    /*JointMvt *j2 = new JointMvt(1, 2);
+    JointMvt *j2 = new JointMvt(1, 2);
     j2->addPosition(new Position(1,3,0,5,0,0,0));
     j2->addPosition(new Position(1,1,0,0,0,0,0));
-    this->managerMovements->getListMovements()->at(1)->addJointMvt(j2);*/
+    this->managerMovements->getListMovements()->at(1)->addJointMvt(j2);
     this->managerMovements->getListMovements()->append(new Movement("bonjour3"));
-    /*JointMvt *j3 = new JointMvt(1, 3);
+    JointMvt *j3 = new JointMvt(1, 3);
     j3->addPosition(new Position(1,3,0,5,0,0,0));
     j3->addPosition(new Position(1,1,0,0,0,0,0));
-    this->managerMovements->getListMovements()->at(2)->addJointMvt(j3);*/
-    //this->saveAll();
+    this->managerMovements->getListMovements()->at(2)->addJointMvt(j3);
+    /**
+     *
+    **/
+    this->saveAll();
+    this->dispacher();
     /**
       *
       **/
-    //this->loadAll();
-    this->dispacher();
+    this->loadAll();
     /**
       *
       **/
