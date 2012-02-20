@@ -11,9 +11,11 @@ using namespace oscpkt;
 
 class Inputable : public QThread
 {
+    Q_OBJECT
+
 public:
     Inputable();
-
+    ~Inputable();
     //thread
     void setRunnable(const bool &b);
     virtual void run() = 0;
@@ -25,6 +27,7 @@ protected:
 
     // thread
     bool runnable;
+
 };
 
 #endif // INPUTABLE_H

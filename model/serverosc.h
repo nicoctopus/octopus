@@ -8,11 +8,16 @@
 #include "joint.h"
 #include "analyse.h"
 
-class ServerOSC : public Port, public Inputable
+class ServerOSC : public Inputable, public Port
 {
+    Q_OBJECT
+signals:
+    void jointMvtTooBig();
+
 public:
     ServerOSC();
     ServerOSC(const quint16 &portNb, const bool &active);
+    ~ServerOSC();
     virtual const char* className();
     virtual void run();
 
@@ -28,11 +33,13 @@ public:
     bool isRecording();
     void setAnalyse();
     bool allBuffersSameSize();
-
+    void setMovement(Movement *movement);
+    void deleteAnalyse();
 
 private :
     QList<Joint*> *listJoints; //liste de tous les joints possibles
     QList<Movement*> *listMovements; //liste des mouvements enregistres
+    Movement *movement; //movement pout le record
     bool recording;
     Analyse *analyse; //objet Analyse pour analyser en mode record
 };

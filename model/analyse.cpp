@@ -6,14 +6,19 @@ Analyse::Analyse(){
     //p->playDemo(music);
 }
 
+Analyse::~Analyse(){
+
+}
 
 Analyse::Analyse(float pourc,float seuil)
 {
+    qDebug()<< "CREATION ANALYSE !!!!!!!! "<< endl;
     this->pourcentage=pourc;
     this->seuil= seuil;
     //this->calculBITG(moves);
     this->p = new SoundPlayer(1);
     this->music = new SampleAudio("toto","../../../test.mp3",1, false);
+
 }
 
 void Analyse::calculBITG(QList<Movement*>* mouv){
@@ -22,6 +27,8 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
    /* for(int k=0; k<mouv->size();k++) { // chaque Mvt
 
     }*/
+
+
 
     QList<Position*> EnregistrementVite;
 
@@ -56,6 +63,7 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
 
 
     //Parcours tous les mouvements
+
     for(m=0;m<mouv->size();m++){
 /*
          qDebug()<< "Joint BEFORE : "<<  mouv->at(m)->getListJointsMvt()->at(0)->getJointRef()->getNom() << endl;
@@ -123,11 +131,12 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
                             moyenneZ += abs(EnregistrementVite.at(r-t)->getDz() - mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->getDz());
                             sommeZ += EnregistrementVite.at(r-t)->getDz();
 
-/*
+
                           qDebug()<< "X  enr : " << EnregistrementVite.at(r-t)->getX() << endl;
                           qDebug()<< "X  buf : " << mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->getX()<< endl;
                           qDebug()<< "DX  enr : " << EnregistrementVite.at(r-t)->getDx() << endl;
                           qDebug()<< "DX buf: " << mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->getDx()<<endl<<endl;
+                      /*
                           qDebug()<< "Y  enr : " << EnregistrementVite.at(r-t)->getY() << endl;
                           qDebug()<< "Y  buf : " << mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->getY()<< endl;
                           qDebug()<< "Dy  enr : " << EnregistrementVite.at(r-t)->getDz() << endl;
@@ -136,9 +145,9 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
                           qDebug()<< "Z  buf : " << mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->getZ()<< endl;
                           qDebug()<< "DZ  enr : " << EnregistrementVite.at(r-t)->getDz() << endl;
                           qDebug()<< "DZ buf: " << mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->getDz()<<endl<<endl;
-/*
+*/
                             qDebug()<< "Moyenne X : " << moyenneX << endl;
-                            qDebug()<< "SommeX : " << sommeX << endl;*/
+                            qDebug()<< "SommeX : " << sommeX << endl;
                             //qDebug()<< "Dy : " << EnregistrementVite.at(r-t)->getDy() << endl;
 
                         }
@@ -147,8 +156,8 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
                         //sommeY= abs(sommeY);
                         //sommeZ= abs(sommeZ);
 
-                        qDebug() <<"Moyenne Y : "<< moyenneY << endl;
-                        qDebug() <<"Somme Y : "<< sommeY <<endl;
+                       // qDebug() <<"Moyenne Y : "<< moyenneY << endl;
+                       // qDebug() <<"Somme Y : "<< sommeY <<endl;
 
                         moyenneX = moyenneX/sommeX;
                         moyenneY = moyenneY/sommeY;
@@ -162,13 +171,12 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
                         moyenneZ=moyenneZ*100;
                         //moyenneJ=moyenneJ*100;
                         moyenneG += moyenneJ;
-
-
+/*
                         qDebug() <<"Moyenne X : "<< moyenneX<< " % "<<endl;
                         qDebug() <<"Moyenne Y : "<< moyenneY<< " % "<<endl;
                         qDebug() <<"Moyenne Z : "<< moyenneZ<< " % "<<endl;
                         qDebug() <<"Moyenne JOINT : "<< moyenneJ*100<< " % "<<endl<<endl;
-
+*/
 
                         if(jt==mouv->at(m)->getListJointsMvt()->size()-1){
 
@@ -176,9 +184,9 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
                             moyenneG=moyenneG/mouv->at(m)->getListJointsMvt()->size();
                             moyenneG=moyenneG*100;
                            qDebug() << "ITERATION: "<< t <<endl;
-                           qDebug() <<"Taille Actuelle Enregistrement : "<< T << endl ;
+                           //qDebug() <<"Taille Actuelle Enregistrement : "<< T << endl ;
 
-                           qDebug() <<"Moyenne General : "<< moyenneG<< " % "<<endl<<endl;
+                          //qDebug() <<"Moyenne General : "<< moyenneG<< " % "<<endl<<endl;
 
                             if(moyenneG< seuil ){
                                 qDebug() << "CORRESPONDANCE OK !" << endl;
@@ -210,8 +218,8 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
                                     qDebug() << "CORRESPONDANCE VRAIMENT OK :) !" << endl;
                                     p->playDemo(music);
                                     sleep(9);
-                                    exit(-1);
-                                    return;
+                                    //exit(-1);
+                                    //return;
                                 //}
                             }
                         }
@@ -224,7 +232,6 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
             }
         }
     }
-
 
 
 }
@@ -302,3 +309,9 @@ Position* Analyse::moyenne(Position *p1, Position *p2)
                 (p1->getC() + p2->getC()) /2
                 );
 }
+
+
+/*
+void Analyse::setOkForAnalyse(const bool &b){
+    this->okForAnalyse=b;
+}*/

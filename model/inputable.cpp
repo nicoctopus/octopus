@@ -8,8 +8,17 @@ Inputable::Inputable()
 
     // thread
     runnable = false;
+
 }
 
 void Inputable::setRunnable(const bool &b) {
     this->runnable = b;
+}
+
+
+Inputable::~Inputable()
+{
+    delete(this->message);
+    delete(this->reader);
+    delete(this->socket);
 }

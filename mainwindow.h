@@ -36,11 +36,14 @@ public:
 
 
 public slots :
-    //void slotUpdateLeftTreeMovement(Movement* movementChange);
+    void slotTimeOutRecord();
     void slotNewSelectionOnStickMan();
     void save(Movement *movement);
     void save(SampleAudio *sampleAudio);
-    void save(ClientOSC *port);
+    void save(ClientOSC *clientOSC);
+    void remove(Movement *movement);
+    void remove(SampleAudio *sampleAudio);
+    void remove(ClientOSC *clientOSC);
     void slotPlayPause();
     void slotStop();
     void slotNewSelectionOnBlackBoard();
@@ -50,12 +53,13 @@ public slots :
     void slotDisplayInfos();
     void slotRecordNewMovement();
     void slotValidNewMovement();
-    void slotStopRecordNewMovement();
     void slotEscNewMovement();
     void slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int column);
     void decocherCheckBoxLink();
     void boutonAddSample();
     void updateLCDTimer();
+
+    void slotStartLivePerformance();
 
 
 signals :

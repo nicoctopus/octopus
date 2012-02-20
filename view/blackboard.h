@@ -5,7 +5,7 @@
 #include <QtGui>
 
 #include "square.h"
-#include "ellipseduprojet.h".h"
+#include "ellipseduprojet.h"
 #include "triangle.h"
 #include "diamond.h"
 
@@ -22,6 +22,7 @@ public:
     void dragMoveEvent(QDragMoveEvent *event);
     void addLineItem(const quint16 x1, const quint16 y1, const quint16 x2, const quint16 y2);
     void updateSampleAudioOfMovement(Movement *movement, SampleAudio *newSampleAudio);
+    void updateClientOSCOfMovement(Movement *movement, ClientOSC *clientOSC);
     void setListMovements(QList<Movement*> *listMovements);
     void setListPorts(QList<ClientOSC*> *listPorts);
     void setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio);
@@ -31,7 +32,7 @@ public:
 signals:
     void save(Movement *movement);
     void save(SampleAudio *sampleAudio);
-    void save(ClientOSC *port);
+    void save(ClientOSC *clientOSC);
     void refreshSignal();
     void decocherCheckBoxLink();
 
@@ -47,6 +48,7 @@ private:
     QList<QGraphicsItem*> itemsToLink;
     QList<QGraphicsLineItem*> listLines;
     quint16 xEllipse, yEllipse, xDiamond, yDiamond, xTriangle, yTriangle;
+
 };
 
 #endif // BLACKBOARD_H

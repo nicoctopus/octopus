@@ -34,13 +34,19 @@ SOURCES += main.cpp\
     view/triangle.cpp \
     view/square.cpp \
     view/mylefttree.cpp \
-    view/ellipse.cpp \
+    view/ellipseduprojet.cpp \
     view/diamond.cpp \
     view/blackboard.cpp \
     model/soundplayer.cpp \
     view/jointgraphic.cpp \
     view/stickman.cpp \
-    model/analyse.cpp
+    model/analyse.cpp \
+    model/managerclientosc.cpp \
+    model/managersampleaudio.cpp \
+    model/managerjointmvt.cpp \
+    model/managerposition.cpp \
+    model/managersamplevideo.cpp \
+    model/managermovements.cpp
 
 HEADERS  += mainwindow.h \
     model/utils.h \
@@ -69,7 +75,7 @@ HEADERS  += mainwindow.h \
     view/stickman.h \
     view/square.h \
     view/mylefttree.h \
-    view/ellipse.h \
+    view/ellipseduprojet.h \
     view/diamond.h \
     view/blackboard.h \
     model/soundplayer.h \
@@ -81,23 +87,19 @@ HEADERS  += mainwindow.h \
     FMOD/api/inc/fmod_dsp.h \
     FMOD/api/inc/fmod_codec.h \
     view/jointgraphic.h \
-    model/analyse.h
+    model/analyse.h \
+    model/managerclientosc.h \
+    model/managersampleaudio.h \
+    model/managerjointmvt.h \
+    model/managerposition.h \
+    model/managersamplevideo.h \
+    model/managermovements.h
 
 FORMS    += mainwindow.ui
 
-OTHER_FILES += \
-    FMOD/api/lib/libfmodex.dylib
 
 RESOURCES += \
     ressources.qrc
-
-
-
-
-
-
-
-
 
 
 
@@ -107,6 +109,19 @@ else:macx: LIBS += -L$$PWD/FMOD/api/lib/ -lfmodex
 
 INCLUDEPATH += $$PWD/FMOD/api/inc
 DEPENDPATH += $$PWD/FMOD/api/inc
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

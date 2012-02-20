@@ -1,11 +1,14 @@
 #include "port.h"
 
-quint32 Port::idPortStatic = 0;
-
-Port::Port() {
+Port::Port() : Element()
+{
 }
 
-Port::Port(const quint16 &portNb, const bool &active) : Element(++idPortStatic, QString::number(portNb), active)
+Port::Port(const quint16 &portNb, const bool &active) : Element(0, QString::number(portNb), active)
+{
+    this->portNumber = portNb;
+}
+Port::Port(const quint32 &id, const quint16 &portNb, const bool &active) : Element(id, QString::number(portNb), active)
 {
     this->portNumber = portNb;
 }
