@@ -33,7 +33,7 @@ public:
     QString textDisplay(Movement *movement);
     QString textDisplay(ClientOSC *port);
     QString textDisplay(SampleAudio *sampleAudio);
-    movingStickMan();
+    void movingStickMan();
 
 
 public slots :

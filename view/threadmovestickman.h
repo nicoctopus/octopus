@@ -3,8 +3,7 @@
 
 #include <QThread>
 #include "jointgraphic.h"
-#include "position.h"
-#include "windows.h"
+#include "model/position.h"
 #include "model/movement.h"
 #include "model/position.h"
 

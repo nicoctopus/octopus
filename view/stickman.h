@@ -6,9 +6,8 @@
 #include<QGraphicsRectItem>
 #include<QLine>
 #include<QMessageBox>
-#include"jointgraphic.h"
-#include"windows.h"
-#include "position.h"
+#include "jointgraphic.h"
+#include "model/position.h"
 #include "threadmovestickman.h"
 #include "myqline.h"
 #include "model/movement.h"
