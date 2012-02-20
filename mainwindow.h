@@ -33,6 +33,7 @@ public:
     QString textDisplay(Movement *movement);
     QString textDisplay(ClientOSC *port);
     QString textDisplay(SampleAudio *sampleAudio);
+    movingStickMan();
 
 
 public slots :
@@ -67,6 +68,7 @@ signals :
     void refreshBlackBoard();
     void sigPlaySample();
     void emitTime(QString currentTime);
+    void sigMoveStickman(Movement* movement);
 
 
 private:

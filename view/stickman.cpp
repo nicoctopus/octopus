@@ -1,8 +1,10 @@
 #include "stickman.h"
+#include <QDebug>
 
 
-
-// -----------------------------------------------------------
+qint32 WIDTH_JOINTS = 10;
+qint32 HEIGHT_JOINTS = 10;
+//-----------------------------------------------------------
 //                     CONSTRUCTEUR
 //-----------------------------------------------------------
 
@@ -18,9 +20,67 @@ StickMan::StickMan(QWidget *parent) : QGraphicsView (parent)
     QRectF sizeScene = this->scene()->sceneRect();
     this->ensureVisible(sizeScene,500,500);
 
+
     connect(this, SIGNAL(clearStickMan()), this->scene(), SLOT(clear()));
 }
+//-----------------------------------------------------------
+void StickMan::slotMoveStickMan(Movement* movement){
+    //Thread pour faire le faire bouger
+    ThreadMoveStickman* threadForStickManMoving = new ThreadMoveStickman(movement);
+    connect(threadForStickManMoving, SIGNAL(sigMoveNode(QString,int,int,int)), this, SLOT(slotMoveNode(QString,int,int,int)));
+    connect(threadForStickManMoving, SIGNAL(sigEndOfMoveStickman()), this, SLOT(slotEndOfMoveStickman()));
+    threadForStickManMoving->start();
+}
 
+void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
+    for(int i=0;i<nodes.size();++i){
+        if(nodes.at(i)->getName()==nameOfNodeToMove){
+
+            // ==== DEPLACMENTS JOINTS =====
+
+            //On déplace le noeud
+            //qreal newX = (x-(nodes.at(i)->getXOrigin()))/RESIZE;
+            //qreal newY = (y-(nodes.at(i)->getYOrigin()))/RESIZE;
+            //nodes.at(i)->setPos(newX, newY);
+            int modifSize = 0;
+            if(z<0) modifSize = -(z/10);
+            else if(z>0) modifSize = -(z/20);
+            //qDebug(QString(nameOfNodeToMove + " z:"+QString::number(z) + "  modifSize= " + QString::number(modifSize)).toAscii());
+            nodes.at(i)->setRect(x/RESIZE-((WIDTH_JOINTS+modifSize)/2), y/RESIZE-((HEIGHT_JOINTS+modifSize)/2) , WIDTH_JOINTS+modifSize, HEIGHT_JOINTS+modifSize);
+
+            // ==== DEPLACMENTS LIGNES =====
+
+            //On récupere la liste des lines liée au noeud que l'on déplace
+            QList<MyQLine*> listOfLinesLinkedToThisNode = linesLinkedAtThisNode.value(nodes.at(i)->getName());
+            //On parcours cette liste pour déplacer les lignes
+            for(int j=0;j<listOfLinesLinkedToThisNode.size();++j)
+            {
+                MyQLine* temp = listOfLinesLinkedToThisNode.at(j);
+                //Si le nom la ligne a une extremité qui a bougé on déplace le point A ou B en fct
+                if((temp->getNamePointA()) == (nodes.at(i)->getName()))
+                {
+                    //qDebug("TEST A");
+                    temp->getGraphicsLine()->setLine(x/RESIZE,y/RESIZE,temp->getLastXb()/RESIZE,temp->getLastYb()/RESIZE);
+                    temp->setLastXa(x);
+                    temp->setLastYa(y);
+
+                }
+                else if((temp->getNamePointB()) == (nodes.at(i)->getName()))
+                {
+                    // qDebug("TEST B");
+                    temp->getGraphicsLine()->setLine(temp->getLastXa()/RESIZE,temp->getLastYa()/RESIZE,x/RESIZE,y/RESIZE);
+                    temp->setLastXb(x);
+                    temp->setLastYb(y);
+                }
+            }
+        }
+    }
+}
+
+void StickMan::slotEndOfMoveStickman(){
+    reCreateStickMan();
+}
+//-----------------------------------------------------------
 
 //-----------------------------------------------------------
 //                     METHODES
@@ -30,23 +90,20 @@ StickMan::StickMan(QWidget *parent) : QGraphicsView (parent)
 void StickMan::createStickMan(){
 
     QPoint head(0/RESIZE, -175/RESIZE);
-    QPoint epauleGauche(-50/RESIZE, -100/RESIZE);
+    QPoint epauleDroite(-50/RESIZE, -100/RESIZE);
     QPoint basCou(0/RESIZE, -100/RESIZE);
-    QPoint epauleDroite(50/RESIZE, -100/RESIZE);
+    QPoint epauleGauche(50/RESIZE, -100/RESIZE);
     QPoint righthand(-175/RESIZE, -170/RESIZE);
     QPoint lefthand(175/RESIZE, -170/RESIZE);
     QPoint rightelbow(-150/RESIZE, -80/RESIZE);
     QPoint torso(0, 0);
     QPoint leftelbow(150/RESIZE, -80/RESIZE);
-    QPoint hancheGauche(-50/RESIZE, 100/RESIZE);
-    QPoint hancheDroite(50/RESIZE, 100/RESIZE);
+    QPoint hancheDroite(-50/RESIZE, 100/RESIZE);
+    QPoint hancheGauche(50/RESIZE, 100/RESIZE);
     QPoint rightknee(-75/RESIZE, 200/RESIZE);
     QPoint leftknee(75/RESIZE, 200/RESIZE);
     QPoint rightfoot(-75/RESIZE, 300/RESIZE);
     QPoint leftfoot(75/RESIZE, 300/RESIZE);
-
-    qint32 WIDTH_JOINTS = 10;
-    qint32 HEIGHT_JOINTS = 10;
 
     coord.insert("head",head);
     coord.insert("torso",torso);
@@ -59,21 +116,147 @@ void StickMan::createStickMan(){
     coord.insert("rightfoot",rightfoot);
     coord.insert("leftfoot",leftfoot);
 
-    QLine cou(head, basCou);
-    QLine hautCorps(epauleGauche, epauleDroite);
-    QLine brasDroit(epauleDroite, leftelbow);
-    QLine avantBrasDroit(leftelbow, lefthand);
-    QLine brasGauche(epauleGauche, rightelbow);
-    QLine avantBrasGauche(rightelbow, righthand);
-    QLine coteGauche(epauleGauche,torso);
-    QLine coteDroite(epauleDroite, torso);
-    QLine ventreGauche(torso, hancheGauche);
-    QLine ventreDroit(torso, hancheDroite);
-    QLine basCorps(hancheGauche, hancheDroite);
-    QLine cuisseGauche(hancheGauche, rightknee);
-    QLine jambeGauche(rightknee, rightfoot);
-    QLine cuisseDroite(hancheDroite, leftknee);
-    QLine jambeDroite(leftknee, leftfoot);
+    MyQLine* cou = new MyQLine(head, basCou);
+    cou->setNamePointA("head");
+    cou->setXAOrigin(head.x()*RESIZE);
+    cou->setYAOrigin(head.y()*RESIZE);
+    cou->setNamePointB("FIXE");
+    cou->setXBOrigin(basCou.x()*RESIZE);
+    cou->setYBOrigin(basCou.y()*RESIZE);
+    cou->setLastPositionsToOrigins();
+    MyQLine* hautCorps = new MyQLine(epauleGauche, epauleDroite);
+    MyQLine* brasDroit = new MyQLine(epauleDroite, rightelbow);
+    brasDroit->setNamePointA("rightelbow");
+    brasDroit->setXAOrigin(rightelbow.x()*RESIZE);
+    brasDroit->setYAOrigin(rightelbow.y()*RESIZE);
+    brasDroit->setNamePointB("FIXE");
+    brasDroit->setXBOrigin(epauleDroite.x()*RESIZE);
+    brasDroit->setYBOrigin(epauleDroite.y()*RESIZE);
+    brasDroit->setLastPositionsToOrigins();
+    MyQLine* avantBrasDroit = new MyQLine(rightelbow, righthand);
+    avantBrasDroit->setNamePointA("rightelbow");
+    avantBrasDroit->setXAOrigin(rightelbow.x()*RESIZE);
+    avantBrasDroit->setYAOrigin(rightelbow.y()*RESIZE);
+    avantBrasDroit->setNamePointB("righthand");
+    avantBrasDroit->setXBOrigin(righthand.x()*RESIZE);
+    avantBrasDroit->setYBOrigin(righthand.y()*RESIZE);
+    avantBrasDroit->setLastPositionsToOrigins();
+    MyQLine* brasGauche = new MyQLine(epauleGauche,leftelbow);
+    brasGauche->setNamePointA("leftelbow");
+    brasGauche->setXAOrigin(leftelbow.x()*RESIZE);
+    brasGauche->setYAOrigin(leftelbow.y()*RESIZE);
+    brasGauche->setNamePointB("FIXE");
+    brasGauche->setXBOrigin(epauleGauche.x()*RESIZE);
+    brasGauche->setYBOrigin(epauleGauche.y()*RESIZE);
+    brasGauche->setLastPositionsToOrigins();
+    MyQLine* avantBrasGauche = new MyQLine(leftelbow, lefthand);
+    avantBrasGauche->setNamePointA("leftelbow");
+    avantBrasGauche->setXAOrigin(leftelbow.x()*RESIZE);
+    avantBrasGauche->setYAOrigin(leftelbow.y()*RESIZE);
+    avantBrasGauche->setNamePointB("lefthand");
+    avantBrasGauche->setXBOrigin(lefthand.x()*RESIZE);
+    avantBrasGauche->setYBOrigin(lefthand.y()*RESIZE);
+    avantBrasGauche->setLastPositionsToOrigins();
+    MyQLine* coteGauche = new MyQLine(epauleGauche,torso);
+    coteGauche->setNamePointA("torso");
+    coteGauche->setXAOrigin(torso.x()*RESIZE);
+    coteGauche->setYAOrigin(torso.y()*RESIZE);
+    coteGauche->setNamePointB("FIXE");
+    coteGauche->setXBOrigin(epauleGauche.x()*RESIZE);
+    coteGauche->setYBOrigin(epauleGauche.y()*RESIZE);
+    coteGauche->setLastPositionsToOrigins();
+    MyQLine* coteDroite = new MyQLine(epauleDroite, torso);
+    coteDroite->setNamePointA("torso");
+    coteDroite->setXAOrigin(torso.x()*RESIZE);
+    coteDroite->setYAOrigin(torso.y()*RESIZE);
+    coteDroite->setNamePointB("FIXE");
+    coteDroite->setXBOrigin(epauleDroite.x()*RESIZE);
+    coteDroite->setYBOrigin(epauleDroite.y()*RESIZE);
+    coteDroite->setLastPositionsToOrigins();
+    MyQLine* ventreGauche = new MyQLine(torso, hancheGauche);
+    ventreGauche->setNamePointA("torso");
+    ventreGauche->setXAOrigin(torso.x()*RESIZE);
+    ventreGauche->setYAOrigin(torso.y()*RESIZE);
+    ventreGauche->setNamePointB("FIXE");
+    ventreGauche->setXBOrigin(hancheGauche.x()*RESIZE);
+    ventreGauche->setYBOrigin(hancheGauche.y()*RESIZE);
+    ventreGauche->setLastPositionsToOrigins();
+    MyQLine* ventreDroit = new MyQLine(torso, hancheDroite);
+    ventreDroit->setNamePointA("torso");
+    ventreDroit->setXAOrigin(torso.x()*RESIZE);
+    ventreDroit->setYAOrigin(torso.y()*RESIZE);
+    ventreDroit->setNamePointB("FIXE");
+    ventreDroit->setXBOrigin(hancheDroite.x()*RESIZE);
+    ventreDroit->setYBOrigin(hancheDroite.y()*RESIZE);
+    ventreDroit->setLastPositionsToOrigins();
+    MyQLine* basCorps = new MyQLine(hancheGauche, hancheDroite);
+    MyQLine* cuisseGauche = new MyQLine(hancheGauche, leftknee);
+    cuisseGauche->setNamePointA("leftknee");
+    cuisseGauche->setXAOrigin(leftknee.x()*RESIZE);
+    cuisseGauche->setYAOrigin(leftknee.y()*RESIZE);
+    cuisseGauche->setNamePointB("FIXE");
+    cuisseGauche->setXBOrigin(hancheGauche.x()*RESIZE);
+    cuisseGauche->setYBOrigin(hancheGauche.y()*RESIZE);
+    cuisseGauche->setLastPositionsToOrigins();
+    MyQLine* jambeGauche = new MyQLine(leftknee, leftfoot);
+    jambeGauche->setNamePointA("leftknee");
+    jambeGauche->setXAOrigin(leftknee.x()*RESIZE);
+    jambeGauche->setYAOrigin(leftknee.y()*RESIZE);
+    jambeGauche->setNamePointB("leftfoot");
+    jambeGauche->setXBOrigin(leftfoot.x()*RESIZE);
+    jambeGauche->setYBOrigin(leftfoot.y()*RESIZE);
+    jambeGauche->setLastPositionsToOrigins();
+    MyQLine* cuisseDroite = new MyQLine(hancheDroite, rightknee);
+    cuisseDroite->setNamePointA("rightknee");
+    cuisseDroite->setXAOrigin(rightknee.x()*RESIZE);
+    cuisseDroite->setYAOrigin(rightknee.y()*RESIZE);
+    cuisseDroite->setNamePointB("FIXE");
+    cuisseDroite->setXBOrigin(hancheDroite.x()*RESIZE);
+    cuisseDroite->setYBOrigin(hancheDroite.y()*RESIZE);
+    cuisseDroite->setLastPositionsToOrigins();
+    MyQLine* jambeDroite = new MyQLine(rightknee, rightfoot);
+    jambeDroite->setNamePointA("rightknee");
+    jambeDroite->setXAOrigin(rightknee.x()*RESIZE);
+    jambeDroite->setYAOrigin(rightknee.y()*RESIZE);
+    jambeDroite->setNamePointB("rightfoot");
+    jambeDroite->setXBOrigin(rightfoot.x()*RESIZE);
+    jambeDroite->setYBOrigin(rightfoot.y()*RESIZE);
+    jambeDroite->setLastPositionsToOrigins();
+
+    QList<MyQLine*> listLinesrighthand;
+    listLinesrighthand.append(avantBrasDroit);
+    linesLinkedAtThisNode.insert("righthand",listLinesrighthand);
+    QList<MyQLine*> listLinesrightelbow;
+    listLinesrightelbow.append(avantBrasDroit);
+    listLinesrightelbow.append(brasDroit);
+    linesLinkedAtThisNode.insert("rightelbow",listLinesrightelbow);
+    QList<MyQLine*> listLineslefthand;
+    listLineslefthand.append(avantBrasGauche);
+    linesLinkedAtThisNode.insert("lefthand",listLineslefthand);
+    QList<MyQLine*> listLinesleftelbow ;
+    listLinesleftelbow.append(avantBrasGauche);
+    listLinesleftelbow.append(brasGauche);
+    linesLinkedAtThisNode.insert("leftelbow",listLinesleftelbow);
+    QList<MyQLine*> listLinestorso ;
+    listLinestorso.append(coteGauche);
+    listLinestorso.append(coteDroite);
+    listLinestorso.append(ventreGauche);
+    listLinestorso.append(ventreDroit);
+    linesLinkedAtThisNode.insert("torso",listLinestorso);
+    QList<MyQLine*> listLinesrightfoot;
+    listLinesrightfoot.append(jambeDroite);
+    linesLinkedAtThisNode.insert("rightfoot",listLinesrightfoot);
+    QList<MyQLine*> listLinesrightknee;
+    listLinesrightknee.append(cuisseDroite);
+    listLinesrightknee.append(jambeDroite);
+    linesLinkedAtThisNode.insert("rightknee",listLinesrightknee);
+    QList<MyQLine*> listLinesleftfoot;
+    listLinesleftfoot.append(jambeGauche);
+    linesLinkedAtThisNode.insert("leftfoot",listLinesleftfoot);
+    QList<MyQLine*> listLinesleftknee;
+    listLinesleftknee.append(cuisseGauche);
+    listLinesleftknee.append(jambeGauche);
+    linesLinkedAtThisNode.insert("leftknee",listLinesleftknee);
 
     lines.push_back(cou);
     lines.push_back(hautCorps);
@@ -97,22 +280,30 @@ void StickMan::createStickMan(){
 
     //Creer les lines
     for (int j = 0; j < lines.size(); ++j) {
-        QGraphicsLineItem *line = new QGraphicsLineItem(lines.at(j));
+        QGraphicsLineItem *line = new QGraphicsLineItem(*(lines.at(j)));
+        lines.at(j)->setGraphicsLine(line);
         line->setPen(pen);
         this->scene()->addItem(line);
+
     }
 
     //Creer les noeuds
     QMap<QString, QPoint>::const_iterator it = coord.constBegin();
     while (it != coord.constEnd()) {
         JointGraphic *node = new JointGraphic();
+        nodes.push_back(node);
         node->setName(it.key());
+        node->setXOrigin((it.value().x())*RESIZE);
+        node->setYOrigin((it.value().y())*RESIZE);
         //node->setFlag(QGraphicsItem::ItemIsSelectable);
         node->setRect((it.value().x())-(WIDTH_JOINTS/2), (it.value().y())-(HEIGHT_JOINTS/2) , WIDTH_JOINTS, HEIGHT_JOINTS);
         node->setBrush(QColor(4,138,191,255));
         this->scene()->addItem(node);
         ++it;
     }
+
+
+
 }
 
 //-----------------------------------------------------------

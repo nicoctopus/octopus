@@ -51,8 +51,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(this->controller->getServerOsc(), SIGNAL(jointMvtTooBig()), this, SLOT(slotTimeOutRecord()));
 
-
     connect(ui->start, SIGNAL(clicked()), this,SLOT(slotStartLivePerformance()));
+    connect(this, SIGNAL(sigMoveStickman(Movement*)), ui->stickMan, SLOT(slotMoveStickMan(Movement*)));
 
     this->initBlackBoard();
     this->initTreeView();
@@ -168,17 +168,43 @@ void MainWindow::remove(ClientOSC *clientOSC)
 
 void MainWindow::slotNewSelectionOnBlackBoard(){
     if((ui->checkBox->checkState() == 2)&&(ui->blackboard->scene()->selectedItems().isEmpty() == false)){
-	ui->blackboard->selectedItems();
+        ui->blackboard->selectedItems();
     }
 }
 
 void MainWindow::slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int){
     if(item->text(0) == "Movements" || item->text(0) == "Samples" || item->text(0) == "Videos" || item->text(0) == "Ports"){
-	//rien
+        //rien blindage
     }
-    else{
-	emit sigPlaySample();
+    else if(item->parent()->text(0) == "Samples"){
+        emit sigPlaySample();
     }
+    else if(item->parent()->text(0) == "Movements"){
+        movingStickMan();
+    }
+}
+
+//------------- Pour stickMan -------
+void MainWindow::movingStickMan(){
+    Movement *movement = NULL;
+    bool ok = false;
+    if(!ui->blackboard->scene()->selectedItems().isEmpty()){
+        if(ui->blackboard->scene()->selectedItems().at(0)->type() == 65537)
+        {
+            EllipseDuProjet *ellipse = (EllipseDuProjet*)(ui->blackboard->scene()->selectedItems().at(0));
+            movement = ellipse->getMovement();
+            emit sigMoveStickman(movement);
+        }
+    }
+    else if(!ui->leftTree->selectedItems().isEmpty())
+    {
+        if(ui->leftTree->selectedItems().at(0)->parent()->text(0) == "Movements")
+        {
+            movement = (Movement*)(ui->leftTree->getMapTreeItemsSample().value(ui->leftTree->selectedItems().at(0)));
+            emit sigMoveStickman(movement);
+        }
+    }
+
 }
 
 void MainWindow::slotPlayPause(){
@@ -186,37 +212,37 @@ void MainWindow::slotPlayPause(){
     SampleAudio *sampleAudio = NULL;
     bool ok = false;
     if(!ui->blackboard->scene()->selectedItems().isEmpty()){
-	if(ui->blackboard->scene()->selectedItems().at(0)->type() == 65539)
-	{
-	    Triangle *triangle = (Triangle*)(ui->blackboard->scene()->selectedItems().at(0));
-	    sampleAudio = triangle->getSampleAudio();
-	    ok = true;
-	}
+        if(ui->blackboard->scene()->selectedItems().at(0)->type() == 65539)
+        {
+            Triangle *triangle = (Triangle*)(ui->blackboard->scene()->selectedItems().at(0));
+            sampleAudio = triangle->getSampleAudio();
+            ok = true;
+        }
     }
     else if(!ui->leftTree->selectedItems().isEmpty())
     {
-	if(ui->leftTree->selectedItems().at(0)->parent()->text(0) == "Samples")
-	{
-	    sampleAudio = (SampleAudio*)(ui->leftTree->getMapTreeItemsSample().value(ui->leftTree->selectedItems().at(0)));
-	    ok = true;
-	}
+        if(ui->leftTree->selectedItems().at(0)->parent()->text(0) == "Samples")
+        {
+            sampleAudio = (SampleAudio*)(ui->leftTree->getMapTreeItemsSample().value(ui->leftTree->selectedItems().at(0)));
+            ok = true;
+        }
     }
     if(ok == true)
     {
-	bool temp = false;
-//	temp = controller->getPlayerDemo()->playDemo(sampleAudio);
-	ui->labelTitleSong->setText(sampleAudio->getName());
-	if(temp==true){
-	    //ui->pushButton_pause->setVisible(true);
-	    //ui->pushButton_playlecteur->setVisible(false);
+        bool temp = false;
+        //	temp = controller->getPlayerDemo()->playDemo(sampleAudio);
+        ui->labelTitleSong->setText(sampleAudio->getName());
+        if(temp==true){
+            //ui->pushButton_pause->setVisible(true);
+            //ui->pushButton_playlecteur->setVisible(false);
 
-	    ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/pause.png)");
-	}else{
+            ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/pause.png)");
+        }else{
 
-	   // ui->pushButton_pause->setVisible(false);
-	   // ui->pushButton_playlecteur->setVisible(true);
-	    ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/play.png)");
-	}
+            // ui->pushButton_pause->setVisible(false);
+            // ui->pushButton_playlecteur->setVisible(true);
+            ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/play.png)");
+        }
     }
 
 }
@@ -224,7 +250,7 @@ void MainWindow::slotPlayPause(){
 void MainWindow::slotStop(){
     //controller->getPlayerDemo()->Stop();
     ui->labelTitleSong->setText("");
-       ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/play.png)");
+    ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/play.png)");
     //ui->pushButton_pause->setVisible(false);
     //ui->pushButton_playlecteur->setVisible(true);
 
@@ -234,31 +260,31 @@ void MainWindow::slotDisplayInfos(QTreeWidgetItem* item,int column){
     //Deselctionner les elements du blackboard pour le lecteur
     QList<QGraphicsItem*> itemsSelectedOnBlackboard = ui->blackboard->scene()->selectedItems();
     for(int i=0; i<itemsSelectedOnBlackboard.size();i++){
-	itemsSelectedOnBlackboard.at(i)->setSelected(false);
+        itemsSelectedOnBlackboard.at(i)->setSelected(false);
     }
 
 
     //Blindage
     if(item->text(0) == "Movements" || item->text(0) == "Samples" || item->text(0) == "Ports" || item->text(0) == "Videos" ){
-	ui->textBrowser->setText("");
-	return;
+        ui->textBrowser->setText("");
+        return;
     }
 
     QString text;
     if(item->parent()->text(0) == "Movements")
     {
-	Movement *temp = ui->leftTree->getMapTreeItemsMovement().value(item);
-	text = this->textDisplay(temp);
+        Movement *temp = ui->leftTree->getMapTreeItemsMovement().value(item);
+        text = this->textDisplay(temp);
     }
     else if(item->parent()->text(0) == "Samples")
     {
-	SampleAudio *temp = ui->leftTree->getMapTreeItemsSample().value(item);
-	text = this->textDisplay(temp);
+        SampleAudio *temp = ui->leftTree->getMapTreeItemsSample().value(item);
+        text = this->textDisplay(temp);
     }
     else if(item->parent()->text(0) == "Ports")
     {
-	ClientOSC *temp = ui->leftTree->getMapTreeItemsPort().value(item);
-	text = textDisplay(temp);
+        ClientOSC *temp = ui->leftTree->getMapTreeItemsPort().value(item);
+        text = textDisplay(temp);
     }
 
     ui->textBrowser->setText(text);
@@ -270,22 +296,22 @@ void MainWindow::slotDisplayInfos()
     QString text;
     for( int i=0; i<itemsSelected.size();i++)
     {
-	if(itemsSelected.at(i)->type() == 65537)
-	{
-	    EllipseDuProjet *ellipse = (EllipseDuProjet*)itemsSelected.at(i);
-	    text = this->textDisplay(ellipse->getMovement());
-	}
-	if(itemsSelected.at(i)->type() == 65539)
-	{
-	    Triangle *triangle = (Triangle*)itemsSelected.at(i);
-	    text = this->textDisplay(triangle->getSampleAudio());
-	}
-	if(itemsSelected.at(i)->type() == 65538)
-	{
-	    Diamond *diamond = (Diamond*)itemsSelected.at(i);
-	    text = this->textDisplay(diamond->getPort());
-	}
-	ui->textBrowser->setText(text);
+        if(itemsSelected.at(i)->type() == 65537)
+        {
+            EllipseDuProjet *ellipse = (EllipseDuProjet*)itemsSelected.at(i);
+            text = this->textDisplay(ellipse->getMovement());
+        }
+        if(itemsSelected.at(i)->type() == 65539)
+        {
+            Triangle *triangle = (Triangle*)itemsSelected.at(i);
+            text = this->textDisplay(triangle->getSampleAudio());
+        }
+        if(itemsSelected.at(i)->type() == 65538)
+        {
+            Diamond *diamond = (Diamond*)itemsSelected.at(i);
+            text = this->textDisplay(diamond->getPort());
+        }
+        ui->textBrowser->setText(text);
     }
 }
 
@@ -306,15 +332,15 @@ QString MainWindow::textDisplay(Movement *movement)
     text.append(" ms <br/>");
     for(int i = 0 ; i < movement->getListJointsMvt()->size() ; i++)
     {
-	text.append("- ");
-	text.append(movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
-	text.append("<br/>");
+        text.append("- ");
+        text.append(movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
+        text.append("<br/>");
     }
     text.append("<br/><b>SampleAudio : </b>");
     text.append(movement->getSampleAudio()->getName());
     text.append("<br/><b>Clients OSC : </b>");
     for(int i = 0 ; i < movement->getListClients()->size() ; i++)
-	text.append(movement->getListClients()->at(i)->getName());
+        text.append(movement->getListClients()->at(i)->getName());
     return text;
 }
 
@@ -330,8 +356,8 @@ QString MainWindow::textDisplay(SampleAudio *sampleAudio)
     text.append("<b>Mouvements liés : </b>");
     for(int i = 0 ; i < sampleAudio->getListIdMovement()->size() ; i ++)
     {
-	text.append(QString::number(sampleAudio->getListIdMovement()->at(i)));
-	text.append("<br/>");
+        text.append(QString::number(sampleAudio->getListIdMovement()->at(i)));
+        text.append("<br/>");
     }
     return text;
 }
@@ -348,8 +374,8 @@ QString MainWindow::textDisplay(ClientOSC *port)
     text.append("<b>Mouvements liés : </b>");
     for(int i = 0 ; i < port->getListIdMovement()->size() ; i ++)
     {
-	text.append(QString::number(port->getListIdMovement()->at(i)));
-	text.append("<br/>");
+        text.append(QString::number(port->getListIdMovement()->at(i)));
+        text.append("<br/>");
     }
     return text;
 }
@@ -361,9 +387,9 @@ void MainWindow::slotUnlockStickMan(){
     //msgBox.exec();
     QList<QGraphicsItem *> items = ui->stickMan->scene()->items();
     for (int i = 0; i < items.size(); ++i) {
-	if((items.at(i)->type()) == 3){ //3 est le type de QGraphicsRectItems
-	    items.at(i)->setFlags(QGraphicsItem::ItemIsSelectable);
-	}
+        if((items.at(i)->type()) == 3){ //3 est le type de QGraphicsRectItems
+            items.at(i)->setFlags(QGraphicsItem::ItemIsSelectable);
+        }
     }
     //ui->pushButton_creermouvement->setVisible(false);
     // ui->pushButton_verrouiller->setVisible(true);
@@ -386,24 +412,24 @@ int MainWindow::slotLockNodesForNewMouvement(){
     QList<JointGraphic*> nodesSelected = ui->stickMan->getNodesSelected();
 
     if(nodesSelected.size() == 0){
-	QMessageBox msgBox;
-	msgBox.setText("Aucuns joints selectionnés \n Veuillez en selectionner au moins un.");
-	msgBox.exec();
-	return 0;
+        QMessageBox msgBox;
+        msgBox.setText("Aucuns joints selectionnés \n Veuillez en selectionner au moins un.");
+        msgBox.exec();
+        return 0;
     }
     else
     {
-	QString nomsDesJoints;
-	movement = new Movement();
-	for (int i = 0; i < nodesSelected.size(); ++i) {
-	    movement->addJointMvt(controller->getManagerJoints()->getJoint(nodesSelected.at(i)->getName()));
-	    nomsDesJoints = nomsDesJoints + nodesSelected.at(i)->getName() + "\n";
-	}
-	//QMessageBox msgBox;
-	//msgBox.setText("Vous avez verrouillé " + QString::number(nodesSelected.size()) + " joints:\n" + nomsDesJoints);
-	//msgBox.exec();
-	ui->stickMan->reCreateStickMan();
-	//ui->stickMan->getNodesSelected().clear();
+        QString nomsDesJoints;
+        movement = new Movement();
+        for (int i = 0; i < nodesSelected.size(); ++i) {
+            movement->addJointMvt(controller->getManagerJoints()->getJoint(nodesSelected.at(i)->getName()));
+            nomsDesJoints = nomsDesJoints + nodesSelected.at(i)->getName() + "\n";
+        }
+        //QMessageBox msgBox;
+        //msgBox.setText("Vous avez verrouillé " + QString::number(nodesSelected.size()) + " joints:\n" + nomsDesJoints);
+        //msgBox.exec();
+        ui->stickMan->reCreateStickMan();
+        //ui->stickMan->getNodesSelected().clear();
 
 
 
@@ -424,22 +450,22 @@ int MainWindow::slotLockNodesForNewMouvement(){
 void MainWindow::slotRecordNewMovement(){
 
     if(isRecording == false){
-	ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/stop.png)");
-	//RECORD UN MOVEMENT
-	this->controller->recordMovement(this->movement);
-	//START RECORD
-	isRecording = true;
+        ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/stop.png)");
+        //RECORD UN MOVEMENT
+        this->controller->recordMovement(this->movement);
+        //START RECORD
+        isRecording = true;
     }
     else if(isRecording == true){
-	ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/recordgris.png)");
-	ui->pushButton_recordmouvement->setEnabled(false);
-	ui->nommouvement->setVisible(true);
-	ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/save.png)");
-	ui->pushButton_enregistrermouvement->setEnabled(true);
+        ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/recordgris.png)");
+        ui->pushButton_recordmouvement->setEnabled(false);
+        ui->nommouvement->setVisible(true);
+        ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/save.png)");
+        ui->pushButton_enregistrermouvement->setEnabled(true);
 
-	//ON STOP LE RECORD
-	this->controller->stopRecord(this->movement);
-	isRecording = false;
+        //ON STOP LE RECORD
+        this->controller->stopRecord(this->movement);
+        isRecording = false;
     }
 }
 
@@ -501,12 +527,12 @@ void MainWindow::slotEscNewMovement(){
 void MainWindow::slotStartLivePerformance(){
 
     if(isLive==false){
-         this->controller->analizeRecord();
-         isLive=true;
+        this->controller->analizeRecord();
+        isLive=true;
     }else if(isLive==true){
 
         this->controller->stopAnalize();
-         isLive=false;
+        isLive=false;
     }
 
 
@@ -524,16 +550,16 @@ void MainWindow::decocherCheckBoxLink()
 void MainWindow::boutonAddSample()
 {
     QStringList files = QFileDialog::getOpenFileNames(this, tr("Select Music Files"),
-						      QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+                                                      QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
 
     if (files.isEmpty())
-	return;
+        return;
     else
     {
-	for(int i = 0 ; i < files.size() ; i++)
-	{
-	    this->controller->getManagerElements()->getManagetSampleAudio()->addSample(files.at(i).split("/").last(), files.at(i));
-	}
+        for(int i = 0 ; i < files.size() ; i++)
+        {
+            this->controller->getManagerElements()->getManagetSampleAudio()->addSample(files.at(i).split("/").last(), files.at(i));
+        }
     }
     emit refreshLeftTree();
 }
