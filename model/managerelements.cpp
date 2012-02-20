@@ -17,26 +17,26 @@ ManagerElements::ManagerElements() : Manager()
     this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(1234, "localhost", false));
     this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(5678, "localhost", false));
     this->managerMovements->getListMovements()->append(new Movement("bonjour"));
-    JointMvt *j = new JointMvt(1, 1);
+   /* JointMvt *j = new JointMvt(1, 1);
     j->addPosition(new Position(1,3,0,5,0,0,0));
     j->addPosition(new Position(1,1,0,0,0,0,0));
-    this->managerMovements->getListMovements()->at(0)->addJointMvt(j);
+    this->managerMovements->getListMovements()->at(0)->addJointMvt(j);*/
     this->managerMovements->getListMovements()->append(new Movement("bonjour2"));
-    JointMvt *j2 = new JointMvt(1, 2);
+    /*JointMvt *j2 = new JointMvt(1, 2);
     j2->addPosition(new Position(1,3,0,5,0,0,0));
     j2->addPosition(new Position(1,1,0,0,0,0,0));
-    this->managerMovements->getListMovements()->at(1)->addJointMvt(j2);
+    this->managerMovements->getListMovements()->at(1)->addJointMvt(j2);*/
     this->managerMovements->getListMovements()->append(new Movement("bonjour3"));
-    JointMvt *j3 = new JointMvt(1, 3);
+    /*JointMvt *j3 = new JointMvt(1, 3);
     j3->addPosition(new Position(1,3,0,5,0,0,0));
     j3->addPosition(new Position(1,1,0,0,0,0,0));
-    this->managerMovements->getListMovements()->at(2)->addJointMvt(j3);
-    this->saveAll();
+    this->managerMovements->getListMovements()->at(2)->addJointMvt(j3);*/
+    //this->saveAll();
     /**
       *
       **/
-    this->loadAll();
-    //this->removeMovement(this->managerMovements->getListMovements()->at(1));
+    //this->loadAll();
+    this->dispacher();
     /**
       *
       **/
@@ -79,7 +79,6 @@ void ManagerElements::dispacher()
 		this->managerMovements->getListMovements()->at(i)->setSampleAudio(this->managerSampleAudio->getListSamplesAudios()->at(j));
 		this->managerMovements->getListMovements()->at(i)->setActive(true);
 		this->managerSampleAudio->getListSamplesAudios()->at(j)->setActive(true);
-		//qDebug() << "link movment sampleAudio" << this->managerMovements->getListMovements()->at(i)->getName() << this->managerSampleAudio->getListSamplesAudios()->at(j)->getName() << endl;
 	    }
 	for(int j = 0 ; j < this->managerSampleVideo->getListSamplesVideos()->size() ; j++)
 	    for(int k = 0 ; k < this->managerSampleVideo->getListSamplesVideos()->at(j)->getListIdMovement()->size() ; k++)
@@ -88,7 +87,6 @@ void ManagerElements::dispacher()
 		this->managerMovements->getListMovements()->at(i)->setSampleVideo(this->managerSampleVideo->getListSamplesVideos()->at(j));
 		this->managerMovements->getListMovements()->at(i)->setActive(true);
 		this->managerSampleVideo->getListSamplesVideos()->at(j)->setActive(true);
-		//qDebug() << "link movment sampleVideo" << this->managerMovements->getListMovements()->at(i)->getName() << this->managerSampleVideo->getListSamplesVideos()->at(j)->getName() << endl;
 	    }
 	for(int j = 0 ; j < this->managerClientOSC->getListClientsOSC()->size() ; j++)
 	{
@@ -98,7 +96,6 @@ void ManagerElements::dispacher()
 		    this->managerMovements->getListMovements()->at(i)->getListClients()->append(this->managerClientOSC->getListClientsOSC()->at(j));
 		    this->managerMovements->getListMovements()->at(i)->setActive(true);
 		    this->managerClientOSC->getListClientsOSC()->at(j)->setActive(true);
-		    //qDebug() << "link movment clientOSC" << this->managerMovements->getListMovements()->at(i)->getName() << this->managerClientOSC->getListClientsOSC()->at(j)->getName() << endl;
 		}
 	}
     }

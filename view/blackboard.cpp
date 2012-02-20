@@ -165,7 +165,6 @@ void BlackBoard::dropEvent(QDropEvent *event){
 void BlackBoard::setListMovements(QList<Movement*>* listMovements)
 {
     this->listMovements = listMovements;
-    //qDebug() << this->listMovements->at(0)->getName() << endl;
 }
 
 void BlackBoard::setListPorts(QList<ClientOSC*> *listPorts)
@@ -190,7 +189,9 @@ void BlackBoard::refresh()
     this->listEllipse.clear();
     this->listDiamond.clear();
     this->listTriangle.clear();
-    this->listLines.clear();
+    for (int i = 0 ; i < this->listLines.size() ; i++)
+	this->listLines.removeAt(i);
+    //this->listLines.clear();
     //MOVEMENT/ELLIPSE
     if(this->listEllipse.isEmpty())
     {
@@ -209,7 +210,6 @@ void BlackBoard::refresh()
 		isInTheList = true;
 	if(isInTheList == false)
 	{
-	   // this->xEllipse = this->listEllipse.last()->pos().x() + DEPLACEMENT_HORIZONTAL;
 	    this->listEllipse.append(new EllipseDuProjet(this->xEllipse, this->yEllipse,50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->last()));
 	    this->xEllipse += DEPLACEMENT_HORIZONTAL;
 	}
@@ -233,7 +233,6 @@ void BlackBoard::refresh()
 		isInTheList = true;
 	if(isInTheList == false)
 	{
-	   // this->xTriangle = this->listTriangle.last()->pos().x() + DEPLACEMENT_HORIZONTAL;
 	    this->listTriangle.append(new Triangle(this->xTriangle, this->yTriangle, new QColor(100,100,100,255), this->scene(), this->listSamplesAudio->last()));
 	    this->xTriangle += DEPLACEMENT_HORIZONTAL;
 	}
@@ -258,35 +257,29 @@ void BlackBoard::refresh()
 		isInTheList = true;
 	if(isInTheList == false)
 	{
-	    //this->xDiamond = this->listDiamond.last()->pos().x() + DEPLACEMENT_HORIZONTAL;
 	    this->listDiamond.append(new Diamond(this->xDiamond, this->yDiamond, new QColor(100,100,100,255), this->scene(), this->listPorts->last()));
 	    this->xDiamond += DEPLACEMENT_HORIZONTAL;
 	}
     }
 
-    //Suppression de toutes les lignes sur le blackboard
-    /*for(int i = 0 ; i< this->scene()->items().size() ; i++)
-	for(int j = 0 ; j < this->listLines.size() ; j++)
-	    if(this->scene()->items().at(i)->type() == this->listLines.at(j)->type())
-		this->scene()->removeItem(this->scene()->items().at(i));
-    this->listLines.clear();*/
-
     //LIGNE ENTRE LES ELEMENTS
     for(int i = 0 ; i < this->listEllipse.size() ; i++)
     {
 	//LIGNE MOVMEMENT - SAMPLE AUDIO
-	if(this->listEllipse.at(i)->getMovement()->getSampleAudio() != NULL)
+	/*if(this->listEllipse.at(i)->getMovement()->getSampleAudio() != NULL)
 	{
 	    for(int j = 0 ; j < this->listTriangle.size() ; j++)
 	    {
 		if(this->listEllipse.at(i)->getMovement()->getSampleAudio()->getId() == this->listTriangle.at(j)->getSampleAudio()->getId())
 		{
-		  //  qDebug() << "TEST " << endl;
+		    qDebug() << "id sample : " << this->listEllipse.at(i)->getMovement()->getSampleAudio()->getId() << endl;
+		    qDebug() << "id mvt : " << this->listEllipse.at(i)->getMovement()->getId() << endl;
 		    this->addLineItem(this->listEllipse.at(i)->rect().x() + 25, this->listEllipse.at(i)->rect().y() + 50, this->listTriangle.at(j)->x() + 25, this->listTriangle.at(j)->y());
 		    this->scene()->addItem(this->listLines.last());
 		}
 	    }
-	}
+	}*/
+
 	// LIGNE MOVEMENT - PORTS
 	if(this->listEllipse.at(i)->getMovement()->getListClients()->size() != 0)
 	    for(int j = 0 ; j < this->listDiamond.size() ; j++)
@@ -298,6 +291,16 @@ void BlackBoard::refresh()
 
 		    }
     }
+    for(int i = 0 ; i < this->listTriangle.size() ; i++)
+	for(int j = 0 ; j < this->listTriangle.at(i)->getSampleAudio()->getListIdMovement()->size() ; j++)
+	    for(int k = 0 ; k < this->listEllipse.size() ; k++)
+		if(this->listTriangle.at(i)->getSampleAudio()->getListIdMovement()->at(j) == this->listEllipse.at(k)->getMovement()->getId())
+		{
+		    qDebug() << "id sample : " << this->listEllipse.at(k)->getMovement()->getSampleAudio()->getId() << endl;
+		    qDebug() << "id mvt : " << this->listEllipse.at(k)->getMovement()->getId() << endl;
+		    this->addLineItem(this->listEllipse.at(k)->rect().x() + 25, this->listEllipse.at(k)->rect().y() + 50, this->listTriangle.at(i)->x() + 25, this->listTriangle.at(i)->y());
+		    this->scene()->addItem(this->listLines.last());
+		}
 }
 
 void BlackBoard::addLineItem(const quint16 x1, const quint16 y1, const quint16 x2, const quint16 y2)

@@ -83,7 +83,8 @@ void ManagerMovements::save(Movement *movement, QSettings &fichierMovement)
 {
     QString key = QString::number(movement->getId());
     fichierMovement.setValue(key, qVariantFromValue(*movement));
-    this->managerJointMvt->save(movement->getListJointsMvt());
+    if(!movement->getListJointsMvt()->isEmpty())
+	this->managerJointMvt->save(movement->getListJointsMvt());
 }
 
 void ManagerMovements::remove(Movement *movement)
@@ -133,9 +134,11 @@ void ManagerMovements::initSystem()
 void ManagerMovements::sortMovements()
 {
     for(int i = 1 ; i < this->listMovements->size() ; i++)
-	if(this->listMovements->at(i - 1)->getListJointsMvt()->at(0)->getListPositions()->size() >
-		this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->size())
-	    this->listMovements->swap(i, i - 1);
+	if(!this->listMovements->at(i)->getListJointsMvt()->isEmpty() && !this->listMovements->at(i - 1)->getListJointsMvt()->isEmpty())
+	    if(!this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->isEmpty() && !this->listMovements->at(i - 1)->getListJointsMvt()->at(0)->getListPositions()->isEmpty())
+		if(this->listMovements->at(i - 1)->getListJointsMvt()->at(0)->getListPositions()->size() >
+			this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->size())
+		    this->listMovements->swap(i, i - 1);
 }
 
 void ManagerMovements::sortMovementsById()

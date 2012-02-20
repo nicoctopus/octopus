@@ -299,22 +299,36 @@ QString MainWindow::textDisplay(Movement *movement)
     text.append(QString::number(movement->getListJointsMvt()->size()));
     text.append("<br/>");
     text.append("<b>Nombre de positions : </b>");
-    text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size()));
+    if(!movement->getListJointsMvt()->isEmpty())
+	text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size()));
+    else text.append("0 position");
     text.append("<br/>");
     text.append("<b>Temps du mouvement : </b>");
-    text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size() * INTERVAL_TIME));
-    text.append(" ms <br/>");
+    if(!movement->getListJointsMvt()->isEmpty())
+    {
+	text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size() * INTERVAL_TIME));
+	text.append(" ms ");
+    }
+    else text.append("0 ms");
+    text.append("<br/>");
     for(int i = 0 ; i < movement->getListJointsMvt()->size() ; i++)
     {
 	text.append("- ");
 	text.append(movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
 	text.append("<br/>");
     }
-    text.append("<br/><b>SampleAudio : </b>");
-    text.append(movement->getSampleAudio()->getName());
-    text.append("<br/><b>Clients OSC : </b>");
-    for(int i = 0 ; i < movement->getListClients()->size() ; i++)
-	text.append(movement->getListClients()->at(i)->getName());
+    text.append("<br/><b>SampleAudio : </b><br/>");
+    if(movement->getSampleAudio())
+	text.append(movement->getSampleAudio()->getName());
+    else ("Aucun");
+    text.append("<br/><b>Clients OSC : </b><br/>");
+    if(!movement->getListClients()->isEmpty())
+	for(int i = 0 ; i < movement->getListClients()->size() ; i++)
+	{
+	    text.append(movement->getListClients()->at(i)->getName());
+	    text.append(("<br/>"));
+	}
+    else text.append("Aucun");
     return text;
 }
 
