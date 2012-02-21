@@ -23,10 +23,10 @@ void BlackBoard::selectedItems(){
     itemsToLink.append(this->scene()->selectedItems().at(0));
     //qDebug() << this->itemsToLink.size() << endl;
     if(this->itemsToLink.size() == 2){
-    EllipseDuProjet *ellipse;
-    if(this->itemsToLink.at(0)->type() == 65537)
+	EllipseDuProjet *ellipse;
+	if(this->itemsToLink.at(0)->type() == 65537)
 	{
-        ellipse = (EllipseDuProjet*)this->itemsToLink.at(0);
+	    ellipse = (EllipseDuProjet*)this->itemsToLink.at(0);
 	    if(this->itemsToLink.at(1)->type() == 65539)
 	    {
 		Triangle *triangle = (Triangle*)(this->itemsToLink.at(1));
@@ -42,7 +42,7 @@ void BlackBoard::selectedItems(){
 	}
 	else if(this->itemsToLink.at(1)->type() == 65537)
 	{
-        ellipse = (EllipseDuProjet*)this->itemsToLink.at(1);
+	    ellipse = (EllipseDuProjet*)this->itemsToLink.at(1);
 	    if(this->itemsToLink.at(0)->type() == 65539)
 	    {
 		Triangle *triangle = (Triangle*)(this->itemsToLink.at(0));
@@ -83,7 +83,7 @@ void BlackBoard::updateSampleAudioOfMovement(Movement *movement, SampleAudio *ne
     movement->setSampleAudio(newSampleAudio);
     movement->getSampleAudio()->updateIdMovement(movement->getId());
     emit save(movement);
-    emit refreshSignal();
+    this->refresh();
 }
 
 // -----------------------------------------------------------
@@ -181,13 +181,20 @@ void BlackBoard::setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio)
 // -----------------------------------------------------------
 // SLOT
 // -----------------------------------------------------------
+
 void BlackBoard::refresh()
 {
-    emit clearScene();
+
+    QList<QGraphicsItem*> listItemsToDelete = this->scene()->items();
+    int nbItemsToDelete = listItemsToDelete.size();
+    for(int i = 0 ; i < nbItemsToDelete  ; i++){
+	this->scene()->removeItem(listItemsToDelete.at(i));
+    }
     this->listEllipse.clear();
     this->listDiamond.clear();
     this->listTriangle.clear();
     this->listLines.clear();
+
 
     //MOVEMENT/ELLIPSE
     if(this->listEllipse.isEmpty())
@@ -263,19 +270,19 @@ void BlackBoard::refresh()
     for(int i = 0 ; i < this->listEllipse.size() ; i++)
     {
 	//LIGNE MOVMEMENT - SAMPLE AUDIO
-	/*if(this->listEllipse.at(i)->getMovement()->getSampleAudio() != NULL)
+	if(this->listEllipse.at(i)->getMovement()->getSampleAudio() != NULL)
 	{
 	    for(int j = 0 ; j < this->listTriangle.size() ; j++)
 	    {
 		if(this->listEllipse.at(i)->getMovement()->getSampleAudio()->getId() == this->listTriangle.at(j)->getSampleAudio()->getId())
 		{
-		    qDebug() << "id sample : " << this->listEllipse.at(i)->getMovement()->getSampleAudio()->getId() << endl;
-		    qDebug() << "id mvt : " << this->listEllipse.at(i)->getMovement()->getId() << endl;
+		    //qDebug() << "id sample : " << this->listEllipse.at(i)->getMovement()->getSampleAudio()->getId() << endl;
+		    //qDebug() << "id mvt : " << this->listEllipse.at(i)->getMovement()->getId() << endl;
 		    this->addLineItem(this->listEllipse.at(i)->rect().x() + 25, this->listEllipse.at(i)->rect().y() + 50, this->listTriangle.at(j)->x() + 25, this->listTriangle.at(j)->y());
 		    this->scene()->addItem(this->listLines.last());
 		}
 	    }
-	}*/
+	}
 
 	// LIGNE MOVEMENT - PORTS
 	if(this->listEllipse.at(i)->getMovement()->getListClients()->size() != 0)
@@ -288,16 +295,6 @@ void BlackBoard::refresh()
 
 		    }
     }
-    for(int i = 0 ; i < this->listTriangle.size() ; i++)
-	for(int j = 0 ; j < this->listTriangle.at(i)->getSampleAudio()->getListIdMovement()->size() ; j++)
-	    for(int k = 0 ; k < this->listEllipse.size() ; k++)
-		if(this->listTriangle.at(i)->getSampleAudio()->getListIdMovement()->at(j) == this->listEllipse.at(k)->getMovement()->getId())
-		{
-		    qDebug() << "id sample : " << this->listEllipse.at(k)->getMovement()->getSampleAudio()->getId() << endl;
-		    qDebug() << "id mvt : " << this->listEllipse.at(k)->getMovement()->getId() << endl;
-		    this->addLineItem(this->listEllipse.at(k)->rect().x() + 25, this->listEllipse.at(k)->rect().y() + 50, this->listTriangle.at(i)->x() + 25, this->listTriangle.at(i)->y());
-		    this->scene()->addItem(this->listLines.last());
-		}
 }
 
 void BlackBoard::addLineItem(const quint16 x1, const quint16 y1, const quint16 x2, const quint16 y2)

@@ -50,7 +50,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->ButtonAdd, SIGNAL(clicked()), this, SLOT(boutonAddSample()));
 
     connect(this->controller->getServerOsc(), SIGNAL(jointMvtTooBig()), this, SLOT(slotTimeOutRecord()));
-
+    //-------------------------------------------
+    //connect(ui->pushButtonTEST, SIGNAL(clicked()), ui->blackboard->scene(), SLOT(clear()));
+    //-------------------------------------------
     connect(ui->start, SIGNAL(clicked()), this,SLOT(slotStartLivePerformance()));
     connect(this, SIGNAL(sigMoveStickman(Movement*)), ui->stickMan, SLOT(slotMoveStickMan(Movement*)));
 
@@ -167,8 +169,8 @@ void MainWindow::remove(ClientOSC *clientOSC)
 }
 
 void MainWindow::slotNewSelectionOnBlackBoard(){
-    if((ui->checkBox->checkState() == 2)&&(ui->blackboard->scene()->selectedItems().isEmpty() == false)){
-        ui->blackboard->selectedItems();
+    if((ui->checkBox->checkState() == 2) && !ui->blackboard->scene()->selectedItems().isEmpty()){
+	ui->blackboard->selectedItems();
     }
 }
 
@@ -187,22 +189,12 @@ void MainWindow::slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int){
 //------------- Pour stickMan -------
 void MainWindow::movingStickMan(){
     Movement *movement = NULL;
-    bool ok = false;
-    if(!ui->blackboard->scene()->selectedItems().isEmpty()){
-        if(ui->blackboard->scene()->selectedItems().at(0)->type() == 65537)
-        {
-            EllipseDuProjet *ellipse = (EllipseDuProjet*)(ui->blackboard->scene()->selectedItems().at(0));
-            movement = ellipse->getMovement();
-            emit sigMoveStickman(movement);
-        }
-    }
-    else if(!ui->leftTree->selectedItems().isEmpty())
+    if(!ui->leftTree->selectedItems().isEmpty())
     {
         if(ui->leftTree->selectedItems().at(0)->parent()->text(0) == "Movements")
         {
 	    movement = (Movement*)(ui->leftTree->getMapTreeItemsMovement().value(ui->leftTree->selectedItems().at(0)));
-	    //qDebug() << movement->getId() << endl;
-            emit sigMoveStickman(movement);
+	    emit sigMoveStickman(movement);
         }
     }
 
@@ -428,7 +420,7 @@ int MainWindow::slotLockNodesForNewMouvement(){
 
     if(nodesSelected.size() == 0){
         QMessageBox msgBox;
-        msgBox.setText("Aucuns joints selectionnés \n Veuillez en selectionner au moins un.");
+	msgBox.setText("Aucuns joints selectionnés. Veuillez en selectionner au moins un.");
         msgBox.exec();
         return 0;
     }
@@ -443,8 +435,9 @@ int MainWindow::slotLockNodesForNewMouvement(){
         //QMessageBox msgBox;
         //msgBox.setText("Vous avez verrouillé " + QString::number(nodesSelected.size()) + " joints:\n" + nomsDesJoints);
         //msgBox.exec();
-        ui->stickMan->reCreateStickMan();
-        //ui->stickMan->getNodesSelected().clear();
+	ui->stickMan->reCreateStickMan();
+
+	//ui->stickMan->getNodesSelected().clear();
 
 
 
@@ -475,6 +468,7 @@ void MainWindow::slotRecordNewMovement(){
         ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/recordgris.png)");
         ui->pushButton_recordmouvement->setEnabled(false);
         ui->nommouvement->setVisible(true);
+	ui->nommouvement->setText("");
         ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/save.png)");
         ui->pushButton_enregistrermouvement->setEnabled(true);
 
@@ -493,6 +487,7 @@ void MainWindow::slotTimeOutRecord()
     ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/recordgris.png)");
     ui->pushButton_recordmouvement->setEnabled(false);
     ui->nommouvement->setVisible(true);
+    ui->nommouvement->setText("");
     ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/save.png)");
     ui->pushButton_enregistrermouvement->setEnabled(true);
 
@@ -500,22 +495,31 @@ void MainWindow::slotTimeOutRecord()
 }
 
 void MainWindow::slotValidNewMovement(){
-    movement->setName(ui->nommouvement->text());
-    controller->getManagerElements()->addMovement(movement);
-    this->refreshLeftTree();
-    //qDebug() << movement->getName() << endl;
+    if(ui->nommouvement->text().isEmpty() == true){
+	QMessageBox msg;
+	msg.setText("Veuillez entrer un nom au mouvement");
+	msg.exec();
+    }
+    else{
+	movement->setName(ui->nommouvement->text());
+	controller->getManagerElements()->addMovement(movement);
+	this->refreshLeftTree();
+	//qDebug() << movement->getName() << endl;
 
+	//ui->pushButton_enregistrermouvement->setVisible(false);
+	//ui->pushButton_supprimermouvement->setVisible(false);
+	ui->nommouvement->setVisible(false);
+	//ui->pushButton_creermouvement->setVisible(true);
+	ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/savegris.png)");
+	ui->pushButton_enregistrermouvement->setEnabled(false);
+	ui->pushButton_supprimermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/deletegris.png)");
+	ui->pushButton_enregistrermouvement->setEnabled(false);
+	ui->pushButton_creermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/creermouvement.png)");
+	ui->pushButton_creermouvement->setEnabled(true);
 
-    //ui->pushButton_enregistrermouvement->setVisible(false);
-    //ui->pushButton_supprimermouvement->setVisible(false);
-    ui->nommouvement->setVisible(false);
-    //ui->pushButton_creermouvement->setVisible(true);
-    ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/savegris.png)");
-    ui->pushButton_enregistrermouvement->setEnabled(false);
-    ui->pushButton_supprimermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/deletegris.png)");
-    ui->pushButton_enregistrermouvement->setEnabled(false);
-    ui->pushButton_creermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/creermouvement.png)");
-    ui->pushButton_creermouvement->setEnabled(true);
+	//ui->stickMan->reCreateStickMan();
+
+    }
 
 }
 
@@ -536,6 +540,9 @@ void MainWindow::slotEscNewMovement(){
     ui->pushButton_supprimermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/deletegris.png)");
     ui->pushButton_verrouiller->setStyleSheet("background:url(:/new/prefix1/images_boutons/cadenasgris.png)");
     ui->stickMan->reCreateStickMan();
+
+    //ui->stickMan->reCreateStickMan();
+
 }
 
 
