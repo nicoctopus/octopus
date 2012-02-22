@@ -179,12 +179,15 @@ void ServerOSC::fillBuffers(){
             if(launchAnalyze && allBuffersSameSize()) {
 
                 this->analyse->calculBITG(this->listMovements);
+            }else{
+
+             //qDebug()<< "ON SORT DU FILL ! "<< endl;
             }
         }
     }
 
 
-    qDebug()<< "ON SORT DU FILL ! "<< endl;
+
 }
 
 /**
@@ -342,7 +345,7 @@ bool ServerOSC::isRecording() {
 }
 
 void ServerOSC::setAnalyse() {
-    this->analyse = new Analyse(0,40);
+    this->analyse = new Analyse(0,50);
 }
 
 void ServerOSC::deleteAnalyse(){

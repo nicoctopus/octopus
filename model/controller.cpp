@@ -38,9 +38,9 @@ Controller::Controller()
       **/
 
     this->serveurOSC = new ServerOSC(12345, false); //Serveur "ecouteur" de synapse
-    this->serveurOSC->start();
+
     this->client = new ClientOSC(12346, QString("localhost"), false);
-    this->client->start();
+
 
 
 }
@@ -130,6 +130,8 @@ void Controller::analizeRecord()
 }
 
 void Controller::stopAnalize(){
+
+    qDebug() << "STOP ANALYSE !! " << endl;
 
     this->serveurOSC->setRunnable(false);
     this->client->setRunnable(false);

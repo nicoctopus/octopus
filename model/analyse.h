@@ -14,27 +14,21 @@
 class Analyse
 {
 private:
-    float pourcentage;
-    float seuil;
+    float seuilFrequence;
+    float seuilAmplitude;
     SoundPlayer * p;
     SampleAudio * music;
 
-
+    QList<Position*>* modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt);
+    Position* moyenne(Position* p1, Position *p2);
+    qint8 NbPivots(QList<Position*> *);
+    float EcartRelatif(QList<Position*> *,QList<Position*> *);
 
 public:
     Analyse();
     ~Analyse();
     Analyse(float,float);
     void calculBITG(QList<Movement *> *);
-
-
-
-private :
-    QList<Position*>* modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt);
-    Position* moyenne(Position* p1, Position *p2);
-    qint8 NbPivots(QList<Position*> *);
-    float EcartRelatif(QList<Position*> *,QList<Position*> *);
-
 
 };
 
