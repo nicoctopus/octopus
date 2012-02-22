@@ -152,6 +152,17 @@ void ManagerMovements::sortMovementsById()
 	}
 }
 
+QList<Movement*>*  ManagerMovements::getListMovementsByName()
+{
+    QList<Movement*> *listMovementsSortedByName = new QList<Movement*>(*this->listMovements);
+    if(listMovementsSortedByName->size() > 1)
+	for(int i = 0 ; i < listMovementsSortedByName->size() ; i++)
+	    for(int j = i + 1 ; j < listMovementsSortedByName->size() ; j++)
+		if(QString::localeAwareCompare(listMovementsSortedByName->at(i)->getName().toLower(), listMovementsSortedByName->at(j)->getName().toLower()) > 0)
+		    listMovementsSortedByName->swap(i, j);
+    return listMovementsSortedByName;
+}
+
 void ManagerMovements::addMovement(Movement *movement)
 {
     this->listMovements->append(movement);

@@ -65,7 +65,7 @@ void MainWindow::initTreeView()
 {
     //Initialisation du TreeView
     connect(this, SIGNAL(refreshLeftTree()), ui->leftTree, SLOT(refresh()));
-    ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovements());
+    ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovementsByName());
     ui->leftTree->setListPorts(this->controller->getManagerElements()->getManagerClientOSC()->getListClientsOSC());
     ui->leftTree->setListSamplesAudio(this->controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudios());
     emit refreshLeftTree();
@@ -146,6 +146,7 @@ void MainWindow::remove(Movement *movement)
 {
     this->controller->getManagerElements()->remove(movement);
     ui->blackboard->setListMovements(controller->getManagerElements()->getManagerMovements()->getListMovementsActive());
+    this->ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovementsByName());
     emit refreshLeftTree();
     emit refreshBlackBoard();
 }
@@ -499,8 +500,9 @@ void MainWindow::slotValidNewMovement(){
 	msg.exec();
     }
     else{
-	movement->setName(ui->nommouvement->text());
-	controller->getManagerElements()->addMovement(movement);
+	this->movement->setName(ui->nommouvement->text());
+	this->controller->getManagerElements()->addMovement(movement);
+	this->ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovementsByName());
 	this->refreshLeftTree();
 	//qDebug() << movement->getName() << endl;
 

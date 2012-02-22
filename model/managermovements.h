@@ -29,6 +29,7 @@ public:
     //Methodes
     void sortMovements();
     void sortMovementsById();
+    QList<Movement*>* getListMovementsByName();
     void addMovement(Movement *movement);
 };
 
