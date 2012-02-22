@@ -11,7 +11,7 @@ ManagerElements::ManagerElements() : Manager()
 
     /**
       *
-      **/
+      **
     this->managerSampleAudio->getListSamplesAudios()->append(new SampleAudio("01 By the Way", "../../../01 By the Way.mp3", 1, false));
     this->managerSampleAudio->getListSamplesAudios()->append(new SampleAudio("03 Scar Tissue", "../../../03 Scar Tissue.mp3", 2, false));
     this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(1234, "localhost", false));
@@ -33,7 +33,7 @@ ManagerElements::ManagerElements() : Manager()
     this->managerMovements->getListMovements()->at(2)->addJointMvt(j3);
     /**
      *
-    **/
+    **
     this->saveAll();
     this->dispacher();
     /**
@@ -193,13 +193,19 @@ void ManagerElements::remove(Movement *movement)
 	QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
 	this->managerSampleAudio->save(movement->getSampleAudio(), fichierSampleAudio);
 	fichierSampleAudio.sync();
-	movement->setSampleAudio(NULL);
     }
     if(movement->getSampleVideo())
 	movement->getSampleVideo()->removeId(movement->getId());
-    if(movement->getListClients())
+    if(!movement->getListClients()->isEmpty())
+    {
+	QSettings fichierClientOSC("clientOSC.ini", QSettings::IniFormat);
 	for(int i = 0 ; i < movement->getListClients()->size() ; i++)
+	{
 	    movement->getListClients()->at(i)->removeIdMovement(movement->getId());
+	    this->managerClientOSC->save(movement->getListClients()->at(i), fichierClientOSC);
+	}
+	fichierClientOSC.sync();
+    }
     this->managerMovements->remove(movement);
 }
 
