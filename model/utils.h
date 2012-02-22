@@ -4,7 +4,7 @@
 #include <QtGlobal>
 #include "position.h"
 
-#define COEF_FLOAT2INT 100 // 100
+#define COEF_FLOAT2INT 1 //
 #define SIZE_MAX_BUFFERS 450
 #define INTERVAL_TIME 18 // 18 ms
 #define SIZE_MAX_JOINT_MOVEMENT 200

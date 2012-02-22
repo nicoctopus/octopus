@@ -38,9 +38,9 @@ Controller::Controller()
       **/
 
     this->serveurOSC = new ServerOSC(12345, false); //Serveur "ecouteur" de synapse
-    this->serveurOSC->start();
+
     this->client = new ClientOSC(12346, QString("localhost"), false);
-    this->client->start();
+
 
 
 }
@@ -66,14 +66,14 @@ void Controller::stopRecord(Movement *movement)
     for(int j=0;j<movement->getListJointsMvt()->size();j++) {
 	qDebug() << movement->getListJointsMvt()->at(j)->getJointRef()->getNom() << endl;
 	for(int k=0; k<movement->getListJointsMvt()->at(j)->getListPositions()->size();k++){
-	    qDebug() << "Position : " << k << endl
-		     << "X : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getX() << endl
-		     << "DX : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDx() << endl
-		     << "Y : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getY() << endl
-		     << "DY : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDy() << endl
-		     << "Z : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getZ() << endl
-		     << "DZ : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDz() << endl
-		     << endl<<endl;
+            qDebug() << "Position : " << k << endl;
+                qDebug()     << "X : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getX() << endl;
+                qDebug()     << "DX : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDx() << endl;
+                qDebug()     << "Y : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getY() << endl;
+                qDebug()     << "DY : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDy() << endl;
+                qDebug()     << "Z : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getZ() << endl;
+                qDebug()     << "DZ : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDz() << endl;
+                qDebug()     << endl<<endl;
 	}
     }
 }
@@ -130,6 +130,8 @@ void Controller::analizeRecord()
 }
 
 void Controller::stopAnalize(){
+
+    qDebug() << "STOP ANALYSE !! " << endl;
 
     this->serveurOSC->setRunnable(false);
     this->client->setRunnable(false);

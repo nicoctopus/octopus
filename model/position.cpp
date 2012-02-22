@@ -1,7 +1,7 @@
 #include "position.h"
 #include "qDebug"
 quint32 Position::idPositionsStatic = 0;
-
+float DIVISEUR = 0.1;
 /**
   *   CONSTRUCTEUR
   **/
@@ -13,9 +13,9 @@ Position::Position(const float &x, const float &y, const float &z, const Positio
 {
     this->idJoinMvt = 0;
     this->id = 0;
-    this->x = (qint32) COEF_FLOAT2INT * x;
-    this->y = (qint32) COEF_FLOAT2INT * y;
-    this->z = (qint32) COEF_FLOAT2INT * z;
+    this->x = (qint32) COEF_FLOAT2INT * x * DIVISEUR;
+    this->y = (qint32) COEF_FLOAT2INT * y * DIVISEUR;
+    this->z = (qint32) COEF_FLOAT2INT * z * DIVISEUR;
     this->dx = std::abs((int)(this->x - previousPosition.x)) / INTERVAL_TIME;
     this->dy = std::abs((int)(this->y - previousPosition.y)) / INTERVAL_TIME;
     this->dz = std::abs((int)(this->z - previousPosition.z)) / INTERVAL_TIME;
@@ -25,9 +25,9 @@ Position::Position(const float &x, const float &y, const float &z)
 {
     this->idJoinMvt = 0;
     this->id = 0;
-    this->x = (qint32) COEF_FLOAT2INT * x;
-    this->y = (qint32) COEF_FLOAT2INT * y;
-    this->z = (qint32) COEF_FLOAT2INT * z;
+    this->x = (qint32) COEF_FLOAT2INT * x * DIVISEUR;
+    this->y = (qint32) COEF_FLOAT2INT * y * DIVISEUR;
+    this->z = (qint32) COEF_FLOAT2INT * z * DIVISEUR;
     this->dx = 0;//std::abs(this->x)/INTERVAL_TIME;
     this->dy = 0;//std::abs(this->y)/INTERVAL_TIME;
     this->dz = 0;//std::abs(this->z)/INTERVAL_TIME;
@@ -37,12 +37,12 @@ Position::Position (const quint32 &idJoinMvt, const float &x, const float &y, co
 {
     this->id = ++idPositionsStatic;
     this->idJoinMvt = idJoinMvt;
-    this->x = (qint32) COEF_FLOAT2INT * x;
-    this->y = (qint32) COEF_FLOAT2INT * y;
-    this->z = (qint32) COEF_FLOAT2INT * z;
-    this->a = (qint32) COEF_FLOAT2INT * a;
-    this->b = (qint32) COEF_FLOAT2INT * b;
-    this->c = (qint32) COEF_FLOAT2INT * c;
+    this->x = (qint32) COEF_FLOAT2INT * x * DIVISEUR;
+    this->y = (qint32) COEF_FLOAT2INT * y * DIVISEUR;
+    this->z = (qint32) COEF_FLOAT2INT * z * DIVISEUR;
+    this->a = (qint32) COEF_FLOAT2INT * a * DIVISEUR;
+    this->b = (qint32) COEF_FLOAT2INT * b * DIVISEUR;
+    this->c = (qint32) COEF_FLOAT2INT * c * DIVISEUR;
     this->dx = 0;
     this->dy = 0;
     this->dz = 0;
@@ -53,12 +53,12 @@ Position::Position(const quint32 &idJoinMvt, const float &x, const float &y, con
 {
     this->id = ++idPositionsStatic;
     this->idJoinMvt = idJoinMvt;
-    this->x = (qint32) COEF_FLOAT2INT * x;
-    this->y = (qint32) COEF_FLOAT2INT * y;
-    this->z = (qint32) COEF_FLOAT2INT * z;
-    this->a = (qint32) COEF_FLOAT2INT * a;
-    this->b = (qint32) COEF_FLOAT2INT * b;
-    this->c = (qint32) COEF_FLOAT2INT * c;
+    this->x = (qint32) COEF_FLOAT2INT * x * DIVISEUR;
+    this->y = (qint32) COEF_FLOAT2INT * y * DIVISEUR;
+    this->z = (qint32) COEF_FLOAT2INT * z * DIVISEUR;
+    this->a = (qint32) COEF_FLOAT2INT * a * DIVISEUR;
+    this->b = (qint32) COEF_FLOAT2INT * b * DIVISEUR;
+    this->c = (qint32) COEF_FLOAT2INT * c * DIVISEUR;
     this->dx = std::abs((int)(this->x - previousPosition.x)) / INTERVAL_TIME;
     this->dy = std::abs((int)(this->y - previousPosition.y)) / INTERVAL_TIME;
     this->dz = std::abs((int)(this->z - previousPosition.z)) / INTERVAL_TIME;
@@ -69,15 +69,15 @@ Position::Position(const quint32 &idJoinMvt, const qint32 &x, const qint32 &y, c
 {
     this->id = ++idPositionsStatic;
     this->idJoinMvt = idJoinMvt;
-    this->x = x;
-    this->y = y;
-    this->z = z;
+    this->x = x  * DIVISEUR;
+    this->y = y * DIVISEUR;
+    this->z = z * DIVISEUR;
     this->dx = dx;
     this->dy = dy;
     this->dz = dz;
-    this->a = a;
-    this->b = b;
-    this->c = c;
+    this->a = a * DIVISEUR;
+    this->b = b * DIVISEUR;
+    this->c = c * DIVISEUR;
 }
 
 Position::Position (const Position &position)
@@ -94,6 +94,30 @@ Position::Position (const Position &position)
     this->dy = position.dy;
     this->dz = position.dz;
 }
+
+
+Position* Position::ecartPivot(const Position &pos){
+
+    Position * posEcart = new Position();
+
+    posEcart->setX(this->x-pos.x);
+    if(posEcart->getX()==0)
+        posEcart->setX(1);
+    posEcart->setY(this->y-pos.y);
+    if(posEcart->getY()==0)
+        posEcart->setY(1);
+    posEcart->setZ(this->z-pos.z);
+    if(posEcart->getZ()==0)
+        posEcart->setZ(1);
+
+    posEcart->setDx(0);
+    posEcart->setDy(0);
+    posEcart->setDz(0);
+
+    return posEcart;
+}
+
+
 /**
 *      GETTERS
 **/
@@ -234,3 +258,6 @@ QDataStream & operator >> (QDataStream & in, Position &valeur)
     in >> valeur.dz;
     return in;
 }
+
+
+
