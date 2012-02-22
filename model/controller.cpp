@@ -7,7 +7,6 @@ Controller::Controller()
     this->linkJointToJointMvt();
     this->playerlive = new SoundPlayer(32);
     this->playerdemo = new SoundPlayer(1);
-    this->managerElements->getManagerMovements()->sortMovements();
     /**
       *AFFICHAGE des infos sur le MVT
       **
