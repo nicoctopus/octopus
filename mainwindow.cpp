@@ -144,17 +144,15 @@ void MainWindow::save(SampleAudio *sampleAudio)
 
 void MainWindow::remove(Movement *movement)
 {
-    this->controller->getManagerElements()->removeMovement(movement);
+    this->controller->getManagerElements()->remove(movement);
     ui->blackboard->setListMovements(controller->getManagerElements()->getManagerMovements()->getListMovementsActive());
-    ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
-    ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
     emit refreshLeftTree();
     emit refreshBlackBoard();
 }
 
 void MainWindow::remove(SampleAudio *sampleAudio)
 {
-    this->controller->getManagerElements()->getManagetSampleAudio()->remove(sampleAudio);
+    this->controller->getManagerElements()->remove(sampleAudio);
     ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
     emit refreshLeftTree();
     emit refreshBlackBoard();
@@ -162,7 +160,7 @@ void MainWindow::remove(SampleAudio *sampleAudio)
 
 void MainWindow::remove(ClientOSC *clientOSC)
 {
-    this->controller->getManagerElements()->getManagerClientOSC()->remove(clientOSC);
+    this->controller->getManagerElements()->remove(clientOSC);
     ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
     emit refreshLeftTree();
     emit refreshBlackBoard();

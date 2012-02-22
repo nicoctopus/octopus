@@ -159,6 +159,11 @@ void MyLeftTree::slotRemove()
 	SampleAudio *sampleAudio = this->mapTreeItemsSample.value(this->currentItem());
 	emit remove(sampleAudio);
     }
+    else if(this->currentItem()->parent()->text(0) == "Ports")
+    {
+	ClientOSC *clientOSC = this->mapTreeItemsPort.value(this->currentItem());
+	emit remove(clientOSC);
+    }
 }
 
 void MyLeftTree::slotEdit()
