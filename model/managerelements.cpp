@@ -32,12 +32,14 @@ ManagerElements::ManagerElements() : Manager()
     j3->addPosition(new Position(1,1,0,0,0,0,0));
     this->managerMovements->getListMovements()->at(2)->addJointMvt(j3);
     /**
+     *
+    **
+    this->saveAll();
+    this->dispacher();
+    /**
       *
       **/
-    //this->saveAll();
-    //this->loadAll();
-    //this->managerMovements->sortMovementsById();
-    //this->removeMovement(this->managerMovements->getListMovements()->at(1));
+    this->loadAll();
     /**
       *
       **/
@@ -80,7 +82,6 @@ void ManagerElements::dispacher()
 		this->managerMovements->getListMovements()->at(i)->setSampleAudio(this->managerSampleAudio->getListSamplesAudios()->at(j));
 		this->managerMovements->getListMovements()->at(i)->setActive(true);
 		this->managerSampleAudio->getListSamplesAudios()->at(j)->setActive(true);
-		qDebug() << "link movment sampleAudio" << this->managerMovements->getListMovements()->at(i)->getName() << this->managerSampleAudio->getListSamplesAudios()->at(j)->getName() << endl;
 	    }
 	for(int j = 0 ; j < this->managerSampleVideo->getListSamplesVideos()->size() ; j++)
 	    for(int k = 0 ; k < this->managerSampleVideo->getListSamplesVideos()->at(j)->getListIdMovement()->size() ; k++)
@@ -89,7 +90,6 @@ void ManagerElements::dispacher()
 		this->managerMovements->getListMovements()->at(i)->setSampleVideo(this->managerSampleVideo->getListSamplesVideos()->at(j));
 		this->managerMovements->getListMovements()->at(i)->setActive(true);
 		this->managerSampleVideo->getListSamplesVideos()->at(j)->setActive(true);
-		qDebug() << "link movment sampleVideo" << this->managerMovements->getListMovements()->at(i)->getName() << this->managerSampleVideo->getListSamplesVideos()->at(j)->getName() << endl;
 	    }
 	for(int j = 0 ; j < this->managerClientOSC->getListClientsOSC()->size() ; j++)
 	{
@@ -99,7 +99,6 @@ void ManagerElements::dispacher()
 		    this->managerMovements->getListMovements()->at(i)->getListClients()->append(this->managerClientOSC->getListClientsOSC()->at(j));
 		    this->managerMovements->getListMovements()->at(i)->setActive(true);
 		    this->managerClientOSC->getListClientsOSC()->at(j)->setActive(true);
-		    qDebug() << "link movment clientOSC" << this->managerMovements->getListMovements()->at(i)->getName() << this->managerClientOSC->getListClientsOSC()->at(j)->getName() << endl;
 		}
 	}
     }
@@ -139,13 +138,12 @@ void ManagerElements::saveMovement(Movement *movement)
     QSettings fichierMovement ("movement.ini", QSettings::IniFormat);
 
     this->managerMovements->save(movement, fichierMovement);
-    if(movement->getSampleAudio() != NULL)
+    if(movement->getSampleAudio())
 	this->managerSampleAudio->save(movement->getSampleAudio(), fichierSampleAudio);
-    if(movement->getSampleVideo() != NULL)
+    if(movement->getSampleVideo())
 	this->managerSampleVideo->save(movement->getSampleVideo(), fichierSampleVideo);
     if(movement->getListClients())
 	this->managerClientOSC->save(movement->getListClients());
-    qDebug() << "TESSSSST" << endl;
     fichierSampleAudio.sync();
     fichierSampleVideo.sync();
     fichierMovement.sync();
@@ -187,16 +185,58 @@ void ManagerElements::addMovement(Movement *movement)
     this->saveMovement(movement);
 }
 
-void ManagerElements::removeMovement(Movement *movement)
+void ManagerElements::remove(Movement *movement)
 {
-    if(movement->getSampleAudio() != NULL)
+    if(movement->getSampleAudio())
+    {
 	movement->getSampleAudio()->removeId(movement->getId());
-    if(movement->getSampleVideo() != NULL)
+	QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
+	this->managerSampleAudio->save(movement->getSampleAudio(), fichierSampleAudio);
+	fichierSampleAudio.sync();
+    }
+    if(movement->getSampleVideo())
 	movement->getSampleVideo()->removeId(movement->getId());
-    if(movement->getListClients() != NULL)
+    if(!movement->getListClients()->isEmpty())
+    {
+	QSettings fichierClientOSC("clientOSC.ini", QSettings::IniFormat);
 	for(int i = 0 ; i < movement->getListClients()->size() ; i++)
+	{
 	    movement->getListClients()->at(i)->removeIdMovement(movement->getId());
+	    this->managerClientOSC->save(movement->getListClients()->at(i), fichierClientOSC);
+	}
+	fichierClientOSC.sync();
+    }
     this->managerMovements->remove(movement);
+}
+
+void ManagerElements::remove(SampleAudio *sampleAudio)
+{
+    QSettings fichierMovement ("movement.ini", QSettings::IniFormat);
+    for(int i = 0 ; i < this->managerMovements->getListMovements()->size() ; i++)
+	if(this->managerMovements->getListMovements()->at(i)->getSampleAudio())
+	    if(this->managerMovements->getListMovements()->at(i)->getSampleAudio()->getId() == sampleAudio->getId())
+	    {
+		this->managerMovements->getListMovements()->at(i)->setSampleAudio(NULL);
+		this->managerMovements->save(this->managerMovements->getListMovements()->at(i), fichierMovement);
+	    }
+    fichierMovement.sync();
+    this->managerSampleAudio->remove(sampleAudio);
+}
+
+void ManagerElements::remove(ClientOSC *clientOSC)
+{
+    QSettings fichierMovement ("movement.ini", QSettings::IniFormat);
+    for(int i = 0 ; i < this->managerMovements->getListMovements()->size() ; i++)
+	if(!this->managerMovements->getListMovements()->at(i)->getListClients()->isEmpty())
+	    for(int j = 0 ; j < this->managerMovements->getListMovements()->at(i)->getListClients()->size() ; j++)
+		if(this->managerMovements->getListMovements()->at(i)->getListClients()->at(j)->getId() == clientOSC->getId())
+		{
+		    this->managerMovements->getListMovements()->at(i)->getListClients()->removeAt(j);
+		    this->managerMovements->save(this->managerMovements->getListMovements()->at(i), fichierMovement);
+		}
+    fichierMovement.sync();
+    this->managerClientOSC->remove(clientOSC);
+
 }
 
 /**

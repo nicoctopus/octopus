@@ -40,10 +40,10 @@ void ServerOSC::run() {
                 record(); // on enregistre le mouvement
             }
 
-        }
-        if(!recording){
-        this->deleteAnalyse();
-        }
+	}
+	if(!recording)
+	    this->deleteAnalyse();
+
     }
 
     // exec();

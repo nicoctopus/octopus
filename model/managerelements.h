@@ -36,7 +36,9 @@ public:
     ManagerMovements* getManagerMovements();
 
     void addMovement(Movement *movemement);
-    void removeMovement(Movement *movement);
+    void remove(Movement *movement);
+    void remove(SampleAudio *sampleAudio);
+    void remove(ClientOSC *clientOSC);
 };
 
 #endif // MANAGERELEMENTS_H
