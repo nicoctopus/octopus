@@ -304,6 +304,13 @@ border-radius: 25px;</string>
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonTEST">
+       <property name="text">
+        <string>TESTS</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -717,19 +724,19 @@ font: 14pt &quot;Fengardo&quot;;</string>
   <customwidget>
    <class>StickMan</class>
    <extends>QWidget</extends>
-   <header>stickman.h</header>
+   <header>view/stickman.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>BlackBoard</class>
    <extends>QWidget</extends>
-   <header>blackboard.h</header>
+   <header>view/blackboard.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>MyLeftTree</class>
    <extends>QWidget</extends>
-   <header>mylefttree.h</header>
+   <header>view/mylefttree.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

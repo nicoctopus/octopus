@@ -46,7 +46,9 @@ SOURCES += main.cpp\
     model/managerjointmvt.cpp \
     model/managerposition.cpp \
     model/managersamplevideo.cpp \
-    model/managermovements.cpp
+    model/managermovements.cpp \
+    view/threadmovestickman.cpp \
+    view/myqline.cpp
 
 HEADERS  += mainwindow.h \
     model/utils.h \
@@ -93,7 +95,9 @@ HEADERS  += mainwindow.h \
     model/managerjointmvt.h \
     model/managerposition.h \
     model/managersamplevideo.h \
-    model/managermovements.h
+    model/managermovements.h \
+    view/threadmovestickman.h \
+    view/myqline.h
 
 FORMS    += mainwindow.ui
 
@@ -109,6 +113,8 @@ else:macx: LIBS += -L$$PWD/FMOD/api/lib/ -lfmodex
 
 INCLUDEPATH += $$PWD/FMOD/api/inc
 DEPENDPATH += $$PWD/FMOD/api/inc
+
+
 
 
 

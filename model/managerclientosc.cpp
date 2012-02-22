@@ -30,13 +30,11 @@ void ManagerClientOSC::loadAll()
     {
 	ClientOSC *temp = new ClientOSC(fichierClientOSC.value(fichierClientOSC.allKeys().at(i), qVariantFromValue(ClientOSC())).value<ClientOSC>());
 	this->listClientOSC->append(temp);
-	qDebug() << "TEST3" << endl;
     }
 }
 
 void ManagerClientOSC::save(ClientOSC *clientOSC, QSettings &fichierClientOSC)
 {
-    qDebug() << "TEST2" << endl;
     QString key = QString::number(clientOSC->getId());
     fichierClientOSC.setValue(key, qVariantFromValue(*clientOSC));
 }
@@ -70,6 +68,28 @@ void ManagerClientOSC::remove(QList<ClientOSC*> *listClientOSCToDelete)
 	fichierClientOSC.remove(QString::number(listClientOSCToDelete->at(i)->getId()));
     }
     fichierClientOSC.sync();
+}
+
+void ManagerClientOSC::remove(ClientOSC *clientOSC)
+{
+    QSettings fichierClientOSC("clientOSC.ini", QSettings::IniFormat);
+    fichierClientOSC.remove(QString::number(clientOSC->getId()));
+    int idMax = this->listClientOSC->at(0)->getId();
+    for(int i = 1 ; i < this->listClientOSC->size() ; i++)
+	if(this->listClientOSC->at(i)->getId() > this->listClientOSC->at(i - 1)->getId())
+	    idMax = this->listClientOSC->at(i)->getId();
+    fichierClientOSC.remove(QString::number(idMax));
+    for(int i = 0 ; i < this->listClientOSC->size() ; i++)
+	if(this->listClientOSC->at(i)->getId() == idMax)
+	{
+	    this->listClientOSC->at(i)->updateId(clientOSC->getId());
+	    this->save(this->listClientOSC->at(i), fichierClientOSC);
+	}
+    fichierClientOSC.sync();
+    ClientOSC::idClientOSCStatic--;
+    for(int i = 0 ; i < this->listClientOSC->size() ; i++)
+	if(this->listClientOSC->at(i)->getId() == clientOSC->getId())
+	    this->listClientOSC->removeAt(i);
 }
 
 void ManagerClientOSC::initSystem()

@@ -21,8 +21,8 @@ private:
 
     QList<Position*>* modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt);
     Position* moyenne(Position* p1, Position *p2);
-    qint8 NbPivots(QList<Position*> *);
-    float EcartRelatif(QList<Position*> *,QList<Position*> *);
+   // qint8 NbPivots(QList<Position*> *);
+    float ecartRelatif(QList<Position*> *,QList<Position*> *);
 
 public:
     Analyse();

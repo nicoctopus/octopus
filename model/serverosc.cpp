@@ -40,10 +40,10 @@ void ServerOSC::run() {
                 record(); // on enregistre le mouvement
             }
 
-        }
-        if(!recording){
-        this->deleteAnalyse();
-        }
+	}
+	if(!recording)
+	    this->deleteAnalyse();
+
     }
 
     // exec();
@@ -177,7 +177,6 @@ void ServerOSC::fillBuffers(){
 
             //lancer l'analyse
             if(launchAnalyze && allBuffersSameSize()) {
-
                 this->analyse->calculBITG(this->listMovements);
             }else{
 

@@ -19,6 +19,7 @@ public:
 
 private :
     Movement *movement;
+
 };
 
 #endif // ELLIPSEDUPROJET_H

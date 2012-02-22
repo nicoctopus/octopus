@@ -32,6 +32,7 @@ void ManagerMovements::loadAll()
 	this->listMovements->append(new Movement(fichierMovement.value(fichierMovement.allKeys().at(i), qVariantFromValue(Movement())).value<Movement>()));
     this->managerJointMvt->loadAll();
     this->dispacher();
+    //this->sortMovementsById();
 }
 
 void ManagerMovements::dispacher()
@@ -82,12 +83,12 @@ void ManagerMovements::save(Movement *movement, QSettings &fichierMovement)
 {
     QString key = QString::number(movement->getId());
     fichierMovement.setValue(key, qVariantFromValue(*movement));
-    this->managerJointMvt->save(movement->getListJointsMvt());
+    if(!movement->getListJointsMvt()->isEmpty())
+	this->managerJointMvt->save(movement->getListJointsMvt());
 }
 
 void ManagerMovements::remove(Movement *movement)
 {
-    qDebug() << "         debut removeMovement..." << endl;
     quint32 idTemp = movement->getId();
     this->managerJointMvt->remove(movement->getListJointsMvt());
     movement->getListJointsMvt()->clear();
@@ -100,8 +101,8 @@ void ManagerMovements::remove(Movement *movement)
     for(int i = 0 ; i < this->listMovements->size() ; i++)
 	if(this->listMovements->at(i)->getId() == idTemp)
 	{
-	    //delete(this->listMovements->at(i));
 	    this->listMovements->removeAt(i);
+	    //delete(this->listMovements->at(i));
 	}
     if(this->getListMovements()->isEmpty() != true)
     {
@@ -109,6 +110,7 @@ void ManagerMovements::remove(Movement *movement)
 	for(int i = 1 ; i < this->listMovements->size() ; i++)
 	    if(this->listMovements->at(i)->getId() > this->listMovements->at(i - 1)->getId())
 		idTemp2 = this->listMovements->at(i)->getId();
+	//IDTEMP2 est la plus grosse ID de la liste
 	//On supprime le dernier mouvement de la liste de mouvement du fichier de serialisation
 	fichierMovement.remove(QString::number(idTemp2));
 	for(int i = 0 ; i < this->listMovements->size() ; i++)
@@ -121,7 +123,6 @@ void ManagerMovements::remove(Movement *movement)
     fichierMovement.sync();
 
     Movement::idMovementStatic--;
-    qDebug() << "         ...fin removeMovement" << endl;
 }
 
 void ManagerMovements::initSystem()
@@ -133,16 +134,22 @@ void ManagerMovements::initSystem()
 void ManagerMovements::sortMovements()
 {
     for(int i = 1 ; i < this->listMovements->size() ; i++)
-	if(this->listMovements->at(i - 1)->getListJointsMvt()->at(0)->getListPositions()->size() >
-		this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->size())
-	    this->listMovements->swap(i, i - 1);
+	if(!this->listMovements->at(i)->getListJointsMvt()->isEmpty() && !this->listMovements->at(i - 1)->getListJointsMvt()->isEmpty())
+	    if(!this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->isEmpty() && !this->listMovements->at(i - 1)->getListJointsMvt()->at(0)->getListPositions()->isEmpty())
+		if(this->listMovements->at(i - 1)->getListJointsMvt()->at(0)->getListPositions()->size() >
+			this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->size())
+		    this->listMovements->swap(i, i - 1);
 }
 
 void ManagerMovements::sortMovementsById()
 {
     for(int i = 1 ; i < this->listMovements->size() ; i++)
 	if(this->listMovements->at(i - 1)->getId() > this->listMovements->at(i)->getId())
+	{
+	    this->listMovements->at(i)->updateId(this->listMovements->at(i - 1)->getId());
+	    this->listMovements->at(i - 1)->updateId(this->listMovements->at(i)->getId());
 	    this->listMovements->swap(i, i - 1);
+	}
 }
 
 void ManagerMovements::addMovement(Movement *movement)

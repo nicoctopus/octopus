@@ -35,9 +35,11 @@ signals:
     void save(ClientOSC *clientOSC);
     void refreshSignal();
     void decocherCheckBoxLink();
+    void clearScene();
 
 public slots:
     void refresh();
+
 private:
     QList<Movement*> *listMovements;
     QList<SampleAudio*> *listSamplesAudio;
@@ -48,6 +50,7 @@ private:
     QList<QGraphicsItem*> itemsToLink;
     QList<QGraphicsLineItem*> listLines;
     quint16 xEllipse, yEllipse, xDiamond, yDiamond, xTriangle, yTriangle;
+
 };
 
 #endif // BLACKBOARD_H

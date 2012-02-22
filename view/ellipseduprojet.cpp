@@ -32,6 +32,3 @@ Movement* EllipseDuProjet::getMovement()
 {
     return this->movement;
 }
-
-
-
