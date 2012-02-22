@@ -27,8 +27,9 @@ public:
     ManagerJointMvt* getManagerJointMvt();
 
     //Methodes
-    void sortMovements();
+    void sortMovementsByPositionSize();
     void sortMovementsById();
+    QList<Movement*>* getListMovementsByName();
     void addMovement(Movement *movement);
 };
 
