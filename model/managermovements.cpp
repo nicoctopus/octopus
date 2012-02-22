@@ -32,7 +32,7 @@ void ManagerMovements::loadAll()
 	this->listMovements->append(new Movement(fichierMovement.value(fichierMovement.allKeys().at(i), qVariantFromValue(Movement())).value<Movement>()));
     this->managerJointMvt->loadAll();
     this->dispacher();
-    this->sortMovementsById();
+    //this->sortMovementsById();
 }
 
 void ManagerMovements::dispacher()
@@ -145,7 +145,11 @@ void ManagerMovements::sortMovementsById()
 {
     for(int i = 1 ; i < this->listMovements->size() ; i++)
 	if(this->listMovements->at(i - 1)->getId() > this->listMovements->at(i)->getId())
+	{
+	    this->listMovements->at(i)->updateId(this->listMovements->at(i - 1)->getId());
+	    this->listMovements->at(i - 1)->updateId(this->listMovements->at(i)->getId());
 	    this->listMovements->swap(i, i - 1);
+	}
 }
 
 void ManagerMovements::addMovement(Movement *movement)
