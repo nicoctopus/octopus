@@ -122,6 +122,7 @@ void MainWindow::slotNewSelectionOnStickMan(){
 void MainWindow::save(Movement *movement)
 {
     controller->getManagerElements()->saveMovement(movement);
+    qDebug() << movement->getListJointsMvt()->at(0)->getListPositions()->size() << endl;
     //ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
     //emit refreshBlackBoard();
 }

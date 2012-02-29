@@ -17,19 +17,9 @@ public:
         return Type;
     }
 
-protected:
-   void contextMenuEvent(QGraphicsSceneContextMenuEvent  *event);
-
-//public slots:
-  // void slotRemove();
-
-//signals:
-  // void remove(Movement *movement);
 
 private :
     Movement *movement;
-    QAction *actionRemove;
-    void createActions();
 
 
 };

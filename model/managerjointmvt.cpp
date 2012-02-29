@@ -36,8 +36,8 @@ void ManagerJointMvt::save(QList<JointMvt*> *listJointsMvt)
     QSettings fichierJointMvt("jointmvt.ini", QSettings::IniFormat);
     QSettings fichierPosition("position.ini", QSettings::IniFormat);
     //On supprime dans le fichier les joints mouvements et les listes de positions correspondantes pour les réécrires
-    for(int i = 0 ; i < listJointsMvt->size() ; i++)
-	this->managerPosition->remove(listJointsMvt->at(i)->getListPositions());
+    //for(int i = 0 ; i < listJointsMvt->size() ; i++)
+	//this->managerPosition->remove(listJointsMvt->at(i)->getListPositions());
     this->remove(listJointsMvt);
 	// enregistrer en fonction du jointmvt ayant le moins de positions
     int size = listJointsMvt->at(0)->getListPositions()->size();
@@ -67,9 +67,6 @@ void ManagerJointMvt::remove(QList<JointMvt*> *listJointsMvtsToDelete)
 	JointMvt *jointMvtTemp = listJointsMvtsToDelete->at(i);
 	//On supprime toutes les positions du joint mouvement dans le fichier
 	this->managerPosition->remove(jointMvtTemp->getListPositions());
-	//on supprime chaque position dans la liste de position du joint mouvement
-	for(int i = 0 ; i < jointMvtTemp->getListPositions()->size() ; i++)
-	    jointMvtTemp->getListPositions()->removeAt(i);
 	//on supprime le joint mouvement du fichier
 	fichierJointMvt.remove(QString::number(jointMvtTemp->getIdJointMvt()));
 	//on supprime le dernier joint du fichier

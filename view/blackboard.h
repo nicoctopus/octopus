@@ -36,9 +36,15 @@ signals:
     void refreshSignal();
     void decocherCheckBoxLink();
     void clearScene();
+    void remove(Movement *movement);
 
 public slots:
     void refresh();
+    void slotRemove();
+
+protected :
+    void contextMenuEvent(QContextMenuEvent  *event);
+    void mousePressEvent(QMouseEvent * mousseEvent);
 
 private:
     QList<Movement*> *listMovements;
@@ -50,6 +56,10 @@ private:
     QList<QGraphicsItem*> itemsToLink;
     QList<QGraphicsLineItem*> listLines;
     quint16 xEllipse, yEllipse, xDiamond, yDiamond, xTriangle, yTriangle;
+
+    //Menu clique droit
+    QAction *actionRemove;
+    void createActions();
 
 };
 
