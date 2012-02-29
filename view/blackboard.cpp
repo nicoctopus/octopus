@@ -10,9 +10,16 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent)
 {
     this->setAcceptDrops(true);
     QGraphicsScene *scene = new QGraphicsScene();
+    //qDebug() << this->x() << this->scene()->sceneRect().x() << endl;
+    //scene->setSceneRect(this->x(), this->y(), this->width(), this->height());
+    //qDebug() << this->x() <<  scene->sceneRect().x() << endl;
     this->setScene(scene);
     connect(this, SIGNAL(refreshSignal()), this, SLOT(refresh()));
     connect(this, SIGNAL(clearScene()), this->scene(), SLOT(clear()));
+
+    //Menu clique droit
+    this->createActions();
+
 }
 
 // -----------------------------------------------------------
@@ -307,5 +314,42 @@ void BlackBoard::addLineItem(const quint16 x1, const quint16 y1, const quint16 x
     this->listLines.last()->setPen(pen);
 }
 
+void BlackBoard::mousePressEvent ( QMouseEvent * event )
+{
+    if ( event->button() == Qt::RightButton)
+    {
+	qDebug() << event->globalPos() << endl;
+	qDebug() << event->pos() << endl;
+	QMenu menu(this);
+	menu.addAction(this->actionRemove);
+	menu.exec(event->globalPos());
+    }
+}
+
+void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
+{
+    //qDebug() << event->pos() << endl;
+    //qDebug() << this->mapToScene(event->pos()) << endl;
+    //qDebug() << this->scene()->items().at(0)->pos().x() << endl;
+    //qDebug() << this->mapToScene(QPoint(this->listEllipse.at(0)->rect().x(), this->listEllipse.at(0)->rect().y())) << endl;
+
+//	QMenu menu(this);
+//	menu.addAction(this->actionRemove);
+//	menu.exec(event->globalPos());
+
+}
+
+void BlackBoard::createActions()
+{
+    this->actionRemove = new QAction(tr("&Remove"), this);
+    this->actionRemove->setShortcut(tr("Ctrl+R"));
+    this->actionRemove->setStatusTip(tr("Remove the object"));
+    connect(this->actionRemove, SIGNAL(triggered()), this, SLOT(slotRemove()));
+}
+
+void BlackBoard::slotRemove()
+{
+    qDebug() << "on rentre dans le slot remove" << endl;
+}
 
 

@@ -34,9 +34,9 @@ void ManagerPosition::remove(QList<Position*> *listPositionsToDelete)
     for(int i = 0 ; i < listPositionsToDelete->size() ; i++)
     {
 	fichierPosition.remove(QString::number(listPositionsToDelete->at(i)->getId()));
-	fichierPosition.remove(QString::number(this->listPositionsTemp->last()->getId()));
-	this->listPositionsTemp->last()->updateId(listPositionsToDelete->at(i)->getId());
-	this->save(this->listPositionsTemp->last(), fichierPosition);
+	//fichierPosition.remove(QString::number(this->listPositionsTemp->last()->getId()));
+	//this->listPositionsTemp->last()->updateId(listPositionsToDelete->at(i)->getId());
+	//this->save(this->listPositionsTemp->last(), fichierPosition);
 	Position::idPositionsStatic--;
     }
     fichierPosition.sync();
