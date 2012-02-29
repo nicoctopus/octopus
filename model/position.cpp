@@ -96,10 +96,7 @@ Position::Position (const Position &position)
 }
 
 
-Position* Position::ecartPivot(const Position &pos){
-
-    Position * posEcart = new Position();
-
+Position* Position::ecartPivot(const Position &pos, Position* posEcart){
     posEcart->setX(this->x-pos.x);
     if(posEcart->getX()==0)
         posEcart->setX(1);
@@ -113,8 +110,6 @@ Position* Position::ecartPivot(const Position &pos){
     posEcart->setDx(0);
     posEcart->setDy(0);
     posEcart->setDz(0);
-
-    return posEcart;
 }
 
 
@@ -227,7 +222,7 @@ void Position::setIdJointMvt(const quint32 &idJointMvt)
   **/
 
 Position::~Position(){
-
+    this->id = NULL;
 }
 
 //save

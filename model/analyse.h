@@ -19,7 +19,7 @@ private:
     SoundPlayer * p;
     SampleAudio * music;
 
-    QList<Position*>* modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt);
+    void modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt, QList<Position*>* newList);
     Position* moyenne(Position* p1, Position *p2);
    // qint8 NbPivots(QList<Position*> *);
     float ecartRelatif(QList<Position*> *,QList<Position*> *);

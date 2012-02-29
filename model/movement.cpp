@@ -50,14 +50,17 @@ Movement::Movement(const QString &name, const bool &active, QList<JointMvt*> *li
   *    DESTRUCTEURS
   **/
 Movement::~Movement(){
-    /*for(int i = 0 ; i < this->listClients->size() ; i++)
-    delete(this->listClients->at(i));
-    delete(this->listClients);
-    for(int i = 0 ; i < this->listJointsMvt->size() ; i++)
-	delete(this->listJointsMvt->at(i));
-    delete(this->listJointsMvt);
-    delete(this->sampleAudio);
-    delete(this->sampleVideo);*/
+    for(int i = 0 ; i < this->listClients->size() ; i++)
+        delete this->listClients->at(i);
+
+    for(int j = 0 ; j < this->listJointsMvt->size() ; j++)
+        delete this->listJointsMvt->at(j);
+
+    delete this->listClients;
+    delete this->listJointsMvt;
+    delete this->sampleAudio;
+    delete this->sampleVideo;
+
 }
 
 /**

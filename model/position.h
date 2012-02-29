@@ -54,7 +54,7 @@ public:
     void setDz(const qint32 &a);
     void setIdJointMvt(const quint32 &idJointMvt);
 
-    Position* ecartPivot (const Position &pos);
+    Position* ecartPivot (const Position &pos, Position* posEcart);
 
     quint16 getIdJointMvt();
     ~Position();
