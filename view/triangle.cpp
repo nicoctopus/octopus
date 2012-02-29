@@ -1,13 +1,6 @@
 #include "triangle.h"
 #include <time.h>
 
-static int R1=166;
-static int V1=198;
-static int B1=67;
-static int R2=0;
-static int V2=198;
-static int B2=93;
-
 
 Triangle::Triangle(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, SampleAudio *sampleAudio) : QGraphicsPolygonItem()
 

@@ -1,12 +1,5 @@
 #include "square.h"
 
-static int R7=242;
-static int V7=76;
-static int B7=39;
-static int R8=232;
-static int V8=40;
-static int B8=41;
-
 
 // -----------------------------------------------------------
 //                     CONSTRUCTEUR
