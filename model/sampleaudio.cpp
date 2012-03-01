@@ -15,6 +15,11 @@ SampleAudio::SampleAudio(const SampleAudio &copie) : Sample(copie.idElement, cop
 {
 }
 
+SampleAudio::SampleAudio(const QString &name, const QString &url, const bool &active) :Sample(++idSampleAudioStatic, name, url, active)
+{
+
+}
+
 //save
 QDataStream & operator << (QDataStream & out, const SampleAudio &valeur)
 {
