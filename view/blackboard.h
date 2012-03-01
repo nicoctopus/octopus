@@ -26,7 +26,6 @@ public:
     void setListMovements(QList<Movement*> *listMovements);
     void setListPorts(QList<ClientOSC*> *listPorts);
     void setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio);
-    void selectedItems();
     
 signals:
     void save(Movement *movement);
@@ -44,8 +43,8 @@ public slots:
     void refresh();
     void slotRemove();
     void slotVisualisation();
-    void slotLier();
-    void slotDelier();
+    void slotLiaison();
+    void liaison();
 
 protected :
     void contextMenuEvent(QContextMenuEvent  *event);
@@ -57,9 +56,9 @@ private:
     QList<EllipseDuProjet*> listEllipse;
     QList<Triangle*> listTriangle;
     QList<Diamond*> listDiamond;
-    QList<QGraphicsItem*> itemsToLink;
     QList<QGraphicsLineItem*> listLines;
     quint16 xEllipse, yEllipse, xDiamond, yDiamond, xTriangle, yTriangle;
+    Movement *movement;
 
     //Menu clique droit
     QAction *actionRemove;

@@ -13,7 +13,7 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent)
     this->setScene(scene);
     connect(this, SIGNAL(refreshSignal()), this, SLOT(refresh()));
     connect(this, SIGNAL(clearScene()), this->scene(), SLOT(clear()));
-
+    connect(this->scene(), SIGNAL(selectionChanged()), this, SLOT(liaison()));
     //Menu clique droit
     this->createActions();
 
@@ -23,46 +23,6 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent)
 //                      METHODES
 // -----------------------------------------------------------
 
-void BlackBoard::selectedItems(){
-    itemsToLink.append(this->scene()->selectedItems().at(0));
-    if(this->itemsToLink.size() == 2){
-	EllipseDuProjet *ellipse;
-	if(this->itemsToLink.at(0)->type() == 65537)
-	{
-	    ellipse = (EllipseDuProjet*)this->itemsToLink.at(0);
-	    if(this->itemsToLink.at(1)->type() == 65539)
-	    {
-		Triangle *triangle = (Triangle*)(this->itemsToLink.at(1));
-		this->updateSampleAudioOfMovement(ellipse->getMovement(), triangle->getSampleAudio());
-		emit decocherCheckBoxLink();
-	    }
-	    else if(this->itemsToLink.at(1)->type() == 65538)
-	    {
-		Diamond *diamond = (Diamond*)(this->itemsToLink.at(1));
-		this->updateClientOSCOfMovement(ellipse->getMovement(), diamond->getPort());
-		emit decocherCheckBoxLink();
-	    }
-	}
-	else if(this->itemsToLink.at(1)->type() == 65537)
-	{
-	    ellipse = (EllipseDuProjet*)this->itemsToLink.at(1);
-	    if(this->itemsToLink.at(0)->type() == 65539)
-	    {
-		Triangle *triangle = (Triangle*)(this->itemsToLink.at(0));
-		this->updateSampleAudioOfMovement(ellipse->getMovement(), triangle->getSampleAudio());
-		emit decocherCheckBoxLink();
-	    }
-	    else if(this->itemsToLink.at(0)->type() == 65538)
-	    {
-		Diamond *diamond = (Diamond*)(this->itemsToLink.at(0));
-		this->updateClientOSCOfMovement(ellipse->getMovement(), diamond->getPort());
-		emit decocherCheckBoxLink();
-	    }
-	}
-	this->itemsToLink.clear();
-    }
-
-}
 
 void BlackBoard::updateClientOSCOfMovement(Movement *movement, ClientOSC *clientOSC)
 {
@@ -78,13 +38,22 @@ void BlackBoard::updateClientOSCOfMovement(Movement *movement, ClientOSC *client
 
 void BlackBoard::updateSampleAudioOfMovement(Movement *movement, SampleAudio *newSampleAudio)
 {
-    if(movement->getSampleAudio())
+    if(movement->getSampleAudio() != newSampleAudio)
+    {
+	if(movement->getSampleAudio())
+	{
+	    movement->getSampleAudio()->removeId(movement->getId());
+	    emit save(movement->getSampleAudio());
+	}
+	movement->setSampleAudio(newSampleAudio);
+	movement->getSampleAudio()->updateIdMovement(movement->getId());
+    }
+    else
     {
 	movement->getSampleAudio()->removeId(movement->getId());
 	emit save(movement->getSampleAudio());
+	movement->setSampleAudio(NULL);
     }
-    movement->setSampleAudio(newSampleAudio);
-    movement->getSampleAudio()->updateIdMovement(movement->getId());
     emit save(movement);
     this->refresh();
 }
@@ -188,11 +157,14 @@ void BlackBoard::setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio)
 void BlackBoard::refresh()
 {
 
-    QList<QGraphicsItem*> listItemsToDelete = this->scene()->items();
+    /* QList<QGraphicsItem*> listItemsToDelete = this->scene()->items();
     int nbItemsToDelete = listItemsToDelete.size();
-    for(int i = 0 ; i < nbItemsToDelete  ; i++){
-	this->scene()->removeItem(listItemsToDelete.at(i));
-    }
+    for(int i = 0 ; i < nbItemsToDelete ; i++){
+ this->scene()->removeItem(listItemsToDelete.at(i));
+    }*/
+    this->scene()->selectedItems().clear();
+    for(int i = this->scene()->items().size() - 1 ; i >= 0 ; i--)
+	this->scene()->removeItem(this->scene()->items().at(i));
     this->listEllipse.clear();
     this->listDiamond.clear();
     this->listTriangle.clear();
@@ -325,7 +297,6 @@ void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
 	    menu.addAction(this->actionRemove);
 	    menu.addAction(this->actionVisualisation);
 	    menu.addAction(this->actionLier);
-	    menu.addAction(this->actionDelier);
 	    menu.exec(event->globalPos());
 	    return;
 	}
@@ -371,12 +342,9 @@ void BlackBoard::createActions()
     this->actionVisualisation = new QAction(tr("&Visualiser"), this);
     this->actionVisualisation->setStatusTip(tr("Visualiser le mouvement"));
     connect(this->actionVisualisation, SIGNAL(triggered()), this, SLOT(slotVisualisation()));
-    this->actionLier = new QAction(tr("&Lier"), this);
-    this->actionLier->setStatusTip(tr("lier le mouvement avec un sample ou un port"));
-    connect(this->actionLier, SIGNAL(triggered()), this, SLOT(slotLier()));
-    this->actionDelier = new QAction(tr("&Délier"), this);
-    this->actionDelier->setStatusTip(tr("Délier le mouvement"));
-    connect(this->actionDelier, SIGNAL(triggered()), this, SLOT(slotDelier()));
+    this->actionLier = new QAction(tr("&Lier/Délier"), this);
+    this->actionLier->setStatusTip(tr("lier ou délier le mouvement avec un sample ou un port"));
+    connect(this->actionLier, SIGNAL(triggered()), this, SLOT(slotLiaison()));
 }
 
 void BlackBoard::slotRemove()
@@ -412,18 +380,34 @@ void BlackBoard::slotVisualisation()
 	}
 }
 
-void BlackBoard::slotLier()
+void BlackBoard::slotLiaison()
 {
     for(int i = 0 ;  i < this->listEllipse.size() ; i++)
 	if(this->listEllipse.at(i)->getContextMenu() == true)
 	{
-	    this->itemsToLink.clear();
-	    this->itemsToLink.append(this->listEllipse.at(i));
+	    this->movement = this->listEllipse.at(i)->getMovement();
 	}
 }
 
-void BlackBoard::slotDelier()
+void BlackBoard::liaison()
 {
+    if(this->movement)
+    {
+	if(this->scene()->selectedItems().at(0)->type() == 65539)
+	{
+	    Movement *movementTemp = this->movement;
+	    this->movement = NULL;
+	    Triangle *triangle = (Triangle*)(this->scene()->selectedItems().at(0));
+	    this->updateSampleAudioOfMovement(movementTemp, triangle->getSampleAudio());
+	}
+	else if(this->scene()->selectedItems().at(0)->type() == 65538)
+	{
+	    Movement *movementTemp = this->movement;
+	    this->movement = NULL;
+	    Diamond *diamond = (Diamond*)(this->scene()->selectedItems().at(0));
+	    this->updateClientOSCOfMovement(movementTemp, diamond->getPort());
+	}
+    }
 
 }
 
