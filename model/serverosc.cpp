@@ -344,7 +344,7 @@ bool ServerOSC::isRecording() {
 }
 
 void ServerOSC::setAnalyse() {
-    this->analyse = new Analyse(0,50);
+    this->analyse = new Analyse(0,60);
 }
 
 void ServerOSC::deleteAnalyse(){

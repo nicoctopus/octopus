@@ -138,7 +138,7 @@ void ManagerMovements::sortMovementsByPositionSize()
 		if(!this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->isEmpty() && !this->listMovements->at(j)->getListJointsMvt()->at(0)->getListPositions()->isEmpty())
 		    if(this->listMovements->at(j)->getListJointsMvt()->at(0)->getListPositions()->size() <
 			    this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->size())
-			this->listMovements->swap(i, j);
+                        this->listMovements->swap(i, j);
 }
 
 void ManagerMovements::sortMovementsById()
@@ -161,6 +161,8 @@ QList<Movement*>*  ManagerMovements::getListMovementsByName()
 		if(QString::localeAwareCompare(listMovementsSortedByName->at(i)->getName().toLower(), listMovementsSortedByName->at(j)->getName().toLower()) > 0)
 		    listMovementsSortedByName->swap(i, j);
     return listMovementsSortedByName;
+
+
 }
 
 void ManagerMovements::addMovement(Movement *movement)

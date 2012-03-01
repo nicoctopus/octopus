@@ -19,6 +19,12 @@ Sample::Sample(const quint32 &id, const QString &name, const QString &fileURL, c
 	this->listIdMovement->append(listIdMovement.at(i));
 }
 
+Sample::Sample(const quint32 &id, const QString &name, const QString &fileURL, const bool &active) : Element(id, name, active)
+{
+    this->fileURL = fileURL;
+    this->listIdMovement = new QList<quint32>();
+}
+
 void Sample::setFileURL(const QString &file) {
     this->fileURL = file;
 }

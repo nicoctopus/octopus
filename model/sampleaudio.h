@@ -15,6 +15,7 @@ public:
     SampleAudio();
     SampleAudio(const SampleAudio &copie);
     SampleAudio(const QString &name, const QString &url, const quint32 &listIdMovement, const bool &active);
+    SampleAudio(const QString &name, const QString &url, const bool &active);
 
     static quint32 idSampleAudioStatic;
 };
