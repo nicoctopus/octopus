@@ -27,3 +27,13 @@ ClientOSC* Diamond::getPort()
 {
     return this->port;
 }
+
+bool Diamond::getContextMenu()
+{
+    return this->contextMenu;
+}
+
+void Diamond::setContextMenu(bool contextMenu)
+{
+    this->contextMenu = contextMenu;
+}

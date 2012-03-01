@@ -25,10 +25,20 @@ Triangle::Triangle(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, S
     this->setPos(x, y);
     this->setZValue(5);
     scene->addItem(this);
-
+    this->contextMenu = false;
 }
 
 SampleAudio* Triangle::getSampleAudio()
 {
     return this->sampleAudio;
+}
+
+bool Triangle::getContextMenu()
+{
+    return this->contextMenu;
+}
+
+void Triangle::setContextMenu(bool contextMenu)
+{
+    this->contextMenu = contextMenu;
 }

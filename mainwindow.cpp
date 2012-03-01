@@ -46,13 +46,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->pushButton_enregistrermouvement, SIGNAL(clicked()), this, SLOT(slotValidNewMovement()));
     connect(ui->pushButton_supprimermouvement, SIGNAL(clicked()), this, SLOT(slotEscNewMovement()));
     connect(ui->leftTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(slotDisplayInfos(QTreeWidgetItem*,int)));
-    connect(ui->blackboard->scene(), SIGNAL(selectionChanged()), this, SLOT(slotDisplayInfos()));
     connect(ui->ButtonAdd, SIGNAL(clicked()), this, SLOT(boutonAddSample()));
 
     connect(this->controller->getServerOsc(), SIGNAL(jointMvtTooBig()), this, SLOT(slotTimeOutRecord()));
-    //-------------------------------------------
-    //connect(ui->pushButtonTEST, SIGNAL(clicked()), ui->blackboard->scene(), SLOT(clear()));
-    //-------------------------------------------
+
     connect(ui->start, SIGNAL(clicked()), this,SLOT(slotStartLivePerformance()));
     connect(this, SIGNAL(sigMoveStickman(Movement*)), ui->stickMan, SLOT(slotMoveStickMan(Movement*)));
 
@@ -82,10 +79,13 @@ void MainWindow::initBlackBoard()
     connect(ui->blackboard, SIGNAL(save(Movement*)), this, SLOT(save(Movement*)));
     connect(ui->blackboard, SIGNAL(save(ClientOSC*)), this, SLOT(save(ClientOSC*)));
     connect(ui->blackboard, SIGNAL(save(SampleAudio*)), this, SLOT(save(SampleAudio*)));
+    connect(ui->blackboard, SIGNAL(remove(Movement*)), this, SLOT(remove(Movement*)));
+    connect(ui->blackboard, SIGNAL(remove(SampleAudio*)), this, SLOT(remove(SampleAudio*)));
+    connect(ui->blackboard, SIGNAL(remove(ClientOSC*)), this, SLOT(remove(ClientOSC*)));
     connect(ui->blackboard->scene(), SIGNAL(selectionChanged()), this, SLOT(slotNewSelectionOnBlackBoard()));
 
     connect(this, SIGNAL(refreshBlackBoard()), ui->blackboard, SLOT(refresh()));
-
+    connect(ui->blackboard->scene(), SIGNAL(selectionChanged()), this, SLOT(slotDisplayInfos()));
     connect(ui->leftTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(slotLeftTreeDoubleClicked(QTreeWidgetItem*,int)));
     connect(this, SIGNAL(sigPlaySample()), this, SLOT(slotStop()));
     connect(this, SIGNAL(sigPlaySample()), this, SLOT(slotPlayPause()));

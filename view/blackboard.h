@@ -37,6 +37,8 @@ signals:
     void decocherCheckBoxLink();
     void clearScene();
     void remove(Movement *movement);
+    void remove(SampleAudio *sampleAudio);
+    void remove(ClientOSC *clientOSC);
 
 public slots:
     void refresh();
@@ -44,7 +46,6 @@ public slots:
 
 protected :
     void contextMenuEvent(QContextMenuEvent  *event);
-    void mousePressEvent(QMouseEvent * mousseEvent);
 
 private:
     QList<Movement*> *listMovements;

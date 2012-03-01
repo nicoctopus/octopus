@@ -314,28 +314,52 @@ void BlackBoard::addLineItem(const quint16 x1, const quint16 y1, const quint16 x
     this->listLines.last()->setPen(pen);
 }
 
-void BlackBoard::mousePressEvent ( QMouseEvent * event )
-{
-    if ( event->button() == Qt::RightButton)
-    {
-	qDebug() << event->globalPos() << endl;
-	qDebug() << event->pos() << endl;
-	QMenu menu(this);
-	menu.addAction(this->actionRemove);
-	menu.exec(event->globalPos());
-    }
-}
-
 void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
 {
-    //qDebug() << event->pos() << endl;
-    //qDebug() << this->mapToScene(event->pos()) << endl;
-    //qDebug() << this->scene()->items().at(0)->pos().x() << endl;
-    //qDebug() << this->mapToScene(QPoint(this->listEllipse.at(0)->rect().x(), this->listEllipse.at(0)->rect().y())) << endl;
-
-//	QMenu menu(this);
-//	menu.addAction(this->actionRemove);
-//	menu.exec(event->globalPos());
+    QPointF qpointf = this->mapToScene((event->pos()));
+    for(int i = 0 ; i < this->listEllipse.size() ; i++)
+    {
+	if(qpointf.x() >= this->listEllipse.at(i)->rect().x()
+		&& qpointf.x() <= this->listEllipse.at(i)->rect().x() + this->listEllipse.at(i)->rect().width()
+		&& qpointf.y() >= this->listEllipse.at(i)->rect().y()
+		&& qpointf.y() <= this->listEllipse.at(i)->rect().y() + this->listEllipse.at(i)->rect().height())
+	{
+	    this->listEllipse.at(i)->setContextMenu(true);
+	    QMenu menu(this);
+	    menu.addAction(this->actionRemove);
+	    menu.exec(event->globalPos());
+	    return;
+	}
+    }
+    for(int i = 0 ; i < this->listDiamond.size() ; i++)
+    {
+	if(qpointf.x() >= this->listDiamond.at(i)->pos().x()
+		&& qpointf.x() <= this->listDiamond.at(i)->pos().x() + 50
+		&& qpointf.y() >= this->listDiamond.at(i)->pos().y()
+		&& qpointf.y() <= this->listDiamond.at(i)->pos().y() + 50)
+	{
+	    this->listDiamond.at(i)->setContextMenu(true);
+	    QMenu menu(this);
+	    menu.addAction(this->actionRemove);
+	    menu.exec(event->globalPos());
+	    return;
+	}
+    }
+    for(int i = 0 ; i < this->listTriangle.size() ; i++)
+    {
+	QPointF qpointf = this->mapToScene((event->pos()));
+	if(qpointf.x() >= this->listTriangle.at(i)->pos().x()
+		&& qpointf.x() <= this->listTriangle.at(i)->pos().x() + 50
+		&& qpointf.y() >= this->listTriangle.at(i)->pos().y()
+		&& qpointf.y() <= this->listTriangle.at(i)->pos().y() + 50)
+	{
+	    this->listTriangle.at(i)->setContextMenu(true);
+	    QMenu menu(this);
+	    menu.addAction(this->actionRemove);
+	    menu.exec(event->globalPos());
+	    return;
+	}
+    }
 
 }
 
@@ -349,7 +373,24 @@ void BlackBoard::createActions()
 
 void BlackBoard::slotRemove()
 {
-    qDebug() << "on rentre dans le slot remove" << endl;
+    for(int i = 0 ; i < this->listEllipse.size() ; i++)
+	if(this->listEllipse.at(i)->getContextMenu() == true)
+	{
+	    emit remove(this->listEllipse.at(i)->getMovement());
+	    return;
+	}
+    for(int i = 0 ; i < this->listDiamond.size() ; i++)
+	if(this->listDiamond.at(i)->getContextMenu() == true)
+	{
+	    emit remove(this->listDiamond.at(i)->getPort());
+	    return;
+	}
+    for(int i = 0 ; i < this->listTriangle.size() ; i++)
+	if(this->listTriangle.at(i)->getContextMenu() == true)
+	{
+	    emit remove(this->listTriangle.at(i)->getSampleAudio());
+	    return;
+	}
 }
 
 
