@@ -82,6 +82,7 @@ void MainWindow::initBlackBoard()
     connect(ui->blackboard, SIGNAL(remove(Movement*)), this, SLOT(remove(Movement*)));
     connect(ui->blackboard, SIGNAL(remove(SampleAudio*)), this, SLOT(remove(SampleAudio*)));
     connect(ui->blackboard, SIGNAL(remove(ClientOSC*)), this, SLOT(remove(ClientOSC*)));
+    connect(ui->blackboard, SIGNAL(visualisation(Movement*)), ui->stickMan, SLOT(slotMoveStickMan(Movement*)));
     connect(ui->blackboard->scene(), SIGNAL(selectionChanged()), this, SLOT(slotNewSelectionOnBlackBoard()));
 
     connect(this, SIGNAL(refreshBlackBoard()), ui->blackboard, SLOT(refresh()));

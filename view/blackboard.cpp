@@ -10,9 +10,6 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent)
 {
     this->setAcceptDrops(true);
     QGraphicsScene *scene = new QGraphicsScene();
-    //qDebug() << this->x() << this->scene()->sceneRect().x() << endl;
-    //scene->setSceneRect(this->x(), this->y(), this->width(), this->height());
-    //qDebug() << this->x() <<  scene->sceneRect().x() << endl;
     this->setScene(scene);
     connect(this, SIGNAL(refreshSignal()), this, SLOT(refresh()));
     connect(this, SIGNAL(clearScene()), this->scene(), SLOT(clear()));
@@ -28,7 +25,6 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent)
 
 void BlackBoard::selectedItems(){
     itemsToLink.append(this->scene()->selectedItems().at(0));
-    //qDebug() << this->itemsToLink.size() << endl;
     if(this->itemsToLink.size() == 2){
 	EllipseDuProjet *ellipse;
 	if(this->itemsToLink.at(0)->type() == 65537)
@@ -327,6 +323,9 @@ void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
 	    this->listEllipse.at(i)->setContextMenu(true);
 	    QMenu menu(this);
 	    menu.addAction(this->actionRemove);
+	    menu.addAction(this->actionVisualisation);
+	    menu.addAction(this->actionLier);
+	    menu.addAction(this->actionDelier);
 	    menu.exec(event->globalPos());
 	    return;
 	}
@@ -369,6 +368,15 @@ void BlackBoard::createActions()
     this->actionRemove->setShortcut(tr("Ctrl+R"));
     this->actionRemove->setStatusTip(tr("Remove the object"));
     connect(this->actionRemove, SIGNAL(triggered()), this, SLOT(slotRemove()));
+    this->actionVisualisation = new QAction(tr("&Visualiser"), this);
+    this->actionVisualisation->setStatusTip(tr("Visualiser le mouvement"));
+    connect(this->actionVisualisation, SIGNAL(triggered()), this, SLOT(slotVisualisation()));
+    this->actionLier = new QAction(tr("&Lier"), this);
+    this->actionLier->setStatusTip(tr("lier le mouvement avec un sample ou un port"));
+    connect(this->actionLier, SIGNAL(triggered()), this, SLOT(slotLier()));
+    this->actionDelier = new QAction(tr("&Délier"), this);
+    this->actionDelier->setStatusTip(tr("Délier le mouvement"));
+    connect(this->actionDelier, SIGNAL(triggered()), this, SLOT(slotDelier()));
 }
 
 void BlackBoard::slotRemove()
@@ -393,4 +401,29 @@ void BlackBoard::slotRemove()
 	}
 }
 
+void BlackBoard::slotVisualisation()
+{
+    for(int i = 0 ;  i < this->listEllipse.size() ; i++)
+	if(this->listEllipse.at(i)->getContextMenu() == true)
+	{
+	    emit visualisation(this->listEllipse.at(i)->getMovement());
+	    this->listEllipse.at(i)->setContextMenu(false);
+	    return;
+	}
+}
+
+void BlackBoard::slotLier()
+{
+    for(int i = 0 ;  i < this->listEllipse.size() ; i++)
+	if(this->listEllipse.at(i)->getContextMenu() == true)
+	{
+	    this->itemsToLink.clear();
+	    this->itemsToLink.append(this->listEllipse.at(i));
+	}
+}
+
+void BlackBoard::slotDelier()
+{
+
+}
 

@@ -27,7 +27,6 @@ public:
     void setListPorts(QList<ClientOSC*> *listPorts);
     void setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio);
     void selectedItems();
-   // void creerForme();
     
 signals:
     void save(Movement *movement);
@@ -39,10 +38,14 @@ signals:
     void remove(Movement *movement);
     void remove(SampleAudio *sampleAudio);
     void remove(ClientOSC *clientOSC);
+    void visualisation(Movement *movement);
 
 public slots:
     void refresh();
     void slotRemove();
+    void slotVisualisation();
+    void slotLier();
+    void slotDelier();
 
 protected :
     void contextMenuEvent(QContextMenuEvent  *event);
@@ -60,6 +63,9 @@ private:
 
     //Menu clique droit
     QAction *actionRemove;
+    QAction *actionVisualisation;
+    QAction *actionLier;
+    QAction *actionDelier;
     void createActions();
 
 };
