@@ -103,7 +103,7 @@ void ManagerMovements::remove(Movement *movement)
 	    this->listMovements->removeAt(i);
 	    //delete(this->listMovements->at(i));
 	}
-    if(this->getListMovements()->isEmpty() != true)
+    if(this->listMovements->size() >= 2)
     {
 	int idTemp2 = this->listMovements->at(0)->getId();
 	for(int i = 1 ; i < this->listMovements->size() ; i++)

@@ -37,17 +37,20 @@ void ManagerSampleAudio::remove(SampleAudio *sampleAudio)
 {
     QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
     fichierSampleAudio.remove(QString::number(sampleAudio->getId()));
-    int idMax = this->listSamplesAudios->at(0)->getId();
-    for(int i = 1 ; i < this->listSamplesAudios->size() ; i++)
-	if(this->listSamplesAudios->at(i)->getId() > this->listSamplesAudios->at(i - 1)->getId())
-	    idMax = this->listSamplesAudios->at(i)->getId();
-    fichierSampleAudio.remove(QString::number(idMax));
-    for(int i = 0 ; i < this->listSamplesAudios->size() ; i++)
-	if(this->listSamplesAudios->at(i)->getId() == idMax)
-	{
-	    this->listSamplesAudios->at(i)->updateId(sampleAudio->getId());
-	    this->save(this->listSamplesAudios->at(i), fichierSampleAudio);
-	}
+    if(this->listSamplesAudios->size() >= 2)
+    {
+	int idMax = this->listSamplesAudios->at(0)->getId();
+	for(int i = 1 ; i < this->listSamplesAudios->size() ; i++)
+	    if(this->listSamplesAudios->at(i)->getId() > this->listSamplesAudios->at(i - 1)->getId())
+		idMax = this->listSamplesAudios->at(i)->getId();
+	fichierSampleAudio.remove(QString::number(idMax));
+	for(int i = 0 ; i < this->listSamplesAudios->size() ; i++)
+	    if(this->listSamplesAudios->at(i)->getId() == idMax)
+	    {
+		this->listSamplesAudios->at(i)->updateId(sampleAudio->getId());
+		this->save(this->listSamplesAudios->at(i), fichierSampleAudio);
+	    }
+    }
     SampleAudio::idSampleAudioStatic--;
     fichierSampleAudio.sync();
     for(int i = 0 ; i < this->listSamplesAudios->size() ; i++)
@@ -82,7 +85,7 @@ void ManagerSampleAudio::initSystem()
     qRegisterMetaTypeStreamOperators<SampleAudio>("SampleAudio");
     qMetaTypeId<SampleAudio>();
 
-   // qRegisterMetaTypeStreamOperators<QList<quint32> >("QList<quint32>");
+    // qRegisterMetaTypeStreamOperators<QList<quint32> >("QList<quint32>");
     //qMetaTypeId<QList<quint32> >();
 }
 

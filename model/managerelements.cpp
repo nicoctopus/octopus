@@ -12,12 +12,12 @@ ManagerElements::ManagerElements() : Manager()
     /**
       *
       **
-    this->managerSampleAudio->getListSamplesAudios()->append(new SampleAudio("01 By the Way", "../../../01 By the Way.mp3", 1, false));
-    this->managerSampleAudio->getListSamplesAudios()->append(new SampleAudio("03 Scar Tissue", "../../../03 Scar Tissue.mp3", 2, false));
+    this->managerSampleAudio->getListSamplesAudios()->append(new SampleAudio("01 By the Way", "../../../01 By the Way.mp3", false));
+    this->managerSampleAudio->getListSamplesAudios()->append(new SampleAudio("03 Scar Tissue", "../../../03 Scar Tissue.mp3", false));
     this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(1234, "localhost", false));
     this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(5678, "localhost", false));
-    //this->managerMovements->getListMovements()->append(new Movement("bonjour"));
-    /*JointMvt *j = new JointMvt(1, 1);
+    this->managerMovements->getListMovements()->append(new Movement("bonjour"));
+    JointMvt *j = new JointMvt(1, 1);
     j->addPosition(new Position(1,3,0,5,0,0,0));
     j->addPosition(new Position(1,1,0,0,0,0,0));
     this->managerMovements->getListMovements()->at(0)->addJointMvt(j);
@@ -31,7 +31,7 @@ ManagerElements::ManagerElements() : Manager()
     j3->addPosition(new Position(1,3,0,5,0,0,0));
     j3->addPosition(new Position(1,1,0,0,0,0,0));
     this->managerMovements->getListMovements()->at(2)->addJointMvt(j3);
-    */
+
     /**
      *
     **
