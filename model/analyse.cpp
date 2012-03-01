@@ -8,7 +8,7 @@ Analyse::Analyse(){
 
 Analyse::~Analyse(){
     delete(this->p);
-    delete(this->music);
+    //delete(this->music);
 }
 
 Analyse::Analyse(float pourc,float seuil)
@@ -60,7 +60,7 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
         TempsRallonge = TempsEnregistrement + TempsEnregistrement*seuilFrequence; //augmentation de la frequence : borne sup.
         TempsReduit = TempsEnregistrement - TempsEnregistrement*seuilFrequence; //diminution de la frequence : borne inf.
 
-        qDebug()<< "Taille : " << TempsEnregistrement << endl;
+
         PasVitesse = TempsEnregistrement*(seuilFrequence/10);
         if(PasVitesse<1){
             PasVitesse = TempsEnregistrement*(seuilFrequence/10)+1;
@@ -153,6 +153,7 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
                                     }
                                 }
                                 qDebug() << "CORRESPONDANCE VRAIMENT OK :) !" << endl;
+                                qDebug()<< "Nom du Sample : "<< mouv->at(m)->getSampleAudio()->getName();
                                 p->play(mouv->at(m)->getSampleAudio());
                                 //sleep(2);
                                 //p->Stop();

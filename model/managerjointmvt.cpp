@@ -70,11 +70,14 @@ void ManagerJointMvt::remove(QList<JointMvt*> *listJointsMvtsToDelete)
 	//on supprime le joint mouvement du fichier
 	fichierJointMvt.remove(QString::number(jointMvtTemp->getIdJointMvt()));
 	//on supprime le dernier joint du fichier
-	fichierJointMvt.remove(QString::number(this->listJointsMvts->last()->getIdJointMvt()));
-	//on update son id avec celle du joint mouvement a supprimer
-	this->listJointsMvts->last()->updateIdJointMvt(jointMvtTemp->getIdJointMvt());
-	//on le save a nouveau update en memoire
-	this->save(this->listJointsMvts->last(), fichierJointMvt);
+        if(!this->listJointsMvts->isEmpty())
+        {
+            fichierJointMvt.remove(QString::number(this->listJointsMvts->last()->getIdJointMvt()));
+            //on update son id avec celle du joint mouvement a supprimer
+            this->listJointsMvts->last()->updateIdJointMvt(jointMvtTemp->getIdJointMvt());
+            //on le save a nouveau update en memoire
+            this->save(this->listJointsMvts->last(), fichierJointMvt);
+        }
 	JointMvt::idJointMvtStatic--;
     }
     fichierJointMvt.sync();

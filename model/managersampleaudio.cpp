@@ -71,7 +71,7 @@ QList<SampleAudio*>* ManagerSampleAudio::getListSamplesAudiosActive()
 
 void ManagerSampleAudio::addSample(QString name, QString url)
 {
-    this->listSamplesAudios->append(new SampleAudio(name, url, 0, false));
+    this->listSamplesAudios->append(new SampleAudio(name, url, false));
     QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
     this->save(this->listSamplesAudios->last(), fichierSampleAudio);
     fichierSampleAudio.sync();
