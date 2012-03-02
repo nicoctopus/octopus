@@ -83,14 +83,12 @@ void MainWindow::initBlackBoard()
     connect(ui->blackboard, SIGNAL(remove(SampleAudio*)), this, SLOT(remove(SampleAudio*)));
     connect(ui->blackboard, SIGNAL(remove(ClientOSC*)), this, SLOT(remove(ClientOSC*)));
     connect(ui->blackboard, SIGNAL(visualisation(Movement*)), ui->stickMan, SLOT(slotMoveStickMan(Movement*)));
-    connect(ui->blackboard->scene(), SIGNAL(selectionChanged()), this, SLOT(slotNewSelectionOnBlackBoard()));
 
     connect(this, SIGNAL(refreshBlackBoard()), ui->blackboard, SLOT(refresh()));
     connect(ui->blackboard->scene(), SIGNAL(selectionChanged()), this, SLOT(slotDisplayInfos()));
     connect(ui->leftTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(slotLeftTreeDoubleClicked(QTreeWidgetItem*,int)));
     connect(this, SIGNAL(sigPlaySample()), this, SLOT(slotStop()));
     connect(this, SIGNAL(sigPlaySample()), this, SLOT(slotPlayPause()));
-    connect(ui->blackboard, SIGNAL(decocherCheckBoxLink()), this, SLOT(decocherCheckBoxLink()));
     emit refreshBlackBoard();
 }
 
@@ -123,7 +121,6 @@ void MainWindow::slotNewSelectionOnStickMan(){
 void MainWindow::save(Movement *movement)
 {
     controller->getManagerElements()->saveMovement(movement);
-    qDebug() << movement->getListJointsMvt()->at(0)->getListPositions()->size() << endl;
     //ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
     //emit refreshBlackBoard();
 }
@@ -167,12 +164,6 @@ void MainWindow::remove(ClientOSC *clientOSC)
     ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
     emit refreshLeftTree();
     emit refreshBlackBoard();
-}
-
-void MainWindow::slotNewSelectionOnBlackBoard(){
-    if((ui->checkBox->checkState() == 2) && !ui->blackboard->scene()->selectedItems().isEmpty()){
-	ui->blackboard->selectedItems();
-    }
 }
 
 void MainWindow::slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int){
@@ -303,7 +294,7 @@ void MainWindow::slotDisplayInfos()
         if(itemsSelected.at(i)->type() == 65538)
         {
             Diamond *diamond = (Diamond*)itemsSelected.at(i);
-            text = this->textDisplay(diamond->getPort());
+	    text = this->textDisplay(diamond->getPort());
         }
         ui->textBrowser->setText(text);
     }
@@ -562,13 +553,6 @@ void MainWindow::slotStartLivePerformance(){
 
 
 
-}
-
-
-
-void MainWindow::decocherCheckBoxLink()
-{
-    ui->checkBox->setCheckState(Qt::Unchecked);
 }
 
 void MainWindow::boutonAddSample()
