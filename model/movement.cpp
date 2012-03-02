@@ -17,14 +17,12 @@ Movement::Movement() : Element()
 Movement::Movement(const Movement &movement) :Element(movement.idElement, movement.nameElement, movement.active)
 {
     this->listJointsMvt = new QList<JointMvt*>();
-    for(int i = 0 ; i < movement.listJointsMvt->size() ; i++)
-	this->listJointsMvt->append(new JointMvt(*(movement.listJointsMvt->at(i))));
-    //this->sampleAudio = new SampleAudio(*(movement.sampleAudio));
-    //this->sampleVideo = new SampleVideo(*(movement.sampleVideo));
+    //for(int i = 0 ; i < movement.listJointsMvt->size() ; i++)
+	//this->listJointsMvt->append(new JointMvt(*(movement.listJointsMvt->at(i))));
     this->sampleAudio = NULL;
     this->sampleVideo = NULL;
     this->listClients = new QList<ClientOSC*>();
-    this->listClients->append(*(movement.listClients));
+    //this->listClients->append(*(movement.listClients));
 }
 
 Movement::Movement(const QString &name) : Element(++idMovementStatic, name, false)

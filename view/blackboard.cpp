@@ -9,6 +9,7 @@
 BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent)
 {
     this->setAcceptDrops(true);
+    this->movement = NULL;
     QGraphicsScene *scene = new QGraphicsScene();
     this->setScene(scene);
     connect(this, SIGNAL(refreshSignal()), this, SLOT(refresh()));
@@ -26,13 +27,35 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent)
 
 void BlackBoard::updateClientOSCOfMovement(Movement *movement, ClientOSC *clientOSC)
 {
-    clientOSC->updateIdMovement(movement->getId());
-    /**
-      *    BIZARRRREEEEEEEEEEE
-      **/
-    movement->addClientOSC(clientOSC);
-    //emit save(clientOSC);
-    emit save(movement);
+    bool ok = false;
+    if(!movement->getListClients()->isEmpty())
+    {
+	for(int i = 0 ; i  < movement->getListClients()->size() ; i++)
+	{
+	    if(!movement->getListClients()->isEmpty())
+		if(movement->getListClients()->at(i)->getId() == clientOSC->getId())
+		{
+		    clientOSC->removeIdMovement(movement->getId());
+		    movement->getListClients()->removeAt(i);
+		    emit save(clientOSC);
+		    emit save(movement);
+		    ok = true;
+		}
+	}
+	if(ok == false)
+	{
+	    clientOSC->updateIdMovement(movement->getId());
+	    movement->addClientOSC(clientOSC);
+	    emit save(movement);
+	}
+    }
+    else
+    {
+	clientOSC->updateIdMovement(movement->getId());
+	qDebug() << clientOSC->getName() << endl;
+	movement->addClientOSC(clientOSC);
+	emit save(movement);
+    }
     emit refreshSignal();
 }
 
@@ -41,12 +64,10 @@ void BlackBoard::updateSampleAudioOfMovement(Movement *movement, SampleAudio *ne
     if(movement->getSampleAudio() != newSampleAudio)
     {
 	if(movement->getSampleAudio())
-	{
 	    movement->getSampleAudio()->removeId(movement->getId());
-	    emit save(movement->getSampleAudio());
-	}
 	movement->setSampleAudio(newSampleAudio);
 	movement->getSampleAudio()->updateIdMovement(movement->getId());
+	emit save(movement->getSampleAudio());
     }
     else
     {
@@ -393,17 +414,15 @@ void BlackBoard::liaison()
 {
     if(this->movement)
     {
+	Movement *movementTemp = this->movement;
+	this->movement = NULL;
 	if(this->scene()->selectedItems().at(0)->type() == 65539)
 	{
-	    Movement *movementTemp = this->movement;
-	    this->movement = NULL;
 	    Triangle *triangle = (Triangle*)(this->scene()->selectedItems().at(0));
 	    this->updateSampleAudioOfMovement(movementTemp, triangle->getSampleAudio());
 	}
 	else if(this->scene()->selectedItems().at(0)->type() == 65538)
 	{
-	    Movement *movementTemp = this->movement;
-	    this->movement = NULL;
 	    Diamond *diamond = (Diamond*)(this->scene()->selectedItems().at(0));
 	    this->updateClientOSCOfMovement(movementTemp, diamond->getPort());
 	}
