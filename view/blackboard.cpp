@@ -318,6 +318,7 @@ void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
 	    menu.addAction(this->actionRemove);
 	    menu.addAction(this->actionVisualisation);
 	    menu.addAction(this->actionLier);
+	    menu.addAction(this->actionEnleverBlackboard);
 	    menu.exec(event->globalPos());
 	    return;
 	}
@@ -332,6 +333,7 @@ void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
 	    this->listDiamond.at(i)->setContextMenu(true);
 	    QMenu menu(this);
 	    menu.addAction(this->actionRemove);
+	    menu.addAction(this->actionEnleverBlackboard);
 	    menu.exec(event->globalPos());
 	    return;
 	}
@@ -347,6 +349,7 @@ void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
 	    this->listTriangle.at(i)->setContextMenu(true);
 	    QMenu menu(this);
 	    menu.addAction(this->actionRemove);
+	    menu.addAction(this->actionEnleverBlackboard);
 	    menu.exec(event->globalPos());
 	    return;
 	}
@@ -366,6 +369,9 @@ void BlackBoard::createActions()
     this->actionLier = new QAction(tr("&Lier/Délier"), this);
     this->actionLier->setStatusTip(tr("lier ou délier le mouvement avec un sample ou un port"));
     connect(this->actionLier, SIGNAL(triggered()), this, SLOT(slotLiaison()));
+    this->actionEnleverBlackboard = new QAction(tr("&Enlever diu blackboard"), this);
+    this->actionEnleverBlackboard->setStatusTip(tr("Enlever la forme du blackboard"));
+    connect(this->actionEnleverBlackboard, SIGNAL(triggered()), this, SLOT(slotEnleverBlackboard()));
 }
 
 void BlackBoard::slotRemove()
@@ -407,6 +413,77 @@ void BlackBoard::slotLiaison()
 	if(this->listEllipse.at(i)->getContextMenu() == true)
 	{
 	    this->movement = this->listEllipse.at(i)->getMovement();
+	}
+}
+
+void BlackBoard::slotEnleverBlackboard()
+{
+    for(int i = 0 ; i < this->listEllipse.size() ; i++)
+	if(this->listEllipse.at(i)->getContextMenu() == true)
+	{
+	    Movement *movement = this->listEllipse.at(i)->getMovement();
+	    if(movement->getSampleAudio())
+	    {
+		movement->getSampleAudio()->removeId(movement->getId());
+		emit save (movement->getSampleAudio());
+	    }
+	    movement->setSampleAudio(NULL);
+	    if(!movement->getListClients()->isEmpty())
+		for(int i = 0 ; i < movement->getListClients()->size() ; i++)
+		{
+		    movement->getListClients()->at(i)->removeIdMovement(movement->getId());
+		    emit save(movement->getListClients()->at(i));
+		}
+	    movement->getListClients()->clear();
+	    for(int i = 0 ; i < this->listMovements->size() ; i++)
+		if(this->listMovements->at(i)->getId() == movement->getId())
+		    this->listMovements->removeAt(i);
+	    movement->setActive(false);
+	    emit save(movement);
+	    emit refreshSignal();
+	    return;
+	}
+    for(int i = 0 ; i < this->listDiamond.size() ; i++)
+	if(this->listDiamond.at(i)->getContextMenu() == true)
+	{
+	    ClientOSC *clientOSC = listDiamond.at(i)->getPort();
+	    clientOSC->getListIdMovement()->clear();
+	    for(int i = 0 ; i < this->listMovements->size() ; i++)
+	    {
+		for(int j = 0 ; j < this->listMovements->at(i)->getListClients()->size() ; j++)
+		    if(this->listMovements->at(i)->getListClients()->at(j)->getId() == clientOSC->getId())
+			this->listMovements->at(i)->getListClients()->removeAt(j);
+		emit save(this->listMovements->at(i));
+	    }
+	    clientOSC->setActive(false);
+	    for(int i = 0 ; i < this->listPorts->size() ; i++)
+		if(this->listPorts->at(i)->getId() == clientOSC->getId())
+		    this->listPorts->removeAt(i);
+	    emit save(clientOSC);
+	    emit refreshSignal();
+	    return;
+	}
+    for(int i = 0 ; i < this->listTriangle.size() ; i++)
+	if(this->listTriangle.at(i)->getContextMenu() == true)
+	{
+	    SampleAudio *sampleAudio = this->listTriangle.at(i)->getSampleAudio();
+	    sampleAudio->getListIdMovement()->clear();
+	    for(int i = 0 ; i < this->listMovements->size() ; i++)
+	    {
+		if(this->listMovements->at(i)->getSampleAudio())
+		    if(this->listMovements->at(i)->getSampleAudio()->getId() == sampleAudio->getId())
+		    {
+			this->listMovements->at(i)->setSampleAudio(NULL);
+			emit save(this->listMovements->at(i));
+		    }
+	    }
+	    for(int i = 0 ; i < this->listSamplesAudio->size() ; i++)
+		if(this->listSamplesAudio->at(i)->getId() == sampleAudio->getId())
+		    this->listSamplesAudio->removeAt(i);
+	    sampleAudio->setActive(false);
+	    emit save(sampleAudio);
+	    emit refreshSignal();
+	    return;
 	}
 }
 
