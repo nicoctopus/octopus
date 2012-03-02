@@ -45,7 +45,7 @@ public slots:
     void slotVisualisation();
     void slotLiaison();
     void liaison();
-
+    void slotEnleverBlackboard();
 protected :
     void contextMenuEvent(QContextMenuEvent  *event);
 
@@ -65,6 +65,7 @@ private:
     QAction *actionVisualisation;
     QAction *actionLier;
     QAction *actionDelier;
+    QAction *actionEnleverBlackboard;
     void createActions();
 
 };
