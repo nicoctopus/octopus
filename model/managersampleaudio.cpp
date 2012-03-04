@@ -37,11 +37,25 @@ void ManagerSampleAudio::remove(SampleAudio *sampleAudio)
 {
     QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
     fichierSampleAudio.remove(QString::number(sampleAudio->getId()));
-    fichierSampleAudio.remove(QString::number(this->listSamplesAudios->last()->getId()));
-    this->listSamplesAudios->last()->updateId(sampleAudio->getId());
-    this->save(this->listSamplesAudios->last(), fichierSampleAudio);
+    if(this->listSamplesAudios->size() >= 2)
+    {
+	int idMax = this->listSamplesAudios->at(0)->getId();
+	for(int i = 1 ; i < this->listSamplesAudios->size() ; i++)
+	    if(this->listSamplesAudios->at(i)->getId() > this->listSamplesAudios->at(i - 1)->getId())
+		idMax = this->listSamplesAudios->at(i)->getId();
+	fichierSampleAudio.remove(QString::number(idMax));
+	for(int i = 0 ; i < this->listSamplesAudios->size() ; i++)
+	    if(this->listSamplesAudios->at(i)->getId() == idMax)
+	    {
+		this->listSamplesAudios->at(i)->updateId(sampleAudio->getId());
+		this->save(this->listSamplesAudios->at(i), fichierSampleAudio);
+	    }
+    }
     SampleAudio::idSampleAudioStatic--;
     fichierSampleAudio.sync();
+    for(int i = 0 ; i < this->listSamplesAudios->size() ; i++)
+	if(this->listSamplesAudios->at(i)->getId() == sampleAudio->getId())
+	    this->listSamplesAudios->removeAt(i);
 }
 
 QList<SampleAudio*>* ManagerSampleAudio::getListSamplesAudios()
@@ -60,7 +74,7 @@ QList<SampleAudio*>* ManagerSampleAudio::getListSamplesAudiosActive()
 
 void ManagerSampleAudio::addSample(QString name, QString url)
 {
-    this->listSamplesAudios->append(new SampleAudio(name, url, 0, false));
+    this->listSamplesAudios->append(new SampleAudio(name, url, false));
     QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
     this->save(this->listSamplesAudios->last(), fichierSampleAudio);
     fichierSampleAudio.sync();
@@ -71,7 +85,7 @@ void ManagerSampleAudio::initSystem()
     qRegisterMetaTypeStreamOperators<SampleAudio>("SampleAudio");
     qMetaTypeId<SampleAudio>();
 
-   // qRegisterMetaTypeStreamOperators<QList<quint32> >("QList<quint32>");
+    // qRegisterMetaTypeStreamOperators<QList<quint32> >("QList<quint32>");
     //qMetaTypeId<QList<quint32> >();
 }
 

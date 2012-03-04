@@ -1,11 +1,12 @@
 #include "ellipseduprojet.h"
 
-static int R3=4;
-static int V3=138;
-static int B3=255;
-static int R4=0;
-static int V4=1;
-static int B4=255;
+#include <QWidget>
+#include <QtGui>
+#include <QTreeWidget>
+
+#include <QMenu>
+#include <QAction>
+#include <QGraphicsSceneContextMenuEvent>
 
 EllipseDuProjet::EllipseDuProjet(qreal x, qreal y, qreal width, qreal height, QColor* color, QGraphicsScene *scene, Movement *movement) : QGraphicsEllipseItem ()
 {
@@ -26,6 +27,7 @@ EllipseDuProjet::EllipseDuProjet(qreal x, qreal y, qreal width, qreal height, QC
     this->setBrush(QColor(rand()%4,rand()%137,255, 255));
     this->setZValue(5);
     scene->addItem(this);
+    this->contextMenu = false;
 }
 
 Movement* EllipseDuProjet::getMovement()
@@ -33,5 +35,12 @@ Movement* EllipseDuProjet::getMovement()
     return this->movement;
 }
 
+bool EllipseDuProjet::getContextMenu()
+{
+    return this->contextMenu;
+}
 
-
+void EllipseDuProjet::setContextMenu(bool contextMenu)
+{
+    this->contextMenu = contextMenu;
+}

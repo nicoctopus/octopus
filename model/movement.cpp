@@ -17,14 +17,12 @@ Movement::Movement() : Element()
 Movement::Movement(const Movement &movement) :Element(movement.idElement, movement.nameElement, movement.active)
 {
     this->listJointsMvt = new QList<JointMvt*>();
-    for(int i = 0 ; i < movement.listJointsMvt->size() ; i++)
-	this->listJointsMvt->append(new JointMvt(*(movement.listJointsMvt->at(i))));
-    //this->sampleAudio = new SampleAudio(*(movement.sampleAudio));
-    //this->sampleVideo = new SampleVideo(*(movement.sampleVideo));
+    //for(int i = 0 ; i < movement.listJointsMvt->size() ; i++)
+	//this->listJointsMvt->append(new JointMvt(*(movement.listJointsMvt->at(i))));
     this->sampleAudio = NULL;
     this->sampleVideo = NULL;
     this->listClients = new QList<ClientOSC*>();
-    this->listClients->append(*(movement.listClients));
+    //this->listClients->append(*(movement.listClients));
 }
 
 Movement::Movement(const QString &name) : Element(++idMovementStatic, name, false)
@@ -50,14 +48,17 @@ Movement::Movement(const QString &name, const bool &active, QList<JointMvt*> *li
   *    DESTRUCTEURS
   **/
 Movement::~Movement(){
-    /*for(int i = 0 ; i < this->listClients->size() ; i++)
-    delete(this->listClients->at(i));
-    delete(this->listClients);
-    for(int i = 0 ; i < this->listJointsMvt->size() ; i++)
-	delete(this->listJointsMvt->at(i));
-    delete(this->listJointsMvt);
-    delete(this->sampleAudio);
-    delete(this->sampleVideo);*/
+    for(int i = 0 ; i < this->listClients->size() ; i++)
+        delete this->listClients->at(i);
+
+    for(int j = 0 ; j < this->listJointsMvt->size() ; j++)
+        delete this->listJointsMvt->at(j);
+
+    delete this->listClients;
+    delete this->listJointsMvt;
+    delete this->sampleAudio;
+    delete this->sampleVideo;
+
 }
 
 /**

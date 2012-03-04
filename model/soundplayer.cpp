@@ -175,7 +175,6 @@ SoundPlayer::~SoundPlayer(){
         if(result != FMOD_OK)
             qDebug()<< "PBLM RELEASE SOUND" << endl;
     }*/
-
     this->result = system->close();
     if(result != FMOD_OK){
         qDebug()<< "PBLM CLOSE SYSTEM" << endl;

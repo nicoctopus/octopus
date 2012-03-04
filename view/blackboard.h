@@ -26,8 +26,6 @@ public:
     void setListMovements(QList<Movement*> *listMovements);
     void setListPorts(QList<ClientOSC*> *listPorts);
     void setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio);
-    void selectedItems();
-   // void creerForme();
     
 signals:
     void save(Movement *movement);
@@ -35,9 +33,22 @@ signals:
     void save(ClientOSC *clientOSC);
     void refreshSignal();
     void decocherCheckBoxLink();
+    void clearScene();
+    void remove(Movement *movement);
+    void remove(SampleAudio *sampleAudio);
+    void remove(ClientOSC *clientOSC);
+    void visualisation(Movement *movement);
 
 public slots:
     void refresh();
+    void slotRemove();
+    void slotVisualisation();
+    void slotLiaison();
+    void liaison();
+    void slotEnleverBlackboard();
+protected :
+    void contextMenuEvent(QContextMenuEvent  *event);
+
 private:
     QList<Movement*> *listMovements;
     QList<SampleAudio*> *listSamplesAudio;
@@ -45,9 +56,17 @@ private:
     QList<EllipseDuProjet*> listEllipse;
     QList<Triangle*> listTriangle;
     QList<Diamond*> listDiamond;
-    QList<QGraphicsItem*> itemsToLink;
     QList<QGraphicsLineItem*> listLines;
     quint16 xEllipse, yEllipse, xDiamond, yDiamond, xTriangle, yTriangle;
+    Movement *movement;
+
+    //Menu clique droit
+    QAction *actionRemove;
+    QAction *actionVisualisation;
+    QAction *actionLier;
+    QAction *actionDelier;
+    QAction *actionEnleverBlackboard;
+    void createActions();
 
 };
 

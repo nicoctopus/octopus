@@ -17,10 +17,12 @@ public:
     {
 	return Type;
     }
+    bool getContextMenu();
+    void setContextMenu(bool contextMenu);
 
 private :
     ClientOSC *port;
-    
+    bool contextMenu;
 };
 
 #endif // DIAMOND_H

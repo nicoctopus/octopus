@@ -1,13 +1,5 @@
 #include "diamond.h"
 
-static int R5=255;
-static int V5=255;
-static int B5=0;
-static int R6=252;
-static int V6=102;
-static int B6=0;
-
-
 Diamond::Diamond(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, ClientOSC* port) : QGraphicsPolygonItem()
 {
 
@@ -34,4 +26,14 @@ Diamond::Diamond(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, Cli
 ClientOSC* Diamond::getPort()
 {
     return this->port;
+}
+
+bool Diamond::getContextMenu()
+{
+    return this->contextMenu;
+}
+
+void Diamond::setContextMenu(bool contextMenu)
+{
+    this->contextMenu = contextMenu;
 }

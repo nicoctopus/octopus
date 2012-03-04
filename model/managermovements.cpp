@@ -32,7 +32,6 @@ void ManagerMovements::loadAll()
 	this->listMovements->append(new Movement(fichierMovement.value(fichierMovement.allKeys().at(i), qVariantFromValue(Movement())).value<Movement>()));
     this->managerJointMvt->loadAll();
     this->dispacher();
-    this->sortMovementsById();
 }
 
 void ManagerMovements::dispacher()
@@ -104,7 +103,7 @@ void ManagerMovements::remove(Movement *movement)
 	    this->listMovements->removeAt(i);
 	    //delete(this->listMovements->at(i));
 	}
-    if(this->getListMovements()->isEmpty() != true)
+    if(this->listMovements->size() >= 2)
     {
 	int idTemp2 = this->listMovements->at(0)->getId();
 	for(int i = 1 ; i < this->listMovements->size() ; i++)
@@ -131,21 +130,39 @@ void ManagerMovements::initSystem()
     qMetaTypeId<Movement>();
 }
 
-void ManagerMovements::sortMovements()
+void ManagerMovements::sortMovementsByPositionSize()
 {
-    for(int i = 1 ; i < this->listMovements->size() ; i++)
-	if(!this->listMovements->at(i)->getListJointsMvt()->isEmpty() && !this->listMovements->at(i - 1)->getListJointsMvt()->isEmpty())
-	    if(!this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->isEmpty() && !this->listMovements->at(i - 1)->getListJointsMvt()->at(0)->getListPositions()->isEmpty())
-		if(this->listMovements->at(i - 1)->getListJointsMvt()->at(0)->getListPositions()->size() >
-			this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->size())
-		    this->listMovements->swap(i, i - 1);
+    for(int i = 0 ; i < this->listMovements->size() ; i++)
+	for(int j = i + 1 ; j < this->listMovements->size() ; j++)
+	    if(!this->listMovements->at(i)->getListJointsMvt()->isEmpty() && !this->listMovements->at(j)->getListJointsMvt()->isEmpty())
+		if(!this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->isEmpty() && !this->listMovements->at(j)->getListJointsMvt()->at(0)->getListPositions()->isEmpty())
+		    if(this->listMovements->at(j)->getListJointsMvt()->at(0)->getListPositions()->size() <
+			    this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->size())
+                        this->listMovements->swap(i, j);
 }
 
 void ManagerMovements::sortMovementsById()
 {
     for(int i = 1 ; i < this->listMovements->size() ; i++)
 	if(this->listMovements->at(i - 1)->getId() > this->listMovements->at(i)->getId())
+	{
+	    this->listMovements->at(i)->updateId(this->listMovements->at(i - 1)->getId());
+	    this->listMovements->at(i - 1)->updateId(this->listMovements->at(i)->getId());
 	    this->listMovements->swap(i, i - 1);
+	}
+}
+
+QList<Movement*>*  ManagerMovements::getListMovementsByName()
+{
+    QList<Movement*> *listMovementsSortedByName = new QList<Movement*>(*this->listMovements);
+    if(listMovementsSortedByName->size() > 1)
+	for(int i = 0 ; i < listMovementsSortedByName->size() ; i++)
+	    for(int j = i + 1 ; j < listMovementsSortedByName->size() ; j++)
+		if(QString::localeAwareCompare(listMovementsSortedByName->at(i)->getName().toLower(), listMovementsSortedByName->at(j)->getName().toLower()) > 0)
+		    listMovementsSortedByName->swap(i, j);
+    return listMovementsSortedByName;
+
+
 }
 
 void ManagerMovements::addMovement(Movement *movement)

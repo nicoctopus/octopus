@@ -304,6 +304,13 @@ border-radius: 25px;</string>
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonTEST">
+       <property name="text">
+        <string>TESTS</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -619,13 +626,6 @@ font: 14pt &quot;Fengardo&quot;;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(255, 255, 255);</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBox">
-       <property name="text">
-        <string>Lier les elements</string>
        </property>
       </widget>
      </item>

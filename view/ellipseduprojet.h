@@ -17,8 +17,14 @@ public:
         return Type;
     }
 
+   bool getContextMenu();
+   void setContextMenu(bool contextMenu);
+
 private :
     Movement *movement;
+    bool contextMenu;
+
+
 };
 
 #endif // ELLIPSEDUPROJET_H

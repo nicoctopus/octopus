@@ -40,8 +40,10 @@ void ServerOSC::run() {
                 record(); // on enregistre le mouvement
             }
 
-        }
-        this->deleteAnalyse();
+	}
+	if(!recording)
+	    this->deleteAnalyse();
+
     }
 
     // exec();
@@ -175,14 +177,16 @@ void ServerOSC::fillBuffers(){
 
             //lancer l'analyse
             if(launchAnalyze && allBuffersSameSize()) {
-
                 this->analyse->calculBITG(this->listMovements);
+            }else{
+
+             //qDebug()<< "ON SORT DU FILL ! "<< endl;
             }
         }
     }
 
 
-    qDebug()<< "ON SORT DU FILL ! "<< endl;
+
 }
 
 /**
@@ -340,7 +344,7 @@ bool ServerOSC::isRecording() {
 }
 
 void ServerOSC::setAnalyse() {
-    this->analyse = new Analyse(0,80);
+    this->analyse = new Analyse(0,60);
 }
 
 void ServerOSC::deleteAnalyse(){

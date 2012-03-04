@@ -18,10 +18,12 @@ public:
     {
 	return Type;
     }
+    bool getContextMenu();
+    void setContextMenu(bool contextMenu);
 
 private:
     SampleAudio *sampleAudio;
-
+    bool contextMenu;
     
 };
 

@@ -19,9 +19,8 @@ void ManagerJointMvt::loadAll(){
 
 void ManagerJointMvt::saveAll()
 {
+    QFile::remove("joinmvt.ini");
     QSettings fichierJointMvt("jointmvt.ini", QSettings::IniFormat);
-    for(int i = 0 ;  i < this->listJointsMvts->size() ; i++)
-	fichierJointMvt.remove(QString::number(this->listJointsMvts->at(i)->getIdJointMvt()));
     for(int i = 0 ; i < this->listJointsMvts->size() ; i++)
 	this->save(this->listJointsMvts->at(i), fichierJointMvt);
     fichierJointMvt.sync();
@@ -36,7 +35,11 @@ void ManagerJointMvt::save(QList<JointMvt*> *listJointsMvt)
 {
     QSettings fichierJointMvt("jointmvt.ini", QSettings::IniFormat);
     QSettings fichierPosition("position.ini", QSettings::IniFormat);
-    // enregistrer en fonction du jointmvt ayant le moins de positions
+    //On supprime dans le fichier les joints mouvements et les listes de positions correspondantes pour les réécrires
+    //for(int i = 0 ; i < listJointsMvt->size() ; i++)
+	//this->managerPosition->remove(listJointsMvt->at(i)->getListPositions());
+    this->remove(listJointsMvt);
+	// enregistrer en fonction du jointmvt ayant le moins de positions
     int size = listJointsMvt->at(0)->getListPositions()->size();
     for(int i=0; i<listJointsMvt->size();i++) {
 	if(listJointsMvt->at(i)->getListPositions()->size() < size)
@@ -64,17 +67,17 @@ void ManagerJointMvt::remove(QList<JointMvt*> *listJointsMvtsToDelete)
 	JointMvt *jointMvtTemp = listJointsMvtsToDelete->at(i);
 	//On supprime toutes les positions du joint mouvement dans le fichier
 	this->managerPosition->remove(jointMvtTemp->getListPositions());
-	//on supprime chaque position dans la liste de position du joint mouvement
-	for(int i = 0 ; i < jointMvtTemp->getListPositions()->size() ; i++)
-	    jointMvtTemp->getListPositions()->removeAt(i);
 	//on supprime le joint mouvement du fichier
 	fichierJointMvt.remove(QString::number(jointMvtTemp->getIdJointMvt()));
 	//on supprime le dernier joint du fichier
-	fichierJointMvt.remove(QString::number(this->listJointsMvts->last()->getIdJointMvt()));
-	//on update son id avec celle du joint mouvement a supprimer
-	this->listJointsMvts->last()->updateIdJointMvt(jointMvtTemp->getIdJointMvt());
-	//on le save a nouveau update en memoire
-	this->save(this->listJointsMvts->last(), fichierJointMvt);
+        if(!this->listJointsMvts->isEmpty())
+        {
+            fichierJointMvt.remove(QString::number(this->listJointsMvts->last()->getIdJointMvt()));
+            //on update son id avec celle du joint mouvement a supprimer
+            this->listJointsMvts->last()->updateIdJointMvt(jointMvtTemp->getIdJointMvt());
+            //on le save a nouveau update en memoire
+            this->save(this->listJointsMvts->last(), fichierJointMvt);
+        }
 	JointMvt::idJointMvtStatic--;
     }
     fichierJointMvt.sync();

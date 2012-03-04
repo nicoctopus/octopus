@@ -47,7 +47,6 @@ public slots :
     void remove(ClientOSC *clientOSC);
     void slotPlayPause();
     void slotStop();
-    void slotNewSelectionOnBlackBoard();
     int slotLockNodesForNewMouvement();
     void slotUnlockStickMan();
     void slotDisplayInfos(QTreeWidgetItem* item,int column);
@@ -56,7 +55,6 @@ public slots :
     void slotValidNewMovement();
     void slotEscNewMovement();
     void slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int column);
-    void decocherCheckBoxLink();
     void boutonAddSample();
     void updateLCDTimer();
 
