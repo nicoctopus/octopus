@@ -8,8 +8,9 @@
 #include <QAction>
 #include <QGraphicsSceneContextMenuEvent>
 
-EllipseDuProjet::EllipseDuProjet(qreal x, qreal y, qreal width, qreal height, QColor* color, QGraphicsScene *scene, Movement *movement) : QGraphicsEllipseItem ()
+EllipseDuProjet::EllipseDuProjet(qreal x, qreal y, qreal width, qreal height, QColor* color, QGraphicsScene *scene, Movement *movement, BlackBoard* blackboard) : QGraphicsEllipseItem ()
 {
+    this->blackboard = blackboard;
 
 
     QPen pen;
@@ -20,7 +21,7 @@ EllipseDuProjet::EllipseDuProjet(qreal x, qreal y, qreal width, qreal height, QC
     pen.setJoinStyle(Qt::RoundJoin);
     this->movement = movement;
     this->setRect(x,y,width,height);
-    this->setFlags(/*QGraphicsItem::ItemIsMovable |*/ QGraphicsItem::ItemIsSelectable);
+    this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
 
     this->setPen(pen);
 
@@ -44,3 +45,32 @@ void EllipseDuProjet::setContextMenu(bool contextMenu)
 {
     this->contextMenu = contextMenu;
 }
+
+//-------- Pour bouger sur le blackboard ------------
+QVariant EllipseDuProjet::itemChange(GraphicsItemChange change, const QVariant &value)
+ {
+    if(change == ItemPositionHasChanged ) {
+        blackboard->itemMoved(this);
+    }
+     return QGraphicsItem::itemChange(change, value);
+ }
+
+ void EllipseDuProjet::mousePressEvent(QGraphicsSceneMouseEvent *event)
+ {
+     update();
+     QGraphicsItem::mousePressEvent(event);
+ }
+
+ void EllipseDuProjet::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+ {
+     update();
+     QGraphicsItem::mouseReleaseEvent(event);
+ }
+
+ void EllipseDuProjet::setListLines(QGraphicsLineItem* line){
+     listLines.append(line);
+ }
+
+ QList<QGraphicsLineItem*> EllipseDuProjet::getListLines(){
+     return listLines;
+ }

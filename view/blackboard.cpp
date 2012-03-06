@@ -6,7 +6,7 @@
 //                     CONSTRUCTEUR
 // -----------------------------------------------------------
 
-BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent)
+BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent), timerId(0)
 {
     this->setAcceptDrops(true);
     this->movement = NULL;
@@ -274,8 +274,12 @@ void BlackBoard::refresh()
 		{
 		    //qDebug() << "id sample : " << this->listEllipse.at(i)->getMovement()->getSampleAudio()->getId() << endl;
 		    //qDebug() << "id mvt : " << this->listEllipse.at(i)->getMovement()->getId() << endl;
-		    this->addLineItem(this->listEllipse.at(i)->rect().x() + 25, this->listEllipse.at(i)->rect().y() + 50, this->listTriangle.at(j)->x() + 25, this->listTriangle.at(j)->y());
-		    this->scene()->addItem(this->listLines.last());
+            //this->addLineItem(this->listEllipse.at(i)->rect().x() + 25, this->listEllipse.at(i)->rect().y() + 50, this->listTriangle.at(j)->x() + 25, this->listTriangle.at(j)->y());
+            this->addLineItem(this->listEllipse.at(i)->x() + 25, this->listEllipse.at(i)->y() + 25, this->listTriangle.at(j)->x() + 25, this->listTriangle.at(j)->y() + 25);
+
+            this->scene()->addItem(this->listLines.last());
+            this->listEllipse.at(i)->getListLines().append(this->listLines.last());
+            this->listTriangle.at(j)->getListLines().append(this->listLines.last());
 		}
 	    }
 	}
@@ -286,9 +290,11 @@ void BlackBoard::refresh()
 		for(int k =0; k< this->listEllipse.at(i)->getMovement()->getListClients()->size();k++)
 		    if(this->listEllipse.at(i)->getMovement()->getListClients()->at(k)->getId() == this->listDiamond.at(j)->getPort()->getId())
 		    {
-			this->addLineItem(this->listEllipse.at(i)->rect().x() + 25, this->listEllipse.at(i)->rect().y(), this->listDiamond.at(j)->x() + 25, this->listDiamond.at(j)->y() + 50);
-			this->scene()->addItem(this->listLines.last());
-
+            //this->addLineItem(this->listEllipse.at(i)->rect().x() + 25, this->listEllipse.at(i)->rect().y(), this->listDiamond.at(j)->x() + 25, this->listDiamond.at(j)->y() + 50);
+            this->addLineItem(this->listEllipse.at(i)->x() + 25, this->listEllipse.at(i)->y() + 25, this->listDiamond.at(j)->x() + 25, this->listDiamond.at(j)->y() + 25);
+            this->scene()->addItem(this->listLines.last());
+            this->listEllipse.at(i)->getListLines().append(this->listLines.last());
+            this->listDiamond.at(j)->getListLines().append(this->listLines.last());
 		    }
     }
 }
@@ -504,6 +510,59 @@ void BlackBoard::liaison()
 	    this->updateClientOSCOfMovement(movementTemp, diamond->getPort());
 	}
     }
+
+}
+
+// -----------------------------------------------------------
+//               Faire Bouger les lignes/items
+// -----------------------------------------------------------
+// On appelle la méthode itemMoved quand on déplace un item (voir classes des items)
+// Cette méthode lance un timer qui fait bouger les lignes entres les items
+void BlackBoard::itemMoved(QGraphicsItem* pMovingItem)
+ {
+     if (!timerId){
+         this->movingItem = pMovingItem;
+         timerId = startTimer(1000 / 25);
+     }
+}
+
+void BlackBoard::timerEvent(QTimerEvent *event)
+{
+    Q_UNUSED(event);
+    QList<QGraphicsLineItem*> listLines;
+    if(this->movingItem->type() == 65539)
+    {
+        Triangle *triangle = (Triangle*)(this->movingItem);
+        listLines = triangle->getListLines();
+    }
+    else if(this->movingItem->type() == 65538)
+    {
+        Diamond *diamond = (Diamond*)(this->movingItem);
+        listLines = diamond->getListLines();
+    }
+    else if(this->movingItem->type() == 65537)
+    {
+        EllipseDuProjet *ellipse = (EllipseDuProjet*)(this->movingItem);
+        listLines = ellipse->getListLines();
+    }
+
+    for (int i=0; i<listLines.size(); i++){
+        if((listLines.at(i)->line().x1() == movingItem->x() + 25) && (listLines.at(i)->line().y1() == movingItem->y() + 25))
+        {
+            listLines.at(i)->setLine(movingItem->x() + 25, movingItem->y() + 25, listLines.at(i)->line.x2(), listLines.at(i)->line.y2());
+        }
+        else if((listLines.at(i)->line().x2() == movingItem->x() + 25) && (listLines.at(i)->line().y2() == movingItem->y() + 25))
+        {
+            listLines.at(i)->setLine(listLines.at(i)->line.x1(), listLines.at(i)->line.y1(), movingItem->x() + 25, movingItem->y() + 25);
+        }
+
+    }
+    //qDebug("TIMER");
+    //QLine line(0, 0, (movingItem->x())+25, (movingItem->y())+25);
+    //QGraphicsLineItem *lineItem = new QGraphicsLineItem(line);
+    //this->scene()->addItem(lineItem);
+    killTimer(timerId);
+    timerId = 0;
 
 }
 
