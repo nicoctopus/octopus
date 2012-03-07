@@ -17,15 +17,13 @@ class BlackBoard : public QGraphicsView
     Q_OBJECT
 public:
     explicit BlackBoard(QWidget * parent);
-    void dropEvent(QDropEvent *event);
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dragMoveEvent(QDragMoveEvent *event);
     void addLineItem(const quint16 x1, const quint16 y1, const quint16 x2, const quint16 y2);
     void updateSampleAudioOfMovement(Movement *movement, SampleAudio *newSampleAudio);
     void updateClientOSCOfMovement(Movement *movement, ClientOSC *clientOSC);
     void setListMovements(QList<Movement*> *listMovements);
     void setListPorts(QList<ClientOSC*> *listPorts);
     void setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio);
+    void itemMoved(QGraphicsItem* pMovingItem);
     
 signals:
     void save(Movement *movement);
@@ -46,8 +44,14 @@ public slots:
     void slotLiaison();
     void liaison();
     void slotEnleverBlackboard();
+
 protected :
     void contextMenuEvent(QContextMenuEvent  *event);
+    void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
+    void timerEvent(QTimerEvent *event);
+
 
 private:
     QList<Movement*> *listMovements;
@@ -59,6 +63,7 @@ private:
     QList<QGraphicsLineItem*> listLines;
     quint16 xEllipse, yEllipse, xDiamond, yDiamond, xTriangle, yTriangle;
     Movement *movement;
+    QGraphicsItem* movingItem;
 
     //Menu clique droit
     QAction *actionRemove;
