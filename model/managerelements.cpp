@@ -11,7 +11,7 @@ ManagerElements::ManagerElements() : Manager()
 
     /**
       *
-      **
+      **/
     this->managerSampleAudio->getListSamplesAudios()->append(new SampleAudio("01 By the Way", "../../../01 By the Way.mp3", false));
     this->managerSampleAudio->getListSamplesAudios()->append(new SampleAudio("03 Scar Tissue", "../../../03 Scar Tissue.mp3", false));
     this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(1234, "localhost", false));
@@ -34,7 +34,7 @@ ManagerElements::ManagerElements() : Manager()
 
     /**
      *
-    **
+    **/
     this->saveAll();
     this->dispacher();
     /**

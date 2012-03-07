@@ -296,6 +296,9 @@ void MainWindow::slotDisplayInfos()
             Diamond *diamond = (Diamond*)itemsSelected.at(i);
 	    text = this->textDisplay(diamond->getPort());
         }
+        ui->blackboard->setLastX(itemsSelected.at(i)->pos().x());
+        ui->blackboard->setLastY(itemsSelected.at(i)->pos().y());
+        //qDebug()<< "lastPosx" <<
         ui->textBrowser->setText(text);
     }
 }

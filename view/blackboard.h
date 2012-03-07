@@ -5,9 +5,14 @@
 #include <QtGui>
 
 #include "square.h"
+
+#include "model/movement.h"
 #include "ellipseduprojet.h"
+class EllipseDuProjet;
 #include "triangle.h"
+class Triangle;
 #include "diamond.h"
+class Diamond;
 
 #define DEPLACEMENT_HORIZONTAL 75
 #define DEPLACEMENT_VERTICAL 75
@@ -24,6 +29,8 @@ public:
     void setListPorts(QList<ClientOSC*> *listPorts);
     void setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio);
     void itemMoved(QGraphicsItem* pMovingItem);
+    void setLastX(int x);
+    void setLastY(int y);
     
 signals:
     void save(Movement *movement);
@@ -64,6 +71,7 @@ private:
     quint16 xEllipse, yEllipse, xDiamond, yDiamond, xTriangle, yTriangle;
     Movement *movement;
     QGraphicsItem* movingItem;
+    int timerId;
 
     //Menu clique droit
     QAction *actionRemove;
@@ -72,6 +80,10 @@ private:
     QAction *actionDelier;
     QAction *actionEnleverBlackboard;
     void createActions();
+
+    int lastPosX;
+    int lastPosY;
+    bool isFirstPassage;
 
 };
 

@@ -2,7 +2,7 @@
 #include <time.h>
 
 
-Triangle::Triangle(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, SampleAudio *sampleAudio, BlackBoard* blackboard) : QGraphicsEllipseItem ()
+Triangle::Triangle(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, SampleAudio *sampleAudio, BlackBoard* blackboard) : QGraphicsPolygonItem ()
 {
     this->blackboard = blackboard;
 
@@ -18,7 +18,7 @@ Triangle::Triangle(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, S
     QPolygon polygon;
     polygon << QPoint(0, 50) << QPoint(50, 50) << QPoint(25, 0);
     this->setPolygon(polygon);
-    this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+    this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable | ItemSendsGeometryChanges  );
     this->sampleAudio = sampleAudio;
     this->setPen(pen);
     this->setBrush(QColor(rand()%167,198, rand()%26+67, 255));
