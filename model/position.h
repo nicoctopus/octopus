@@ -26,31 +26,20 @@ public:
     Position();
     Position (const Position &position);
     Position (const float &x, const float &y, const float &z, const float &a, const float &b, const float &c);
-    Position(const float &x, const float &y, const float &z,
-	     const Position &previousPosition, const float &a, const float &b, const float &c);
-    Position(const qint32 &x, const qint32 &y, const qint32 &z,
-	     const qint32 &dx, const qint32 &dy, const qint32 &dz, const qint32 &a, const qint32 &b, const qint32 &c);
-    Position(const float &x, const float &y, const float &z, const Position &previousPosition);
     Position(const float &x, const float &y, const float &z);
     qint32 getX() const;
     qint32 getY() const;
     qint32 getZ() const;
-    qint32 getDx() const;
-    qint32 getDy() const;
-    qint32 getDz() const;
     quint16 getId() const;
     qint32 getA() const;
     qint32 getB() const;
     qint32 getC() const;
-    void setA(const qint32 &a);
-    void setB(const qint32 &a);
-    void setC(const qint32 &a);
     void setX(const qint32 &a);
     void setY(const qint32 &a);
     void setZ(const qint32 &a);
-    void setDx(const qint32 &a);
-    void setDy(const qint32 &a);
-    void setDz(const qint32 &a);
+    void setA(const qint32 &a);
+    void setB(const qint32 &a);
+    void setC(const qint32 &a);
 
     Position* ecartPivot (Position const *pos, Position *posEcart);
 

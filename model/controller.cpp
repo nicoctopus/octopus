@@ -67,11 +67,8 @@ void Controller::stopRecord(Movement *movement)
 	for(int k=0; k<movement->getListJointsMvt()->at(j)->getListPositions()->size();k++){
             qDebug() << "Position : " << k << endl;
 		qDebug()     << "X : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getX() << endl;
-		qDebug()     << "DX : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDx() << endl;
 		qDebug()     << "Y : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getY() << endl;
-		qDebug()     << "DY : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDy() << endl;
 		qDebug()     << "Z : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getZ() << endl;
-		qDebug()     << "DZ : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDz() << endl;
 		qDebug()     << endl<<endl;
 	}
     }

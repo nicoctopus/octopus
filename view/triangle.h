@@ -5,7 +5,7 @@
 class BlackBoard;
 #include <QPolygon>
 #include <QGraphicsPolygonItem>
-#include<QGraphicsScene>
+#include <QGraphicsScene>
 #include "../model/sampleaudio.h"
 
 
