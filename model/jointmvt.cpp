@@ -6,35 +6,32 @@ quint32 JointMvt::idJointMvtStatic = 0;
   **/
 JointMvt::JointMvt() {
     this->idJointMvt = ++idJointMvtStatic;
-    this->listPositions = new QList<Position*>();
     this->jointReference = new Joint();
+    this->listPositions = new QList<Position*>();
 }
 
 JointMvt::JointMvt(const JointMvt &jointMvt)
 {
     this->idJointMvt = jointMvt.idJointMvt;
     this->idJointRef = jointMvt.idJointRef;
-    this->idMovement = jointMvt.idMovement;
     this->jointReference = new Joint();
     this->listPositions = new QList<Position*>();
-    //for(int i = 0 ; i < jointMvt.listPositions->size() ; i++)
-      //  this->listPositions->append(new Position(*(jointMvt.listPositions->at(i))));
+    for(int i = 0 ; i < jointMvt.listPositions->size() ; i++)
+	this->listPositions->append(new Position(*jointMvt.listPositions->at(i)));
 }
 
-JointMvt::JointMvt(const quint32 &idJointRef, const quint32 &idMovement)
+JointMvt::JointMvt(const quint32 &idJointRef)
 {
     this->idJointMvt = ++idJointMvtStatic;
     this->idJointRef = idJointRef;
-    this->idMovement = idMovement;
     this->jointReference = new Joint();
     this->listPositions = new QList<Position*>();
 }
 
-JointMvt::JointMvt(const quint32 &idJointRef, const quint32 &idMovement, Joint *jointReference)
+JointMvt::JointMvt(const quint32 &idJointRef, Joint *jointReference)
 {
     this->idJointMvt = ++idJointMvtStatic;
     this->idJointRef = idJointRef;
-    this->idMovement = idMovement;
     this->jointReference = jointReference;
     this->listPositions = new QList<Position*>();
 }
@@ -47,17 +44,12 @@ Joint* JointMvt::getJointRef()
     return this->jointReference;
 }
 
-quint32 JointMvt::getIdJointMvt()
+quint32 JointMvt::getIdJointMvt() const
 {
     return this->idJointMvt;
 }
 
-quint32 JointMvt::getIdMovement()
-{
-    return this->idMovement;
-}
-
-quint32 JointMvt::getIdJointRef()
+quint32 JointMvt::getIdJointRef() const
 {
     return this->idJointRef;
 }
@@ -72,36 +64,25 @@ void JointMvt::setJointRef(Joint *JointReference)
     this->jointReference = JointReference;
 }
 
-void JointMvt::addPosition(Position *position)
-{
-    position->setIdJointMvt((quint16)(this->idJointMvt));
-    this->listPositions->append(position);
-}
-
-void JointMvt::updateIdMovement(const quint32 &idMovement)
-{
-    this->idMovement = idMovement;
-}
-
 void JointMvt::updateIdJointMvt(const quint32 &idJointMvt)
 {
     this->idJointMvt = idJointMvt;
-    for(int i = 0 ; i < this->listPositions->size() ; i++)
-    {
-	this->listPositions->at(i)->updateIdJointMvt(idJointMvt);
-    }
 }
 
+void JointMvt::addPosition(Position *position)
+{
+    this->listPositions->append(position);
+}
 
 /**
   *   DESTRUCTEURS
   **/
 JointMvt::~JointMvt()
 {
+    delete this->jointReference;
     for(int i = 0 ; i < this->listPositions->size() ; i++)
-	delete(this->listPositions->at(i));
-    delete(this->listPositions);
-    delete(this->jointReference);
+	delete this->listPositions->at(i);
+    delete this->listPositions;
 }
 
 /**
@@ -120,19 +101,30 @@ JointMvt::~JointMvt()
  //Pour save
  QDataStream & operator << (QDataStream & out, const JointMvt &valeur)
  {
-    // std::cout << "Entree operator << JointMvt" << std::endl;
+     qDebug() << "Entree operator save JointMvt" << endl;
      out << valeur.idJointMvt;
      out << valeur.idJointRef;
-     out << valeur.idMovement;
+     out << valeur.listPositions->size();
+     //qDebug() << "listpositionsize" << valeur.listPositions.size() << endl;
+     for(int i = 0 ; i < valeur.listPositions->size() ; i++)
+	 out << *(valeur.listPositions->at(i));
      return out;
  }
 
  // Pour load
  QDataStream & operator >> (QDataStream & in, JointMvt &valeur)
  {
-    // std::cout << "Entree operator >> JointMvt" << std::endl;
+     qDebug() << "Entree operator load JointMvt" << endl;
+     int sizeTemp;
      in >> valeur.idJointMvt;
      in >> valeur.idJointRef;
-     in >> valeur.idMovement;
+     in >> sizeTemp;
+     for(int i = 0 ; i < sizeTemp ; i++)
+     {
+	 Position position;
+	 in >> position;
+	 valeur.listPositions->append(new Position(position));
+     }
+     qDebug() << "fin operator load JointMvt" << valeur.idJointMvt << endl;
      return in;
  }

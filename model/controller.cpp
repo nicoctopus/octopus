@@ -66,13 +66,13 @@ void Controller::stopRecord(Movement *movement)
 	qDebug() << movement->getListJointsMvt()->at(j)->getJointRef()->getNom() << endl;
 	for(int k=0; k<movement->getListJointsMvt()->at(j)->getListPositions()->size();k++){
             qDebug() << "Position : " << k << endl;
-                qDebug()     << "X : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getX() << endl;
-                qDebug()     << "DX : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDx() << endl;
-                qDebug()     << "Y : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getY() << endl;
-                qDebug()     << "DY : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDy() << endl;
-                qDebug()     << "Z : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getZ() << endl;
-                qDebug()     << "DZ : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDz() << endl;
-                qDebug()     << endl<<endl;
+		qDebug()     << "X : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getX() << endl;
+		qDebug()     << "DX : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDx() << endl;
+		qDebug()     << "Y : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getY() << endl;
+		qDebug()     << "DY : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDy() << endl;
+		qDebug()     << "Z : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getZ() << endl;
+		qDebug()     << "DZ : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getDz() << endl;
+		qDebug()     << endl<<endl;
 	}
     }
 }
@@ -155,9 +155,10 @@ SoundPlayer * Controller::getPlayerDemo() {
 void Controller::linkJointToJointMvt()
 {
     for(int i = 0 ; i < this->managerJoints->getListJoints()->size() ; i++)
-	for(int j = 0 ; j < this->managerElements->getManagerMovements()->getManagerJointMvt()->getListJointsMvts()->size() ; j++)
-	    if(this->managerJoints->getListJoints()->at(i)->getId() ==  this->managerElements->getManagerMovements()->getManagerJointMvt()->getListJointsMvts()->at(j)->getIdJointRef())
-		this->managerElements->getManagerMovements()->getManagerJointMvt()->getListJointsMvts()->at(j)->setJointRef(this->managerJoints->getListJoints()->at(i));
+	for(int j = 0 ; j < this->managerElements->getManagerMovements()->getListMovements()->size() ; j++)
+	    for(int k = 0 ; k < this->managerElements->getManagerMovements()->getListMovements()->at(j)->getListJointsMvt()->size() ; k++)
+		if(this->managerJoints->getListJoints()->at(i)->getId() ==  this->managerElements->getManagerMovements()->getListMovements()->at(j)->getListJointsMvt()->at(k)->getIdJointRef())
+		    this->managerElements->getManagerMovements()->getListMovements()->at(j)->getListJointsMvt()->at(k)->setJointRef(this->managerJoints->getListJoints()->at(i));
 }
 
 void Controller::bubble(QList<Movement*>* moves) {

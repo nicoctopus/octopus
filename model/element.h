@@ -3,6 +3,7 @@
 
 #include <QtGlobal>
 #include <QString>
+#include <QObject>
 
 class Element
 {

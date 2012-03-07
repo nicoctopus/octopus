@@ -21,7 +21,6 @@ SOURCES += main.cpp\
     model/outputable.cpp \
     model/movement.cpp \
     model/messagesynapse.cpp \
-    model/managerjoints.cpp \
     model/managerelements.cpp \
     model/manager.cpp \
     model/jointmvt.cpp \
@@ -43,12 +42,11 @@ SOURCES += main.cpp\
     model/analyse.cpp \
     model/managerclientosc.cpp \
     model/managersampleaudio.cpp \
-    model/managerjointmvt.cpp \
-    model/managerposition.cpp \
     model/managersamplevideo.cpp \
     model/managermovements.cpp \
     view/threadmovestickman.cpp \
-    view/myqline.cpp
+    view/myqline.cpp \
+    model/managerjoints.cpp
 
 HEADERS  += mainwindow.h \
     model/utils.h \
@@ -92,8 +90,6 @@ HEADERS  += mainwindow.h \
     model/analyse.h \
     model/managerclientosc.h \
     model/managersampleaudio.h \
-    model/managerjointmvt.h \
-    model/managerposition.h \
     model/managersamplevideo.h \
     model/managermovements.h \
     view/threadmovestickman.h \
@@ -113,6 +109,12 @@ else:macx: LIBS += -L$$PWD/FMOD/api/lib/ -lfmodex
 
 INCLUDEPATH += $$PWD/FMOD/api/inc
 DEPENDPATH += $$PWD/FMOD/api/inc
+
+
+
+
+
+
 
 
 

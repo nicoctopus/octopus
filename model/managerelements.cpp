@@ -11,36 +11,39 @@ ManagerElements::ManagerElements() : Manager()
 
     /**
       *
-      **
+      **/
     this->managerSampleAudio->getListSamplesAudios()->append(new SampleAudio("01 By the Way", "../../../01 By the Way.mp3", false));
     this->managerSampleAudio->getListSamplesAudios()->append(new SampleAudio("03 Scar Tissue", "../../../03 Scar Tissue.mp3", false));
     this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(1234, "localhost", false));
     this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(5678, "localhost", false));
-    this->managerMovements->getListMovements()->append(new Movement("bonjour"));
-    JointMvt *j = new JointMvt(1, 1);
-    j->addPosition(new Position(1,3,0,5,0,0,0));
-    j->addPosition(new Position(1,1,0,0,0,0,0));
+
+    /*this->managerMovements->getListMovements()->append(new Movement("bonjour"));
+    JointMvt *j = new JointMvt(1);
+    j->addPosition(new Position(3,0,5,0,0,0));
+    qDebug() << j->getListPositions().size() << endl;
+    j->getListPositions().append(new Position(1,0,0,0,0,0));
     this->managerMovements->getListMovements()->at(0)->addJointMvt(j);
+    this->managerMovements->getListMovements()->at(0)->getListJointsMvt().at(0)->getListPositions().append(new Position(3,0,5,0,0,0));
     this->managerMovements->getListMovements()->append(new Movement("bonjour2"));
-    JointMvt *j2 = new JointMvt(1, 2);
-    j2->addPosition(new Position(1,3,0,5,0,0,0));
-    j2->addPosition(new Position(1,1,0,0,0,0,0));
+    JointMvt *j2 = new JointMvt(1);
+    j2->getListPositions().append(new Position(3,0,5,0,0,0));
+    j2->getListPositions().append(new Position(1,0,0,0,0,0));
     this->managerMovements->getListMovements()->at(1)->addJointMvt(j2);
     this->managerMovements->getListMovements()->append(new Movement("bonjour3"));
-    JointMvt *j3 = new JointMvt(1, 3);
-    j3->addPosition(new Position(1,3,0,5,0,0,0));
-    j3->addPosition(new Position(1,1,0,0,0,0,0));
+    JointMvt *j3 = new JointMvt(1);
+    j3->getListPositions().append(new Position(3,0,5,0,0,0));
+    j3->getListPositions().append(new Position(1,0,0,0,0,0));
     this->managerMovements->getListMovements()->at(2)->addJointMvt(j3);
-
     /**
      *
-    **
-    this->saveAll();
-    this->dispacher();
+    **/
+    //this->saveAll();
+    //qDebug() << this->managerMovements->getListMovements()->at(0)->getListJointsMvt().at(0)->getListPositions().size() << endl;
+    //qDebug() << this->managerMovements->getListMovements()->at(0)->getListJointsMvt().size() << endl;
+    //this->dispacher();
     /**
       *
       **/
-     //this->saveAll();
     this->loadAll();
     /**
       *
@@ -52,7 +55,7 @@ ManagerElements::ManagerElements() : Manager()
   **/
 void ManagerElements::loadAll()
 {
-    std::cout << "   debut loadAll()..." << std::endl;
+    qDebug() << endl << "   debut loadAll()..." << endl;
     this->managerMovements->loadAll();
     this->managerClientOSC->loadAll();
     this->managerSampleAudio->loadAll();

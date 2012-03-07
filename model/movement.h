@@ -14,8 +14,9 @@ class Movement : public Element
 public:
     Movement();
     Movement(const Movement &movement);
+    Movement(Movement *movement);
     Movement(const QString &name);
-    Movement(const QString &name, const bool &active, QList<JointMvt*> *listJointsMvt
+    Movement(const QString &name, const bool &active, const QList<JointMvt*> *listJointsMvt
                , SampleAudio *sa, SampleVideo *sv, QList<ClientOSC*> *listClients);
     ~Movement();
     QList<ClientOSC*>* getListClients();
@@ -23,8 +24,8 @@ public:
     SampleVideo* getSampleVideo();
     void setSampleAudio(SampleAudio *sampleAudio);
     void setSampleVideo(SampleVideo *sampleVideo);
-    QList<JointMvt*> *getListJointsMvt();
-    void addJointMvt(JointMvt* jointMvt);
+    QList<JointMvt*>* getListJointsMvt();
+    void addJointMvt(JointMvt *jointMvt);
     void addClientOSC(ClientOSC *clientOSC);
     void save();
     void updateId(const quint32 &id);
@@ -40,15 +41,10 @@ private:
     QList<JointMvt*> *listJointsMvt;
     friend QDataStream & operator << (QDataStream &, const Movement &);
     friend QDataStream & operator >> (QDataStream &, Movement &);
-    friend QDataStream & operator << (QDataStream &out, const Movement *valeur);
-    friend QDataStream & operator >> (QDataStream &, Movement *&);
-
 };
 
 Q_DECLARE_METATYPE(Movement)
 QDataStream & operator << (QDataStream & out, const Movement &valeur);
 QDataStream & operator >> (QDataStream & in, Movement &valeur);
-QDataStream & operator << (QDataStream & out, const Movement *valeur);
-QDataStream & operator >> (QDataStream & in, Movement *&valeur);
 
 #endif // MOVEMENT_H

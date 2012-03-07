@@ -15,32 +15,39 @@ Movement::Movement() : Element()
     this->idElement = ++idMovementStatic;
 }
 Movement::Movement(const Movement &movement) :Element(movement.idElement, movement.nameElement, movement.active)
-{
-    this->listJointsMvt = new QList<JointMvt*>();
-    //for(int i = 0 ; i < movement.listJointsMvt->size() ; i++)
-	//this->listJointsMvt->append(new JointMvt(*(movement.listJointsMvt->at(i))));
+{    
     this->sampleAudio = NULL;
     this->sampleVideo = NULL;
-    this->listClients = new QList<ClientOSC*>();
-    //this->listClients->append(*(movement.listClients));
+    this->listClients = movement.listClients;
+    this->listJointsMvt = movement.listJointsMvt;
+}
+
+Movement::Movement(Movement *movement) :Element(movement->idElement, movement->nameElement, movement->active)
+{
+    qDebug() << "debut copie constructeur" << endl;
+    this->sampleAudio = NULL;
+    this->sampleVideo = NULL;
+    this->listClients = movement->listClients;
+    this->listJointsMvt = movement->listJointsMvt;
+    qDebug() << "fin copie constructeur" << endl;
 }
 
 Movement::Movement(const QString &name) : Element(++idMovementStatic, name, false)
 {
     this->sampleAudio = NULL;
     this->sampleVideo = NULL;
-    this->listJointsMvt = new QList<JointMvt*>();
     this->listClients = new QList<ClientOSC*>();
+    this->listJointsMvt = new QList<JointMvt*>();
 }
 
-Movement::Movement(const QString &name, const bool &active, QList<JointMvt*> *listJointsMvt
+Movement::Movement(const QString &name, const bool &active, const QList<JointMvt*> *listJointsMvt
 	   , SampleAudio *sa, SampleVideo *sv, QList<ClientOSC*> *lc) : Element(++idMovementStatic, name, active)
 {
     this->active = active;
     this->sampleAudio = sa;
     this->sampleVideo = sv;
     this->listClients = lc;
-    this->listJointsMvt = listJointsMvt;
+    this->listJointsMvt = new QList<JointMvt*>(*listJointsMvt);
 }
 
 
@@ -48,17 +55,14 @@ Movement::Movement(const QString &name, const bool &active, QList<JointMvt*> *li
   *    DESTRUCTEURS
   **/
 Movement::~Movement(){
-    for(int i = 0 ; i < this->listClients->size() ; i++)
+    /*for(int i = 0 ; i < this->listClients->size() ; i++)
         delete this->listClients->at(i);
-
-    for(int j = 0 ; j < this->listJointsMvt->size() ; j++)
-        delete this->listJointsMvt->at(j);
-
     delete this->listClients;
-    delete this->listJointsMvt;
     delete this->sampleAudio;
     delete this->sampleVideo;
-
+    for(int i = 0 ; i < this->listJointsMvt->size() ; i++)
+	delete this->listJointsMvt->at(i);
+    delete(this->listJointsMvt);*/
 }
 
 /**
@@ -79,8 +83,9 @@ SampleVideo* Movement::getSampleVideo()
     return this->sampleVideo;
 }
 
-QList<JointMvt*>* Movement::getListJointsMvt() {
-    return listJointsMvt;
+QList<JointMvt*>* Movement::getListJointsMvt()
+{
+    return this->listJointsMvt;
 }
 
 void Movement::setSampleAudio(SampleAudio *sampleAudio)
@@ -94,7 +99,7 @@ void Movement::setSampleVideo(SampleVideo *sampleVideo)
 }
 
 void Movement::addJointMvt(Joint *ref) {
-    listJointsMvt->append(new JointMvt(ref->getId(), this->idElement, ref));
+    listJointsMvt->append(new JointMvt(ref->getId(), ref));
 }
 
 void Movement::addClientOSC(ClientOSC *clientOSC)
@@ -110,8 +115,6 @@ void Movement::updateId(const quint32 &id)
 {
     int idTemp = this->idElement;
     this->idElement = id;
-    for(int i = 0 ; i < this->listJointsMvt->size() ; i++)
-	this->listJointsMvt->at(i)->updateIdMovement(id);
     if(this->sampleAudio != NULL)
     {
 	this->sampleAudio->removeId(idTemp);
@@ -139,7 +142,7 @@ void Movement::save()
 {
     /* Pour chaque JointMvt, on recupere la derniere Position enregistree du Joint pere */
     foreach (JointMvt *jointMvt, *listJointsMvt) {
-        jointMvt->savePositionFixe();
+	jointMvt->savePositionFixe();
     }
 }
 
@@ -154,37 +157,32 @@ const char* Movement::className()
 //Save
 QDataStream & operator << (QDataStream &out, const Movement &valeur)
 {
-    //std::cout << "Entree operator << Movement" << std::endl;
-    out << valeur.idElement << valeur.nameElement << valeur.active /*<< static_cast<QList <ClientOSC*> >(*(valeur.listClients))*/;
-;
+    //qDebug() << "Entree operator save Movement" << valeur.idElement << endl;
+    out << valeur.idElement;
+    out << valeur.nameElement;
+    out << valeur.active;
+    out << valeur.listJointsMvt->size();
+    //qDebug() << "listpositionsize" << valeur.listJointsMvt.at(0)->getListPositions().size() << endl;
+    for(int i = 0 ; i < valeur.listJointsMvt->size() ; i++)
+	out << *(valeur.listJointsMvt->at(i));
     return out;
-}
-
-//Save
-QDataStream & operator << (QDataStream &out, Movement *valeur)
-{
-    out.writeRawData((char*)&valeur, sizeof(valeur));
-    //std::cout << "Entree operator << Movement" << std::endl;
-    return out;
-}
-
-//Load
-QDataStream & operator >> (QDataStream &in, Movement *&valeur)
-{
-    in.readRawData((char*)&valeur, sizeof(valeur));
-    //std::cout << "Entree operator << Movement" << std::endl;
-    return in;
 }
 
 //Load
 QDataStream & operator >> (QDataStream & in, Movement &valeur)
 {
-    //std::cout << "Entree operator >> Movement" << std::endl;
+    int sizeTemp;
     in >> valeur.idElement;
     in >> valeur.nameElement;
     in >> valeur.active;
-    /*QList<ClientOSC> *list = new QList<ClientOSC>();
-    in >> *list;
-    valeur.getListClients()->append(*list);*/
+    in >> sizeTemp;
+    //qDebug() << sizeTemp << endl;
+    for(int i = 0 ; i < sizeTemp ; i++)
+    {
+	JointMvt temp;
+	in >> temp;
+	valeur.listJointsMvt->append(new JointMvt(temp));
+    }
+    //qDebug() << "fin operator load Movement" << valeur.idElement << endl;
     return in;
 }

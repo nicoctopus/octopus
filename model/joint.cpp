@@ -129,7 +129,7 @@ void Joint::addPosition(const float &x, const float &y, const float &z)
   **/
 void Joint::initializeBuffer() {
     for(int i=0; i<SIZE_MAX_BUFFERS; i++) {
-        bufferPositions->append(new Position(0,0,0,0,0,0,0,0,0,0));
+	bufferPositions->append(new Position(0,0,0,0,0,0,0,0,0));
     }
 }
 

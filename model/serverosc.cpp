@@ -83,7 +83,7 @@ void ServerOSC::fillBuffers(){
                 launchAnalyze = true; // on lancera l'analyse a la fin ...
                 for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "righthand"){
-                        this->listJoints->at(i)->addPosition(x,y,z);
+			this->listJoints->at(i)->addPosition(x,y,z);
                     }
                 }
             }
@@ -91,7 +91,7 @@ void ServerOSC::fillBuffers(){
                 launchAnalyze = true; // on lancera l'analyse a la fin ...
                 for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "lefthand"){
-                        this->listJoints->at(i)->addPosition(x,y,z);
+			this->listJoints->at(i)->addPosition(x,y,z);
                         //qDebug() << "Last buffer Joint lefthand : " << listJoints->at(i)->getBufferPositions()->last()->getX() << endl;
                         /*
    for(int k=0; k<listMovements->size();k++) { // chaque Mvt
@@ -108,7 +108,7 @@ void ServerOSC::fillBuffers(){
                 launchAnalyze = true; // on lancera l'analyse a la fin ...
                 for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "rightelbow"){
-                        this->listJoints->at(i)->addPosition(x,y,z);
+			this->listJoints->at(i)->addPosition(x,y,z);
                     }
                 }
             }
@@ -116,7 +116,7 @@ void ServerOSC::fillBuffers(){
                 launchAnalyze = true; // on lancera l'analyse a la fin ...
                 for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "leftelbow"){
-                        this->listJoints->at(i)->addPosition(x,y,z);
+			this->listJoints->at(i)->addPosition(x,y,z);
                     }
                 }
             }
@@ -124,7 +124,7 @@ void ServerOSC::fillBuffers(){
                 launchAnalyze = true; // on lancera l'analyse a la fin ...
                 for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "rightfoot"){
-                        this->listJoints->at(i)->addPosition(x,y,z);
+			this->listJoints->at(i)->addPosition(x,y,z);
                     }
                 }
             }
@@ -132,7 +132,7 @@ void ServerOSC::fillBuffers(){
                 launchAnalyze = true; // on lancera l'analyse a la fin ...
                 for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "leftfoot"){
-                        this->listJoints->at(i)->addPosition(x,y,z);
+			this->listJoints->at(i)->addPosition(x,y,z);
                     }
                 }
             }
@@ -140,7 +140,7 @@ void ServerOSC::fillBuffers(){
                 launchAnalyze = true; // on lancera l'analyse a la fin ...
                 for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "rightknee"){
-                        this->listJoints->at(i)->addPosition(x,y,z);
+			this->listJoints->at(i)->addPosition(x,y,z);
                     }
                 }
             }
@@ -148,14 +148,14 @@ void ServerOSC::fillBuffers(){
                 launchAnalyze = true; // on lancera l'analyse a la fin ...
                 for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "leftknee")
-                        this->listJoints->at(i)->addPosition(x,y,z);
+			this->listJoints->at(i)->addPosition(x,y,z);
                 }
             }
             else if (message->match("/head_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
                 launchAnalyze = true; // on lancera l'analyse a la fin ...
                 for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "head"){
-                        this->listJoints->at(i)->addPosition(x,y,z);
+			this->listJoints->at(i)->addPosition(x,y,z);
                     }
                 }
             }
@@ -163,7 +163,7 @@ void ServerOSC::fillBuffers(){
                 launchAnalyze = true; // on lancera l'analyse a la fin ...
                 for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "torso"){
-                        this->listJoints->at(i)->addPosition(x,y,z);
+			this->listJoints->at(i)->addPosition(x,y,z);
                     }
                 }
             }
@@ -207,108 +207,108 @@ void ServerOSC::record(){
        * repere : body
        * Donnees : x, y, z
        */
-                QList<JointMvt*>* listJointsMvt = movement->getListJointsMvt();
+		QList<JointMvt*> *listJointsMvt = movement->getListJointsMvt();
                 if (message->match("/tracking_skeleton").popBool(d).isOkNoMoreArgs()) {
                     //tracking ok ...
                 }
                 else if (message->match("/lefthand_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
                     //chercher le joint correspondant dans le mouvement
-                    for (int i=0; i<listJointsMvt->size(); i++){
-                        if(listJointsMvt->at(i)->getJointRef()->getNom() == "lefthand")
+		    for (int i=0; i<listJointsMvt->size(); i++){
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "lefthand")
                         {
-                            if(listJointsMvt->at(i)->getListPositions()->isEmpty())
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,0,0,0));
+			    if(listJointsMvt->at(i)->getListPositions()->isEmpty())
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                             else
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
                         }
                     }
                 }
                 else if (message->match("/righthand_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                    for (int i=0; i<listJointsMvt->size(); i++){
-                        if(listJointsMvt->at(i)->getJointRef()->getNom() == "righthand"){
-                            if(listJointsMvt->at(i)->getListPositions()->size()>0)
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+		    for (int i=0; i<listJointsMvt->size(); i++){
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "righthand"){
+			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
                             else
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/rightelbow_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                    for (int i=0; i<listJointsMvt->size(); i++){
-                        if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightelbow"){
-                            if(listJointsMvt->at(i)->getListPositions()->size()>0)
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+		    for (int i=0; i<listJointsMvt->size(); i++){
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightelbow"){
+			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
                             else
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/leftelbow_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                    for (int i=0; i<listJointsMvt->size(); i++){
-                        if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftelbow"){
-                            if(listJointsMvt->at(i)->getListPositions()->size()>0)
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+		    for (int i=0; i<listJointsMvt->size(); i++){
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftelbow"){
+			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
                             else
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/rightfoot_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                    for (int i=0; i<listJointsMvt->size(); i++){
-                        if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightfoot"){
-                            if(listJointsMvt->at(i)->getListPositions()->size()>0)
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+		    for (int i=0; i<listJointsMvt->size(); i++){
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightfoot"){
+			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
                             else
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/leftfoot_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                    for (int i=0; i<listJointsMvt->size(); i++){
-                        if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftfoot"){
-                            if(listJointsMvt->at(i)->getListPositions()->size()>0)
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+		    for (int i=0; i<listJointsMvt->size(); i++){
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftfoot"){
+			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
                             else
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/rightknee_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                    for (int i=0; i<listJointsMvt->size(); i++){
-                        if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightknee"){
-                            if(listJointsMvt->at(i)->getListPositions()->size()>0)
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+		    for (int i=0; i<listJointsMvt->size(); i++){
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightknee"){
+			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
                             else
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/leftknee_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                    for (int i=0; i<listJointsMvt->size(); i++){
-                        if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftknee")
-                            if(listJointsMvt->at(i)->getListPositions()->size()>0)
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+		    for (int i=0; i<listJointsMvt->size(); i++){
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftknee")
+			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
                             else
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                     }
                 }
                 else if (message->match("/head_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                    for (int i=0; i<listJointsMvt->size(); i++){
-                        if(listJointsMvt->at(i)->getJointRef()->getNom() == "head"){
-                            if(listJointsMvt->at(i)->getListPositions()->size()>0)
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+		    for (int i=0; i<listJointsMvt->size(); i++){
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "head"){
+			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
                             else
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/torso_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                    for (int i=0; i<listJointsMvt->size(); i++){
-                        if(listJointsMvt->at(i)->getJointRef()->getNom() == "torso"){
-                            if(listJointsMvt->at(i)->getListPositions()->size()>0)
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+		    for (int i=0; i<listJointsMvt->size(); i++){
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "torso"){
+			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
                             else
-                                listJointsMvt->at(i)->addPosition(new Position(listJointsMvt->at(i)->getIdJointMvt(),x,y,z,0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
