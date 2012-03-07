@@ -1,6 +1,6 @@
 #include "diamond.h"
 
-Diamond::Diamond(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, ClientOSC* port, BlackBoard* blackboard) : QGraphicsEllipseItem ()
+Diamond::Diamond(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, ClientOSC* port, BlackBoard* blackboard) : QGraphicsPolygonItem ()
 {
     this->blackboard = blackboard;
 
@@ -14,7 +14,7 @@ Diamond::Diamond(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, Cli
     QPolygon polygon;
     polygon << QPoint(0, 25) << QPoint(25, 0) << QPoint(50, 25) << QPoint(25, 50) ;
     this->setPolygon(polygon);
-    this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+    this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable| ItemSendsGeometryChanges  );
     this->setPos(x, y);
     this->setPen(pen);
     this->setZValue(5);

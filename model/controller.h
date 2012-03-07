@@ -14,7 +14,7 @@ class Controller : public QObject
 
 private:
     ManagerJoints *managerJoints;
-    SoundPlayer *playerlive;
+
     SoundPlayer *playerdemo;
     ManagerElements *managerElements;
     ServerOSC *serveurOSC;

@@ -5,7 +5,7 @@ Controller::Controller()
     this->managerJoints = new ManagerJoints();
     this->managerElements = new ManagerElements();
     this->linkJointToJointMvt();
-    this->playerlive = new SoundPlayer(32);
+
     this->playerdemo = new SoundPlayer(1);
     /**
       *AFFICHAGE des infos sur le MVT

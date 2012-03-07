@@ -2,13 +2,10 @@
 
 Analyse::Analyse(){
     this->seuilFrequence=0;
-
-    //p->playDemo(music);
 }
 
 Analyse::~Analyse(){
-    delete(this->p);
-    //delete(this->music);
+    delete(this->playerlive);
 }
 
 Analyse::Analyse(float pourc,float seuil)
@@ -16,9 +13,8 @@ Analyse::Analyse(float pourc,float seuil)
     qDebug()<< "CREATION ANALYSE !!!!!!!! "<< endl;
     this->seuilFrequence=pourc;
     this->seuilAmplitude= seuil;
-    //this->calculBITG(moves);
-    this->p = new SoundPlayer(32);
-    //this->music = new SampleAudio("toto","../../../test.mp3",1, false);
+
+    this->playerlive = new SoundPlayer(32);
 
 }
 
@@ -153,8 +149,12 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
                                     }
                                 }
                                 qDebug() << "CORRESPONDANCE VRAIMENT OK :) !" << endl;
-                                qDebug()<< "Nom du Sample : "<< mouv->at(m)->getSampleAudio()->getName();
-                                p->play(mouv->at(m)->getSampleAudio());
+                                qDebug() << "Nom du Mouv : " << mouv->at(m)->getName() << endl;
+                                qDebug()<< "Nom du Sample : "<< mouv->at(m)->getSampleAudio()->getName()<< endl;
+
+
+                                this->playerlive->play(mouv->at(m)->getSampleAudio());
+
                                 //sleep(2);
                                 //p->Stop();
                                 //sleep(1);

@@ -12,7 +12,6 @@ EllipseDuProjet::EllipseDuProjet(qreal x, qreal y, qreal width, qreal height, QC
 {
     this->blackboard = blackboard;
 
-
     QPen pen;
     pen.setBrush(Qt::white);
     pen.setWidth(6);
@@ -20,8 +19,10 @@ EllipseDuProjet::EllipseDuProjet(qreal x, qreal y, qreal width, qreal height, QC
     pen.setCapStyle(Qt::RoundCap);
     pen.setJoinStyle(Qt::RoundJoin);
     this->movement = movement;
-    this->setRect(x,y,width,height);
-    this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+    this->setRect(0,0,width,height);
+    this->setPos(x,y);
+    this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable | ItemSendsGeometryChanges  );
+
 
     this->setPen(pen);
 

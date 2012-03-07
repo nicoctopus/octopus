@@ -9,15 +9,15 @@
 #include "movement.h"
 #include "databitg.h"
 #include "soundplayer.h"
-#include "sampleaudio.h"
+
 
 class Analyse
 {
 private:
     float seuilFrequence;
     float seuilAmplitude;
-    SoundPlayer * p;
-    SampleAudio * music;
+    SoundPlayer *playerlive;
+
 
     void modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt, QList<Position*>* newList);
     Position* moyenne(Position const *p1, Position const *p2);

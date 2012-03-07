@@ -154,16 +154,7 @@ quint32 SoundPlayer::Position(SampleAudio* aud){
     return pos;
 
 }
-/*
-void ERRCHECK(FMOD_RESULT result)
-{
-    if (result != FMOD_OK)
-    {
-        printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-        exit(-1);
-    }
-}
-*/
+
 
 
 SoundPlayer::~SoundPlayer(){
@@ -175,18 +166,14 @@ SoundPlayer::~SoundPlayer(){
         if(result != FMOD_OK)
             qDebug()<< "PBLM RELEASE SOUND" << endl;
     }*/
-    this->result = system->close();
-    if(result != FMOD_OK){
-        qDebug()<< "PBLM CLOSE SYSTEM" << endl;
 
-    }
 
     this->result = system->release();
     if(result != FMOD_OK){
         qDebug()<< "PBLM RELEASE SYSTEM" << endl;
 
     }
-
+   soundlist.clear();
 
 
 }
