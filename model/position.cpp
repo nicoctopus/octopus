@@ -1,7 +1,7 @@
 #include "position.h"
 #include "qDebug"
 quint32 Position::idPositionsStatic = 0;
-float DIVISEUR = 0.1;
+float Position::DIVISEUR = 0.1;
 /**
   *   CONSTRUCTEUR
   **/

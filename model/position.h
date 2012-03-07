@@ -13,9 +13,6 @@ private:
     qint32 x;
     qint32 y;
     qint32 z;
-    qint32 dx;
-    qint32 dy;
-    qint32 dz;
     qint32 a;
     qint32 b;
     qint32 c;
@@ -47,6 +44,7 @@ public:
     void updateId(const quint32 &id);
     //VARIABLE STATIC ID
     static quint32 idPositionsStatic;
+    static float DIVISEUR;
 };
 
 Q_DECLARE_METATYPE(Position)

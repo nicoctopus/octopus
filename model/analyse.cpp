@@ -325,9 +325,6 @@ Position* Analyse::moyenne(Position const* p1, Position const* p2)
 		(p1->getX() + p2->getX()) / 2,
 		(p1->getY() + p2->getY()) / 2,
 		(p1->getZ() + p2->getZ()) / 2,
-		(p1->getDx() + p2->getDx()) / 2,
-		(p1->getDy() + p2->getDy()) / 2,
-		(p1->getDz() + p2->getDz()) / 2,
 		(p1->getA() + p2->getA()) /2,
 		(p1->getB() + p2->getB()) /2,
 		(p1->getC() + p2->getC()) /2
