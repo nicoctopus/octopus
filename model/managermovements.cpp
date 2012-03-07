@@ -4,7 +4,6 @@ ManagerMovements::ManagerMovements()
 {
     this->initSystem();
     this->listMovements = new QList<Movement*>();
-    this->managerJointMvt = new ManagerJointMvt();
 }
 
 ManagerMovements::~ManagerMovements()
@@ -12,7 +11,6 @@ ManagerMovements::~ManagerMovements()
     for(int i = 0 ; i < this->listMovements->size() ; i++)
 	delete(this->listMovements->at(i));
     delete(this->listMovements);
-    delete(this->managerJointMvt);
 }
 
 void ManagerMovements::saveAll()
@@ -20,7 +18,10 @@ void ManagerMovements::saveAll()
     QFile::remove("movement.ini");
     QSettings fichierMovement("movement.ini", QSettings::IniFormat);
     for(int i = 0 ; i < this->listMovements->size() ; i++)
+    {
+	qDebug() << this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->size();
 	this->save(this->listMovements->at(i), fichierMovement);
+    }
     fichierMovement.sync();
 }
 
@@ -28,69 +29,27 @@ void ManagerMovements::loadAll()
 {
     this->listMovements->clear();
     QSettings fichierMovement("movement.ini", QSettings::IniFormat);
+    //qDebug() << "size" << fichierMovement.allKeys().size() << endl;
     for(int i = 0 ; i < fichierMovement.allKeys().size() ; i++)
-	this->listMovements->append(new Movement(fichierMovement.value(fichierMovement.allKeys().at(i), qVariantFromValue(Movement())).value<Movement>()));
-    this->managerJointMvt->loadAll();
-    this->dispacher();
-}
-
-void ManagerMovements::dispacher()
-{
-    for(int i = 0 ; i < this->listMovements->size() ; i++)
     {
-	for(int j = 0 ; j < this->managerJointMvt->getListJointsMvts()->size() ; j++)
-	{
-	    JointMvt *jointMvtTemp = this->managerJointMvt->getListJointsMvts()->at(j);
-	    if(this->listMovements->at(i)->getId() == jointMvtTemp->getIdMovement())
-	    {
-		for(int k = 0 ; k < this->managerJointMvt->getManagerPosition()->getListPositionTemp()->size() ; k++)
-		{
-		    if(jointMvtTemp->getIdJointMvt() == this->managerJointMvt->getManagerPosition()->getListPositionTemp()->at(k)->getIdJointMvt())
-			jointMvtTemp->addPosition(this->managerJointMvt->getManagerPosition()->getListPositionTemp()->at(k));
-		}
-		this->listMovements->at(i)->addJointMvt(this->managerJointMvt->getListJointsMvts()->at(j));
-	    }
-	}
-    }
-    if(this->managerJointMvt->getManagerPosition()->getListPositionTemp()->isEmpty())
-	Position::idPositionsStatic = 0;
-    else{
-	int tmp = 0;
-	for(int i=0; i<managerJointMvt->getManagerPosition()->getListPositionTemp()->size();i++)
-	    if (tmp < managerJointMvt->getManagerPosition()->getListPositionTemp()->at(i)->getId()) tmp = managerJointMvt->getManagerPosition()->getListPositionTemp()->at(i)->getId();
-	Position::idPositionsStatic = tmp;
-    }
-    if(this->managerJointMvt->getListJointsMvts()->isEmpty())
-	JointMvt::idJointMvtStatic = 0;
-    else{
-	int tmp = 0;
-	for(int i=0; i<managerJointMvt->getListJointsMvts()->size();i++)
-	    if(tmp < managerJointMvt->getListJointsMvts()->at(i)->getIdJointMvt()) tmp = managerJointMvt->getListJointsMvts()->at(i)->getIdJointMvt();
-	JointMvt::idJointMvtStatic = tmp;
-
-    }if(this->listMovements->isEmpty())
-	Movement::idMovementStatic = 0;
-    else {
-	int tmp = 0;
-	for(int i=0; i<listMovements->size(); i++)
-	    if(tmp < listMovements->at(i)->getId()) tmp = listMovements->at(i)->getId();
-	Movement::idMovementStatic = tmp;
+	Movement movement = fichierMovement.value(fichierMovement.allKeys().at(i), qVariantFromValue(Movement())).value<Movement>();
+	this->listMovements->append(new Movement(movement));
     }
 }
 
 void ManagerMovements::save(Movement *movement, QSettings &fichierMovement)
 {
     QString key = QString::number(movement->getId());
+    //qDebug() << "managerMovement save" << movement->getListJointsMvt()->at(0)->getIdJointMvt() << endl;
     fichierMovement.setValue(key, qVariantFromValue(*movement));
-    if(!movement->getListJointsMvt()->isEmpty())
-	this->managerJointMvt->save(movement->getListJointsMvt());
 }
 
 void ManagerMovements::remove(Movement *movement)
 {
     quint32 idTemp = movement->getId();
-    this->managerJointMvt->remove(movement->getListJointsMvt());
+    //this->managerJointMvt->remove(movement->getListJointsMvt());
     movement->getListJointsMvt()->clear();
+
 
     QSettings fichierMovement("movement.ini", QSettings::IniFormat);
     //On supprime le mouvement du fichier de serialisation
@@ -128,6 +87,10 @@ void ManagerMovements::initSystem()
 {
     qRegisterMetaTypeStreamOperators<Movement>("Movement");
     qMetaTypeId<Movement>();
+    qRegisterMetaTypeStreamOperators<JointMvt>("JointMvt");
+    qMetaTypeId<JointMvt>();
+    qRegisterMetaTypeStreamOperators<Position>("Position");
+    qMetaTypeId<Position>();
 }
 
 void ManagerMovements::sortMovementsByPositionSize()
@@ -182,9 +145,4 @@ QList<Movement*>* ManagerMovements::getListMovementsActive()
 	if(this->listMovements->at(i)->isActive() == true)
 	    listMovementActive->append(this->listMovements->at(i));
     return listMovementActive;
-}
-
-ManagerJointMvt* ManagerMovements::getManagerJointMvt()
-{
-    return this->managerJointMvt;
 }

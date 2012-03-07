@@ -11,7 +11,6 @@ Position::Position()
 
 Position::Position(const float &x, const float &y, const float &z, const Position &previousPosition)
 {
-    this->idJoinMvt = 0;
     this->id = 0;
     this->x = (qint32) COEF_FLOAT2INT * x * DIVISEUR;
     this->y = (qint32) COEF_FLOAT2INT * y * DIVISEUR;
@@ -23,7 +22,6 @@ Position::Position(const float &x, const float &y, const float &z, const Positio
 
 Position::Position(const float &x, const float &y, const float &z)
 {
-    this->idJoinMvt = 0;
     this->id = 0;
     this->x = (qint32) COEF_FLOAT2INT * x * DIVISEUR;
     this->y = (qint32) COEF_FLOAT2INT * y * DIVISEUR;
@@ -33,10 +31,9 @@ Position::Position(const float &x, const float &y, const float &z)
     this->dz = 0;//std::abs(this->z)/INTERVAL_TIME;
 }
 
-Position::Position (const quint32 &idJoinMvt, const float &x, const float &y, const float &z, const float &a, const float &b, const float &c)
+Position::Position (const float &x, const float &y, const float &z, const float &a, const float &b, const float &c)
 {
     this->id = ++idPositionsStatic;
-    this->idJoinMvt = idJoinMvt;
     this->x = (qint32) COEF_FLOAT2INT * x * DIVISEUR;
     this->y = (qint32) COEF_FLOAT2INT * y * DIVISEUR;
     this->z = (qint32) COEF_FLOAT2INT * z * DIVISEUR;
@@ -48,11 +45,10 @@ Position::Position (const quint32 &idJoinMvt, const float &x, const float &y, co
     this->dz = 0;
 }
 
-Position::Position(const quint32 &idJoinMvt, const float &x, const float &y, const float &z,
+Position::Position(const float &x, const float &y, const float &z,
 		   const Position &previousPosition, const float &a, const float &b, const float &c)
 {
     this->id = ++idPositionsStatic;
-    this->idJoinMvt = idJoinMvt;
     this->x = (qint32) COEF_FLOAT2INT * x * DIVISEUR;
     this->y = (qint32) COEF_FLOAT2INT * y * DIVISEUR;
     this->z = (qint32) COEF_FLOAT2INT * z * DIVISEUR;
@@ -64,11 +60,10 @@ Position::Position(const quint32 &idJoinMvt, const float &x, const float &y, con
     this->dz = std::abs((int)(this->z - previousPosition.z)) / INTERVAL_TIME;
 }
 
-Position::Position(const quint32 &idJoinMvt, const qint32 &x, const qint32 &y, const qint32 &z,
+Position::Position(const qint32 &x, const qint32 &y, const qint32 &z,
 		   const qint32 &dx, const qint32 &dy, const qint32 &dz, const qint32 &a, const qint32 &b, const qint32 &c)
 {
     this->id = ++idPositionsStatic;
-    this->idJoinMvt = idJoinMvt;
     this->x = x  * DIVISEUR;
     this->y = y * DIVISEUR;
     this->z = z * DIVISEUR;
@@ -83,7 +78,6 @@ Position::Position(const quint32 &idJoinMvt, const qint32 &x, const qint32 &y, c
 Position::Position (const Position &position)
 {
     this->id = position.id;
-    this->idJoinMvt = position.idJoinMvt;
     this->x = position.x;
     this->y = position.y;
     this->z = position.z;
@@ -96,83 +90,76 @@ Position::Position (const Position &position)
 }
 
 
-Position* Position::ecartPivot(const Position &pos, Position* posEcart){
-    posEcart->setX(this->x-pos.x);
+Position* Position::ecartPivot(Position const *pos, Position *posEcart)
+{
+    posEcart->setX(this->x-pos->x);
     if(posEcart->getX()==0)
-        posEcart->setX(1);
-    posEcart->setY(this->y-pos.y);
+	posEcart->setX(1);
+    posEcart->setY(this->y-pos->y);
     if(posEcart->getY()==0)
-        posEcart->setY(1);
-    posEcart->setZ(this->z-pos.z);
+	posEcart->setY(1);
+    posEcart->setZ(this->z-pos->z);
     if(posEcart->getZ()==0)
-        posEcart->setZ(1);
+	posEcart->setZ(1);
 
     posEcart->setDx(0);
     posEcart->setDy(0);
     posEcart->setDz(0);
+    return posEcart;
 }
 
 
 /**
 *      GETTERS
 **/
-qint32 Position::getX()
+qint32 Position::getX() const
 {
     return this->x;
 }
 
-qint32 Position::getY()
+qint32 Position::getY() const
 {
     return this->y;
 }
 
-qint32 Position::getZ()
+qint32 Position::getZ() const
 {
     return this->z;
 }
 
-qint32 Position::getDx(){
+qint32 Position::getDx() const
+{
     return this->dx;
 }
 
-qint32 Position::getDy()
+qint32 Position::getDy() const
 {
     return this->dy;
 }
 
-qint32 Position::getDz()
+qint32 Position::getDz() const
 {
     return this->dz;
 }
 
-quint16 Position::getId()
+quint16 Position::getId() const
 {
     return this->id;
 }
 
-qint32 Position::getA()
+qint32 Position::getA() const
 {
     return this->a;
 }
 
-qint32 Position::getB()
+qint32 Position::getB() const
 {
     return this->b;
 }
 
-qint32 Position::getC()
+qint32 Position::getC() const
 {
    return this->c;
-}
-
-quint16 Position::getIdJointMvt()
-{
-    return this->idJoinMvt;
-}
-
-void Position::updateIdJointMvt(const quint32 &idJointMvt)
-{
-    this->idJoinMvt = idJointMvt;
 }
 
 void Position::updateId(const quint32 &id)
@@ -211,11 +198,6 @@ void Position::setDz(const qint32 &a) {
     this->dz = a;
 }
 
-void Position::setIdJointMvt(const quint32 &idJointMvt)
-{
-    this->idJoinMvt = idJointMvt;
-}
-
 
 /**
   *  DESTRUCTEUR
@@ -228,8 +210,8 @@ Position::~Position(){
 //save
 QDataStream & operator << (QDataStream & out, const Position &valeur)
 {
-    //std::cout << "Entrée operator << Position" << std::endl;
-    out << valeur.id << valeur.idJoinMvt
+    //qDebug() << "Entree operator save Position" << endl;
+    out << valeur.id
 	<< valeur.x << valeur.y << valeur.z
 	<< valeur.a << valeur.b << valeur.c
 	<< valeur.dx << valeur.dy << valeur.dz;
@@ -239,9 +221,8 @@ QDataStream & operator << (QDataStream & out, const Position &valeur)
 //load
 QDataStream & operator >> (QDataStream & in, Position &valeur)
 {
-   // std::cout << "Entree operator >> Position" << std::endl;
+    //qDebug() << "Entree operator load Position" << endl;
     in >> valeur.id;
-    in >> valeur.idJoinMvt;
     in >> valeur.x;
     in >> valeur.y;
     in >> valeur.z;

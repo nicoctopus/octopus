@@ -328,7 +328,7 @@ QString MainWindow::textDisplay(Movement *movement)
     for(int i = 0 ; i < movement->getListJointsMvt()->size() ; i++)
     {
         text.append("- ");
-        text.append(movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
+	text.append(movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
         text.append("<br/>");
     }
     text.append("<br/><b>SampleAudio : </b><br/>");
@@ -498,6 +498,7 @@ void MainWindow::slotValidNewMovement(){
     else{
 	this->movement->setName(ui->nommouvement->text());
 	this->controller->getManagerElements()->addMovement(movement);
+	this->controller->linkJointToJointMvt();
 	this->ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovementsByName());
 	this->refreshLeftTree();
 	//qDebug() << movement->getName() << endl;

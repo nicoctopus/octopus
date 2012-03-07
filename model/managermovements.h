@@ -3,13 +3,11 @@
 
 #include "manager.h"
 #include "movement.h"
-#include "managerjointmvt.h"
 
 class ManagerMovements : public Manager
 {
 private:
     QList<Movement*> *listMovements;
-    ManagerJointMvt *managerJointMvt;
 
 public:
     ManagerMovements();
@@ -20,11 +18,9 @@ public:
     void loadAll();
     void save(Movement *movement, QSettings &fichierMovement);
     void remove(Movement *movement);
-    void dispacher();
 
     QList<Movement*>* getListMovements();
     QList<Movement*>* getListMovementsActive();
-    ManagerJointMvt* getManagerJointMvt();
 
     //Methodes
     void sortMovementsByPositionSize();
