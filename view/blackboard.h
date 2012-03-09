@@ -32,6 +32,8 @@ public:
     void setLastX(int xItem);
     void setLastY(int yItem);
     void liaison(QGraphicsItem *itemPressed);
+    void SetCenter(const QPointF& centerPoint);
+    QPointF GetCenter() { return CurrentCenterPoint; }
     
 signals:
     void save(Movement *movement);
@@ -59,6 +61,8 @@ protected :
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
     void timerEvent(QTimerEvent *event);
+    virtual void wheelEvent(QWheelEvent* event);
+    virtual void resizeEvent(QResizeEvent* event);
 
 
 private:
@@ -73,6 +77,7 @@ private:
     Movement *movement;
     QGraphicsItem* movingItem;
     int timerId;
+    QPointF CurrentCenterPoint;
 
     //Menu clique droit
     QAction *actionRemove;
