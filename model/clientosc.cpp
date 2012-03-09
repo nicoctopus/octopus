@@ -7,6 +7,9 @@ ClientOSC::ClientOSC() : Port()
     this->msg = new QList<MessageSynapse*>();
     this->listIdMovement = new QList<quint16>();
     this->active = false;
+    this->r = rand()%2+252;
+    this->g = rand()%153+102;
+    this->b = 0;
 }
 
 ClientOSC::ClientOSC(const quint16 &portNb, const QString &host, const bool &active)
@@ -16,7 +19,9 @@ ClientOSC::ClientOSC(const quint16 &portNb, const QString &host, const bool &act
     this->msg = new QList<MessageSynapse*>();
     this->listIdMovement = new QList<quint16>();
     this->setRunnable(false);
-
+    this->r = rand()%2+252;
+    this->g = rand()%153+102;
+    this->b = 0;
 }
 
 ClientOSC::ClientOSC(const ClientOSC &copie) : Port(copie.idElement, copie.portNumber, copie.active)
@@ -29,11 +34,13 @@ ClientOSC::ClientOSC(const ClientOSC &copie) : Port(copie.idElement, copie.portN
     for(int i = 0 ; i < copie.msg->size() ; i++)
 	this->msg->append(copie.msg->at(i));
     this->datas = new DataBITG(copie.datas->getBarycenter(), copie.datas->getIdMovement(), copie.datas->getTime(), copie.datas->getGap());
+    this->r = copie.r;
+    this->g = copie.g;
+    this->b = copie.b;
 }
 
 ClientOSC::~ClientOSC()
 {
-
     for (int i = 0 ; i < this->msg->size() ; i++)
 	delete(msg->at(i));
     delete (this->msg);

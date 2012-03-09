@@ -219,7 +219,7 @@ void ServerOSC::record(){
 			    if(listJointsMvt->at(i)->getListPositions()->isEmpty())
 				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                             else
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
@@ -227,7 +227,7 @@ void ServerOSC::record(){
 		    for (int i=0; i<listJointsMvt->size(); i++){
 			if(listJointsMvt->at(i)->getJointRef()->getNom() == "righthand"){
 			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                             else
 				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
@@ -237,7 +237,7 @@ void ServerOSC::record(){
 		    for (int i=0; i<listJointsMvt->size(); i++){
 			if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightelbow"){
 			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                             else
 				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
@@ -247,7 +247,7 @@ void ServerOSC::record(){
 		    for (int i=0; i<listJointsMvt->size(); i++){
 			if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftelbow"){
 			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                             else
 				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
@@ -257,7 +257,7 @@ void ServerOSC::record(){
 		    for (int i=0; i<listJointsMvt->size(); i++){
 			if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightfoot"){
 			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                             else
 				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
@@ -267,7 +267,7 @@ void ServerOSC::record(){
 		    for (int i=0; i<listJointsMvt->size(); i++){
 			if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftfoot"){
 			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                             else
 				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
@@ -277,7 +277,7 @@ void ServerOSC::record(){
 		    for (int i=0; i<listJointsMvt->size(); i++){
 			if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightknee"){
 			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                             else
 				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
@@ -287,7 +287,7 @@ void ServerOSC::record(){
 		    for (int i=0; i<listJointsMvt->size(); i++){
 			if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftknee")
 			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                             else
 				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                     }
@@ -296,7 +296,7 @@ void ServerOSC::record(){
 		    for (int i=0; i<listJointsMvt->size(); i++){
 			if(listJointsMvt->at(i)->getJointRef()->getNom() == "head"){
 			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                             else
 				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
@@ -306,7 +306,7 @@ void ServerOSC::record(){
 		    for (int i=0; i<listJointsMvt->size(); i++){
 			if(listJointsMvt->at(i)->getJointRef()->getNom() == "torso"){
 			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,*listJointsMvt->at(i)->getListPositions()->last(),0,0,0));
+				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                             else
 				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
@@ -350,9 +350,11 @@ void ServerOSC::setAnalyse() {
 void ServerOSC::deleteAnalyse(){
     if(this->listJoints->size()!=0){
         for (int i=0; i<this->listJoints->size(); i++){
-            this->listJoints->at(i)->getBufferPositions()->clear();
+	    for(int j = 0 ; j < this->listJoints->at(i)->getBufferPositions()->size() ; j++)
+		delete this->listJoints->at(i)->getBufferPositions()->at(j);
+	    this->listJoints->at(i)->getBufferPositions()->clear();
         }
-        delete(this->analyse);
+	delete this->analyse ;
     }
 
 }

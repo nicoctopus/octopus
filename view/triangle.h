@@ -5,7 +5,7 @@
 class BlackBoard;
 #include <QPolygon>
 #include <QGraphicsPolygonItem>
-#include<QGraphicsScene>
+#include <QGraphicsScene>
 #include "../model/sampleaudio.h"
 
 
@@ -15,6 +15,7 @@ class Triangle : public QGraphicsPolygonItem
 
 public:
     Triangle(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, SampleAudio *sampleAudio, BlackBoard* blackboard);
+    ~Triangle();
     SampleAudio* getSampleAudio();
     int type() const
     {

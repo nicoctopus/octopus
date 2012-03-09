@@ -99,7 +99,7 @@ void ManagerMovements::sortMovementsByPositionSize()
 	for(int j = i + 1 ; j < this->listMovements->size() ; j++)
 	    if(!this->listMovements->at(i)->getListJointsMvt()->isEmpty() && !this->listMovements->at(j)->getListJointsMvt()->isEmpty())
 		if(!this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->isEmpty() && !this->listMovements->at(j)->getListJointsMvt()->at(0)->getListPositions()->isEmpty())
-		    if(this->listMovements->at(j)->getListJointsMvt()->at(0)->getListPositions()->size() <
+		    if(this->listMovements->at(j)->getListJointsMvt()->at(0)->getListPositions()->size() >
 			    this->listMovements->at(i)->getListJointsMvt()->at(0)->getListPositions()->size())
                         this->listMovements->swap(i, j);
 }

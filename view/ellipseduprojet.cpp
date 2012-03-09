@@ -26,7 +26,7 @@ EllipseDuProjet::EllipseDuProjet(qreal x, qreal y, qreal width, qreal height, QC
 
     this->setPen(pen);
 
-    this->setBrush(QColor(rand()%4,rand()%137,255, 255));
+    this->setBrush(QColor(movement->r,movement->g,movement->b, 255));
     this->setZValue(5);
     scene->addItem(this);
     this->contextMenu = false;
@@ -76,6 +76,15 @@ QVariant EllipseDuProjet::itemChange(GraphicsItemChange change, const QVariant &
      listLines.append(line);
  }
 
- QList<QGraphicsLineItem*> EllipseDuProjet::getListLines(){
-     return listLines;
- }
+QList<QGraphicsLineItem*> EllipseDuProjet::getListLines(){
+    return listLines;
+}
+
+EllipseDuProjet::~EllipseDuProjet()
+{
+    this->movement = NULL;
+    this->blackboard = NULL;
+  //  for( int i = 0 ;  i < this->listLines.size() ; i++)
+//	this->listLines.at(i) = NULL;
+  //  this->listLines = NULL;
+}

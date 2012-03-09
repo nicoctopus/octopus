@@ -13,15 +13,13 @@ Triangle::Triangle(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, S
     pen.setCapStyle(Qt::RoundCap);
     pen.setJoinStyle(Qt::RoundJoin);
 
-
-    srand(time(NULL)); //Attention multiple SRAND
     QPolygon polygon;
     polygon << QPoint(0, 50) << QPoint(50, 50) << QPoint(25, 0);
     this->setPolygon(polygon);
     this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable | ItemSendsGeometryChanges  );
     this->sampleAudio = sampleAudio;
     this->setPen(pen);
-    this->setBrush(QColor(rand()%167,198, rand()%26+67, 255));
+    this->setBrush(QColor(sampleAudio->r,sampleAudio->g, sampleAudio->b, 255));
     this->setPos(x, y);
     this->setZValue(5);
     scene->addItem(this);
@@ -78,3 +76,10 @@ QVariant Triangle::itemChange(GraphicsItemChange change, const QVariant &value)
      return listLines;
  }
 
+Triangle::~Triangle()
+{
+    this->blackboard = NULL;
+    this->sampleAudio = NULL;
+  //  for(int i = 0 ;  i< this->listLines.size() ; i++)
+//	this->listLines.at(i) = NULL;
+}

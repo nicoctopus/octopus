@@ -13,6 +13,7 @@ class EllipseDuProjet : public QGraphicsEllipseItem
 
 public:
     EllipseDuProjet(qreal x, qreal y, qreal width, qreal height, QColor* color, QGraphicsScene *scene, Movement *movement, BlackBoard* blackboard);
+    ~EllipseDuProjet();
     Movement* getMovement();
    int type() const
     {
@@ -35,9 +36,6 @@ private :
     bool contextMenu;
     BlackBoard* blackboard;
     QList<QGraphicsLineItem*> listLines;
-
-
-
 };
 
 #endif // ELLIPSEDUPROJET_H

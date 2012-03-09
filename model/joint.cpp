@@ -112,15 +112,16 @@ Joint::~Joint()
 void Joint::addPosition(const float &x, const float &y, const float &z)
 {
     if(this->bufferPositions->length() < SIZE_MAX_BUFFERS && this->bufferPositions->length() >= 1){
-        this->bufferPositions->append(new Position(x, y, z, *this->bufferPositions->last()));
+	this->bufferPositions->append(new Position(x, y, z));
     }
     else if (this->bufferPositions->length() == 0){
-        this->bufferPositions->append((new Position(x, y, z)));
+	this->bufferPositions->append(new Position(x, y, z));
     }
     else if(this->bufferPositions->length() >= SIZE_MAX_BUFFERS)
     {
-        this->bufferPositions->removeFirst();
-        this->bufferPositions->append(new Position(x, y, z, *(this->bufferPositions->last())));
+	delete this->bufferPositions->at(0);
+	this->bufferPositions->removeFirst();
+	this->bufferPositions->append(new Position(x, y, z));
     }
 }
 
@@ -129,7 +130,7 @@ void Joint::addPosition(const float &x, const float &y, const float &z)
   **/
 void Joint::initializeBuffer() {
     for(int i=0; i<SIZE_MAX_BUFFERS; i++) {
-	bufferPositions->append(new Position(0,0,0,0,0,0,0,0,0));
+	bufferPositions->append(new Position(0,0,0,0,0,0));
     }
 }
 
@@ -141,7 +142,7 @@ QString Joint::getMessageSynapse()
 //Pour save
 QDataStream & operator << (QDataStream & out, const Joint &valeur)
 {
-    //std::cout << "Entrée operator << Joint" << std::endl;
+    //std::cout << "Entree operator << Joint" << std::endl;
     out <</* "AF_UNSPEC3" << */valeur.id;
     out << valeur.nom;
     return out;

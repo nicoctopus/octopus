@@ -14,7 +14,7 @@ class Movement : public Element
 public:
     Movement();
     Movement(const Movement &movement);
-    Movement(Movement *movement);
+    //Movement(Movement *movement);
     Movement(const QString &name);
     Movement(const QString &name, const bool &active, const QList<JointMvt*> *listJointsMvt
                , SampleAudio *sa, SampleVideo *sv, QList<ClientOSC*> *listClients);

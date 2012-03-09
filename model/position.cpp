@@ -1,7 +1,7 @@
 #include "position.h"
 #include "qDebug"
 quint32 Position::idPositionsStatic = 0;
-float DIVISEUR = 0.1;
+float Position::DIVISEUR = 0.1;
 /**
   *   CONSTRUCTEUR
   **/
@@ -9,67 +9,20 @@ Position::Position()
 {
 }
 
-Position::Position(const float &x, const float &y, const float &z, const Position &previousPosition)
-{
-    this->id = 0;
-    this->x = (qint32) COEF_FLOAT2INT * x * DIVISEUR;
-    this->y = (qint32) COEF_FLOAT2INT * y * DIVISEUR;
-    this->z = (qint32) COEF_FLOAT2INT * z * DIVISEUR;
-    this->dx = std::abs((int)(this->x - previousPosition.x)) / INTERVAL_TIME;
-    this->dy = std::abs((int)(this->y - previousPosition.y)) / INTERVAL_TIME;
-    this->dz = std::abs((int)(this->z - previousPosition.z)) / INTERVAL_TIME;
-}
-
 Position::Position(const float &x, const float &y, const float &z)
 {
     this->id = 0;
-    this->x = (qint32) COEF_FLOAT2INT * x * DIVISEUR;
-    this->y = (qint32) COEF_FLOAT2INT * y * DIVISEUR;
-    this->z = (qint32) COEF_FLOAT2INT * z * DIVISEUR;
-    this->dx = 0;//std::abs(this->x)/INTERVAL_TIME;
-    this->dy = 0;//std::abs(this->y)/INTERVAL_TIME;
-    this->dz = 0;//std::abs(this->z)/INTERVAL_TIME;
+    this->x = (qint32) x * DIVISEUR;
+    this->y = (qint32) y * DIVISEUR;
+    this->z = (qint32) z * DIVISEUR;
 }
 
-Position::Position (const float &x, const float &y, const float &z, const float &a, const float &b, const float &c)
+Position::Position(const float &x, const float &y, const float &z, const float &a, const float &b, const float &c)
 {
     this->id = ++idPositionsStatic;
-    this->x = (qint32) COEF_FLOAT2INT * x * DIVISEUR;
-    this->y = (qint32) COEF_FLOAT2INT * y * DIVISEUR;
-    this->z = (qint32) COEF_FLOAT2INT * z * DIVISEUR;
-    this->a = (qint32) COEF_FLOAT2INT * a * DIVISEUR;
-    this->b = (qint32) COEF_FLOAT2INT * b * DIVISEUR;
-    this->c = (qint32) COEF_FLOAT2INT * c * DIVISEUR;
-    this->dx = 0;
-    this->dy = 0;
-    this->dz = 0;
-}
-
-Position::Position(const float &x, const float &y, const float &z,
-		   const Position &previousPosition, const float &a, const float &b, const float &c)
-{
-    this->id = ++idPositionsStatic;
-    this->x = (qint32) COEF_FLOAT2INT * x * DIVISEUR;
-    this->y = (qint32) COEF_FLOAT2INT * y * DIVISEUR;
-    this->z = (qint32) COEF_FLOAT2INT * z * DIVISEUR;
-    this->a = (qint32) COEF_FLOAT2INT * a * DIVISEUR;
-    this->b = (qint32) COEF_FLOAT2INT * b * DIVISEUR;
-    this->c = (qint32) COEF_FLOAT2INT * c * DIVISEUR;
-    this->dx = std::abs((int)(this->x - previousPosition.x)) / INTERVAL_TIME;
-    this->dy = std::abs((int)(this->y - previousPosition.y)) / INTERVAL_TIME;
-    this->dz = std::abs((int)(this->z - previousPosition.z)) / INTERVAL_TIME;
-}
-
-Position::Position(const qint32 &x, const qint32 &y, const qint32 &z,
-		   const qint32 &dx, const qint32 &dy, const qint32 &dz, const qint32 &a, const qint32 &b, const qint32 &c)
-{
-    this->id = ++idPositionsStatic;
-    this->x = x  * DIVISEUR;
+    this->x = x * DIVISEUR;
     this->y = y * DIVISEUR;
     this->z = z * DIVISEUR;
-    this->dx = dx;
-    this->dy = dy;
-    this->dz = dz;
     this->a = a * DIVISEUR;
     this->b = b * DIVISEUR;
     this->c = c * DIVISEUR;
@@ -84,27 +37,20 @@ Position::Position (const Position &position)
     this->a = position.a;
     this->b = position.b;
     this->c = position.c;
-    this->dx = position.dx;
-    this->dy = position.dy;
-    this->dz = position.dz;
 }
 
 
 Position* Position::ecartPivot(Position const *pos, Position *posEcart)
 {
-    posEcart->setX(this->x-pos->x);
-    if(posEcart->getX()==0)
+    posEcart->setX(this->x - pos->getX());
+    if(posEcart->getX() == 0)
 	posEcart->setX(1);
-    posEcart->setY(this->y-pos->y);
-    if(posEcart->getY()==0)
+    posEcart->setY(this->y - pos->getY());
+    if(posEcart->getY() == 0)
 	posEcart->setY(1);
-    posEcart->setZ(this->z-pos->z);
-    if(posEcart->getZ()==0)
+    posEcart->setZ(this->z - pos->getZ());
+    if(posEcart->getZ() == 0)
 	posEcart->setZ(1);
-
-    posEcart->setDx(0);
-    posEcart->setDy(0);
-    posEcart->setDz(0);
     return posEcart;
 }
 
@@ -125,21 +71,6 @@ qint32 Position::getY() const
 qint32 Position::getZ() const
 {
     return this->z;
-}
-
-qint32 Position::getDx() const
-{
-    return this->dx;
-}
-
-qint32 Position::getDy() const
-{
-    return this->dy;
-}
-
-qint32 Position::getDz() const
-{
-    return this->dz;
 }
 
 quint16 Position::getId() const
@@ -188,15 +119,6 @@ void Position::setY(const qint32 &a) {
 void Position::setZ(const qint32 &a) {
     this->z = a;
 }
-void Position::setDx(const qint32 &a) {
-    this->dx = a;
-}
-void Position::setDy(const qint32 &a) {
-    this->dy = a;
-}
-void Position::setDz(const qint32 &a) {
-    this->dz = a;
-}
 
 
 /**
@@ -204,7 +126,6 @@ void Position::setDz(const qint32 &a) {
   **/
 
 Position::~Position(){
-    this->id = NULL;
 }
 
 //save
@@ -213,8 +134,7 @@ QDataStream & operator << (QDataStream & out, const Position &valeur)
     //qDebug() << "Entree operator save Position" << endl;
     out << valeur.id
 	<< valeur.x << valeur.y << valeur.z
-	<< valeur.a << valeur.b << valeur.c
-	<< valeur.dx << valeur.dy << valeur.dz;
+	<< valeur.a << valeur.b << valeur.c;
     return out;
 }
 
@@ -229,9 +149,6 @@ QDataStream & operator >> (QDataStream & in, Position &valeur)
     in >> valeur.a;
     in >> valeur.b;
     in >> valeur.c;
-    in >> valeur.dx;
-    in >> valeur.dy;
-    in >> valeur.dz;
     return in;
 }
 

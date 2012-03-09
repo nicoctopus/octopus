@@ -20,7 +20,7 @@ void ThreadMoveStickman::run(){
 	    while(idxPosition<listeDeJointsMvt->at(0)->getListPositions()->size())
 	    {
 		for(int i=0; i<listeDeJointsMvt->size(); ++i){
-		    emit sigMoveNode(listeDeJointsMvt->at(i)->getJointRef()->getNom(), -(listeDeJointsMvt->at(i)->getListPositions()->at(idxPosition)->getX()) / (3*0.1), -(listeDeJointsMvt->at(i)->getListPositions()->at(idxPosition)->getY()) / (3*0.1),(listeDeJointsMvt->at(i)->getListPositions()->at(idxPosition)->getZ()) / (3*0.1));
+		    emit sigMoveNode(listeDeJointsMvt->at(i)->getJointRef()->getNom(), -(listeDeJointsMvt->at(i)->getListPositions()->at(idxPosition)->getX()) / (3*Position::DIVISEUR), -(listeDeJointsMvt->at(i)->getListPositions()->at(idxPosition)->getY()) / (3*Position::DIVISEUR),(listeDeJointsMvt->at(i)->getListPositions()->at(idxPosition)->getZ()) / (3*Position::DIVISEUR));
 		    usleep(25000);
 		}
 		idxPosition++;

@@ -23,6 +23,9 @@ public:
     qint16 getPosXBlackBoard();
     qint16 getPosYBlackBoard();
 
+    //Variables publiques
+    quint16 r, g, b;
+
     ~Element();
 protected:
     quint32 idElement;

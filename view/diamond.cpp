@@ -19,7 +19,7 @@ Diamond::Diamond(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, Cli
     this->setPen(pen);
     this->setZValue(5);
 
-    this->setBrush(QColor(rand()%2+252,rand()%153+102,0, 200));
+    this->setBrush(QColor(port->r,port->g,port->b, 200));
 
     scene->addItem(this);
 
@@ -67,6 +67,14 @@ QVariant Diamond::itemChange(GraphicsItemChange change, const QVariant &value)
      listLines.append(line);
  }
 
- QList<QGraphicsLineItem*> Diamond::getListLines(){
-     return listLines;
- }
+QList<QGraphicsLineItem*> Diamond::getListLines(){
+    return listLines;
+}
+
+Diamond::~Diamond()
+{
+    this->port = NULL;
+    this->blackboard = NULL;
+  //  for(int i = 0 ; i < this->listLines.size() ; i++)
+//	this->listLines.at(i) = NULL;
+}

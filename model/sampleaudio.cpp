@@ -5,21 +5,32 @@ quint32 SampleAudio::idSampleAudioStatic = 0;
 
 SampleAudio::SampleAudio() : Sample()
 {
+    this->r = rand()%167;
+    this->g = 198;
+    this->b = rand()%26+67;
 }
 
 SampleAudio::SampleAudio(const QString &name, const QString &url, const quint32 &idMovement, const bool &active, const qint16 &posXBlackBoard, const qint16 &posYBlackBoard)
     : Sample(++idSampleAudioStatic, name, url, idMovement, active, posXBlackBoard, posYBlackBoard)
 {
+    this->r = rand()%167;
+    this->g = 198;
+    this->b = rand()%26+67;
 }
 
 SampleAudio::SampleAudio(const SampleAudio &copie) : Sample(copie.idElement, copie.nameElement, copie.fileURL, *(copie.listIdMovement), copie.active, copie.posXBlackBoard, copie.posYBlackBoard)
 {
+    this->r = copie.r;
+    this->g = copie.g;
+    this->b = copie.b;
 }
 
 SampleAudio::SampleAudio(const QString &name, const QString &url, const bool &active, const qint16 &posXBlackBoard, const qint16 &posYBlackBoard)
     :Sample(++idSampleAudioStatic, name, url, active, posXBlackBoard, posYBlackBoard)
 {
-
+    this->r = rand()%167;
+    this->g = 198;
+    this->b = rand()%26+67;
 }
 
 //save

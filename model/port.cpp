@@ -17,6 +17,7 @@ Port::Port(const quint32 &id, const quint16 &portNb, const bool &active)
 
 void Port::setPortNumber(const quint16 &pn) {
     this->portNumber = pn;
+
 }
 
 quint16 Port::getPortNumber() {
