@@ -13,6 +13,7 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent), timerId(0)
     //isFirstPassage = true;
     QGraphicsScene *scene = new QGraphicsScene();
     this->setScene(scene);
+    ctrlPressed = false;
     connect(this, SIGNAL(refreshSignal()), this, SLOT(refresh()));
     connect(this, SIGNAL(clearScene()), this->scene(), SLOT(clear()));
     //connect(this->scene(), SIGNAL(selectionChanged()), this, SLOT(liaison()));
@@ -620,7 +621,7 @@ void BlackBoard::setLastY(int yItem){
 }
 
 //------------------------------------------------------------
-//**********************************************************
+//                      ZOOM / DEZOOM
 //------------------------------------------------------------
 
 /**
@@ -677,13 +678,31 @@ void BlackBoard::SetCenter(const QPointF& centerPoint) {
     //Update the scrollbars
     centerOn(CurrentCenterPoint);
 }
-
+void BlackBoard::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case  Qt::Key_Control:
+        ctrlPressed = true;
+    default:
+        QGraphicsView::keyPressEvent(event);
+    }
+}
+void BlackBoard::keyReleaseEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case  Qt::Key_Control:
+        ctrlPressed = false;
+    default:
+        QGraphicsView::keyPressEvent(event);
+    }
+}
 /**
   * Zoom the view in and out.
   */
 void BlackBoard::wheelEvent(QWheelEvent* event) {
 
-    //Get the position of the mouse before scaling, in scene coords
+    if(ctrlPressed == true){
+        //Get the position of the mouse before scaling, in scene coords
     QPointF pointBeforeScale(mapToScene(event->pos()));
 
     //Get the original screen centerpoint
@@ -708,6 +727,7 @@ void BlackBoard::wheelEvent(QWheelEvent* event) {
     //Adjust to the new center for correct zooming
     QPointF newCenter = screenCenter + offset;
     SetCenter(newCenter);
+    }
 }
 
 /**

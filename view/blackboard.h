@@ -63,6 +63,8 @@ protected :
     void timerEvent(QTimerEvent *event);
     virtual void wheelEvent(QWheelEvent* event);
     virtual void resizeEvent(QResizeEvent* event);
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
 
 
 private:
@@ -78,6 +80,7 @@ private:
     QGraphicsItem* movingItem;
     int timerId;
     QPointF CurrentCenterPoint;
+    bool ctrlPressed;
 
     //Menu clique droit
     QAction *actionRemove;
