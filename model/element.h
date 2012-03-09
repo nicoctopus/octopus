@@ -19,6 +19,9 @@ public:
     bool isActive();
     void setActive(const bool &active);
 
+    //Variables publiques
+    quint16 r, g, b;
+
     ~Element();
 protected:
     quint32 idElement;

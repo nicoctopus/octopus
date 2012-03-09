@@ -19,7 +19,7 @@ Diamond::Diamond(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, Cli
     this->setPen(pen);
     this->setZValue(5);
 
-    this->setBrush(QColor(rand()%2+252,rand()%153+102,0, 200));
+    this->setBrush(QColor(port->r,port->g,port->b, 200));
 
     scene->addItem(this);
 
@@ -41,29 +41,37 @@ void Diamond::setContextMenu(bool contextMenu)
 
 //-------- Pour bouger sur le blackboard ------------
 QVariant Diamond::itemChange(GraphicsItemChange change, const QVariant &value)
- {
+{
     if(change == ItemPositionHasChanged ) {
-        blackboard->itemMoved(this);
+	blackboard->itemMoved(this);
     }
-     return QGraphicsItem::itemChange(change, value);
- }
+    return QGraphicsItem::itemChange(change, value);
+}
 
- void Diamond::mousePressEvent(QGraphicsSceneMouseEvent *event)
- {
-     update();
-     QGraphicsItem::mousePressEvent(event);
- }
+void Diamond::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    update();
+    QGraphicsItem::mousePressEvent(event);
+}
 
- void Diamond::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
- {
-     update();
-     QGraphicsItem::mouseReleaseEvent(event);
- }
+void Diamond::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    update();
+    QGraphicsItem::mouseReleaseEvent(event);
+}
 
- void Diamond::setListLines(QGraphicsLineItem* line){
-     listLines.append(line);
- }
+void Diamond::setListLines(QGraphicsLineItem* line){
+    listLines.append(line);
+}
 
- QList<QGraphicsLineItem*> Diamond::getListLines(){
-     return listLines;
- }
+QList<QGraphicsLineItem*> Diamond::getListLines(){
+    return listLines;
+}
+
+Diamond::~Diamond()
+{
+    this->port = NULL;
+    this->blackboard = NULL;
+  //  for(int i = 0 ; i < this->listLines.size() ; i++)
+//	this->listLines.at(i) = NULL;
+}

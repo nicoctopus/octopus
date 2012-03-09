@@ -26,7 +26,7 @@ EllipseDuProjet::EllipseDuProjet(qreal x, qreal y, qreal width, qreal height, QC
 
     this->setPen(pen);
 
-    this->setBrush(QColor(rand()%4,rand()%137,255, 255));
+    this->setBrush(QColor(movement->r,movement->g,movement->b, 255));
     this->setZValue(5);
     scene->addItem(this);
     this->contextMenu = false;
@@ -49,29 +49,38 @@ void EllipseDuProjet::setContextMenu(bool contextMenu)
 
 //-------- Pour bouger sur le blackboard ------------
 QVariant EllipseDuProjet::itemChange(GraphicsItemChange change, const QVariant &value)
- {
+{
     if(change == ItemPositionHasChanged ) {
-        blackboard->itemMoved(this);
+	blackboard->itemMoved(this);
     }
-     return QGraphicsItem::itemChange(change, value);
- }
+    return QGraphicsItem::itemChange(change, value);
+}
 
- void EllipseDuProjet::mousePressEvent(QGraphicsSceneMouseEvent *event)
- {
-     update();
-     QGraphicsItem::mousePressEvent(event);
- }
+void EllipseDuProjet::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    update();
+    QGraphicsItem::mousePressEvent(event);
+}
 
- void EllipseDuProjet::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
- {
-     update();
-     QGraphicsItem::mouseReleaseEvent(event);
- }
+void EllipseDuProjet::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    update();
+    QGraphicsItem::mouseReleaseEvent(event);
+}
 
- void EllipseDuProjet::setListLines(QGraphicsLineItem* line){
-     listLines.append(line);
- }
+void EllipseDuProjet::setListLines(QGraphicsLineItem* line){
+    listLines.append(line);
+}
 
- QList<QGraphicsLineItem*> EllipseDuProjet::getListLines(){
-     return listLines;
- }
+QList<QGraphicsLineItem*> EllipseDuProjet::getListLines(){
+    return listLines;
+}
+
+EllipseDuProjet::~EllipseDuProjet()
+{
+    this->movement = NULL;
+    this->blackboard = NULL;
+  //  for( int i = 0 ;  i < this->listLines.size() ; i++)
+//	this->listLines.at(i) = NULL;
+  //  this->listLines = NULL;
+}

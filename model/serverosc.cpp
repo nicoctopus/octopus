@@ -350,9 +350,11 @@ void ServerOSC::setAnalyse() {
 void ServerOSC::deleteAnalyse(){
     if(this->listJoints->size()!=0){
         for (int i=0; i<this->listJoints->size(); i++){
-            this->listJoints->at(i)->getBufferPositions()->clear();
+	    for(int j = 0 ; j < this->listJoints->at(i)->getBufferPositions()->size() ; j++)
+		delete this->listJoints->at(i)->getBufferPositions()->at(j);
+	    this->listJoints->at(i)->getBufferPositions()->clear();
         }
-        delete(this->analyse);
+	delete this->analyse ;
     }
 
 }

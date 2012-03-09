@@ -13,6 +13,9 @@ Movement::Movement() : Element()
     this->listJointsMvt = new QList<JointMvt*>();
     this->active = false;
     this->idElement = ++idMovementStatic;
+    this->r = rand()%4;
+    this->g = rand()%137;
+    this->b = 255;
 }
 Movement::Movement(const Movement &movement) :Element(movement.idElement, movement.nameElement, movement.active)
 {    
@@ -20,9 +23,12 @@ Movement::Movement(const Movement &movement) :Element(movement.idElement, moveme
     this->sampleVideo = NULL;
     this->listClients = movement.listClients;
     this->listJointsMvt = movement.listJointsMvt;
+    this->r = movement.r;
+    this->g = movement.g;
+    this->b = movement.b;
 }
 
-Movement::Movement(Movement *movement) :Element(movement->idElement, movement->nameElement, movement->active)
+/*Movement::Movement(Movement *movement) :Element(movement->idElement, movement->nameElement, movement->active)
 {
     qDebug() << "debut copie constructeur" << endl;
     this->sampleAudio = NULL;
@@ -30,7 +36,7 @@ Movement::Movement(Movement *movement) :Element(movement->idElement, movement->n
     this->listClients = movement->listClients;
     this->listJointsMvt = movement->listJointsMvt;
     qDebug() << "fin copie constructeur" << endl;
-}
+}*/
 
 Movement::Movement(const QString &name) : Element(++idMovementStatic, name, false)
 {
@@ -38,6 +44,9 @@ Movement::Movement(const QString &name) : Element(++idMovementStatic, name, fals
     this->sampleVideo = NULL;
     this->listClients = new QList<ClientOSC*>();
     this->listJointsMvt = new QList<JointMvt*>();
+    this->r = rand()%4;
+    this->g = rand()%137;
+    this->b = 255;
 }
 
 Movement::Movement(const QString &name, const bool &active, const QList<JointMvt*> *listJointsMvt
@@ -48,6 +57,9 @@ Movement::Movement(const QString &name, const bool &active, const QList<JointMvt
     this->sampleVideo = sv;
     this->listClients = lc;
     this->listJointsMvt = new QList<JointMvt*>(*listJointsMvt);
+    this->r = rand()%4;
+    this->g = rand()%137;
+    this->b = 255;
 }
 
 

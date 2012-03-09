@@ -304,13 +304,6 @@ border-radius: 25px;</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonTEST">
-       <property name="text">
-        <string>TESTS</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
   </widget>

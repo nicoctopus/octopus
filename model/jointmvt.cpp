@@ -101,7 +101,7 @@ JointMvt::~JointMvt()
  //Pour save
  QDataStream & operator << (QDataStream & out, const JointMvt &valeur)
  {
-     qDebug() << "Entree operator save JointMvt" << endl;
+     //qDebug() << "Entree operator save JointMvt" << endl;
      out << valeur.idJointMvt;
      out << valeur.idJointRef;
      out << valeur.listPositions->size();
@@ -114,7 +114,7 @@ JointMvt::~JointMvt()
  // Pour load
  QDataStream & operator >> (QDataStream & in, JointMvt &valeur)
  {
-     qDebug() << "Entree operator load JointMvt" << endl;
+     //qDebug() << "Entree operator load JointMvt" << endl;
      int sizeTemp;
      in >> valeur.idJointMvt;
      in >> valeur.idJointRef;
@@ -125,6 +125,6 @@ JointMvt::~JointMvt()
 	 in >> position;
 	 valeur.listPositions->append(new Position(position));
      }
-     qDebug() << "fin operator load JointMvt" << valeur.idJointMvt << endl;
+     //qDebug() << "fin operator load JointMvt" << valeur.idJointMvt << endl;
      return in;
  }

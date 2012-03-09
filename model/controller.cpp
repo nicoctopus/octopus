@@ -7,6 +7,14 @@ Controller::Controller()
     this->linkJointToJointMvt();
 
     this->playerdemo = new SoundPlayer(1);
+
+   // this->managerElements->getManagerMovements()->getListMovements()->swap(0,1);
+   /* for(int i = 0 ; i < this->managerElements->getManagerMovements()->getListMovements()->size() ; i++)
+	qDebug() << this->managerElements->getManagerMovements()->getListMovements()->at(i)->getListJointsMvt()->at(0)->getListPositions()->size() << endl;
+
+    for(int i = 0 ; i < this->managerElements->getManagerMovements()->getListMovements()->size() ; i++)
+	qDebug() << "Après Bubble : " << this->managerElements->getManagerMovements()->getListMovements()->at(i)->getListJointsMvt()->at(0)->getListPositions()->size() << endl;
+*/
     /**
       *AFFICHAGE des infos sur le MVT
       **
@@ -110,7 +118,8 @@ void Controller::analizeRecord()
     this->serveurOSC->setRecording(false); //mode analyze
     this->serveurOSC->setAnalyse();
     this->serveurOSC->setListJoints(managerJoints->getListJoints());
-    this->serveurOSC->setListMovements(managerElements->getManagerMovements()->getListMovements());
+    this->managerElements->getManagerMovements()->sortMovementsByPositionSize();
+    this->serveurOSC->setListMovements(managerElements->getManagerMovements()->getListMovementsActive());
     this->serveurOSC->start();
 
     //CLIENT OSC
@@ -159,7 +168,7 @@ void Controller::linkJointToJointMvt()
 }
 
 void Controller::bubble(QList<Movement*>* moves) {
-    bool order = false;
+    /*bool order = false;
     int size = moves->size();
     while (!order) {
 	order = true;
@@ -173,7 +182,12 @@ void Controller::bubble(QList<Movement*>* moves) {
 	    }
 	}
 	size --;
-    }
+    }*/
+    for(int i = 0 ; i < moves->size() - 1 ; i++)
+	for(int j = 0 ; j < moves->size() ; j++)
+	    if(moves->at(i)->getListJointsMvt()->at(0)->getListPositions()->size()
+		    < moves->at(j)->getListJointsMvt()->at(0)->getListPositions()->size())
+		moves->swap(i, j);
 }
 
 void Controller::troncage(Movement* movement) {

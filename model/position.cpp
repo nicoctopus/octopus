@@ -42,15 +42,15 @@ Position::Position (const Position &position)
 
 Position* Position::ecartPivot(Position const *pos, Position *posEcart)
 {
-    posEcart->x = this->x - pos->x;
-    if(posEcart->x == 0)
-	posEcart->x = 1;
-    posEcart->y = this->y - pos->y;
-    if(posEcart->y == 0)
-	posEcart->y = 1;
-    posEcart->z = this->z - pos->z;
-    if(posEcart->z == 0)
-	posEcart->z = 1;
+    posEcart->setX(this->x - pos->getX());
+    if(posEcart->getX() == 0)
+	posEcart->setX(1);
+    posEcart->setY(this->y - pos->getY());
+    if(posEcart->getY() == 0)
+	posEcart->setY(1);
+    posEcart->setZ(this->z - pos->getZ());
+    if(posEcart->getZ() == 0)
+	posEcart->setZ(1);
     return posEcart;
 }
 
@@ -126,7 +126,6 @@ void Position::setZ(const qint32 &a) {
   **/
 
 Position::~Position(){
-    this->id = NULL;
 }
 
 //save

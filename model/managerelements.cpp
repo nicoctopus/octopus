@@ -20,26 +20,26 @@ ManagerElements::ManagerElements() : Manager()
     /*this->managerMovements->getListMovements()->append(new Movement("bonjour"));
     JointMvt *j = new JointMvt(1);
     j->addPosition(new Position(3,0,5,0,0,0));
-    qDebug() << j->getListPositions().size() << endl;
-    j->getListPositions().append(new Position(1,0,0,0,0,0));
+    qDebug() << j->getListPositions()->size() << endl;
+    j->getListPositions()->append(new Position(1,0,0,0,0,0));
     this->managerMovements->getListMovements()->at(0)->addJointMvt(j);
-    this->managerMovements->getListMovements()->at(0)->getListJointsMvt().at(0)->getListPositions().append(new Position(3,0,5,0,0,0));
+    this->managerMovements->getListMovements()->at(0)->getListJointsMvt()->at(0)->getListPositions()->append(new Position(3,0,5,0,0,0));
     this->managerMovements->getListMovements()->append(new Movement("bonjour2"));
     JointMvt *j2 = new JointMvt(1);
-    j2->getListPositions().append(new Position(3,0,5,0,0,0));
-    j2->getListPositions().append(new Position(1,0,0,0,0,0));
+    j2->getListPositions()->append(new Position(3,0,5,0,0,0));
+    j2->getListPositions()->append(new Position(1,0,0,0,0,0));
     this->managerMovements->getListMovements()->at(1)->addJointMvt(j2);
     this->managerMovements->getListMovements()->append(new Movement("bonjour3"));
     JointMvt *j3 = new JointMvt(1);
-    j3->getListPositions().append(new Position(3,0,5,0,0,0));
-    j3->getListPositions().append(new Position(1,0,0,0,0,0));
+    j3->getListPositions()->append(new Position(3,0,5,0,0,0));
+    j3->getListPositions()->append(new Position(1,0,0,0,0,0));
     this->managerMovements->getListMovements()->at(2)->addJointMvt(j3);
     /**
      *
     **/
     //this->saveAll();
-    //qDebug() << this->managerMovements->getListMovements()->at(0)->getListJointsMvt().at(0)->getListPositions().size() << endl;
-    //qDebug() << this->managerMovements->getListMovements()->at(0)->getListJointsMvt().size() << endl;
+    //qDebug() << this->managerMovements->getListMovements()->at(0)->getListJointsMvt()->at(0)->getListPositions()->size() << endl;
+    //qDebug() << this->managerMovements->getListMovements()->at(0)->getListJointsMvt()->size() << endl;
     //this->dispacher();
     /**
       *

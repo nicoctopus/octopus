@@ -178,18 +178,22 @@ void BlackBoard::setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio)
 
 void BlackBoard::refresh()
 {
-
-    /* QList<QGraphicsItem*> listItemsToDelete = this->scene()->items();
-    int nbItemsToDelete = listItemsToDelete.size();
-    for(int i = 0 ; i < nbItemsToDelete ; i++){
- this->scene()->removeItem(listItemsToDelete.at(i));
-    }*/
     this->scene()->selectedItems().clear();
     for(int i = this->scene()->items().size() - 1 ; i >= 0 ; i--)
 	this->scene()->removeItem(this->scene()->items().at(i));
+
+    //On clear les listes et on met à NULL les pointeurs au préalable.
+   // for(int i = 0 ; i < this->listEllipse.size() ; i++)
+	//delete this->listEllipse.at(i);
     this->listEllipse.clear();
+    //for(int i = 0 ; i < this->listDiamond.size() ; i++)
+	//delete this->listDiamond.at(i);
     this->listDiamond.clear();
+   // for(int i = 0 ; i < this->listTriangle.size() ; i++)
+	//delete this->listTriangle.at(i);
     this->listTriangle.clear();
+   // for(int i = 0 ; i < this->listLines.size() ; i++)
+	//delete this->listLines.at(i);
     this->listLines.clear();
 
 
