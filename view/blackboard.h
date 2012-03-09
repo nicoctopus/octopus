@@ -29,8 +29,9 @@ public:
     void setListPorts(QList<ClientOSC*> *listPorts);
     void setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio);
     void itemMoved(QGraphicsItem* pMovingItem);
-    void setLastX(int x);
-    void setLastY(int y);
+    void setLastX(int xItem);
+    void setLastY(int yItem);
+    void liaison(QGraphicsItem *itemPressed);
     
 signals:
     void save(Movement *movement);
@@ -49,7 +50,7 @@ public slots:
     void slotRemove();
     void slotVisualisation();
     void slotLiaison();
-    void liaison();
+    //void liaison();
     void slotEnleverBlackboard();
 
 protected :

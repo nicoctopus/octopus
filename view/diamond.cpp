@@ -43,6 +43,8 @@ void Diamond::setContextMenu(bool contextMenu)
 QVariant Diamond::itemChange(GraphicsItemChange change, const QVariant &value)
  {
     if(change == ItemPositionHasChanged ) {
+        this->port->setPosXBlackBoard(this->pos().x());
+        this->port->setPosYBlackBoard(this->pos().y());
         blackboard->itemMoved(this);
     }
      return QGraphicsItem::itemChange(change, value);
@@ -51,6 +53,7 @@ QVariant Diamond::itemChange(GraphicsItemChange change, const QVariant &value)
  void Diamond::mousePressEvent(QGraphicsSceneMouseEvent *event)
  {
      update();
+     blackboard->liaison(this);
      QGraphicsItem::mousePressEvent(event);
  }
 

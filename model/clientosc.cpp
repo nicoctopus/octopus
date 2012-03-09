@@ -9,7 +9,8 @@ ClientOSC::ClientOSC() : Port()
     this->active = false;
 }
 
-ClientOSC::ClientOSC(const quint16 &portNb, const QString &host, const bool &active) : Port(++idClientOSCStatic,  portNb, active) {
+ClientOSC::ClientOSC(const quint16 &portNb, const QString &host, const bool &active)
+    : Port(++idClientOSCStatic,  portNb, active) {
     this->host = host;
     this->datas = new DataBITG();
     this->msg = new QList<MessageSynapse*>();

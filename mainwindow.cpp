@@ -298,7 +298,7 @@ void MainWindow::slotDisplayInfos()
         }
         ui->blackboard->setLastX(itemsSelected.at(i)->pos().x());
         ui->blackboard->setLastY(itemsSelected.at(i)->pos().y());
-        //qDebug()<< "lastPosx" <<
+
         ui->textBrowser->setText(text);
     }
 }

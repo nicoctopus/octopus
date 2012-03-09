@@ -14,8 +14,8 @@ private:
 public:
     SampleAudio();
     SampleAudio(const SampleAudio &copie);
-    SampleAudio(const QString &name, const QString &url, const quint32 &listIdMovement, const bool &active);
-    SampleAudio(const QString &name, const QString &url, const bool &active);
+    SampleAudio(const QString &name, const QString &url, const quint32 &listIdMovement, const bool &active, const qint16 &posXBlackBoard, const qint16 &posYBlackBoard);
+    SampleAudio(const QString &name, const QString &url, const bool &active, const qint16 &posXBlackBoard, const qint16 &posYBlackBoard);
 
     static quint32 idSampleAudioStatic;
 };

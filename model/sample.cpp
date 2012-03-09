@@ -4,14 +4,16 @@ Sample::Sample() {
     this->listIdMovement = new QList<quint32>();
 }
 
-Sample::Sample(const quint32 &id, const QString &name, const QString &fileURL, const quint32 &idMovement, const bool &active) : Element(id, name, active)
+Sample::Sample(const quint32 &id, const QString &name, const QString &fileURL, const quint32 &idMovement, const bool &active, const qint16 &xBlackBoard, const qint16 &yBlackBoard)
+    : Element(id, name, active, xBlackBoard, yBlackBoard)
 {
     this->fileURL = fileURL;
     this->listIdMovement = new QList<quint32>();
     this->listIdMovement->append(idMovement);
 }
 
-Sample::Sample(const quint32 &id, const QString &name, const QString &fileURL, const QList<quint32> &listIdMovement, const bool &active) : Element(id, name, active)
+Sample::Sample(const quint32 &id, const QString &name, const QString &fileURL, const QList<quint32> &listIdMovement, const bool &active, const qint16 &xBlackBoard, const qint16 &yBlackBoard)
+    : Element(id, name, active, xBlackBoard, yBlackBoard)
 {
     this->fileURL = fileURL;
     this->listIdMovement = new QList<quint32>();
@@ -19,7 +21,8 @@ Sample::Sample(const quint32 &id, const QString &name, const QString &fileURL, c
 	this->listIdMovement->append(listIdMovement.at(i));
 }
 
-Sample::Sample(const quint32 &id, const QString &name, const QString &fileURL, const bool &active) : Element(id, name, active)
+Sample::Sample(const quint32 &id, const QString &name, const QString &fileURL, const bool &active, const qint16 &xBlackBoard, const qint16 &yBlackBoard)
+    : Element(id, name, active, xBlackBoard, yBlackBoard)
 {
     this->fileURL = fileURL;
     this->listIdMovement = new QList<quint32>();

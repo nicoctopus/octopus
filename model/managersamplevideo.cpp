@@ -73,7 +73,7 @@ QList<SampleVideo*>* ManagerSampleVideo::getListSamplesVideosActive()
 
 void ManagerSampleVideo::addSample(QString name, QString url)
 {
-    this->listSamplesVideos->append(new SampleVideo(name, url, 0, false));
+    this->listSamplesVideos->append(new SampleVideo(name, url, 0, false,0,0));
     QSettings fichierSamplesVideos("samplevideo.ini", QSettings::IniFormat);
     this->save(this->listSamplesVideos->last(), fichierSamplesVideos);
     fichierSamplesVideos.sync();

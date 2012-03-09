@@ -12,7 +12,7 @@ private:
 public:
     SampleVideo();
     SampleVideo(const SampleVideo &copie);
-    SampleVideo(const QString &name, const QString &url, const quint32 &listIdMovement, const bool &active);
+    SampleVideo(const QString &name, const QString &url, const quint32 &listIdMovement, const bool &active, const qint16 &xBlackBoard, const qint16 &yBlackBoard);
 
     static quint32 idSampleVideoStatic;
 };

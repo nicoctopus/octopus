@@ -34,6 +34,7 @@ public:
     static quint32 idMovementStatic;
     void addJointMvt(Joint*ref);
 
+
 private:
     SampleAudio *sampleAudio;
     SampleVideo *sampleVideo;
@@ -41,6 +42,7 @@ private:
     QList<JointMvt*> *listJointsMvt;
     friend QDataStream & operator << (QDataStream &, const Movement &);
     friend QDataStream & operator >> (QDataStream &, Movement &);
+
 };
 
 Q_DECLARE_METATYPE(Movement)

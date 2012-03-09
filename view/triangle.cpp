@@ -47,7 +47,11 @@ void Triangle::setContextMenu(bool contextMenu)
 QVariant Triangle::itemChange(GraphicsItemChange change, const QVariant &value)
  {
     if(change == ItemPositionHasChanged ) {
+        this->sampleAudio->setPosXBlackBoard(this->pos().x());
+        this->sampleAudio->setPosYBlackBoard(this->pos().y());
         blackboard->itemMoved(this);
+       // qDebug() << "itemChange" << this->pos().x() << " " << this->pos().y() << endl;
+
     }
      return QGraphicsItem::itemChange(change, value);
  }
@@ -55,6 +59,8 @@ QVariant Triangle::itemChange(GraphicsItemChange change, const QVariant &value)
  void Triangle::mousePressEvent(QGraphicsSceneMouseEvent *event)
  {
      update();
+     blackboard->liaison(this);
+     qDebug()<<"PRESS"<<endl;
      QGraphicsItem::mousePressEvent(event);
  }
 

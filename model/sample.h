@@ -11,9 +11,9 @@ protected:
     QList<quint32> *listIdMovement;
 public:
     Sample();
-    Sample(const quint32 &id, const QString &name, const QString &fileURL, const quint32 &idMovement, const bool &active);
-    Sample(const quint32 &id, const QString &name, const QString &fileURL, const QList<quint32> &listIdMovement, const bool &active);
-    Sample(const quint32 &id, const QString &name, const QString &fileURL, const bool &active);
+    Sample(const quint32 &id, const QString &name, const QString &fileURL, const quint32 &idMovement, const bool &active, const qint16 &xBlackBoard, const qint16 &yBlackBoard);
+    Sample(const quint32 &id, const QString &name, const QString &fileURL, const QList<quint32> &listIdMovement, const bool &active, const qint16 &xBlackBoard, const qint16 &yBlackBoard);
+    Sample(const quint32 &id, const QString &name, const QString &fileURL, const bool &active, const qint16 &xBlackBoard, const qint16 &yBlackBoard);
 
 
     /* Getters */

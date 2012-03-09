@@ -15,7 +15,7 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent), timerId(0)
     this->setScene(scene);
     connect(this, SIGNAL(refreshSignal()), this, SLOT(refresh()));
     connect(this, SIGNAL(clearScene()), this->scene(), SLOT(clear()));
-    connect(this->scene(), SIGNAL(selectionChanged()), this, SLOT(liaison()));
+    //connect(this->scene(), SIGNAL(selectionChanged()), this, SLOT(liaison()));
     //Menu clique droit
     this->createActions();
 
@@ -199,11 +199,14 @@ void BlackBoard::refresh()
 	this->xEllipse = 0;this->yEllipse = DEPLACEMENT_VERTICAL;
 	for(int i = 0 ; i < this->listMovements->size() ; i++)
 	{
-            this->listEllipse.append(new EllipseDuProjet(this->xEllipse, this->yEllipse,50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->at(i),this));
-	    this->xEllipse += DEPLACEMENT_HORIZONTAL;
+            //this->listEllipse.append(new EllipseDuProjet(this->xEllipse, this->yEllipse,50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->at(i),this));
+            //this->xEllipse += DEPLACEMENT_HORIZONTAL;
+            //qDebug() << "x:" << this->listMovements->at(i)->getPosXBlackBoard() << endl;
+            //qDebug() << "y:" << this->listMovements->at(i)->getPosYBlackBoard() << endl;
+            this->listEllipse.append(new EllipseDuProjet(this->listMovements->at(i)->getPosXBlackBoard(), this->listMovements->at(i)->getPosYBlackBoard(),50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->at(i),this));
 	}
     }
-    else
+   /* else
     {
 	bool isInTheList = false;
 	for(int i = 0 ; i < this->listEllipse.size() ; i++)
@@ -214,7 +217,7 @@ void BlackBoard::refresh()
             this->listEllipse.append(new EllipseDuProjet(this->xEllipse, this->yEllipse,50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->last(),this));
 	    this->xEllipse += DEPLACEMENT_HORIZONTAL;
 	}
-    }
+    }*/
 
     //TRIANGLE/SAMPLES AUDIO
     if(this->listTriangle.isEmpty())
@@ -222,11 +225,11 @@ void BlackBoard::refresh()
 	this->xTriangle = 0;this->yTriangle = 2 * DEPLACEMENT_VERTICAL;
 	for(int i = 0 ; i < this->listSamplesAudio->size() ; i++)
 	{
-            this->listTriangle.append(new Triangle(this->xTriangle, this->yTriangle, new QColor(100,100,100,255), this->scene(), this->listSamplesAudio->at(i),this));
-	    this->xTriangle += DEPLACEMENT_HORIZONTAL;
+            this->listTriangle.append(new Triangle(this->listSamplesAudio->at(i)->getPosXBlackBoard(), this->listSamplesAudio->at(i)->getPosYBlackBoard(), new QColor(100,100,100,255), this->scene(), this->listSamplesAudio->at(i),this));
+            //this->xTriangle += DEPLACEMENT_HORIZONTAL;
 	}
     }
-    else
+    /*else
     {
 	bool isInTheList = false;
 	for(int i = 0 ; i < this->listTriangle.size() ; i++)
@@ -237,7 +240,7 @@ void BlackBoard::refresh()
             this->listTriangle.append(new Triangle(this->xTriangle, this->yTriangle, new QColor(100,100,100,255), this->scene(), this->listSamplesAudio->last(),this));
 	    this->xTriangle += DEPLACEMENT_HORIZONTAL;
 	}
-    }
+    }*/
 
     //DIAMOND/PORTS
     if(this->listDiamond.isEmpty())
@@ -246,11 +249,11 @@ void BlackBoard::refresh()
 	this->xDiamond = 0;this->yDiamond = 0;
 	for(int i = 0 ; i < this->listPorts->size() ; i++)
 	{
-            this->listDiamond.append(new Diamond(this->xDiamond, this->yDiamond, new QColor(100,100,100,255), this->scene(), this->listPorts->at(i),this));
-	    this->xDiamond += DEPLACEMENT_HORIZONTAL;
+            this->listDiamond.append(new Diamond(this->listPorts->at(i)->getPosXBlackBoard(), this->listPorts->at(i)->getPosYBlackBoard(), new QColor(100,100,100,255), this->scene(), this->listPorts->at(i),this));
+            //this->xDiamond += DEPLACEMENT_HORIZONTAL;
 	}
     }
-    else
+   /* else
     {
 	bool isInTheList = false;
 	for(int i = 0 ; i < this->listDiamond.size() ; i++)
@@ -261,12 +264,13 @@ void BlackBoard::refresh()
             this->listDiamond.append(new Diamond(this->xDiamond, this->yDiamond, new QColor(100,100,100,255), this->scene(), this->listPorts->last(),this));
 	    this->xDiamond += DEPLACEMENT_HORIZONTAL;
 	}
-    }
+    }*/
 
     //LIGNE ENTRE LES ELEMENTS
     for(int i = 0 ; i < this->listEllipse.size() ; i++)
     {
-	//LIGNE MOVMEMENT - SAMPLE AUDIO
+        qDebug() << "taille listEllipse : " << this->listEllipse.size() << endl;
+        //LIGNE MOVMEMENT - SAMPLE AUDIO
 	if(this->listEllipse.at(i)->getMovement()->getSampleAudio() != NULL)
 	{
 	    for(int j = 0 ; j < this->listTriangle.size() ; j++)
@@ -277,8 +281,8 @@ void BlackBoard::refresh()
 		    //qDebug() << "id mvt : " << this->listEllipse.at(i)->getMovement()->getId() << endl;
             //this->addLineItem(this->listEllipse.at(i)->rect().x() + 25, this->listEllipse.at(i)->rect().y() + 50, this->listTriangle.at(j)->x() + 25, this->listTriangle.at(j)->y());
             this->addLineItem(this->listEllipse.at(i)->x() + 25, this->listEllipse.at(i)->y() + 25, this->listTriangle.at(j)->x() + 25, this->listTriangle.at(j)->y() + 25);
-                   // qDebug() << "x ellipse: " << this->listEllipse.at(i)->rect().x() << endl;
-                   // qDebug() << "y ellipse: " << this->listEllipse.at(i)->rect().y() << endl;
+                   //qDebug() << "x ellipse: " << this->listEllipse.at(i)->x() << endl;
+                   //qDebug() << "y ellipse: " << this->listEllipse.at(i)->y() << endl;
                    // qDebug() << "x triangle: " << this->listTriangle.at(j)->x() << endl;
                    // qDebug() << "y triangle: " << this->listTriangle.at(j)->y() << endl;
 
@@ -504,20 +508,24 @@ void BlackBoard::slotEnleverBlackboard()
 	}
 }
 
-void BlackBoard::liaison()
+void BlackBoard::liaison(QGraphicsItem *itemPressed)
 {
+
     if(this->movement)
     {
-	Movement *movementTemp = this->movement;
+
+        Movement *movementTemp = this->movement;
 	this->movement = NULL;
-	if(this->scene()->selectedItems().at(0)->type() == 65539)
-	{
-	    Triangle *triangle = (Triangle*)(this->scene()->selectedItems().at(0));
+        //if(this->scene()->selectedItems().at(0)->type() == 65539)
+        if(itemPressed->type() == 65539)
+        {
+            Triangle *triangle = (Triangle*)(itemPressed);
 	    this->updateSampleAudioOfMovement(movementTemp, triangle->getSampleAudio());
 	}
-	else if(this->scene()->selectedItems().at(0)->type() == 65538)
-	{
-	    Diamond *diamond = (Diamond*)(this->scene()->selectedItems().at(0));
+        //else if(this->scene()->selectedItems().at(0)->type() == 65538)
+        else if(itemPressed->type() == 65538)
+        {
+            Diamond *diamond = (Diamond*)(itemPressed);
 	    this->updateClientOSCOfMovement(movementTemp, diamond->getPort());
 	}
     }
@@ -563,9 +571,9 @@ void BlackBoard::timerEvent(QTimerEvent *event)
     }
 
 
-     qDebug() << "taille listLines" << listLines.size() <<endl;
+     //qDebug() << "taille listLines" << listLines.size() <<endl;
     for (int i=0; i<listLines.size(); i++){
-        qDebug() << "--------------------------" <<endl;
+       /* qDebug() << "--------------------------" <<endl;
         qDebug() << "line x1" << listLines.at(i)->line().x1() <<endl;
         qDebug() << "line y1" << listLines.at(i)->line().y1() <<endl;
         qDebug() << "line x2" << listLines.at(i)->line().x2() <<endl;
@@ -575,23 +583,15 @@ void BlackBoard::timerEvent(QTimerEvent *event)
         qDebug() << "last X" << lastPosX <<endl;
         qDebug() << "last Y" << lastPosY <<endl;
         qDebug() << "--------------------------" <<endl;
+*/
 
-
-        /*//init du lastX et lastY
-        if(isFirstPassage == true){
-            lastPosX = movingItem->pos().x() + 25;
-            lastPosY = movingItem->pos().y() + 25;
-            isFirstPassage = false;
-        }*/
 
         if((listLines.at(i)->line().x1() == lastPosX ) && (listLines.at(i)->line().y1() == lastPosY))
         {
-            qDebug() << "if1" << endl;
             listLines.at(i)->setLine(movingItem->pos().x() + 25, movingItem->pos().y() + 25, listLines.at(i)->line().x2(), listLines.at(i)->line().y2());
         }
         else if((listLines.at(i)->line().x2() == lastPosX) && (listLines.at(i)->line().y2() == lastPosY))
         {
-            qDebug() << "if2" << endl;
             listLines.at(i)->setLine(listLines.at(i)->line().x1(), listLines.at(i)->line().y1(), movingItem->pos().x() + 25, movingItem->pos().y() + 25);
         }
 
@@ -607,11 +607,11 @@ void BlackBoard::timerEvent(QTimerEvent *event)
 
 }
 
-void BlackBoard::setLastX(int x){
-    this->lastPosX = x;
+void BlackBoard::setLastX(int xItem){
+    this->lastPosX = xItem + 25;
 }
 
-void BlackBoard::setLastY(int y){
-    this->lastPosY = y;
+void BlackBoard::setLastY(int yItem){
+    this->lastPosY = yItem + 25;
 }
 

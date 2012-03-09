@@ -51,6 +51,10 @@ void EllipseDuProjet::setContextMenu(bool contextMenu)
 QVariant EllipseDuProjet::itemChange(GraphicsItemChange change, const QVariant &value)
  {
     if(change == ItemPositionHasChanged ) {
+        this->movement->setPosXBlackBoard(this->pos().x());
+        this->movement->setPosYBlackBoard(this->pos().y());
+       // qDebug() << "itemChange" << this->pos().x() << " " << this->pos().y() << endl;
+
         blackboard->itemMoved(this);
     }
      return QGraphicsItem::itemChange(change, value);
