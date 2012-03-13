@@ -50,14 +50,14 @@ public slots :
     int slotLockNodesForNewMouvement();
     void slotUnlockStickMan();
     void slotDisplayInfos(QTreeWidgetItem* item,int column);
-    void slotDisplayInfos();
+    //void slotDisplayInfos();
     void slotRecordNewMovement();
     void slotValidNewMovement();
     void slotEscNewMovement();
     void slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int column);
     void boutonAddSample();
     void updateLCDTimer();
-
+    void slotDisplayInfos(QGraphicsItem* item);
     void slotStartLivePerformance();
 
 

@@ -11,13 +11,13 @@
 EllipseDuProjet::EllipseDuProjet(qreal x, qreal y, qreal width, qreal height, QColor* color, QGraphicsScene *scene, Movement *movement, BlackBoard* blackboard) : QGraphicsEllipseItem ()
 {
     this->blackboard = blackboard;
-
     QPen pen;
     pen.setBrush(Qt::white);
     pen.setWidth(6);
     pen.setStyle(Qt::SolidLine);
     pen.setCapStyle(Qt::RoundCap);
     pen.setJoinStyle(Qt::RoundJoin);
+
     this->movement = movement;
     this->setRect(0,0,width,height);
     this->setPos(x,y);

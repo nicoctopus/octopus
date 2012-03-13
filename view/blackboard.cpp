@@ -13,8 +13,8 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent), timerId(0)
     //isFirstPassage = true;
     QGraphicsScene *scene = new QGraphicsScene();
     this->setScene(scene);
-    //this->setSceneRect(0,0,500,500);
-    ctrlPressed = false;
+    aPressed = false;
+    needToLink = false;
     connect(this, SIGNAL(refreshSignal()), this, SLOT(refresh()));
     connect(this, SIGNAL(clearScene()), this->scene(), SLOT(clear()));
     connect(this->scene(), SIGNAL(selectionChanged()), this, SLOT(liaison()));
@@ -321,8 +321,8 @@ void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
 	    menu.addAction(this->actionVisualisation);
 	    menu.addAction(this->actionLier);
 	    menu.addAction(this->actionEnleverBlackboard);
-	    menu.exec(event->globalPos());
-	    return;
+            menu.exec(event->globalPos());
+            return;
 	}
     }
     for(int i = 0 ; i < this->listDiamond.size() ; i++)
@@ -336,7 +336,7 @@ void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
 	    QMenu menu(this);
 	    menu.addAction(this->actionRemove);
 	    menu.addAction(this->actionEnleverBlackboard);
-	    menu.exec(event->globalPos());
+            menu.exec(event->globalPos());
 	    return;
 	}
     }
@@ -352,7 +352,7 @@ void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
 	    QMenu menu(this);
 	    menu.addAction(this->actionRemove);
 	    menu.addAction(this->actionEnleverBlackboard);
-	    menu.exec(event->globalPos());
+            menu.exec(event->globalPos());
 	    return;
 	}
     }
@@ -411,11 +411,12 @@ void BlackBoard::slotVisualisation()
 
 void BlackBoard::slotLiaison()
 {
-    qDebug()<< "slotLiaison" << endl;
+    //qDebug()<< "slotLiaison" << endl;
     for(int i = 0 ;  i < this->listEllipse.size() ; i++)
 	if(this->listEllipse.at(i)->getContextMenu() == true)
 	{
 	    this->movement = this->listEllipse.at(i)->getMovement();
+            needToLink = true;
 	}
 }
 
@@ -490,29 +491,56 @@ void BlackBoard::slotEnleverBlackboard()
 	}
 }
 
+
 void BlackBoard::liaison()
 {
-qDebug()<< "laison" << endl;
-    if(this->movement)
+    //qDebug() << "------------------";
+    //qDebug() << aPressed;
+    //qDebug() << needToLink;
+    this->scene()->clearFocus();
+    if(this->scene()->selectedItems().isEmpty()){
+        return;
+    }
+    //Afficher les infos
+    emit sigDisplayInfos(this->scene()->selectedItems().at(0));
+    this->setLastX(this->scene()->selectedItems().at(0)->pos().x());
+    this->setLastY(this->scene()->selectedItems().at(0)->pos().y());
+
+    if(aPressed == true)
     {
 
-        Movement *movementTemp = this->movement;
-	this->movement = NULL;
-        if(this->scene()->selectedItems().at(0)->type() == 65539)
-        //if(itemPressed->type() == 65539)
+        if(needToLink == true)
         {
-            Triangle *triangle = (Triangle*)(this->scene()->selectedItems().at(0));
-	    this->updateSampleAudioOfMovement(movementTemp, triangle->getSampleAudio());
-	}
-        else if(this->scene()->selectedItems().at(0)->type() == 65538)
-        //else if(itemPressed->type() == 65538)
+            //qDebug()<< "Mouvement non null";
+            //Movement *movementTemp = this->movement;
+            //this->movement = NULL;
+            needToLink = false;
+            if(this->scene()->selectedItems().at(0)->type() == 65539)
+            //if(itemPressed->type() == 65539)
+            {
+                //qDebug()<< "On lie triangle";
+                Triangle *triangle = (Triangle*)(this->scene()->selectedItems().at(0));
+                this->updateSampleAudioOfMovement(this->movement, triangle->getSampleAudio());
+            }
+            else if(this->scene()->selectedItems().at(0)->type() == 65538)
+            //else if(itemPressed->type() == 65538)
+            {
+                //qDebug()<< "On lie diamond";
+                Diamond *diamond = (Diamond*)(this->scene()->selectedItems().at(0));
+                this->updateClientOSCOfMovement(this->movement, diamond->getPort());
+            }
+            return;
+        }
+        if(this->scene()->selectedItems().at(0)->type() == 65537)
         {
-            Diamond *diamond = (Diamond*)(this->scene()->selectedItems().at(0));
-	    this->updateClientOSCOfMovement(movementTemp, diamond->getPort());
-	}
+            this->movement = ((EllipseDuProjet*)(this->scene()->selectedItems().at(0)))->getMovement();
+            needToLink = true;
+        }
     }
 
 }
+
+
 
 
 // -----------------------------------------------------------
@@ -656,7 +684,24 @@ void BlackBoard::SetCenter(const QPointF& centerPoint) {
     //Update the scrollbars
     centerOn(CurrentCenterPoint);
 }
-
+void BlackBoard::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case  Qt::Key_A:
+        aPressed = true;
+    default:
+        QGraphicsView::keyPressEvent(event);
+    }
+}
+void BlackBoard::keyReleaseEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case  Qt::Key_A:
+        aPressed = false;
+    default:
+        QGraphicsView::keyPressEvent(event);
+    }
+}
 /**
   * Zoom the view in and out.
   *
@@ -664,7 +709,7 @@ void BlackBoard::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case  Qt::Key_Control:
-        ctrlPressed = true;
+        aPressed = true;
     default:
         QGraphicsView::keyPressEvent(event);
     }
@@ -673,7 +718,7 @@ void BlackBoard::keyReleaseEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case  Qt::Key_Control:
-        ctrlPressed = false;
+        aPressed = false;
     default:
         QGraphicsView::keyPressEvent(event);
     }
@@ -681,7 +726,7 @@ void BlackBoard::keyReleaseEvent(QKeyEvent *event)
 
 void BlackBoard::wheelEvent(QWheelEvent* event) {
 
-    if(ctrlPressed == true){
+    if(aPressed == true){
         //Get the position of the mouse before scaling, in scene coords
     QPointF pointBeforeScale(mapToScene(event->pos()));
 
