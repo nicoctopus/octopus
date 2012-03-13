@@ -66,7 +66,11 @@ protected :
     virtual void resizeEvent(QResizeEvent* event);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
+<<<<<<< HEAD
     */
+=======
+
+>>>>>>> 173b2150dfbbfd2146a21c6c95c2876f53315a93
 
 private:
     QList<Movement*> *listMovements;

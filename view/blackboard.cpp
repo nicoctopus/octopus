@@ -13,7 +13,6 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent), timerId(0)
     //isFirstPassage = true;
     QGraphicsScene *scene = new QGraphicsScene();
     this->setScene(scene);
-    //this->setSceneRect(0,0,500,500);
     ctrlPressed = false;
     connect(this, SIGNAL(refreshSignal()), this, SLOT(refresh()));
     connect(this, SIGNAL(clearScene()), this->scene(), SLOT(clear()));
@@ -656,7 +655,24 @@ void BlackBoard::SetCenter(const QPointF& centerPoint) {
     //Update the scrollbars
     centerOn(CurrentCenterPoint);
 }
-
+void BlackBoard::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case  Qt::Key_Control:
+        ctrlPressed = true;
+    default:
+        QGraphicsView::keyPressEvent(event);
+    }
+}
+void BlackBoard::keyReleaseEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case  Qt::Key_Control:
+        ctrlPressed = false;
+    default:
+        QGraphicsView::keyPressEvent(event);
+    }
+}
 /**
   * Zoom the view in and out.
   *
