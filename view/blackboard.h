@@ -46,6 +46,7 @@ signals:
     void remove(SampleAudio *sampleAudio);
     void remove(ClientOSC *clientOSC);
     void visualisation(Movement *movement);
+    void sigDisplayInfos(QGraphicsItem* item);
 
 public slots:
     void refresh();
@@ -61,12 +62,10 @@ protected :
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
     void timerEvent(QTimerEvent *event);
-      /*
-    virtual void wheelEvent(QWheelEvent* event);
-    virtual void resizeEvent(QResizeEvent* event);
+  //  virtual void wheelEvent(QWheelEvent* event);
+  //  virtual void resizeEvent(QResizeEvent* event);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
-    */
 
 private:
     QList<Movement*> *listMovements;
@@ -81,7 +80,8 @@ private:
     QGraphicsItem* movingItem;
     int timerId;
     QPointF CurrentCenterPoint;
-    bool ctrlPressed;
+    bool aPressed;
+    bool needToLink;
 
     //Menu clique droit
     QAction *actionRemove;

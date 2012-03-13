@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(ui->start, SIGNAL(clicked()), this,SLOT(slotStartLivePerformance()));
     connect(this, SIGNAL(sigMoveStickman(Movement*)), ui->stickMan, SLOT(slotMoveStickMan(Movement*)));
+    connect(ui->blackboard, SIGNAL(sigDisplayInfos(QGraphicsItem*)), this, SLOT(slotDisplayInfos(QGraphicsItem*)));
 
     this->initBlackBoard();
     this->initTreeView();
@@ -168,9 +169,9 @@ void MainWindow::remove(ClientOSC *clientOSC)
 
 void MainWindow::slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int){
     if(item->text(0) == "Movements" || item->text(0) == "Samples" || item->text(0) == "Videos" || item->text(0) == "Ports"){
-        //rien blindage
+        return;
     }
-    else if(item->parent()->text(0) == "Samples"){
+    if(item->parent()->text(0) == "Samples"){
         emit sigPlaySample();
     }
     else if(item->parent()->text(0) == "Movements"){
@@ -275,33 +276,57 @@ void MainWindow::slotDisplayInfos(QTreeWidgetItem* item,int column){
     ui->textBrowser->setText(text);
 }
 
-void MainWindow::slotDisplayInfos()
+//void MainWindow::slotDisplayInfos()
+//{
+//    QList<QGraphicsItem*> itemsSelected = ui->blackboard->scene()->selectedItems();
+//    QString text;
+//    for( int i=0; i<itemsSelected.size();i++)
+//    {
+//        if(itemsSelected.at(i)->type() == 65537)
+//        {
+//            EllipseDuProjet *ellipse = (EllipseDuProjet*)itemsSelected.at(i);
+//            text = this->textDisplay(ellipse->getMovement());
+//        }
+//        if(itemsSelected.at(i)->type() == 65539)
+//        {
+//            Triangle *triangle = (Triangle*)itemsSelected.at(i);
+//            text = this->textDisplay(triangle->getSampleAudio());
+//        }
+//        if(itemsSelected.at(i)->type() == 65538)
+//        {
+//            Diamond *diamond = (Diamond*)itemsSelected.at(i);
+//	    text = this->textDisplay(diamond->getPort());
+//        }
+//        ui->blackboard->setLastX(itemsSelected.at(0)->pos().x());
+//        ui->blackboard->setLastY(itemsSelected.at(0)->pos().y());
+//        qDebug() << "mainWindow" << endl;
+
+//        ui->textBrowser->setText(text);
+//    }
+//}
+void MainWindow::slotDisplayInfos(QGraphicsItem* item)
 {
-    QList<QGraphicsItem*> itemsSelected = ui->blackboard->scene()->selectedItems();
     QString text;
-    for( int i=0; i<itemsSelected.size();i++)
-    {
-        if(itemsSelected.at(i)->type() == 65537)
+        if(item->type() == 65537)
         {
-            EllipseDuProjet *ellipse = (EllipseDuProjet*)itemsSelected.at(i);
+            EllipseDuProjet *ellipse = (EllipseDuProjet*)item;
             text = this->textDisplay(ellipse->getMovement());
         }
-        if(itemsSelected.at(i)->type() == 65539)
+        if(item->type() == 65539)
         {
-            Triangle *triangle = (Triangle*)itemsSelected.at(i);
+            Triangle *triangle = (Triangle*)item;
             text = this->textDisplay(triangle->getSampleAudio());
         }
-        if(itemsSelected.at(i)->type() == 65538)
+        if(item->type() == 65538)
         {
-            Diamond *diamond = (Diamond*)itemsSelected.at(i);
-	    text = this->textDisplay(diamond->getPort());
+            Diamond *diamond = (Diamond*)item;
+            text = this->textDisplay(diamond->getPort());
         }
-        ui->blackboard->setLastX(itemsSelected.at(i)->pos().x());
-        ui->blackboard->setLastY(itemsSelected.at(i)->pos().y());
-        qDebug() << "mainWindow" << endl;
+        //ui->blackboard->setLastX(itemsSelected.at(0)->pos().x());
+        //ui->blackboard->setLastY(itemsSelected.at(0)->pos().y());
+        //qDebug() << "mainWindow" << endl;
 
         ui->textBrowser->setText(text);
-    }
 }
 
 QString MainWindow::textDisplay(Movement *movement)
