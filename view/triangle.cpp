@@ -2,7 +2,7 @@
 #include <time.h>
 
 
-Triangle::Triangle(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, SampleAudio *sampleAudio, BlackBoard* blackboard) : QGraphicsPolygonItem ()
+Triangle::Triangle(qreal x, qreal y, QColor* color, QGraphicsScene *scene, SampleAudio *sampleAudio, BlackBoard* blackboard) : QGraphicsPolygonItem ()
 {
     this->blackboard = blackboard;
 
@@ -21,6 +21,8 @@ Triangle::Triangle(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, S
     this->setPen(pen);
     this->setBrush(QColor(sampleAudio->r,sampleAudio->g, sampleAudio->b, 255));
     this->setPos(x, y);
+    this->sampleAudio->setPosXBlackBoard(x);
+    this->sampleAudio->setPosYBlackBoard(y);
     this->setZValue(5);
     scene->addItem(this);
     this->contextMenu = false;
@@ -48,17 +50,19 @@ QVariant Triangle::itemChange(GraphicsItemChange change, const QVariant &value)
         this->sampleAudio->setPosXBlackBoard(this->pos().x());
         this->sampleAudio->setPosYBlackBoard(this->pos().y());
         blackboard->itemMoved(this);
+       // qDebug() << this->pos().x() << " " << this->pos().y() << endl;
        // qDebug() << "itemChange" << this->pos().x() << " " << this->pos().y() << endl;
 
     }
      return QGraphicsItem::itemChange(change, value);
  }
 
- void Triangle::mousePressEvent(QGraphicsSceneMouseEvent *event)
+ /*void Triangle::mousePressEvent(QGraphicsSceneMouseEvent *event)
  {
-     update();
+    this->setSelected(true);
      blackboard->liaison(this);
-     qDebug()<<"PRESS"<<endl;
+     //qDebug()<<"PRESS "<< this->sampleAudio->getPosXBlackBoard() << this->sampleAudio->getPosYBlackBoard() << endl;
+     update();
      QGraphicsItem::mousePressEvent(event);
  }
 
@@ -66,7 +70,7 @@ QVariant Triangle::itemChange(GraphicsItemChange change, const QVariant &value)
  {
      update();
      QGraphicsItem::mouseReleaseEvent(event);
- }
+ }*/
 
  void Triangle::setListLines(QGraphicsLineItem* line){
      listLines.append(line);

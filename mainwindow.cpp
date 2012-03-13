@@ -85,7 +85,7 @@ void MainWindow::initBlackBoard()
     connect(ui->blackboard, SIGNAL(visualisation(Movement*)), ui->stickMan, SLOT(slotMoveStickMan(Movement*)));
 
     connect(this, SIGNAL(refreshBlackBoard()), ui->blackboard, SLOT(refresh()));
-    connect(ui->blackboard->scene(), SIGNAL(selectionChanged()), this, SLOT(slotDisplayInfos()));
+    //connect(ui->blackboard->scene(), SIGNAL(selectionChanged()), this, SLOT(slotDisplayInfos()));
     connect(ui->leftTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(slotLeftTreeDoubleClicked(QTreeWidgetItem*,int)));
     connect(this, SIGNAL(sigPlaySample()), this, SLOT(slotStop()));
     connect(this, SIGNAL(sigPlaySample()), this, SLOT(slotPlayPause()));
@@ -298,6 +298,7 @@ void MainWindow::slotDisplayInfos()
         }
         ui->blackboard->setLastX(itemsSelected.at(i)->pos().x());
         ui->blackboard->setLastY(itemsSelected.at(i)->pos().y());
+        qDebug() << "mainWindow" << endl;
 
         ui->textBrowser->setText(text);
     }

@@ -13,12 +13,15 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent), timerId(0)
     //isFirstPassage = true;
     QGraphicsScene *scene = new QGraphicsScene();
     this->setScene(scene);
+    //this->setSceneRect(0,0,500,500);
     ctrlPressed = false;
     connect(this, SIGNAL(refreshSignal()), this, SLOT(refresh()));
     connect(this, SIGNAL(clearScene()), this->scene(), SLOT(clear()));
-    //connect(this->scene(), SIGNAL(selectionChanged()), this, SLOT(liaison()));
+    connect(this->scene(), SIGNAL(selectionChanged()), this, SLOT(liaison()));
     //Menu clique droit
     this->createActions();
+    //this->setSceneRect(0,0,1000,1000);
+    //this->SetCenter(QPointF(250.0,250.0));//fontion modifiée de centerOn()
 
 }
 
@@ -110,6 +113,9 @@ void BlackBoard::dropEvent(QDropEvent *event){
 	{
 	    this->listMovements->append(*(Movement**)ba.constData());
 	    this->listMovements->last()->setActive(true);
+            //this->listMovements->last()->setPosXBlackBoard(mapToScene(event->pos().x(),0).x());
+            //this->listMovements->last()->setPosYBlackBoard(mapToScene(0,event->pos().y()).y());
+            //qDebug() << "maptoscene" << mapToScene(event->pos().x(),0).x() <<"," << mapToScene(0,event->pos().y()).y();
 	    emit save(this->listMovements->last());
 	    emit refreshSignal();
 	}
@@ -129,6 +135,9 @@ void BlackBoard::dropEvent(QDropEvent *event){
 	{
 	    this->listSamplesAudio->append(*(SampleAudio**)ba.constData());
 	    this->listSamplesAudio->last()->setActive(true);
+            //this->listSamplesAudio->last()->setPosXBlackBoard(mapToScene(event->pos().x(),0).x());
+            //this->listSamplesAudio->last()->setPosYBlackBoard(mapToScene(0,event->pos().y()).y());
+           // qDebug() << "maptoscene" << mapToScene(event->pos().x(),0).x() <<"," << mapToScene(0,event->pos().y()).y();
 	    emit save(this->listSamplesAudio->last());
 	    emit refreshSignal();
 	}
@@ -147,11 +156,13 @@ void BlackBoard::dropEvent(QDropEvent *event){
 	{
 	    this->listPorts->append(*(ClientOSC**)ba.constData());
 	    this->listPorts->last()->setActive(true);
+           // this->listPorts->last()->setPosXBlackBoard(mapToScene(event->pos().x(),0).x());
+           // this->listPorts->last()->setPosYBlackBoard(mapToScene(0,event->pos().y()).y());
 	    emit save(this->listPorts->last());
 	    emit refreshSignal();
 	}
     }
-    this->setSceneRect(this->scene()->sceneRect());
+   // this->setSceneRect(this->scene()->sceneRect());
 }
 
 
@@ -179,6 +190,7 @@ void BlackBoard::setListSamplesAudio(QList<SampleAudio*> *listSamplesAudio)
 
 void BlackBoard::refresh()
 {
+    qDebug() << "REFRESH" << endl;
     this->scene()->selectedItems().clear();
     for(int i = this->scene()->items().size() - 1 ; i >= 0 ; i--)
 	this->scene()->removeItem(this->scene()->items().at(i));
@@ -206,23 +218,10 @@ void BlackBoard::refresh()
 	{
             //this->listEllipse.append(new EllipseDuProjet(this->xEllipse, this->yEllipse,50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->at(i),this));
             //this->xEllipse += DEPLACEMENT_HORIZONTAL;
-            //qDebug() << "x:" << this->listMovements->at(i)->getPosXBlackBoard() << endl;
-            //qDebug() << "y:" << this->listMovements->at(i)->getPosYBlackBoard() << endl;
-            this->listEllipse.append(new EllipseDuProjet(this->listMovements->at(i)->getPosXBlackBoard(), this->listMovements->at(i)->getPosYBlackBoard(),50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->at(i),this));
+            //qDebug() << "Refresh Ellipse x:" << this->listMovements->at(i)->getPosXBlackBoard() << "y:" << this->listMovements->at(i)->getPosYBlackBoard() << endl;
+            this->listEllipse.append(new EllipseDuProjet(listMovements->at(i)->getPosXBlackBoard(),listMovements->at(i)->getPosYBlackBoard(),50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->at(i),this));
 	}
     }
-   /* else
-    {
-	bool isInTheList = false;
-	for(int i = 0 ; i < this->listEllipse.size() ; i++)
-	    if(this->listEllipse.at(i)->getMovement()->getId() == this->listMovements->last()->getId())
-		isInTheList = true;
-	if(isInTheList == false)
-	{
-            this->listEllipse.append(new EllipseDuProjet(this->xEllipse, this->yEllipse,50,50, new QColor(100,100,100,255), this->scene(), this->listMovements->last(),this));
-	    this->xEllipse += DEPLACEMENT_HORIZONTAL;
-	}
-    }*/
 
     //TRIANGLE/SAMPLES AUDIO
     if(this->listTriangle.isEmpty())
@@ -230,26 +229,15 @@ void BlackBoard::refresh()
 	this->xTriangle = 0;this->yTriangle = 2 * DEPLACEMENT_VERTICAL;
 	for(int i = 0 ; i < this->listSamplesAudio->size() ; i++)
 	{
-            this->listTriangle.append(new Triangle(this->listSamplesAudio->at(i)->getPosXBlackBoard(), this->listSamplesAudio->at(i)->getPosYBlackBoard(), new QColor(100,100,100,255), this->scene(), this->listSamplesAudio->at(i),this));
-            //this->xTriangle += DEPLACEMENT_HORIZONTAL;
+            this->listTriangle.append(new Triangle(this->listSamplesAudio->at(i)->getPosXBlackBoard(),this->listSamplesAudio->at(i)->getPosYBlackBoard(), new QColor(100,100,100,255), this->scene(), this->listSamplesAudio->at(i),this));
+          //qDebug() << "Refresh Triangle x:" << this->listSamplesAudio->at(i)->getPosXBlackBoard() << "y:" << this->listSamplesAudio->at(i)->getPosYBlackBoard() << endl;
+
+            // this->xTriangle += DEPLACEMENT_HORIZONTAL;
 	}
     }
-    /*else
-    {
-	bool isInTheList = false;
-	for(int i = 0 ; i < this->listTriangle.size() ; i++)
-	    if(this->listTriangle.at(i)->getSampleAudio()->getId() == this->listSamplesAudio->last()->getId())
-		isInTheList = true;
-	if(isInTheList == false)
-	{
-            this->listTriangle.append(new Triangle(this->xTriangle, this->yTriangle, new QColor(100,100,100,255), this->scene(), this->listSamplesAudio->last(),this));
-	    this->xTriangle += DEPLACEMENT_HORIZONTAL;
-	}
-    }*/
 
     //DIAMOND/PORTS
     if(this->listDiamond.isEmpty())
-
     {
 	this->xDiamond = 0;this->yDiamond = 0;
 	for(int i = 0 ; i < this->listPorts->size() ; i++)
@@ -258,23 +246,11 @@ void BlackBoard::refresh()
             //this->xDiamond += DEPLACEMENT_HORIZONTAL;
 	}
     }
-   /* else
-    {
-	bool isInTheList = false;
-	for(int i = 0 ; i < this->listDiamond.size() ; i++)
-	    if(this->listDiamond.at(i)->getPort()->getId() == this->listPorts->last()->getId())
-		isInTheList = true;
-	if(isInTheList == false)
-	{
-            this->listDiamond.append(new Diamond(this->xDiamond, this->yDiamond, new QColor(100,100,100,255), this->scene(), this->listPorts->last(),this));
-	    this->xDiamond += DEPLACEMENT_HORIZONTAL;
-	}
-    }*/
 
     //LIGNE ENTRE LES ELEMENTS
     for(int i = 0 ; i < this->listEllipse.size() ; i++)
     {
-        qDebug() << "taille listEllipse : " << this->listEllipse.size() << endl;
+        //qDebug() << "taille listEllipse : " << this->listEllipse.size() << endl;
         //LIGNE MOVMEMENT - SAMPLE AUDIO
 	if(this->listEllipse.at(i)->getMovement()->getSampleAudio() != NULL)
 	{
@@ -285,7 +261,7 @@ void BlackBoard::refresh()
 		    //qDebug() << "id sample : " << this->listEllipse.at(i)->getMovement()->getSampleAudio()->getId() << endl;
 		    //qDebug() << "id mvt : " << this->listEllipse.at(i)->getMovement()->getId() << endl;
             //this->addLineItem(this->listEllipse.at(i)->rect().x() + 25, this->listEllipse.at(i)->rect().y() + 50, this->listTriangle.at(j)->x() + 25, this->listTriangle.at(j)->y());
-            this->addLineItem(this->listEllipse.at(i)->x() + 25, this->listEllipse.at(i)->y() + 25, this->listTriangle.at(j)->x() + 25, this->listTriangle.at(j)->y() + 25);
+                    this->addLineItem(this->listEllipse.at(i)->x() + 25, this->listEllipse.at(i)->y() + 25, this->listTriangle.at(j)->x() + 25, this->listTriangle.at(j)->y() + 25);
                    //qDebug() << "x ellipse: " << this->listEllipse.at(i)->x() << endl;
                    //qDebug() << "y ellipse: " << this->listEllipse.at(i)->y() << endl;
                    // qDebug() << "x triangle: " << this->listTriangle.at(j)->x() << endl;
@@ -314,7 +290,7 @@ void BlackBoard::refresh()
     }
 }
 
-void BlackBoard::addLineItem(const quint16 x1, const quint16 y1, const quint16 x2, const quint16 y2)
+void BlackBoard::addLineItem(const qint16 x1, const qint16 y1, const qint16 x2, const qint16 y2)
 {
     QLine line(x1, y1, x2, y2);
     QPen pen;
@@ -435,6 +411,7 @@ void BlackBoard::slotVisualisation()
 
 void BlackBoard::slotLiaison()
 {
+    qDebug()<< "slotLiaison" << endl;
     for(int i = 0 ;  i < this->listEllipse.size() ; i++)
 	if(this->listEllipse.at(i)->getContextMenu() == true)
 	{
@@ -513,29 +490,30 @@ void BlackBoard::slotEnleverBlackboard()
 	}
 }
 
-void BlackBoard::liaison(QGraphicsItem *itemPressed)
+void BlackBoard::liaison()
 {
-
+qDebug()<< "laison" << endl;
     if(this->movement)
     {
 
         Movement *movementTemp = this->movement;
 	this->movement = NULL;
-        //if(this->scene()->selectedItems().at(0)->type() == 65539)
-        if(itemPressed->type() == 65539)
+        if(this->scene()->selectedItems().at(0)->type() == 65539)
+        //if(itemPressed->type() == 65539)
         {
-            Triangle *triangle = (Triangle*)(itemPressed);
+            Triangle *triangle = (Triangle*)(this->scene()->selectedItems().at(0));
 	    this->updateSampleAudioOfMovement(movementTemp, triangle->getSampleAudio());
 	}
-        //else if(this->scene()->selectedItems().at(0)->type() == 65538)
-        else if(itemPressed->type() == 65538)
+        else if(this->scene()->selectedItems().at(0)->type() == 65538)
+        //else if(itemPressed->type() == 65538)
         {
-            Diamond *diamond = (Diamond*)(itemPressed);
+            Diamond *diamond = (Diamond*)(this->scene()->selectedItems().at(0));
 	    this->updateClientOSCOfMovement(movementTemp, diamond->getPort());
 	}
     }
 
 }
+
 
 // -----------------------------------------------------------
 //               Faire Bouger les lignes/items
@@ -678,6 +656,10 @@ void BlackBoard::SetCenter(const QPointF& centerPoint) {
     //Update the scrollbars
     centerOn(CurrentCenterPoint);
 }
+
+/**
+  * Zoom the view in and out.
+  *
 void BlackBoard::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
@@ -696,9 +678,7 @@ void BlackBoard::keyReleaseEvent(QKeyEvent *event)
         QGraphicsView::keyPressEvent(event);
     }
 }
-/**
-  * Zoom the view in and out.
-  */
+
 void BlackBoard::wheelEvent(QWheelEvent* event) {
 
     if(ctrlPressed == true){
@@ -730,10 +710,10 @@ void BlackBoard::wheelEvent(QWheelEvent* event) {
     }
 }
 
-/**
+  **
   * Need to update the center so there is no jolt in the
   * interaction after resizing the widget.
-  */
+  *
 void BlackBoard::resizeEvent(QResizeEvent* event) {
     //Get the rectangle of the visible area in scene coords
     QRectF visibleArea = mapToScene(rect()).boundingRect();
@@ -742,3 +722,4 @@ void BlackBoard::resizeEvent(QResizeEvent* event) {
     //Call the subclass resize so the scrollbars are updated correctly
     QGraphicsView::resizeEvent(event);
 }
+*/

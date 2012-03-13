@@ -23,9 +23,6 @@ signals:
 private:
     Movement* movement;
 
-
-
-
 };
 
 #endif // THREADMOVESTICKMAN_H

@@ -53,7 +53,7 @@ QVariant Diamond::itemChange(GraphicsItemChange change, const QVariant &value)
  void Diamond::mousePressEvent(QGraphicsSceneMouseEvent *event)
  {
      update();
-     blackboard->liaison(this);
+     //blackboard->liaison(this);
      QGraphicsItem::mousePressEvent(event);
  }
 

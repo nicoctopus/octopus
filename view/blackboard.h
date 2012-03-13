@@ -22,7 +22,7 @@ class BlackBoard : public QGraphicsView
     Q_OBJECT
 public:
     explicit BlackBoard(QWidget * parent);
-    void addLineItem(const quint16 x1, const quint16 y1, const quint16 x2, const quint16 y2);
+    void addLineItem(const qint16 x1, const qint16 y1, const qint16 x2, const qint16 y2);
     void updateSampleAudioOfMovement(Movement *movement, SampleAudio *newSampleAudio);
     void updateClientOSCOfMovement(Movement *movement, ClientOSC *clientOSC);
     void setListMovements(QList<Movement*> *listMovements);
@@ -31,7 +31,7 @@ public:
     void itemMoved(QGraphicsItem* pMovingItem);
     void setLastX(int xItem);
     void setLastY(int yItem);
-    void liaison(QGraphicsItem *itemPressed);
+    //void liaison(QGraphicsItem *itemPressed);
     void SetCenter(const QPointF& centerPoint);
     QPointF GetCenter() { return CurrentCenterPoint; }
     
@@ -52,7 +52,7 @@ public slots:
     void slotRemove();
     void slotVisualisation();
     void slotLiaison();
-    //void liaison();
+    void liaison();
     void slotEnleverBlackboard();
 
 protected :
@@ -61,11 +61,12 @@ protected :
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
     void timerEvent(QTimerEvent *event);
+      /*
     virtual void wheelEvent(QWheelEvent* event);
     virtual void resizeEvent(QResizeEvent* event);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
-
+    */
 
 private:
     QList<Movement*> *listMovements;

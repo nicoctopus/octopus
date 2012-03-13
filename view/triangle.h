@@ -14,7 +14,7 @@ class Triangle : public QGraphicsPolygonItem
     enum { Type = UserType + 3 };
 
 public:
-    Triangle(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, SampleAudio *sampleAudio, BlackBoard* blackboard);
+    Triangle(qreal x, qreal y, QColor* color, QGraphicsScene *scene, SampleAudio *sampleAudio, BlackBoard* blackboard);
     ~Triangle();
     SampleAudio* getSampleAudio();
     int type() const
@@ -27,8 +27,8 @@ public:
     QList<QGraphicsLineItem*> getListLines();
 
 protected:
-   void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-   void mousePressEvent(QGraphicsSceneMouseEvent *event);
+   //void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+   //void mousePressEvent(QGraphicsSceneMouseEvent *event);
    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 

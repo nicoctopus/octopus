@@ -22,7 +22,8 @@ EllipseDuProjet::EllipseDuProjet(qreal x, qreal y, qreal width, qreal height, QC
     this->setRect(0,0,width,height);
     this->setPos(x,y);
     this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable | ItemSendsGeometryChanges  );
-
+    this->movement->setPosXBlackBoard(x);
+    this->movement->setPosYBlackBoard(y);
 
     this->setPen(pen);
 
@@ -53,24 +54,26 @@ QVariant EllipseDuProjet::itemChange(GraphicsItemChange change, const QVariant &
     if(change == ItemPositionHasChanged ) {
         this->movement->setPosXBlackBoard(this->pos().x());
         this->movement->setPosYBlackBoard(this->pos().y());
-       // qDebug() << "itemChange" << this->pos().x() << " " << this->pos().y() << endl;
+       // qDebug() << this->pos().x() << " " << this->pos().y() << endl;
 
         blackboard->itemMoved(this);
     }
      return QGraphicsItem::itemChange(change, value);
  }
 
- void EllipseDuProjet::mousePressEvent(QGraphicsSceneMouseEvent *event)
+ /*void EllipseDuProjet::mousePressEvent(QGraphicsSceneMouseEvent *event)
  {
+     this->setSelected(false);
      update();
      QGraphicsItem::mousePressEvent(event);
+     //qDebug() << "PRESS " << this->movement->getPosXBlackBoard() << ","<< this->movement->getPosYBlackBoard();
  }
 
  void EllipseDuProjet::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
  {
      update();
      QGraphicsItem::mouseReleaseEvent(event);
- }
+ }*/
 
  void EllipseDuProjet::setListLines(QGraphicsLineItem* line){
      listLines.append(line);
