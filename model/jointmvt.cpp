@@ -6,7 +6,7 @@ quint32 JointMvt::idJointMvtStatic = 0;
   **/
 JointMvt::JointMvt() {
     this->idJointMvt = ++idJointMvtStatic;
-    this->jointReference = new Joint();
+    this->jointReference = NULL;
     this->listPositions = new QList<Position*>();
 }
 
@@ -14,7 +14,7 @@ JointMvt::JointMvt(const JointMvt &jointMvt)
 {
     this->idJointMvt = jointMvt.idJointMvt;
     this->idJointRef = jointMvt.idJointRef;
-    this->jointReference = new Joint();
+    this->jointReference = NULL;
     this->listPositions = new QList<Position*>();
     for(int i = 0 ; i < jointMvt.listPositions->size() ; i++)
 	this->listPositions->append(new Position(*jointMvt.listPositions->at(i)));
@@ -24,7 +24,7 @@ JointMvt::JointMvt(const quint32 &idJointRef)
 {
     this->idJointMvt = ++idJointMvtStatic;
     this->idJointRef = idJointRef;
-    this->jointReference = new Joint();
+    this->jointReference = NULL;
     this->listPositions = new QList<Position*>();
 }
 

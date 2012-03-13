@@ -5,7 +5,7 @@ ServerOSC::ServerOSC()
     this->listJoints = new QList<Joint*>();
     this->recording = false;
     this->setRunnable(false);
-
+    size1,size2,size3,size4,size5,size6,size7,size8,size9,size10 = false;
 }
 
 ServerOSC::ServerOSC(const quint16 &portNb, const bool &active) : Port(portNb, active){
@@ -13,7 +13,7 @@ ServerOSC::ServerOSC(const quint16 &portNb, const bool &active) : Port(portNb, a
     this->nameElement = QString(portNb);
     this->recording = false;
     this->setRunnable(false);
-
+    size1,size2,size3,size4,size5,size6,size7,size8,size9,size10 = false;
 }
 
 const char* ServerOSC::className() {
@@ -69,101 +69,103 @@ void ServerOSC::fillBuffers(){
     //qDebug()<< "CACA ANALYSE "<< endl;
 
     if (socket->receiveNextPacket()) {
-
         reader->init(socket->packetData(), socket->packetSize());
         while (reader->isOk() && (message = reader->popMessage()) != 0 && runnable) {
-
-            launchAnalyze = false;
-            /** track joints
-       * repere : body
-       * Donnees : x, y, z
-       **/
+	    launchAnalyze = false;
+	    /** track joints
+	      * repere : body
+	      * Donnees : x, y, z
+	      **/
             if (message->match("/righthand_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
                 //chercher le joint correspondant dans la liste de tous les joints
-                launchAnalyze = true; // on lancera l'analyse a la fin ...
-                for (int i=0; i<this->listJoints->size(); i++){
+		launchAnalyze = true; // on lancera l'analyse a la fin ...
+		for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "righthand"){
 			this->listJoints->at(i)->addPosition(x,y,z);
+			size1 = true;
                     }
                 }
             }
             else if (message->match("/lefthand_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                launchAnalyze = true; // on lancera l'analyse a la fin ...
-                for (int i=0; i<this->listJoints->size(); i++){
+		launchAnalyze = true; // on lancera l'analyse a la fin ...
+		for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "lefthand"){
 			this->listJoints->at(i)->addPosition(x,y,z);
-                        //qDebug() << "Last buffer Joint lefthand : " << listJoints->at(i)->getBufferPositions()->last()->getX() << endl;
-                        /*
-   for(int k=0; k<listMovements->size();k++) { // chaque Mvt
-       for (int j=0;j<listMovements->at(k)->getListJointsMvt()->size();j++) { // chaque JointMvt
-    if (listMovements->at(k)->getListJointsMvt()->at(j)->getJointRef()->getNom() == "lefthand")
-        qDebug() << "Last buffer JointRef : " << listMovements->at(k)->getListJointsMvt()->at(j)->getJointRef()->getBufferPositions()->last()->getX() << endl;
-       }
-   }
-   */
+			//qDebug() << y << endl;
+			//qDebug() << "REMPLISSAGE LEFTHAND last y " << this->listJoints->at(i)->getBufferPositions()->last()->getY() << endl;
+			//qDebug() << "REMPLISSAGE LEFTHAND first y " << this->listJoints->at(i)->getBufferPositions()->first()->getY() << endl;
+			size2 = true;
                     }
                 }
             }
             else if (message->match("/rightelbow_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                launchAnalyze = true; // on lancera l'analyse a la fin ...
-                for (int i=0; i<this->listJoints->size(); i++){
+		launchAnalyze = true; // on lancera l'analyse a la fin ...
+		for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "rightelbow"){
 			this->listJoints->at(i)->addPosition(x,y,z);
+			size3 = true;
                     }
                 }
             }
             else if (message->match("/leftelbow_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                launchAnalyze = true; // on lancera l'analyse a la fin ...
-                for (int i=0; i<this->listJoints->size(); i++){
+		launchAnalyze = true; // on lancera l'analyse a la fin ...
+		for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "leftelbow"){
 			this->listJoints->at(i)->addPosition(x,y,z);
+			size4 = true;
                     }
                 }
             }
             else if (message->match("/rightfoot_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                launchAnalyze = true; // on lancera l'analyse a la fin ...
-                for (int i=0; i<this->listJoints->size(); i++){
+		launchAnalyze = true; // on lancera l'analyse a la fin ...
+		for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "rightfoot"){
 			this->listJoints->at(i)->addPosition(x,y,z);
+			size5 = true;
                     }
                 }
             }
             else if (message->match("/leftfoot_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                launchAnalyze = true; // on lancera l'analyse a la fin ...
-                for (int i=0; i<this->listJoints->size(); i++){
+		launchAnalyze = true; // on lancera l'analyse a la fin ...
+		for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "leftfoot"){
 			this->listJoints->at(i)->addPosition(x,y,z);
+			size6 = true;
                     }
                 }
             }
             else if (message->match("/rightknee_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                launchAnalyze = true; // on lancera l'analyse a la fin ...
-                for (int i=0; i<this->listJoints->size(); i++){
+		launchAnalyze = true; // on lancera l'analyse a la fin ...
+		for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "rightknee"){
 			this->listJoints->at(i)->addPosition(x,y,z);
+			size7 = true;
                     }
                 }
             }
             else if (message->match("/leftknee_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                launchAnalyze = true; // on lancera l'analyse a la fin ...
-                for (int i=0; i<this->listJoints->size(); i++){
+		launchAnalyze = true; // on lancera l'analyse a la fin ...
+		for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "leftknee")
 			this->listJoints->at(i)->addPosition(x,y,z);
+			size8 = true;
                 }
             }
             else if (message->match("/head_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                launchAnalyze = true; // on lancera l'analyse a la fin ...
-                for (int i=0; i<this->listJoints->size(); i++){
+		launchAnalyze = true; // on lancera l'analyse a la fin ...
+		for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "head"){
 			this->listJoints->at(i)->addPosition(x,y,z);
+			size9 = true;
                     }
                 }
             }
             else if (message->match("/torso_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
-                launchAnalyze = true; // on lancera l'analyse a la fin ...
-                for (int i=0; i<this->listJoints->size(); i++){
+		launchAnalyze = true; // on lancera l'analyse a la fin ...
+		for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "torso"){
 			this->listJoints->at(i)->addPosition(x,y,z);
+			size10 =  true;
                     }
                 }
             }
@@ -175,14 +177,18 @@ void ServerOSC::fillBuffers(){
                 //qDebug() << "Server Error : unknown type of data " << endl;
             }
 
-            //lancer l'analyse
-            if(launchAnalyze && allBuffersSameSize()) {
-                this->analyse->calculBITG(this->listMovements);
-            }else{
 
-             //qDebug()<< "ON SORT DU FILL ! "<< endl;
-            }
-        }
+	    //lancer l'analyse
+	    if(launchAnalyze && allBuffersSameSize()) {
+		if(size1*size2*size3*size4*size5*size6*size7*size8*size9*size10 == true) {
+		    //qDebug() << "début analyse" << endl;
+		    this->analyse->calculBITG(this->listMovements);
+		    size1,size2,size3,size4,size5,size6,size7,size8,size9,size10 = false;
+		}
+	    }else{
+	     //qDebug()<< "ON SORT DU FILL ! "<< endl;
+	    }
+	}
     }
 
 
@@ -215,100 +221,80 @@ void ServerOSC::record(){
                     //chercher le joint correspondant dans le mouvement
 		    for (int i=0; i<listJointsMvt->size(); i++){
 			if(listJointsMvt->at(i)->getJointRef()->getNom() == "lefthand")
-                        {
-			    if(listJointsMvt->at(i)->getListPositions()->isEmpty())
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
-                            else
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
+			{
+			    listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/righthand_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
 		    for (int i=0; i<listJointsMvt->size(); i++){
-			if(listJointsMvt->at(i)->getJointRef()->getNom() == "righthand"){
-			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
-                            else
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "righthand")
+			{
+			    listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/rightelbow_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
 		    for (int i=0; i<listJointsMvt->size(); i++){
-			if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightelbow"){
-			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
-                            else
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightelbow")
+			{
+			    listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/leftelbow_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
 		    for (int i=0; i<listJointsMvt->size(); i++){
-			if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftelbow"){
-			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
-                            else
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftelbow")
+			{
+			    listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/rightfoot_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
 		    for (int i=0; i<listJointsMvt->size(); i++){
-			if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightfoot"){
-			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
-                            else
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightfoot")
+			{
+			    listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/leftfoot_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
 		    for (int i=0; i<listJointsMvt->size(); i++){
-			if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftfoot"){
-			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
-                            else
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftfoot")
+			{
+			    listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/rightknee_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
 		    for (int i=0; i<listJointsMvt->size(); i++){
-			if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightknee"){
-			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
-                            else
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "rightknee")
+			{
+			    listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/leftknee_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
 		    for (int i=0; i<listJointsMvt->size(); i++){
 			if(listJointsMvt->at(i)->getJointRef()->getNom() == "leftknee")
-			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
-                            else
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
-                    }
+			{
+			    listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
+			}
+		    }
                 }
                 else if (message->match("/head_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
 		    for (int i=0; i<listJointsMvt->size(); i++){
-			if(listJointsMvt->at(i)->getJointRef()->getNom() == "head"){
-			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
-                            else
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "head")
+			{
+			    listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
                 else if (message->match("/torso_pos_body").popFloat(x).popFloat(y).popFloat(z).isOkNoMoreArgs()) {
 		    for (int i=0; i<listJointsMvt->size(); i++){
-			if(listJointsMvt->at(i)->getJointRef()->getNom() == "torso"){
-			    if(listJointsMvt->at(i)->getListPositions()->size()>0)
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
-                            else
-				listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
+			if(listJointsMvt->at(i)->getJointRef()->getNom() == "torso")
+			{
+			    listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
                         }
                     }
                 }
