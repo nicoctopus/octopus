@@ -13,7 +13,7 @@ class Diamond : public QGraphicsPolygonItem
 
     enum { Type = UserType + 2 };
 public:
-    Diamond(quint16 x, quint16 y, QColor* color, QGraphicsScene *scene, ClientOSC *port, BlackBoard* blackboard);
+    Diamond(qint16 x, qint16 y, QColor* color, QGraphicsScene *scene, ClientOSC *port, BlackBoard* blackboard);
     ~Diamond();
     ClientOSC* getPort();
     int type() const

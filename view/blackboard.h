@@ -46,6 +46,7 @@ signals:
     void remove(SampleAudio *sampleAudio);
     void remove(ClientOSC *clientOSC);
     void visualisation(Movement *movement);
+    void sigDisplayInfos(QGraphicsItem* item);
 
 public slots:
     void refresh();
@@ -80,7 +81,8 @@ private:
     QGraphicsItem* movingItem;
     int timerId;
     QPointF CurrentCenterPoint;
-    bool ctrlPressed;
+    bool aPressed;
+    bool needToLink;
 
     //Menu clique droit
     QAction *actionRemove;

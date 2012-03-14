@@ -57,10 +57,10 @@ QVariant Triangle::itemChange(GraphicsItemChange change, const QVariant &value)
      return QGraphicsItem::itemChange(change, value);
  }
 
- /*void Triangle::mousePressEvent(QGraphicsSceneMouseEvent *event)
+ void Triangle::mousePressEvent(QGraphicsSceneMouseEvent *event)
  {
-    this->setSelected(true);
-     blackboard->liaison(this);
+    // this->setSelected(true);
+     //blackboard->liaison(this);
      //qDebug()<<"PRESS "<< this->sampleAudio->getPosXBlackBoard() << this->sampleAudio->getPosYBlackBoard() << endl;
      update();
      QGraphicsItem::mousePressEvent(event);
@@ -70,7 +70,7 @@ QVariant Triangle::itemChange(GraphicsItemChange change, const QVariant &value)
  {
      update();
      QGraphicsItem::mouseReleaseEvent(event);
- }*/
+ }
 
  void Triangle::setListLines(QGraphicsLineItem* line){
      listLines.append(line);
