@@ -321,8 +321,8 @@ void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
 	    menu.addAction(this->actionVisualisation);
 	    menu.addAction(this->actionLier);
 	    menu.addAction(this->actionEnleverBlackboard);
-            menu.exec(event->globalPos());
-            return;
+	    menu.exec(event->globalPos());
+	    return;
 	}
     }
     for(int i = 0 ; i < this->listDiamond.size() ; i++)
@@ -336,7 +336,7 @@ void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
 	    QMenu menu(this);
 	    menu.addAction(this->actionRemove);
 	    menu.addAction(this->actionEnleverBlackboard);
-            menu.exec(event->globalPos());
+	    menu.exec(event->globalPos());
 	    return;
 	}
     }
@@ -352,7 +352,7 @@ void BlackBoard::contextMenuEvent(QContextMenuEvent *event)
 	    QMenu menu(this);
 	    menu.addAction(this->actionRemove);
 	    menu.addAction(this->actionEnleverBlackboard);
-            menu.exec(event->globalPos());
+	    menu.exec(event->globalPos());
 	    return;
 	}
     }
@@ -491,7 +491,6 @@ void BlackBoard::slotEnleverBlackboard()
 	}
 }
 
-
 void BlackBoard::liaison()
 {
     //qDebug() << "------------------";
@@ -539,8 +538,6 @@ void BlackBoard::liaison()
     }
 
 }
-
-
 
 
 // -----------------------------------------------------------

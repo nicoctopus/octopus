@@ -42,6 +42,7 @@ private :
     Movement *movement; //movement pout le record
     bool recording;
     Analyse *analyse; //objet Analyse pour analyser en mode record
+    bool size1,size2,size3,size4,size5,size6,size7,size8,size9,size10;
 };
 
 #endif // SERVEROSC_H

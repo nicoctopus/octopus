@@ -62,8 +62,9 @@ protected :
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
     void timerEvent(QTimerEvent *event);
-  //  virtual void wheelEvent(QWheelEvent* event);
-  //  virtual void resizeEvent(QResizeEvent* event);
+
+    //virtual void wheelEvent(QWheelEvent* event);
+    //virtual void resizeEvent(QResizeEvent* event);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
 

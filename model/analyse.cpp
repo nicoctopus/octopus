@@ -19,7 +19,6 @@ Analyse::Analyse(float pourc,float seuil)
 }
 
 void Analyse::calculBITG(QList<Movement*>* mouv){
-    //qDebug() << mouv->at(0)->getListJointsMvt()->at(0)->getJointRef()->getBufferPositions()->size() << endl;
     qint32 tailleBuffer = SIZE_MAX_BUFFERS;
 
     QList<Position*>* EnregistrementVite = new QList<Position*>();
@@ -47,8 +46,8 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
     quint16 PasVitesse=0;
     quint16 PasDecalage=0;
 
-    //qDebug()<< "Taille liste mouv : " << mouv->size()<<endl;
-
+    //qDebug() << "analyse last X " << mouv->at(0)->getListJointsMvt()->at(0)->getJointRef()->getBufferPositions()->last()->getY() << endl;
+    //qDebug() << "analyse first X " << mouv->at(0)->getListJointsMvt()->at(0)->getJointRef()->getBufferPositions()->first()->getY() << endl;
 
     //Parcourir tous les mouvements
     for(int m=0;m<mouv->size();m++){ //MEM OK//
@@ -56,128 +55,119 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
 
 
 	TempsEnregistrement = mouv->at(m)->getListJointsMvt()->at(0)->getListPositions()->size(); //taille originale du mouvement
-        TempsRallonge = TempsEnregistrement + TempsEnregistrement*seuilFrequence; //augmentation de la frequence : borne sup.
-        TempsReduit = TempsEnregistrement - TempsEnregistrement*seuilFrequence; //diminution de la frequence : borne inf.
+	TempsRallonge = TempsEnregistrement + TempsEnregistrement*seuilFrequence; //augmentation de la frequence : borne sup.
+	TempsReduit = TempsEnregistrement - TempsEnregistrement*seuilFrequence; //diminution de la frequence : borne inf.
 
 
-        PasVitesse = TempsEnregistrement*(seuilFrequence/10);
-        if(PasVitesse<1){
-            PasVitesse = TempsEnregistrement*(seuilFrequence/10)+1;
-        }
+	PasVitesse = TempsEnregistrement*(seuilFrequence/10);
+	if(PasVitesse<1){
+	    PasVitesse = TempsEnregistrement*(seuilFrequence/10)+1;
+	}
 
-        PasDecalage = PasVitesse;
+	PasDecalage = PasVitesse;
 
-        /**
-          * Boucle pour modifier la frequence :
-          * On va de borne inf. a borne sup. en incrementant de PasVitesse
-          */
+	/**
+	  * Boucle pour modifier la frequence :
+	  * On va de borne inf. a borne sup. en incrementant de PasVitesse
+	  */
 	tailleBuffer = mouv->at(m)->getListJointsMvt()->at(0)->getJointRef()->getBufferPositions()->size();
-        for(tailleCourante =TempsReduit; tailleCourante<=TempsRallonge; tailleCourante+=PasVitesse){ //MEM OK//
-            //le mouvement en cours d'analyse "rentre" dans le buffer
-            if(tailleBuffer-tailleCourante>=0){
-                variation= tailleBuffer-tailleCourante;
+	for(tailleCourante =TempsReduit; tailleCourante<=TempsRallonge; tailleCourante+=PasVitesse){ //MEM OK//
+	    //le mouvement en cours d'analyse "rentre" dans le buffer
+	    if(tailleBuffer-tailleCourante>=0){
+		variation= tailleBuffer-tailleCourante;
 
-                /**
-                  * Decaler le mouvement sur le buffer
-                  */
-                for(indiceDepart=0; indiceDepart<=variation; indiceDepart+=PasDecalage){
-                    /**
-                      * Parcourir tous les JointsMouvement du mouvement courant
-                      */
+		/**
+		  * Decaler le mouvement sur le buffer
+		  */
+		for(indiceDepart=0; indiceDepart<=variation; indiceDepart+=PasDecalage){
+		    /**
+		      * Parcourir tous les JointsMouvement du mouvement courant
+		      */
 		    for(int jt=0;jt<mouv->at(m)->getListJointsMvt()->size();jt++){
 
-                        // copier le mouvement avec une nouvelle taille (tailleCourante)
+			// copier le mouvement avec une nouvelle taille (tailleCourante)
 			modifFreq(mouv->at(m)->getListJointsMvt()->at(jt)->getListPositions(), tailleCourante, EnregistrementVite); //MEM OK//
 
 			if(EnregistrementVite->size()<=150){
-                            nbEcarts=10;
+			    nbEcarts=10;
 
 			}else if(EnregistrementVite->size()>150){
-                            nbEcarts=10;
-                        }
+			    nbEcarts=10;
+			}
 
-                        /**
-                          * Difference d'amplitude
-                          */
+			/**
+			  * Difference d'amplitude
+			  */
 
-                        for(int r=indiceDepart; r<indiceDepart+tailleCourante; r+=nbEcarts){
-                            //si le pivot suivant est accessible
+			for(int r=indiceDepart; r<indiceDepart+tailleCourante; r+=nbEcarts){
+			    //si le pivot suivant est accessible
 			    if((r-indiceDepart)%nbEcarts==0 && (r-indiceDepart+nbEcarts < EnregistrementVite->size())){
 
 				Position* posEcartEnr = new Position();
 				Position* posEcartBuf = new Position();
 				ListEcartEnr->append(EnregistrementVite->at(r-indiceDepart)->ecartPivot(EnregistrementVite->at(r-indiceDepart+nbEcarts), posEcartEnr));
 				ListEcartBuf->append(mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->ecartPivot(mouv->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r+nbEcarts), posEcartBuf));
-                            }
-                        }
+			    }
+			}
 
-                        //calculer la moyenne des ecarts du joint courant
+			//calculer la moyenne des ecarts du joint courant
 
 			moyenneGenerale += ecartRelatif(ListEcartEnr, ListEcartBuf);
 
-                        //si le jointMvt courant est le dernier du mouvement
+			//si le jointMvt courant est le dernier du mouvement
 			if(jt==mouv->at(m)->getListJointsMvt()->size()-1){
-
-                            //qDebug()<<mouv->at(m)->getListJointsMvt()->size()<<endl;
 			    moyenneGenerale /= mouv->at(m)->getListJointsMvt()->size();
-                            moyenneGenerale *= 100;
-                            if(moyenneGenerale< 60){
-                            qDebug() <<"Moyenne General : "<< moyenneGenerale<< " % "<<endl<<endl;
-                            }
-                            //le seuil de tolerance est respecte = le mouvement est correct
-                            if(moyenneGenerale < seuilAmplitude ){
-				qDebug()<< "Mouvement en cours d'Analyse : "<< mouv->at(m)->getName()<<endl;
-                                qDebug() << "CORRESPONDANCE OK !" << endl;
-                                qDebug() << "MOYENNE G !" <<moyenneGenerale <<endl;
+			    moyenneGenerale *= 100;
+			    /*if(moyenneGenerale< 60){
+				qDebug() <<"Moyenne General : "<< moyenneGenerale<< " % "<<endl<<endl;
+			    }*/
+			    //le seuil de tolerance est respecte = le mouvement est correct
+			    if(moyenneGenerale < seuilAmplitude ){
+				qDebug()<< "   Mouvement en cours d'Analyse : "<< mouv->at(m)->getName()<<endl;
+				qDebug() << "   CORRESPONDANCE OK !" << endl;
+				qDebug() << "   MOYENNE G !" <<moyenneGenerale <<endl;
 
-                                //qDebug() << "MOYENNE G temp!" <<moyenneGtemp <<endl;
-                                //if(moyenneG<moyenneGtemp){
-                                //    moyenneGtemp = moyenneG;
-                                //}else{
+				//qDebug() << "MOYENNE G temp!" <<moyenneGtemp <<endl;
+				//if(moyenneG<moyenneGtemp){
+				//    moyenneGtemp = moyenneG;
+				//}else{
 
 
-                                //    if(T<TempsEnregistrement){
-                                //        decal=TempsEnregistrement-T;
-                                //        decal=decal/2;
-                                //    }
+				//    if(T<TempsEnregistrement){
+				//        decal=TempsEnregistrement-T;
+				//        decal=decal/2;
+				//    }
 
-                                //mettre le buffer du jointReference a 0
-                                //for(int s=t-decal; s<t+T+decal; s++){
-                                //remettre a 0 les cases du buffer de chaque joint du mouvement valide
+				//mettre le buffer du jointReference a 0
+				//for(int s=t-decal; s<t+T+decal; s++){
+				//remettre a 0 les cases du buffer de chaque joint du mouvement valide
 				for(int w=0; w<mouv->at(m)->getListJointsMvt()->size();w++){
-				   //for(int s=indiceDepart; s<indiceDepart+tailleCourante; s++){
-				    for(int z = 0 ; z < mouv->at(m)->getListJointsMvt()->at(w)->getJointRef()->getBufferPositions()->size() ; z++)
-					delete mouv->at(m)->getListJointsMvt()->at(w)->getJointRef()->getBufferPositions()->at(z);
-				    mouv->at(m)->getListJointsMvt()->at(w)->getJointRef()->getBufferPositions()->clear();
-					/*mouv->at(m)->getListJointsMvt()->at(w)->getJointRef()->getBufferPositions()->at(s)->setX(0);
-					mouv->at(m)->getListJointsMvt()->at(w)->getJointRef()->getBufferPositions()->at(s)->setY(0);
-					mouv->at(m)->getListJointsMvt()->at(w)->getJointRef()->getBufferPositions()->at(s)->setZ(0);
-*/
-				 //   }
-                                }
-                                qDebug() << "CORRESPONDANCE VRAIMENT OK :) !" << endl;
-                                qDebug() << "Nom du Mouv : " << mouv->at(m)->getName() << endl;
-                                qDebug()<< "Nom du Sample : "<< mouv->at(m)->getSampleAudio()->getName()<< endl;
+				    for(int s=indiceDepart; s<indiceDepart+tailleCourante; s++){
+					for(int z = 0 ; z < mouv->at(m)->getListJointsMvt()->at(w)->getJointRef()->getBufferPositions()->size() ; z++) {
+					    mouv->at(m)->getListJointsMvt()->at(w)->getJointRef()->getBufferPositions()->at(s)->setX(0);
+					    mouv->at(m)->getListJointsMvt()->at(w)->getJointRef()->getBufferPositions()->at(s)->setY(0);
+					    mouv->at(m)->getListJointsMvt()->at(w)->getJointRef()->getBufferPositions()->at(s)->setZ(0);
+					}
+				    }
+				}
+				qDebug() << "   Nom du Mouv : " << mouv->at(m)->getName() << endl;
+				qDebug()<< "   Nom du Sample : "<< mouv->at(m)->getSampleAudio()->getName()<< endl;
 
 
 				//this->playerlive->play(mouv->at(m)->getSampleAudio());
 
-                                //sleep(2);
-                                //p->Stop();
-                                //sleep(1);
-				  //exit(-1);
+				//sleep(2);
+				//p->Stop();
+				//sleep(1);
+				//exit(-1);
 
-				for(int i=0; i<ListEcartEnr->size(); i++) {
+				/**
+				  *On détruit les pointeurs et on nettoie les listes
+				  **/
+				for(int i=0; i<ListEcartEnr->size(); i++)
 				    delete ListEcartEnr->at(i);
-
-				    //ListEcartEnr.at(i) = NULL;
-				}
-
-				for(int i=0; i<ListEcartBuf->size(); i++) {
+				for(int i=0; i<ListEcartBuf->size(); i++)
 				    delete ListEcartBuf->at(i);
-
-				    //ListEcartBuf.at(i) = NULL;
-				}
 				ListEcartEnr->clear();
 				ListEcartBuf->clear();
 				EnregistrementVite->clear();
@@ -185,49 +175,35 @@ void Analyse::calculBITG(QList<Movement*>* mouv){
 				delete ListEcartEnr;
 				delete ListEcartBuf;
 				delete EnregistrementVite;
+				moyenneGenerale=0;
 
 				return;
-                                //}
-                            }
-                        }
-
-
-
-
-                        /**
-                          * Detruire le contenu des tableaux temporaires
-                          */
-
-
-
-			for(int i=0; i<ListEcartEnr->size(); i++) {
-			    delete ListEcartEnr->at(i);
-
-                            //ListEcartEnr.at(i) = NULL;
-                        }
-
-			for(int i=0; i<ListEcartBuf->size(); i++) {
-			    delete ListEcartBuf->at(i);
-
-                            //ListEcartBuf.at(i) = NULL;
+			    }
 			}
+
+			/**
+			  * Detruire le contenu des tableaux temporaires
+			  */
+
+			for(int i=0; i<ListEcartEnr->size(); i++)
+			    delete ListEcartEnr->at(i);
+			for(int i=0; i<ListEcartBuf->size(); i++)
+			    delete ListEcartBuf->at(i);
 			ListEcartEnr->clear();
 			ListEcartBuf->clear();
 			EnregistrementVite->clear();
-
-
-                    }
-
-                    moyenneGenerale=0;
-                }
-            }
-        }
+		    }
+		    moyenneGenerale=0;
+		}
+	    }
+	}
     }
 
     delete ListEcartEnr;
     delete ListEcartBuf;
     delete EnregistrementVite;
 
+    //qDebug() << "FIN ANALYSE" << endl;
 
 }
 
@@ -238,10 +214,10 @@ qint8 Analyse::NbPivots(QList<Position *> * enr){
 
     if(enr->size()<=150){
 
-        return 10;
+	return 10;
     }else if(enr->size()>150){
 
-        return 20;
+	return 20;
     }
 
 
@@ -253,38 +229,38 @@ qint8 Analyse::NbPivots(QList<Position *> * enr){
 float Analyse::ecartRelatif(QList<Position*>* ListEnr, QList<Position*>* ListBuf){
     if(ListEnr->size()==ListBuf->size()){
 
-        float ecartX=0;
-        float ecartY=0;
-        float ecartZ=0;
-        float ecartG=0;
+	float ecartX=0;
+	float ecartY=0;
+	float ecartZ=0;
+	float ecartG=0;
 
 	for(int i=0; i<ListEnr->size();i++){
 
 	    ecartX=abs(ListEnr->at(i)->getX()-ListBuf->at(i)->getX());
 	    // qDebug() << "ecart relatif x " << ListEnr->at(i)->getX() << "-" << ListBuf->at(i)->getX() << "/" << ListEnr->at(i)->getX() << endl;
 	    ecartX= ecartX / abs(ListEnr->at(i)->getX());
-            //qDebug() << ecartX << endl;
+	    //qDebug() << ecartX << endl;
 
 	    ecartY=abs(ListEnr->at(i)->getY()-ListBuf->at(i)->getY());
 	    // qDebug() << "ecart relatif y " << ListEnr->at(i)->getY() << "-" << ListBuf->at(i)->getY() << "/" << ListEnr->at(i)->getY() << endl;
 	    ecartY= ecartY / abs(ListEnr->at(i)->getY());
-            //qDebug() << ecartY << endl;
+	    //qDebug() << ecartY << endl;
 
 	    ecartZ=abs(ListEnr->at(i)->getZ()-ListBuf->at(i)->getZ());
 	    //qDebug() << "ecart relatif z " << ListEnr->at(i)->getZ() << "-" << ListBuf->at(i)->getZ() << "/" << ListEnr->at(i)->getZ() << endl;
 	    ecartZ= ecartZ / abs(ListEnr->at(i)->getZ());
-            //qDebug() << ecartZ << endl;
+	    //qDebug() << ecartZ << endl;
 
-            ecartG += (ecartX + ecartY + ecartZ)/3;
+	    ecartG += (ecartX + ecartY + ecartZ)/3;
 
 
-        }
+	}
 
 
 	ecartG = ecartG/ListEnr->size();
-        //qDebug() << "ecart g " << ecartX << endl;
+	//qDebug() << "ecart g " << ecartX << endl;
 
-        return ecartG;
+	return ecartG;
 
     }else{
 	return 200.0;
@@ -303,49 +279,49 @@ void Analyse::modifFreq(QList<Position*>* listPositionsJointMvt, int T, QList<Po
     if(listPositionsJointMvt->size()!=T){
 	j= (listPositionsJointMvt->size())/(abs(listPositionsJointMvt->size()-T));
 	reste = (listPositionsJointMvt->size()/j)-abs((listPositionsJointMvt->size()-T));
-        k=j;
-        j=j-1;
+	k=j;
+	j=j-1;
     }
 
     // Agrandir le jointMvt
     if(T >= listPositionsJointMvt->size() ){
-        //parcourir les positions du jointMvt
+	//parcourir les positions du jointMvt
 	for(int i=0; i<listPositionsJointMvt->size(); i++){
-            if(i==j && j!=0){
+	    if(i==j && j!=0){
 		newPositionsJointMvt->append(moyenne(listPositionsJointMvt->at(i-1), listPositionsJointMvt->at(i)));
 		newPositionsJointMvt->append(listPositionsJointMvt->at(i));
-                j=j+k;
-            }else{
+		j=j+k;
+	    }else{
 
 		newPositionsJointMvt->append(listPositionsJointMvt->at(i));
-            }
+	    }
 
-        }
-        //Si y'a des cases en trop, on a supprime aleatoirement
-        if(reste!=0){
-            for(int i=0; i<reste;i++){
+	}
+	//Si y'a des cases en trop, on a supprime aleatoirement
+	if(reste!=0){
+	    for(int i=0; i<reste;i++){
 		newPositionsJointMvt->removeAt(rand()%(T-reste));
-            }
-        }
+	    }
+	}
 
     }
     // Retrecir le jointMvt
     else{
-        //parcourir les positions du jointMvt
+	//parcourir les positions du jointMvt
 	for(int i=0; i<listPositionsJointMvt->size(); i++){
-            if(i==j){
-                j=j+k;
-            }else{
+	    if(i==j){
+		j=j+k;
+	    }else{
 		newPositionsJointMvt->append(listPositionsJointMvt->at(i));
-            }
-        }
-        if(reste!=0){
-            int random;
-            for(int i=0; i<reste;i++){
-                random = rand()%(T-1)+1;
+	    }
+	}
+	if(reste!=0){
+	    int random;
+	    for(int i=0; i<reste;i++){
+		random = rand()%(T-1)+1;
 		newPositionsJointMvt->insert(random,moyenne(listPositionsJointMvt->at(random-1), listPositionsJointMvt->at(random)));
-            }
-        }
+	    }
+	}
     }
 
     //qDebug() << "Taille nouveau : "<< Temp.size() <<endl<<endl;
@@ -360,7 +336,7 @@ Position* Analyse::moyenne(Position const* p1, Position const* p2)
 		(p1->getA() + p2->getA()) /2,
 		(p1->getB() + p2->getB()) /2,
 		(p1->getC() + p2->getC()) /2
-                );
+		);
 }
 
 
