@@ -5,9 +5,14 @@
 #include <QWidget>
 #include "position.h"
 #include <QMetaType>
+#include <QObject>
 
-class Joint
+class Joint : public QObject
 {
+    Q_OBJECT
+signals:
+    void sigNewPosAddedToBuffer(QString,int,int,int);
+
 public:
     Joint();
     Joint(const Joint &joint);
@@ -25,6 +30,8 @@ public:
     void addPosition(const float &x, const float &y, const float &z);
 
     static quint32 idJointStatic;
+
+
 
 private:
     quint16 id;

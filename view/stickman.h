@@ -34,20 +34,14 @@ class StickMan : public QGraphicsView
 
     signals:
         void clearStickMan();
-
-
-
+        void sigMoveNode(QString,int,int,int);
 
     private:
         QMap<QString, QPoint> coord;
         QList<MyQLine*> lines;
         QList<JointGraphic*> nodes;
         QList<JointGraphic*> nodesSelected;
-
         QMap<QString, QList<MyQLine*> > linesLinkedAtThisNode;
-
-
-
         float RESIZE;
 
 

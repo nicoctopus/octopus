@@ -14,7 +14,6 @@ StickMan::StickMan(QWidget *parent) : QGraphicsView (parent)
 
     QGraphicsScene *scene = new QGraphicsScene();
     this->setScene(scene);
-
     this->createStickMan();
 
     QRectF sizeScene = this->scene()->sceneRect();
@@ -32,7 +31,9 @@ void StickMan::slotMoveStickMan(Movement* movement){
     threadForStickManMoving->start();
 }
 
+
 void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
+
     for(int i=0;i<nodes.size();++i){
 	//qDebug() << nodes.size() << endl;
 	//qDebug() << nodes.at(i)->getName() << endl;

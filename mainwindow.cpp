@@ -10,6 +10,10 @@ bool isLive = false;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+    this->setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+    this->setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+    setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
     this->controller = new Controller();
     this->timer = new QTimer(this);
     connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLCDTimer()));
@@ -56,6 +60,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     this->initBlackBoard();
     this->initTreeView();
+
+    //CONNECTS POUR STICKMAN LIVE
+    for(int i=0;i<this->controller->getManagerJoints()->getListJoints()->size();i++){
+        connect(this->controller->getManagerJoints()->getListJoints()->at(i),SIGNAL(sigNewPosAddedToBuffer(QString,int,int,int)),ui->stickManLive,SLOT(slotMoveNode(QString,int,int,int)));
+    }
+
 
 }
 
@@ -322,9 +332,6 @@ void MainWindow::slotDisplayInfos(QGraphicsItem* item)
             Diamond *diamond = (Diamond*)item;
             text = this->textDisplay(diamond->getPort());
         }
-        //ui->blackboard->setLastX(itemsSelected.at(0)->pos().x());
-        //ui->blackboard->setLastY(itemsSelected.at(0)->pos().y());
-        //qDebug() << "mainWindow" << endl;
 
         ui->textBrowser->setText(text);
 }
