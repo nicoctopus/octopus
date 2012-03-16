@@ -173,7 +173,7 @@ void Analyse::calculBITG(){
 		for(int jt=0;jt<this->listMovementToAnalyze->at(m)->getListJointsMvt()->size();jt++){
 
 		    // copier le mouvement avec une nouvelle taille (tailleCourante)
-		    modifFreq(this->listMovementToAnalyze->at(m)->getListJointsMvt()->at(jt)->getListPositions(), tailleCourante, EnregistrementVite); //MEM OK//
+		    modifFreq(this->listMovementToAnalyze->at(m)->getListJointsMvt()->at(jt)->getListPositions(), tailleCourante); //MEM OK//
 		    //sleep(1);
 		    nbEcarts=10;
 
@@ -194,7 +194,7 @@ void Analyse::calculBITG(){
 
 		    //calculer la moyenne des ecarts du joint courant
 
-		    moyenneGenerale += ecartRelatif(ListEcartEnr, ListEcartBuf);
+		    moyenneGenerale += ecartRelatif();
 
 		    //si le jointMvt courant est le dernier du mouvement
 		    if(jt==this->listMovementToAnalyze->at(m)->getListJointsMvt()->size()-1){
@@ -282,7 +282,12 @@ void Analyse::calculBITG(){
 	}
     }
 }
-//delete EnregistrementVite;
+
+   /* qDebug() << this->listMovementToAnalyze->size() << endl;
+    qDebug() << this->ListEcartBuf->size() << endl;
+    qDebug() << this->ListEcartEnr->size() << endl;
+    qDebug() << this->EnregistrementVite->size() << endl;*/
+
 
 //qDebug() << "FIN ANALYSE" << endl;
 
@@ -307,32 +312,31 @@ qint8 Analyse::NbPivots(QList<Position *> * enr){
 
 
 //calculer la difference entre un ecart du buffer et enregistre
-float Analyse::ecartRelatif(QList<Position*>* ListEnr, QList<Position*>* ListBuf){
+float Analyse::ecartRelatif(){
 
-    if(ListEnr->size()==ListBuf->size()){
+    if(this->ListEcartEnr->size()==ListEcartBuf->size()){
 
 	float ecartX=0;
 	float ecartY=0;
 	float ecartZ=0;
 	float ecartG=0;
-	int compteur = 0;
 	QList<float> listMoyenneEcartPivot;
 
-	for(int i=0; i<ListEnr->size();i++){
+	for(int i=0; i<this->ListEcartEnr->size();i++){
 
-	    ecartX=abs(ListEnr->at(i)->getX()-ListBuf->at(i)->getX());
+	    ecartX=abs(this->ListEcartEnr->at(i)->getX()-this->ListEcartBuf->at(i)->getX());
 	    // qDebug() << "ecart relatif x " << ListEnr->at(i)->getX() << "-" << ListBuf->at(i)->getX() << "/" << ListEnr->at(i)->getX() << endl;
-	    ecartX= ecartX / abs(ListEnr->at(i)->getX());
+	    ecartX= ecartX / abs(this->ListEcartEnr->at(i)->getX());
 	    //qDebug() << ecartX << endl;
 
-	    ecartY=abs(ListEnr->at(i)->getY()-ListBuf->at(i)->getY());
+	    ecartY=abs(this->ListEcartEnr->at(i)->getY()-this->ListEcartBuf->at(i)->getY());
 	    // qDebug() << "ecart relatif y " << ListEnr->at(i)->getY() << "-" << ListBuf->at(i)->getY() << "/" << ListEnr->at(i)->getY() << endl;
-	    ecartY= ecartY / abs(ListEnr->at(i)->getY());
+	    ecartY= ecartY / abs(this->ListEcartEnr->at(i)->getY());
 	    //qDebug() << ecartY << endl;
 
-	    ecartZ=abs(ListEnr->at(i)->getZ()-ListBuf->at(i)->getZ());
+	    ecartZ=abs(this->ListEcartEnr->at(i)->getZ()-this->ListEcartBuf->at(i)->getZ());
 	    //qDebug() << "ecart relatif z " << ListEnr->at(i)->getZ() << "-" << ListBuf->at(i)->getZ() << "/" << ListEnr->at(i)->getZ() << endl;
-	    ecartZ= ecartZ / abs(ListEnr->at(i)->getZ());
+	    ecartZ= ecartZ / abs(this->ListEcartEnr->at(i)->getZ());
 	    //qDebug() << ecartZ << endl;
 
 	    listMoyenneEcartPivot.append((ecartX + ecartY + ecartZ)/3);
@@ -392,7 +396,7 @@ float Analyse::ecartRelatif(QList<Position*>* ListEnr, QList<Position*>* ListBuf
 
 
 
-void Analyse::modifFreq(QList<Position*>* listPositionsJointMvt, int T, QList<Position*>* newPositionsJointMvt){
+void Analyse::modifFreq(QList<Position*>* listPositionsJointMvt, int T){
     int j=0;
     int k=0;
     int reste=0;
@@ -410,19 +414,19 @@ void Analyse::modifFreq(QList<Position*>* listPositionsJointMvt, int T, QList<Po
 	//parcourir les positions du jointMvt
 	for(int i=0; i<listPositionsJointMvt->size(); i++){
 	    if(i==j && j!=0){
-		newPositionsJointMvt->append(moyenne(listPositionsJointMvt->at(i-1), listPositionsJointMvt->at(i)));
-		newPositionsJointMvt->append(new Position(*listPositionsJointMvt->at(i)));
+		this->EnregistrementVite->append(moyenne(listPositionsJointMvt->at(i-1), listPositionsJointMvt->at(i)));
+		this->EnregistrementVite->append(new Position(*listPositionsJointMvt->at(i)));
 		j=j+k;
 	    }else{
 
-		newPositionsJointMvt->append(new Position(*listPositionsJointMvt->at(i)));
+		this->EnregistrementVite->append(new Position(*listPositionsJointMvt->at(i)));
 	    }
 
 	}
 	//Si y'a des cases en trop, on a supprime aleatoirement
 	if(reste!=0){
 	    for(int i=0; i<reste;i++){
-		newPositionsJointMvt->removeAt(rand()%(T-reste));
+		this->EnregistrementVite->removeAt(rand()%(T-reste));
 	    }
 	}
 
@@ -434,14 +438,14 @@ void Analyse::modifFreq(QList<Position*>* listPositionsJointMvt, int T, QList<Po
 	    if(i==j){
 		j=j+k;
 	    }else{
-		newPositionsJointMvt->append(new Position(*listPositionsJointMvt->at(i)));
+		this->EnregistrementVite->append(new Position(*listPositionsJointMvt->at(i)));
 	    }
 	}
 	if(reste!=0){
 	    int random;
 	    for(int i=0; i<reste;i++){
 		random = rand()%(T-1)+1;
-		newPositionsJointMvt->insert(random,moyenne(listPositionsJointMvt->at(random-1), listPositionsJointMvt->at(random)));
+		this->EnregistrementVite->insert(random,moyenne(listPositionsJointMvt->at(random-1), listPositionsJointMvt->at(random)));
 	    }
 	}
     }

@@ -23,10 +23,10 @@ private:
     QList<Position*>* EnregistrementVite;
     QList<Position*>* ListEcartEnr;
     QList<Position*>* ListEcartBuf;
-    void modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt, QList<Position*>* newList);
+    void modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt);
     Position* moyenne(Position const *p1, Position const *p2);
    // qint8 NbPivots(QList<Position*> *);
-    float ecartRelatif(QList<Position*>*, QList<Position*>*);
+    float ecartRelatif();
 
 public:
     Analyse();
