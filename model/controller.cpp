@@ -116,10 +116,10 @@ void Controller::analizeRecord()
 
     this->serveurOSC->setRunnable(true);
     this->serveurOSC->setRecording(false); //mode analyze
-    this->serveurOSC->setAnalyse();
     this->serveurOSC->setListJoints(managerJoints->getListJoints());
     this->managerElements->getManagerMovements()->sortMovementsByPositionSize();
     this->serveurOSC->setListMovements(managerElements->getManagerMovements()->getListMovementsActive());
+    this->serveurOSC->setAnalyse();
     this->serveurOSC->start();
 
     //CLIENT OSC
