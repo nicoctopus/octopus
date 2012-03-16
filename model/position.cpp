@@ -40,8 +40,9 @@ Position::Position (const Position &position)
 }
 
 
-Position* Position::ecartPivot(Position const *pos, Position *posEcart)
+Position* Position::ecartPivot(Position *pos, Position *posEcart)
 {
+    //qDebug() << "ECART PIVOT test" << pos->getX() << endl;
     posEcart->setX(this->x - pos->getX());
     if(posEcart->getX() == 0)
 	posEcart->setX(1);

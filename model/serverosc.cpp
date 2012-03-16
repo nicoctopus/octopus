@@ -83,6 +83,14 @@ void ServerOSC::fillBuffers(){
                     if(this->listJoints->at(i)->getNom() == "righthand"){
 			this->listJoints->at(i)->addPosition(x,y,z);
 			size1 = true;
+			//AFFICHAGE TAILLE BUFFER
+			/*if(this->listJoints->at(i)->getBufferPositions()->size() == 450)
+			{
+			    for(int j = 0 ; j< this->listJoints->at(i)->getBufferPositions()->size(); j++)
+				if(j%10 == 0)
+				    qDebug() << "buf " << j << ":" << this->listJoints->at(i)->getBufferPositions()->at(j)->getX();
+			    qDebug() << endl;
+			}*/
                     }
                 }
             }
@@ -121,6 +129,7 @@ void ServerOSC::fillBuffers(){
 		for (int i=0; i<this->listJoints->size(); i++){
                     if(this->listJoints->at(i)->getNom() == "rightfoot"){
 			this->listJoints->at(i)->addPosition(x,y,z);
+			//qDebug() << "size buffer :" << this->listJoints->at(i)->getBufferPositions()->size() << endl;
 			size5 = true;
                     }
                 }
@@ -181,7 +190,7 @@ void ServerOSC::fillBuffers(){
 	    //lancer l'analyse
 	    if(launchAnalyze && allBuffersSameSize()) {
 		if(size1*size2*size3*size4*size5*size6*size7*size8*size9*size10 == true) {
-		    //qDebug() << "début analyse" << endl;
+		    qDebug() << "début analyse" << endl;
 		    this->analyse->calculBITG(this->listMovements);
 		    size1,size2,size3,size4,size5,size6,size7,size8,size9,size10 = false;
 		}
@@ -231,6 +240,7 @@ void ServerOSC::record(){
 			if(listJointsMvt->at(i)->getJointRef()->getNom() == "righthand")
 			{
 			    listJointsMvt->at(i)->addPosition(new Position(x,y,z,0,0,0));
+
                         }
                     }
                 }
@@ -330,7 +340,7 @@ bool ServerOSC::isRecording() {
 }
 
 void ServerOSC::setAnalyse() {
-    this->analyse = new Analyse(0,60);
+    this->analyse = new Analyse(0,65); //vitesse, tx erreur
 }
 
 void ServerOSC::deleteAnalyse(){
