@@ -191,7 +191,7 @@ void ServerOSC::fillBuffers(){
 	    if(launchAnalyze && allBuffersSameSize()) {
 		if(size1*size2*size3*size4*size5*size6*size7*size8*size9*size10 == true) {
 		    qDebug() << "début analyse" << endl;
-		    this->analyse->calculBITG(this->listMovements);
+		    this->analyse->calculBITG();
 		    size1,size2,size3,size4,size5,size6,size7,size8,size9,size10 = false;
 		}
 	    }else{
@@ -340,7 +340,7 @@ bool ServerOSC::isRecording() {
 }
 
 void ServerOSC::setAnalyse() {
-    this->analyse = new Analyse(0,65); //vitesse, tx erreur
+    this->analyse = new Analyse(0,65, this->listMovements); //vitesse, tx erreur
 }
 
 void ServerOSC::deleteAnalyse(){

@@ -20,17 +20,18 @@ private:
     SoundPlayer *playerlive;
 
     QList<Movement*>*listMovementToAnalyze;
-    QList<Position*>* EnregistrementVite;
-    void modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt, QList<Position*>* newList);
+    QList<Position*>* ListEcartEnr;
+    QList<Position*>* ListEcartBuf;
+    //void modifFreq(QList<Position*>* listPositionsJointMvt, int sizeMvt);
     Position* moyenne(Position const *p1, Position const *p2);
    // qint8 NbPivots(QList<Position*> *);
-    float ecartRelatif(QList<Position*>*, QList<Position*>*);
+    float ecartRelatif();
 
 public:
     Analyse();
     ~Analyse();
-    Analyse(float,float);
-    void calculBITG(QList<Movement*>*);
+    Analyse(float,float, QList<Movement*>*);
+    void calculBITG();
 
 protected:
     void paintEvent(QPaintEvent *);
