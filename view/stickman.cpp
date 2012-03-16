@@ -1,5 +1,7 @@
 #include "stickman.h"
 #include <QDebug>
+#include <QTimer>
+
 
 
 qint32 WIDTH_JOINTS = 10;
@@ -15,13 +17,36 @@ StickMan::StickMan(QWidget *parent) : QGraphicsView (parent)
     QGraphicsScene *scene = new QGraphicsScene();
     this->setScene(scene);
     this->createStickMan();
-
+    this->isStickManLive = false;
     QRectF sizeScene = this->scene()->sceneRect();
     this->ensureVisible(sizeScene,500,500);
 
+    this->timer = new QTimer();
+    connect(timer, SIGNAL(timeout()), this, SLOT(slotTimeOutTimer()));
 
     connect(this, SIGNAL(clearStickMan()), this->scene(), SLOT(clear()));
 }
+
+void StickMan::setStickManLive(bool isStickManLive){
+    this->isStickManLive = isStickManLive;
+}
+
+void StickMan::launchTimerForDetection(){
+    this->timer->start(3000);
+    this->textDetected->setText("ARE YOU DETECTED?");
+}
+
+void StickMan::stopTimer(){
+    this->timer->stop();
+    this->textDetected->setText("");
+    this->reCreateStickMan();
+}
+
+void StickMan::slotTimeOutTimer(){
+    this->reCreateStickMan();
+    this->textDetected->setText("NOT DETECTED!");
+}
+
 //-----------------------------------------------------------
 void StickMan::slotMoveStickMan(Movement* movement){
     //Thread pour faire le faire bouger
@@ -33,6 +58,11 @@ void StickMan::slotMoveStickMan(Movement* movement){
 
 
 void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
+
+    if(this->isStickManLive==true){
+        this->timer->start(1000);
+        this->textDetected->setText("DETECTED");
+    }
 
     for(int i=0;i<nodes.size();++i){
 	//qDebug() << nodes.size() << endl;
@@ -50,6 +80,16 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
 	    else if(z>0) modifSize = -(z/20);
 	    //qDebug(QString(nameOfNodeToMove + " z:"+QString::number(z) + "  modifSize= " + QString::number(modifSize)).toAscii());
 	    nodes.at(i)->setRect(x/RESIZE-((WIDTH_JOINTS+modifSize)/2), y/RESIZE-((HEIGHT_JOINTS+modifSize)/2) , WIDTH_JOINTS+modifSize, HEIGHT_JOINTS+modifSize);
+
+            //Si c'est le torso (0,0) on le fait suivre la tete
+            if(nodes.at(i)->getName() == "head"){
+                this->headLastX = x;
+                this->headLastY = y;
+                this->headLastZwithModifSize = modifSize;
+            }
+            if(nodes.at(i)->getName() == "torso"){
+                nodes.at(i)->setRect(headLastX/RESIZE-((WIDTH_JOINTS+headLastZwithModifSize)/2), (headLastY+175)/RESIZE-((HEIGHT_JOINTS+headLastZwithModifSize)/2) , WIDTH_JOINTS+headLastZwithModifSize, HEIGHT_JOINTS+headLastZwithModifSize);
+            }
 
 	    // ==== DEPLACMENTS LIGNES =====
 
@@ -75,7 +115,12 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
 		    temp->setLastXb(x);
 		    temp->setLastYb(y);
 		}
+            /*    //Si les deux points ont pour nom FIXE c'est que c'est le bas ou le haut du corps on fait suivre le torso
+                if((temp->getNamePointA() == "FIXE") && (temp->getNamePointB() == "FIXE")){
+                    temp->getGraphicsLine()->setLine(temp->getLastXa()/RESIZE,temp->getLastYa()/RESIZE,x/RESIZE,y/RESIZE);
+                }*/
 	    }
+
 	}
     }
 }
@@ -91,6 +136,10 @@ void StickMan::slotEndOfMoveStickman(){
 
 //Creer le stickMan
 void StickMan::createStickMan(){
+
+    textDetected = new QGraphicsSimpleTextItem();
+    textDetected->setPos(-100,(mapToScene(0,this->height()).y())-50);
+    this->scene()->addItem(textDetected);
 
     QPoint head(0/RESIZE, -175/RESIZE);
     QPoint epauleDroite(-50/RESIZE, -100/RESIZE);
@@ -226,6 +275,9 @@ void StickMan::createStickMan(){
     jambeDroite->setYBOrigin(rightfoot.y()*RESIZE);
     jambeDroite->setLastPositionsToOrigins();
 
+    QList<MyQLine*> listLineshead;
+    listLineshead.append(cou);
+    linesLinkedAtThisNode.insert("head",listLineshead);
     QList<MyQLine*> listLinesrighthand;
     listLinesrighthand.append(avantBrasDroit);
     linesLinkedAtThisNode.insert("righthand",listLinesrighthand);
@@ -245,6 +297,8 @@ void StickMan::createStickMan(){
     listLinestorso.append(coteDroite);
     listLinestorso.append(ventreGauche);
     listLinestorso.append(ventreDroit);
+    listLinestorso.append(hautCorps);
+    listLinestorso.append(basCorps);
     linesLinkedAtThisNode.insert("torso",listLinestorso);
     QList<MyQLine*> listLinesrightfoot;
     listLinesrightfoot.append(jambeDroite);

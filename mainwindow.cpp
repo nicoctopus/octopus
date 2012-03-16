@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLCDTimer()));
     connect(this, SIGNAL(emitTime(QString)), ui->timerMusic, SLOT(display(QString)));
     this->timer->start(1000);
+    ui->stickManLive->setStickManLive(true);
+    //ui->stickManLive->launchTimerForDetection();
 
     this->setWindowTitle("Octopus");
     ui->nommouvement->setVisible(false);
@@ -571,8 +573,6 @@ void MainWindow::slotEscNewMovement(){
     ui->pushButton_verrouiller->setStyleSheet("background:url(:/new/prefix1/images_boutons/cadenasgris.png)");
     ui->stickMan->reCreateStickMan();
 
-    //ui->stickMan->reCreateStickMan();
-
 }
 
 
@@ -580,9 +580,10 @@ void MainWindow::slotStartLivePerformance(){
 
     if(isLive==false){
         this->controller->analizeRecord();
+        ui->stickManLive->launchTimerForDetection();
         isLive=true;
     }else if(isLive==true){
-
+        ui->stickManLive->stopTimer();
         this->controller->stopAnalize();
         isLive=false;
     }
