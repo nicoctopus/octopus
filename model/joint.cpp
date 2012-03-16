@@ -123,6 +123,7 @@ void Joint::addPosition(const float &x, const float &y, const float &z)
 	this->bufferPositions->removeFirst();
 	this->bufferPositions->append(new Position(x, y, z));
     }
+    emit sigNewPosAddedToBuffer(this->getNom(),-x/3,-y/3,z/3);
 }
 
 /**

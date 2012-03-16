@@ -113,8 +113,8 @@ void BlackBoard::dropEvent(QDropEvent *event){
 	{
 	    this->listMovements->append(*(Movement**)ba.constData());
 	    this->listMovements->last()->setActive(true);
-            //this->listMovements->last()->setPosXBlackBoard(mapToScene(event->pos().x(),0).x());
-            //this->listMovements->last()->setPosYBlackBoard(mapToScene(0,event->pos().y()).y());
+            this->listMovements->last()->setPosXBlackBoard(mapToScene(event->pos().x(),0).x());
+            this->listMovements->last()->setPosYBlackBoard(mapToScene(0,event->pos().y()).y());
             //qDebug() << "maptoscene" << mapToScene(event->pos().x(),0).x() <<"," << mapToScene(0,event->pos().y()).y();
 	    emit save(this->listMovements->last());
 	    emit refreshSignal();
@@ -135,8 +135,8 @@ void BlackBoard::dropEvent(QDropEvent *event){
 	{
 	    this->listSamplesAudio->append(*(SampleAudio**)ba.constData());
 	    this->listSamplesAudio->last()->setActive(true);
-            //this->listSamplesAudio->last()->setPosXBlackBoard(mapToScene(event->pos().x(),0).x());
-            //this->listSamplesAudio->last()->setPosYBlackBoard(mapToScene(0,event->pos().y()).y());
+            this->listSamplesAudio->last()->setPosXBlackBoard(mapToScene(event->pos().x(),0).x());
+            this->listSamplesAudio->last()->setPosYBlackBoard(mapToScene(0,event->pos().y()).y());
            // qDebug() << "maptoscene" << mapToScene(event->pos().x(),0).x() <<"," << mapToScene(0,event->pos().y()).y();
 	    emit save(this->listSamplesAudio->last());
 	    emit refreshSignal();
@@ -156,8 +156,8 @@ void BlackBoard::dropEvent(QDropEvent *event){
 	{
 	    this->listPorts->append(*(ClientOSC**)ba.constData());
 	    this->listPorts->last()->setActive(true);
-           // this->listPorts->last()->setPosXBlackBoard(mapToScene(event->pos().x(),0).x());
-           // this->listPorts->last()->setPosYBlackBoard(mapToScene(0,event->pos().y()).y());
+            this->listPorts->last()->setPosXBlackBoard(mapToScene(event->pos().x(),0).x());
+            this->listPorts->last()->setPosYBlackBoard(mapToScene(0,event->pos().y()).y());
 	    emit save(this->listPorts->last());
 	    emit refreshSignal();
 	}
@@ -684,8 +684,9 @@ void BlackBoard::SetCenter(const QPointF& centerPoint) {
 void BlackBoard::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
-    case  Qt::Key_A:
+    case  Qt::Key_Alt:
         aPressed = true;
+
     default:
         QGraphicsView::keyPressEvent(event);
     }
@@ -693,7 +694,7 @@ void BlackBoard::keyPressEvent(QKeyEvent *event)
 void BlackBoard::keyReleaseEvent(QKeyEvent *event)
 {
     switch (event->key()) {
-    case  Qt::Key_A:
+    case  Qt::Key_Alt:
         aPressed = false;
     default:
         QGraphicsView::keyPressEvent(event);
