@@ -38,7 +38,7 @@ public:
     void setB(const qint32 &a);
     void setC(const qint32 &a);
 
-    Position* ecartPivot (Position const *pos, Position *posEcart);
+    Position* ecartPivot (Position *pos, Position *posEcart);
 
     ~Position();
     void updateId(const quint32 &id);
