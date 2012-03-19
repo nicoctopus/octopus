@@ -419,18 +419,12 @@ QString MainWindow::textDisplay(ClientOSC *port)
 
 //Permet de selectionner les joints pour un nouveau mouvement
 void MainWindow::slotUnlockStickMan(){
-    //QMessageBox msgBox;
-    //msgBox.setText("Veuillez selectionner les joints impliqu√às dans votre mouvement. Cliquez ensuite sur verrouiller");
-    //msgBox.exec();
     QList<QGraphicsItem *> items = ui->stickMan->scene()->items();
     for (int i = 0; i < items.size(); ++i) {
         if((items.at(i)->type()) == 3){ //3 est le type de QGraphicsRectItems
             items.at(i)->setFlags(QGraphicsItem::ItemIsSelectable);
         }
     }
-    //ui->pushButton_creermouvement->setVisible(false);
-    // ui->pushButton_verrouiller->setVisible(true);
-    //ui->pushButton_supprimermouvement->setVisible(true);
 
     ui->pushButton_creermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/creermouvementgris.png)");
     ui->pushButton_verrouiller->setStyleSheet("background:url(:/new/prefix1/images_boutons/cadenas.png)");
@@ -462,18 +456,8 @@ int MainWindow::slotLockNodesForNewMouvement(){
             movement->addJointMvt(controller->getManagerJoints()->getJoint(nodesSelected.at(i)->getName()));
             nomsDesJoints = nomsDesJoints + nodesSelected.at(i)->getName() + "\n";
         }
-        //QMessageBox msgBox;
-        //msgBox.setText("Vous avez verrouillÈ " + QString::number(nodesSelected.size()) + " joints:\n" + nomsDesJoints);
-        //msgBox.exec();
 	ui->stickMan->reCreateStickMan();
-
-	//ui->stickMan->getNodesSelected().clear();
-
-
-
     }
-    // ui->pushButton_verrouiller->setVisible(false);
-    // ui->pushButton_recordmouvement->setVisible(true);
 
     ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/record.png)");
     ui->pushButton_verrouiller->setStyleSheet("background:url(:/new/prefix1/images_boutons/cadenasgris.png)");
@@ -490,7 +474,8 @@ void MainWindow::slotRecordNewMovement(){
     if(isRecording == false){
         ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/stop.png)");
         //RECORD UN MOVEMENT
-        this->controller->recordMovement(this->movement);
+	sleep(3);
+	this->controller->recordMovement(this->movement);
         //START RECORD
         isRecording = true;
     }

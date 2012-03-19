@@ -602,11 +602,7 @@ font: 14pt &quot;Fengardo&quot;;</string>
   </widget>
   <zorder>dockSynapse</zorder>
   <zorder>dockSkeleton</zorder>
-  <zorder>dockVideo</zorder>
   <zorder>dockConfig</zorder>
-  <zorder>dockStartPerformance</zorder>
-  <zorder>dockLeftTree</zorder>
-  <zorder>dockWidget</zorder>
   <zorder>dockWidget_2</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

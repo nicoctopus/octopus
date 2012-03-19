@@ -316,7 +316,7 @@ void ServerOSC::record(){
     }
     else
     {
-        //emit jointMvtTooBig();
+	emit jointMvtTooBig();
     }
 }
 
@@ -340,7 +340,7 @@ bool ServerOSC::isRecording() {
 }
 
 void ServerOSC::setAnalyse() {
-    this->analyse = new Analyse(0,65, this->listMovements); //vitesse, tx erreur
+    this->analyse = new Analyse(0.3,55, this->listMovements); //vitesse, tx erreur
 }
 
 void ServerOSC::deleteAnalyse(){
