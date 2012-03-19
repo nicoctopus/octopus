@@ -78,18 +78,20 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
 	    int modifSize = 0;
 	    if(z<0) modifSize = -(z/10);
 	    else if(z>0) modifSize = -(z/20);
+
+	    //offset pour la tete
+	    if(nodes.at(i)->getName() == "head"){
+		x=x-50;
+		this->headLastX = x;
+		this->headLastY = y+175;
+		this->headLastZwithModifSize = modifSize;
+	    }
+	    if(nodes.at(i)->getName() == "torso"){
+	       x=headLastX;
+	       y=headLastY;
+	    }
 	    //qDebug(QString(nameOfNodeToMove + " z:"+QString::number(z) + "  modifSize= " + QString::number(modifSize)).toAscii());
 	    nodes.at(i)->setRect(x/RESIZE-((WIDTH_JOINTS+modifSize)/2), y/RESIZE-((HEIGHT_JOINTS+modifSize)/2) , WIDTH_JOINTS+modifSize, HEIGHT_JOINTS+modifSize);
-
-            //Si c'est le torso (0,0) on le fait suivre la tete
-            if(nodes.at(i)->getName() == "head"){
-                this->headLastX = x;
-                this->headLastY = y;
-                this->headLastZwithModifSize = modifSize;
-            }
-            if(nodes.at(i)->getName() == "torso"){
-                nodes.at(i)->setRect(headLastX/RESIZE-((WIDTH_JOINTS+headLastZwithModifSize)/2), (headLastY+175)/RESIZE-((HEIGHT_JOINTS+headLastZwithModifSize)/2) , WIDTH_JOINTS+headLastZwithModifSize, HEIGHT_JOINTS+headLastZwithModifSize);
-            }
 
 	    // ==== DEPLACMENTS LIGNES =====
 
@@ -98,6 +100,7 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
 	    //On parcours cette liste pour déplacer les lignes
 	    for(int j=0;j<listOfLinesLinkedToThisNode.size();++j)
 	    {
+
 		MyQLine* temp = listOfLinesLinkedToThisNode.at(j);
 		//Si le nom la ligne a une extremité qui a bougé on déplace le point A ou B en fct
 		if((temp->getNamePointA()) == (nodes.at(i)->getName()))
@@ -115,10 +118,12 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
 		    temp->setLastXb(x);
 		    temp->setLastYb(y);
 		}
-            /*    //Si les deux points ont pour nom FIXE c'est que c'est le bas ou le haut du corps on fait suivre le torso
-                if((temp->getNamePointA() == "FIXE") && (temp->getNamePointB() == "FIXE")){
-                    temp->getGraphicsLine()->setLine(temp->getLastXa()/RESIZE,temp->getLastYa()/RESIZE,x/RESIZE,y/RESIZE);
-                }*/
+		if(temp->getNamePointA()=="epauleGauche" && temp->getNamePointB() =="epauleDroite"){
+		    temp->getGraphicsLine()->setLine(x+50,y-100,x-50,y-100);
+		    //this->epauleGaucheX
+		}
+
+
 	    }
 
 	}
@@ -172,16 +177,23 @@ void StickMan::createStickMan(){
     cou->setNamePointA("head");
     cou->setXAOrigin(head.x()*RESIZE);
     cou->setYAOrigin(head.y()*RESIZE);
-    cou->setNamePointB("FIXE");
+    cou->setNamePointB("basCou");
     cou->setXBOrigin(basCou.x()*RESIZE);
     cou->setYBOrigin(basCou.y()*RESIZE);
     cou->setLastPositionsToOrigins();
     MyQLine* hautCorps = new MyQLine(epauleGauche, epauleDroite);
+    hautCorps->setNamePointA("epauleGauche");
+    hautCorps->setXAOrigin(epauleGauche.x()*RESIZE);
+    hautCorps->setYAOrigin(epauleGauche.y()*RESIZE);
+    hautCorps->setNamePointB("epauleDroite");
+    hautCorps->setXBOrigin(epauleDroite.x()*RESIZE);
+    hautCorps->setYBOrigin(epauleDroite.y()*RESIZE);
+    hautCorps->setLastPositionsToOrigins();
     MyQLine* brasDroit = new MyQLine(epauleDroite, rightelbow);
     brasDroit->setNamePointA("rightelbow");
     brasDroit->setXAOrigin(rightelbow.x()*RESIZE);
     brasDroit->setYAOrigin(rightelbow.y()*RESIZE);
-    brasDroit->setNamePointB("FIXE");
+    brasDroit->setNamePointB("epauleDroite");
     brasDroit->setXBOrigin(epauleDroite.x()*RESIZE);
     brasDroit->setYBOrigin(epauleDroite.y()*RESIZE);
     brasDroit->setLastPositionsToOrigins();
@@ -197,7 +209,7 @@ void StickMan::createStickMan(){
     brasGauche->setNamePointA("leftelbow");
     brasGauche->setXAOrigin(leftelbow.x()*RESIZE);
     brasGauche->setYAOrigin(leftelbow.y()*RESIZE);
-    brasGauche->setNamePointB("FIXE");
+    brasGauche->setNamePointB("epauleGauche");
     brasGauche->setXBOrigin(epauleGauche.x()*RESIZE);
     brasGauche->setYBOrigin(epauleGauche.y()*RESIZE);
     brasGauche->setLastPositionsToOrigins();
@@ -213,7 +225,7 @@ void StickMan::createStickMan(){
     coteGauche->setNamePointA("torso");
     coteGauche->setXAOrigin(torso.x()*RESIZE);
     coteGauche->setYAOrigin(torso.y()*RESIZE);
-    coteGauche->setNamePointB("FIXE");
+    coteGauche->setNamePointB("epauleGauche");
     coteGauche->setXBOrigin(epauleGauche.x()*RESIZE);
     coteGauche->setYBOrigin(epauleGauche.y()*RESIZE);
     coteGauche->setLastPositionsToOrigins();
@@ -221,7 +233,7 @@ void StickMan::createStickMan(){
     coteDroite->setNamePointA("torso");
     coteDroite->setXAOrigin(torso.x()*RESIZE);
     coteDroite->setYAOrigin(torso.y()*RESIZE);
-    coteDroite->setNamePointB("FIXE");
+    coteDroite->setNamePointB("epauleDroite");
     coteDroite->setXBOrigin(epauleDroite.x()*RESIZE);
     coteDroite->setYBOrigin(epauleDroite.y()*RESIZE);
     coteDroite->setLastPositionsToOrigins();
@@ -229,7 +241,7 @@ void StickMan::createStickMan(){
     ventreGauche->setNamePointA("torso");
     ventreGauche->setXAOrigin(torso.x()*RESIZE);
     ventreGauche->setYAOrigin(torso.y()*RESIZE);
-    ventreGauche->setNamePointB("FIXE");
+    ventreGauche->setNamePointB("hancheGauche");
     ventreGauche->setXBOrigin(hancheGauche.x()*RESIZE);
     ventreGauche->setYBOrigin(hancheGauche.y()*RESIZE);
     ventreGauche->setLastPositionsToOrigins();
@@ -237,16 +249,23 @@ void StickMan::createStickMan(){
     ventreDroit->setNamePointA("torso");
     ventreDroit->setXAOrigin(torso.x()*RESIZE);
     ventreDroit->setYAOrigin(torso.y()*RESIZE);
-    ventreDroit->setNamePointB("FIXE");
+    ventreDroit->setNamePointB("hancheDroite");
     ventreDroit->setXBOrigin(hancheDroite.x()*RESIZE);
     ventreDroit->setYBOrigin(hancheDroite.y()*RESIZE);
     ventreDroit->setLastPositionsToOrigins();
     MyQLine* basCorps = new MyQLine(hancheGauche, hancheDroite);
+    basCorps->setNamePointA("hancheGauche");
+    basCorps->setXAOrigin(hancheGauche.x()*RESIZE);
+    basCorps->setYAOrigin(hancheGauche.y()*RESIZE);
+    basCorps->setNamePointB("hancheDroite");
+    basCorps->setXBOrigin(hancheDroite.x()*RESIZE);
+    basCorps->setYBOrigin(hancheDroite.y()*RESIZE);
+    basCorps->setLastPositionsToOrigins();
     MyQLine* cuisseGauche = new MyQLine(hancheGauche, leftknee);
     cuisseGauche->setNamePointA("leftknee");
     cuisseGauche->setXAOrigin(leftknee.x()*RESIZE);
     cuisseGauche->setYAOrigin(leftknee.y()*RESIZE);
-    cuisseGauche->setNamePointB("FIXE");
+    cuisseGauche->setNamePointB("hancheGauche");
     cuisseGauche->setXBOrigin(hancheGauche.x()*RESIZE);
     cuisseGauche->setYBOrigin(hancheGauche.y()*RESIZE);
     cuisseGauche->setLastPositionsToOrigins();
@@ -262,7 +281,7 @@ void StickMan::createStickMan(){
     cuisseDroite->setNamePointA("rightknee");
     cuisseDroite->setXAOrigin(rightknee.x()*RESIZE);
     cuisseDroite->setYAOrigin(rightknee.y()*RESIZE);
-    cuisseDroite->setNamePointB("FIXE");
+    cuisseDroite->setNamePointB("hancheDroite");
     cuisseDroite->setXBOrigin(hancheDroite.x()*RESIZE);
     cuisseDroite->setYBOrigin(hancheDroite.y()*RESIZE);
     cuisseDroite->setLastPositionsToOrigins();
@@ -332,7 +351,7 @@ void StickMan::createStickMan(){
     lines.push_back(jambeDroite);
 
     QPen pen;
-    pen.setBrush(Qt::white);
+    pen.setBrush(Qt::black);
     pen.setWidth(2);
 
     //Creer les lines
