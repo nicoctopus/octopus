@@ -151,6 +151,8 @@ void Analyse::calculBITG(){
  nbEcarts=10;
  difNbEcarts = nbEcarts* this->seuilFrequence;
 
+ qDebug()<< "Seuil Frequence : "<< this->seuilFrequence<< endl;
+
  PasDecalage = 1;
 
  /**

@@ -20,5 +20,6 @@
         <file>images_boutons/stopgris.png</file>
         <file>images_boutons/screenVisuels.png</file>
         <file>images_boutons/visuelSynapse.png</file>
+        <file>liveOFF.png</file>
     </qresource>
 </RCC>

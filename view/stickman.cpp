@@ -93,7 +93,7 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
 	    //qDebug(QString(nameOfNodeToMove + " z:"+QString::number(z) + "  modifSize= " + QString::number(modifSize)).toAscii());
 	    nodes.at(i)->setRect(x/RESIZE-((WIDTH_JOINTS+modifSize)/2), y/RESIZE-((HEIGHT_JOINTS+modifSize)/2) , WIDTH_JOINTS+modifSize, HEIGHT_JOINTS+modifSize);
 
-	    // ==== DEPLACMENTS LIGNES =====
+            // ==== DEPLACMENTS LIGNES =====
 
 	    //On récupere la liste des lines liée au noeud que l'on déplace
 	    QList<MyQLine*> listOfLinesLinkedToThisNode = linesLinkedAtThisNode.value(nodes.at(i)->getName());
@@ -106,22 +106,70 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
 		if((temp->getNamePointA()) == (nodes.at(i)->getName()))
 		{
 		    //qDebug("TEST A");
-		    temp->getGraphicsLine()->setLine(x/RESIZE,y/RESIZE,temp->getLastXb()/RESIZE,temp->getLastYb()/RESIZE);
-		    temp->setLastXa(x);
-		    temp->setLastYa(y);
+                    if(temp->getNamePointB()=="epauleGauche"){
+                        temp->setLastXb(epauleGaucheX);
+                        temp->setLastYb(epauleGaucheY);
+                    }
+                    else if(temp->getNamePointB()=="epauleDroite"){
+                        temp->setLastXb(epauleDroiteX);
+                        temp->setLastYb(epauleDroiteY);
+                    }
+                    else if(temp->getNamePointB()=="hancheGauche"){
+                        temp->setLastXb(hancheGaucheX);
+                        temp->setLastYb(hancheGaucheY);
+                    }
+                    else if(temp->getNamePointB()=="hancheDroite"){
+                        temp->setLastXb(hancheDroiteX);
+                        temp->setLastYb(hancheDroiteY);
+                    }
+                    else if(temp->getNamePointB()=="basCou"){
+                        temp->setLastXb(epauleGaucheX-50);
+                        temp->setLastYb(epauleGaucheY);
+                    }
+                    //temp->getGraphicsLine()->setLine(x/RESIZE,y/RESIZE,temp->getLastXb()/RESIZE,temp->getLastYb()/RESIZE);
+                    temp->getGraphicsLine()->line().translate((temp->getLastXb()-x)/RESIZE,(temp->getLastYb()-y)/RESIZE);
+                    temp->setLastXa(x);
+                    temp->setLastYa(y);
 
 		}
 		else if((temp->getNamePointB()) == (nodes.at(i)->getName()))
 		{
 		    // qDebug("TEST B");
-		    temp->getGraphicsLine()->setLine(temp->getLastXa()/RESIZE,temp->getLastYa()/RESIZE,x/RESIZE,y/RESIZE);
-		    temp->setLastXb(x);
-		    temp->setLastYb(y);
+                    if(temp->getNamePointA()=="epauleGauche"){
+                        temp->setLastXa(epauleGaucheX);
+                        temp->setLastYa(epauleGaucheY);
+                    }
+                    else if(temp->getNamePointA()=="epauleDroite"){
+                        temp->setLastXa(epauleDroiteX);
+                        temp->setLastYa(epauleDroiteY);
+                    }
+                    else if(temp->getNamePointA()=="hancheGauche"){
+                        temp->setLastXa(hancheGaucheX);
+                        temp->setLastYa(hancheGaucheY);
+                    }
+                    else if(temp->getNamePointA()=="hancheDroite"){
+                        temp->setLastXa(hancheDroiteX);
+                        temp->setLastYa(hancheDroiteY);
+                    }
+                    //temp->getGraphicsLine()->setLine(temp->getLastXa()/RESIZE,temp->getLastYa()/RESIZE,x/RESIZE,y/RESIZE);
+                   temp->getGraphicsLine()->line().translate((x-temp->getLastXa())/RESIZE,(y-temp->getLastYa())/RESIZE);
+                   temp->setLastXb(x);
+                    temp->setLastYb(y);
 		}
 		if(temp->getNamePointA()=="epauleGauche" && temp->getNamePointB() =="epauleDroite"){
-		    temp->getGraphicsLine()->setLine(x+50,y-100,x-50,y-100);
-		    //this->epauleGaucheX
+                    temp->getGraphicsLine()->setLine((x+50)/RESIZE,(y-100)/RESIZE,(x-50)/RESIZE,(y-100)/RESIZE);
+                    this->epauleGaucheX=x+50;
+                    this->epauleGaucheY=y-100;
+                    this->epauleDroiteX=x-50;
+                    this->epauleDroiteY=y-100;
 		}
+                if(temp->getNamePointA()=="hancheGauche" && temp->getNamePointB() =="hancheDroite"){
+                    temp->getGraphicsLine()->setLine((x+50)/RESIZE,(y+100)/RESIZE,(x-50)/RESIZE,(y+100)/RESIZE);
+                    this->hancheGaucheX=x+50;
+                    this->hancheGaucheY=y+100;
+                    this->hancheDroiteX=x-50;
+                    this->hancheDroiteY=y+100;
+                }
 
 
 	    }

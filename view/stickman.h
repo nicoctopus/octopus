@@ -57,7 +57,7 @@ class StickMan : public QGraphicsView
         int headLastZwithModifSize;
 	int epauleGaucheX;
 	int epauleGaucheY;
-	int epaulDroiteX;
+        int epauleDroiteX;
 	int epauleDroiteY;
 	int hancheGaucheX;
 	int hancheGaucheY;
