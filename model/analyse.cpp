@@ -27,13 +27,19 @@ Analyse::Analyse(float pourc,float seuil, QList<Movement*>* listMovements)
 }
 
 void Analyse::calculBITG(){
-    qint32 tailleBuffer = SIZE_MAX_BUFFERS;
+
+     qint32 tailleBuffer;
+    if(this->listMovementToAnalyze->size()!=0){
+     tailleBuffer = this->listMovementToAnalyze->at(0)->getListJointsMvt()->at(0)->getJointRef()->getBufferPositions()->size() + (this->listMovementToAnalyze->at(0)->getListJointsMvt()->at(0)->getJointRef()->getBufferPositions()->size() / 2) ;
+    }else{
+     tailleBuffer = SIZE_MAX_BUFFERS;
+    }
 
     qint8 nbEcarts =0;
     qint8 difNbEcarts= 0;
 
     int ecartCourant=0;
-    int indiceDepart=0;
+    int indiceDepart = SIZE_MAX_BUFFERS - tailleBuffer;
 
     float moyenneGenerale=0;
 
