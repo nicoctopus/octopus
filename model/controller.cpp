@@ -87,7 +87,6 @@ void Controller::recordMovement(Movement *movement)
     /**
       *   SERVEUR OSC
       **/
-
     this->serveurOSC->setRunnable(true);
     this->serveurOSC->setRecording(true); //mode record
     this->serveurOSC->setListJoints(managerJoints->getListJoints());

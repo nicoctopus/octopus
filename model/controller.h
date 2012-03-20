@@ -19,7 +19,6 @@ private:
     ManagerElements *managerElements;
     ServerOSC *serveurOSC;
     ClientOSC* client;
-
 public:
     Controller();
     ManagerJoints* getManagerJoints();
@@ -28,7 +27,7 @@ public:
     SoundPlayer *getPlayerDemo();
     SoundPlayer *getPlayerLive();
     ServerOSC *getServerOsc();
-    void recordMovement(Movement *managerElements);
+    void recordMovement(Movement *movement);
     void stopRecord(Movement *movement);
     void analizeRecord();
     void stopAnalize();

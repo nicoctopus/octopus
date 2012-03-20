@@ -119,7 +119,7 @@ void Joint::addPosition(const float &x, const float &y, const float &z)
     }
     else if(this->bufferPositions->length() >= SIZE_MAX_BUFFERS)
     {
-	delete this->bufferPositions->at(0);
+	delete this->bufferPositions->first();
 	this->bufferPositions->removeFirst();
 	this->bufferPositions->append(new Position(x, y, z));
     }
