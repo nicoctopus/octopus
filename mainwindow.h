@@ -7,6 +7,7 @@
 #include "model/controller.h"
 #include "view/blackboard.h"
 #include "view/stickman.h"
+#include "view/courbes.h"
 
 
 
@@ -30,11 +31,13 @@ public:
     //Methodes d'initialisation
     void initTreeView();
     void initBlackBoard();
+    void initCourbes();
     QString textDisplay(Movement *movement);
     QString textDisplay(ClientOSC *port);
     QString textDisplay(SampleAudio *sampleAudio);
     void movingStickMan();
-
+    void fillComboBox();
+    void refreshCourbes(Movement* movement);
 
 public slots :
     void slotTimeOutRecord();
@@ -59,7 +62,7 @@ public slots :
     void updateLCDTimer();
     void slotDisplayInfos(QGraphicsItem* item);
     void slotStartLivePerformance();
-
+    void slotChangeMovementForCourbe(QString);
 
 signals :
     void refreshLeftTree();
@@ -67,6 +70,7 @@ signals :
     void sigPlaySample();
     void emitTime(QString currentTime);
     void sigMoveStickman(Movement* movement);
+    void clearComboBox();
 
 
 private:

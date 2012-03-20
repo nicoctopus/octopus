@@ -12,28 +12,27 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     this->setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
     this->setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
-    this->setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
-    setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+   // this->setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+    this->setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
     this->controller = new Controller();
     this->timer = new QTimer(this);
     connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLCDTimer()));
     connect(this, SIGNAL(emitTime(QString)), ui->timerMusic, SLOT(display(QString)));
     this->timer->start(1000);
-    ui->stickManLive->setStickManLive(true);
+    //ui->stickManLive->setStickManLive(true);
     //ui->stickManLive->launchTimerForDetection();
 
     this->setWindowTitle("Octopus");
     ui->nommouvement->setVisible(false);
 
     ui->pushButton_enregistrermouvement->setEnabled(false);
-    ui->pushButton_playmouvement->setEnabled(false);
     ui->pushButton_recordmouvement->setEnabled(false);
     ui->pushButton_supprimermouvement->setEnabled(false);
     ui->pushButton_verrouiller->setEnabled(false);
 
     ui->pushButton_creermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/creermouvement.png)");
     ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/savegris.png)");
-    ui->pushButton_playmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/playgris.png)");
+
     ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/recordgris.png)");
     ui->pushButton_supprimermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/deletegris.png)");
     ui->pushButton_verrouiller->setStyleSheet("background:url(:/new/prefix1/images_boutons/cadenasgris.png)");
@@ -62,13 +61,43 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     this->initBlackBoard();
     this->initTreeView();
+    this->initCourbes();
 
     //CONNECTS POUR STICKMAN LIVE
     for(int i=0;i<this->controller->getManagerJoints()->getListJoints()->size();i++){
-        connect(this->controller->getManagerJoints()->getListJoints()->at(i),SIGNAL(sigNewPosAddedToBuffer(QString,int,int,int)),ui->stickManLive,SLOT(slotMoveNode(QString,int,int,int)));
+	connect(this->controller->getManagerJoints()->getListJoints()->at(i),SIGNAL(sigNewPosAddedToBuffer(QString,int,int,int)),ui->stickMan,SLOT(slotMoveNode(QString,int,int,int)));
     }
 
 
+}
+
+void MainWindow::fillComboBox()
+{
+    emit clearComboBox();
+    QStringList stringList;
+    for(int i = 0 ;  i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
+	stringList.append(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName());
+    ui->listMovementToShowCourbe->addItems(stringList);
+}
+
+void MainWindow::initCourbes()
+{
+    this->fillComboBox();
+    //this->ui->widgetCourbes->setTabWidget(ui->tabWidget);
+    ui->tabWidget->removeTab(0);
+    connect(ui->listMovementToShowCourbe, SIGNAL(currentIndexChanged(QString)), this, SLOT(slotChangeMovementForCourbe(QString)));
+    connect(this, SIGNAL(clearComboBox()), ui->listMovementToShowCourbe, SLOT(clear()));
+}
+
+void MainWindow::refreshCourbes(Movement* movement)
+{
+    int size = ui->tabWidget->count();
+    for(int i = 0 ; i < size ; i++){
+	ui->tabWidget->removeTab(0);
+    }
+    for(int i=0; i<movement->getListJointsMvt()->size();i++){
+	ui->tabWidget->addTab(new Courbes(ui->tabWidget, movement->getListJointsMvt()->at(i)),movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
+    }
 }
 
 void MainWindow::initTreeView()
@@ -134,8 +163,7 @@ void MainWindow::slotNewSelectionOnStickMan(){
 void MainWindow::save(Movement *movement)
 {
     controller->getManagerElements()->saveMovement(movement);
-    //ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
-    //emit refreshBlackBoard();
+    this->fillComboBox();
 }
 
 void MainWindow::save(ClientOSC *clientOSC)
@@ -161,6 +189,7 @@ void MainWindow::remove(Movement *movement)
     this->ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovementsByName());
     emit refreshLeftTree();
     emit refreshBlackBoard();
+    this->fillComboBox();
 }
 
 void MainWindow::remove(SampleAudio *sampleAudio)
@@ -180,6 +209,7 @@ void MainWindow::remove(ClientOSC *clientOSC)
 }
 
 void MainWindow::slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int){
+
     if(item->text(0) == "Movements" || item->text(0) == "Samples" || item->text(0) == "Videos" || item->text(0) == "Ports"){
         return;
     }
@@ -474,7 +504,7 @@ void MainWindow::slotRecordNewMovement(){
     if(isRecording == false){
         ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/stop.png)");
         //RECORD UN MOVEMENT
-	sleep(3);
+	//sleep(3);
 	this->controller->recordMovement(this->movement);
         //START RECORD
         isRecording = true;
@@ -543,7 +573,6 @@ void MainWindow::slotValidNewMovement(){
 void MainWindow::slotEscNewMovement(){
     ui->pushButton_creermouvement->setEnabled(true);
     ui->pushButton_enregistrermouvement->setEnabled(false);
-    ui->pushButton_playmouvement->setEnabled(false);
     ui->pushButton_recordmouvement->setEnabled(false);
     ui->pushButton_supprimermouvement->setEnabled(false);
     ui->pushButton_verrouiller->setEnabled(false);
@@ -552,7 +581,6 @@ void MainWindow::slotEscNewMovement(){
 
     ui->pushButton_creermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/creermouvement.png)");
     ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/savegris.png)");
-    ui->pushButton_playmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/playgris.png)");
     ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/recordgris.png)");
     ui->pushButton_supprimermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/deletegris.png)");
     ui->pushButton_verrouiller->setStyleSheet("background:url(:/new/prefix1/images_boutons/cadenasgris.png)");
@@ -565,10 +593,17 @@ void MainWindow::slotStartLivePerformance(){
 
     if(isLive==false){
         this->controller->analizeRecord();
-        ui->stickManLive->launchTimerForDetection();
+	for(int i = 0 ; i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
+	    if(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName() == ui->listMovementToShowCourbe->currentText())
+		//ui->widgetCourbes->setMovement(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
+		this->refreshCourbes(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
+	ui->stickMan->setStickManLive(true);
+	ui->stickMan->launchTimerForDetection();
         isLive=true;
     }else if(isLive==true){
-        ui->stickManLive->stopTimer();
+	ui->stickMan->stopTimer();
+	ui->stickMan->setStickManLive(false);
+	//ui->widgetCourbes->setMovement(NULL);
         this->controller->stopAnalize();
         isLive=false;
     }
@@ -603,4 +638,13 @@ void MainWindow::updateLCDTimer()
     s = s%60;
     QString time = QString::number(m) + ":" + QString::number(s);
     emit emitTime(time);
+}
+
+void MainWindow::slotChangeMovementForCourbe(QString text)
+{
+    for(int i = 0 ; i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
+	if(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName() == text)
+	   //ui->widgetCourbes->setMovement(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
+	    this->refreshCourbes(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
+
 }

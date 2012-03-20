@@ -5,15 +5,15 @@
 #include <QtGlobal>
 #include <QList>
 #include <time.h>
-#include <QPainter>
 #include "qmath.h"
 #include "movement.h"
 #include "databitg.h"
 #include "soundplayer.h"
 
 
-class Analyse : public QWidget
+class Analyse
 {
+
 private:
     float seuilFrequence;
     float seuilAmplitude;
@@ -32,10 +32,6 @@ public:
     ~Analyse();
     Analyse(float,float, QList<Movement*>*);
     void calculBITG();
-
-protected:
-    void paintEvent(QPaintEvent *);
-    void timerEvent(QTimerEvent *);
 
 };
 

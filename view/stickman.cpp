@@ -50,6 +50,7 @@ void StickMan::slotTimeOutTimer(){
 //-----------------------------------------------------------
 void StickMan::slotMoveStickMan(Movement* movement){
     //Thread pour faire le faire bouger
+
     ThreadMoveStickman* threadForStickManMoving = new ThreadMoveStickman(movement);
     connect(threadForStickManMoving, SIGNAL(sigMoveNode(QString,int,int,int)), this, SLOT(slotMoveNode(QString,int,int,int)));
     connect(threadForStickManMoving, SIGNAL(sigEndOfMoveStickman()), this, SLOT(slotEndOfMoveStickman()));
@@ -122,7 +123,9 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
 			temp->setLastXb(hancheDroiteX);
 			temp->setLastYb(hancheDroiteY);
 		    }
-		   // temp->getGraphicsLine()->setLine(x/RESIZE,y/RESIZE,temp->getLastXb()/RESIZE,temp->getLastYb()/RESIZE);
+		    //QLineF line(x/RESIZE,y/RESIZE,temp->getLastXb()/RESIZE,temp->getLastYb()/RESIZE);
+		    //delete temp->getGraphicsLine()->setLine();
+		    //temp->getGraphicsLine()->setLine(line);
 		   // temp->getGraphicsLine()->line().translate((temp->getLastXb()-x)/RESIZE,(temp->getLastYb()-y)/RESIZE);
 		    temp->setLastXa(x);
 		    temp->setLastYa(y);

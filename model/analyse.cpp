@@ -1,6 +1,6 @@
 #include "analyse.h"
 
-Analyse::Analyse():QWidget(0){
+Analyse::Analyse(){
     this->seuilFrequence=0;
 }
 
@@ -23,90 +23,6 @@ Analyse::Analyse(float pourc,float seuil, QList<Movement*>* listMovements)
     this->ListEcartEnr = new QList<Position*>();
     this->ListEcartBuf = new QList<Position*>();
     this->playerlive = new SoundPlayer(32);
-    show();
-    startTimer(40);
-
-}
-
-void Analyse::timerEvent(QTimerEvent *) {
-    update();
-}
-void Analyse::paintEvent(QPaintEvent *e) {
-    QPainter painter(this);
-    QPointF oldPoint, newPoint;
-    quint16 yOffset = 0;
-    qreal freq = 5* (qreal)rand()/RAND_MAX;
-
-    yOffset = 50;
-    freq = 5* (qreal)rand()/RAND_MAX;
-    painter.setPen(Qt::blue);
-    if(!this->listMovementToAnalyze->isEmpty())
-    {
-	for(int i = 0 ; i < this->listMovementToAnalyze->at(0)->getListJointsMvt()->at(0)->getListPositions()->size() ; i++)
-	{
-	    qreal val = (qreal)this->listMovementToAnalyze->at(0)->getListJointsMvt()->at(0)->getListPositions()->at(i)->getY();
-	    newPoint = QPointF(i, val + yOffset);
-	    if(i == 0) oldPoint = newPoint;
-	    painter.drawLine(oldPoint, newPoint);
-	    oldPoint = newPoint;
-	}
-
-	yOffset = 150;
-
-	for(int i = 0 ; i < this->listMovementToAnalyze->at(0)->getListJointsMvt()->at(0)->getJointRef()->getBufferPositions()->size() ; i++)
-	{
-	    qreal val = (qreal)this->listMovementToAnalyze->at(0)->getListJointsMvt()->at(0)->getJointRef()->getBufferPositions()->at(i)->getY();
-	    newPoint = QPointF(i, val + yOffset);
-	    if(i == 0) oldPoint = newPoint;
-	    painter.drawLine(oldPoint, newPoint);
-	    oldPoint = newPoint;
-	}
-
-	yOffset = 250;
-	for(int i = 0 ; i < this->listMovementToAnalyze->at(1)->getListJointsMvt()->at(0)->getListPositions()->size() ; i++)
-	{
-	    qreal val = (qreal)this->listMovementToAnalyze->at(1)->getListJointsMvt()->at(0)->getListPositions()->at(i)->getY();
-	    newPoint = QPointF(i, val + yOffset);
-	    if(i == 0) oldPoint = newPoint;
-	    painter.drawLine(oldPoint, newPoint);
-	    oldPoint = newPoint;
-	}
-	yOffset = 350;
-
-	for(int i = 0 ; i < this->listMovementToAnalyze->at(1)->getListJointsMvt()->at(0)->getJointRef()->getBufferPositions()->size() ; i++)
-	{
-	    qreal val = (qreal)this->listMovementToAnalyze->at(1)->getListJointsMvt()->at(0)->getJointRef()->getBufferPositions()->at(i)->getY();
-	    newPoint = QPointF(i, val + yOffset);
-	    if(i == 0) oldPoint = newPoint;
-	    painter.drawLine(oldPoint, newPoint);
-	    oldPoint = newPoint;
-	}
-
-	/*yOffset = 450;
-
- if(this->EnregistrementVite)
-     for(int i = 0 ; i < this->EnregistrementVite->size() ; i++)
-     {
-  qreal val = (qreal)this->EnregistrementVite->at(i)->getY();
-  newPoint = QPointF(i, val + yOffset);
-  if(i == 0) oldPoint = newPoint;
-  painter.drawLine(oldPoint, newPoint);
-  oldPoint = newPoint;
-     }*/
-    }
-
-    /*  freq = 5* (qreal)rand()/RAND_MAX;
-    painter.setPen(Qt::blue);
-    for(int i = 0 ; i < 450 ; i++) {
- qreal val = qCos((qreal)i/20 + freq) * 10;
- newPoint = QPointF(i, val + yOffset);
- if(i == 0) oldPoint = newPoint;
- painter.drawLine(oldPoint, newPoint);
- oldPoint = newPoint;
-    }
-    yOffset = 250;
-    freq = 5* (qreal)rand()/RAND_MAX;
-    painter.setPen(Qt::blue);*/
 
 }
 
