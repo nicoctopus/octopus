@@ -32,8 +32,9 @@ private:
 public:
     SoundPlayer(int);
     ~SoundPlayer();
-    void loop(quint32,quint32,quint32,SampleAudio*);
+    //void loop(quint32,quint32,qint32,SampleAudio*);
     void play(SampleAudio*);
+    //void readyToPlay(SampleAudio*);
     quint32 TimeEnd(SampleAudio*);
     bool playDemo(SampleAudio*);
     void Stop();
