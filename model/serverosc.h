@@ -35,6 +35,10 @@ public:
     bool allBuffersSameSize();
     void setMovement(Movement *movement);
     void deleteAnalyse();
+    void setVitesse(float &vitesse);
+    void setAmplitude(quint16 &amplitude);
+    quint16 getAmplitude();
+    float getVitesse();
 
 private :
     QList<Joint*> *listJoints; //liste de tous les joints possibles
@@ -43,6 +47,8 @@ private :
     bool recording;
     Analyse *analyse; //objet Analyse pour analyser en mode record
     bool size1,size2,size3,size4,size5,size6,size7,size8,size9,size10;
+    float vitesse;
+    quint16 amplitude;
 };
 
 #endif // SERVEROSC_H

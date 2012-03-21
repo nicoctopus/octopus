@@ -77,6 +77,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     }
 
 
+    /******** RECORD MOVEMENT *******/
+    this->tempLatence = 0;
+    this->tempRecordMovement = 2000;
 }
 
 void MainWindow::fillComboBox()
@@ -530,6 +533,10 @@ int MainWindow::slotLockNodesForNewMouvement(){
             nomsDesJoints = nomsDesJoints + nodesSelected.at(i)->getName() + "\n";
         }
 	ui->stickMan->reCreateStickMan();
+	this->configRecordMouvement = new ConfigRecordMouvement(0);
+	this->configRecordMouvement->setDefautSettings(this->tempLatence, this->tempRecordMovement);
+	connect(this->configRecordMouvement, SIGNAL(signalConfigTempsRecord(quint16,float)), this, SLOT(slotConfigTempsRecord(quint16,float)));
+	this->configRecordMouvement->show();
     }
 
     ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/record.png)");
@@ -547,7 +554,7 @@ void MainWindow::slotRecordNewMovement(){
     if(isRecording == false){
         ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/stop.png)");
         //RECORD UN MOVEMENT
-	//sleep(3);
+	sleep(this->tempLatence);
 	this->controller->recordMovement(this->movement);
         //START RECORD
         isRecording = true;
@@ -702,3 +709,26 @@ void MainWindow::slotSetSampleResetMode(int state){
  ui->textBrowser->setText(this->textDisplay(this->audioTemp));
 }
 
+
+/******** SLOTS DIALOG CONFIG ANALYSE *********/
+void MainWindow::on_pushButton_clicked()
+{
+    this->configAnalyse = new ConfigAnalyse(0);
+    this->configAnalyse->setParamDefaut(this->controller->getServerOsc()->getVitesse(), this->controller->getServerOsc()->getAmplitude());
+    this->configAnalyse->show();
+    /*********** DIALOG CONFIG ANALYSE *******/
+    connect(this->configAnalyse, SIGNAL(signalConfigAnalyse(float,quint16)), this, SLOT(slotChangeConfigAnalyse(float, quint16)));
+}
+
+void MainWindow::slotChangeConfigAnalyse(float vitesse, quint16 amplitude)
+{
+    this->controller->getServerOsc()->setVitesse(vitesse);
+    this->controller->getServerOsc()->setAmplitude(amplitude);
+}
+
+void MainWindow::slotConfigTempsRecord(quint16 tempsLatence, float tempsRecord)
+{
+    qDebug() << "youhou" << endl;
+    this->tempLatence = tempsLatence;
+    this->tempRecordMovement = tempsRecord;
+}

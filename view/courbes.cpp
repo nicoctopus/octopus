@@ -47,18 +47,17 @@ void Courbes::timerEvent(QTimerEvent *) {
 }
 void Courbes::paintEvent(QPaintEvent *e) {
     QPainter painter(this);
+    painter.scale(0.9, 0.8);
     QPointF oldPoint, newPoint;
     quint16 yOffset = 0;
     quint16 xOffset = 0;
-    qreal freq = 5* (qreal)rand()/RAND_MAX;
 
-    yOffset = 50;
-    freq = 5* (qreal)rand()/RAND_MAX;
+    yOffset = 0;
     if(this->joint)
     {
 	QPen pen;
 	pen.setColor(Qt::blue);
-	pen.setWidth(5);
+	pen.setWidth(1);
 	painter.setPen(pen);
 	xOffset = SIZE_MAX_BUFFERS;
 	for(int i = 0 ; i < this->joint->getListPositions()->size() ; i++)
@@ -70,7 +69,6 @@ void Courbes::paintEvent(QPaintEvent *e) {
 	    oldPoint = newPoint;
 	}
 	pen.setColor(Qt::red);
-	pen.setWidth(2);
 	painter.setPen(pen);
 	for(int i = 0  ; i < this->joint->getJointRef()->getBufferPositions()->size() ; i++)
 	{
@@ -80,9 +78,8 @@ void Courbes::paintEvent(QPaintEvent *e) {
 	    painter.drawLine(oldPoint, newPoint);
 	    oldPoint = newPoint;
 	}
-	yOffset = 150;
+	yOffset = 100;
 	pen.setColor(Qt::blue);
-	pen.setWidth(5);
 	painter.setPen(pen);
 	for(int i = 0 ; i < this->joint->getListPositions()->size() ; i++)
 	{
@@ -93,7 +90,6 @@ void Courbes::paintEvent(QPaintEvent *e) {
 	    oldPoint = newPoint;
 	}
 	pen.setColor(Qt::red);
-	pen.setWidth(2);
 	painter.setPen(pen);
 	for(int i = 0 ; i < this->joint->getJointRef()->getBufferPositions()->size() ; i++)
 	{
@@ -103,9 +99,8 @@ void Courbes::paintEvent(QPaintEvent *e) {
 	    painter.drawLine(oldPoint, newPoint);
 	    oldPoint = newPoint;
 	}
-	yOffset = 250;
+	yOffset = 200;
 	pen.setColor(Qt::blue);
-	pen.setWidth(5);
 	painter.setPen(pen);
 	for(int i = 0 ; i < this->joint->getListPositions()->size() ; i++)
 	{
@@ -116,7 +111,6 @@ void Courbes::paintEvent(QPaintEvent *e) {
 	    oldPoint = newPoint;
 	}
 	pen.setColor(Qt::red);
-	pen.setWidth(2);
 	painter.setPen(pen);
 	for(int i = 0 ; i < this->joint->getJointRef()->getBufferPositions()->size() ; i++)
 	{
@@ -126,82 +120,5 @@ void Courbes::paintEvent(QPaintEvent *e) {
 	    painter.drawLine(oldPoint, newPoint);
 	    oldPoint = newPoint;
 	}
-
-
-	/* QPainter painter(this);
-    QPointF oldPoint, newPoint;
-    quint16 yOffset = 0;
-    qreal freq = 5* (qreal)rand()/RAND_MAX;
-
-    yOffset = 50;
-    freq = 5* (qreal)rand()/RAND_MAX;
-    painter.setPen(Qt::blue);
-    if(this->movement)
-    {
- for(int i = 0 ; i < this->movement->getListJointsMvt()->at(this->indexJointMvtDuMouvement)->getListPositions()->size() ; i++)
- {
-     qreal val = (qreal)this->movement->getListJointsMvt()->at(this->indexJointMvtDuMouvement)->getListPositions()->at(i)->getY();
-     newPoint = QPointF(i, val + yOffset);
-     if(i == 0) oldPoint = newPoint;
-     painter.drawLine(oldPoint, newPoint);
-     oldPoint = newPoint;
- }
-
- yOffset = 150;
-
- for(int i = 0 ; i < this->movement->getListJointsMvt()->at(this->indexJointMvtDuMouvement)->getJointRef()->getBufferPositions()->size() ; i++)
- {
-     qreal val = (qreal)this->movement->getListJointsMvt()->at(this->indexJointMvtDuMouvement)->getJointRef()->getBufferPositions()->at(i)->getY();
-     newPoint = QPointF(i, val + yOffset);
-     if(i == 0) oldPoint = newPoint;
-     painter.drawLine(oldPoint, newPoint);
-     oldPoint = newPoint;
- }
-
- yOffset = 250;
- /*for(int i = 0 ; i < this->listMovementToAnalyze->at(1)->getListJointsMvt()->at(0)->getListPositions()->size() ; i++)
- {
-     qreal val = (qreal)this->listMovementToAnalyze->at(1)->getListJointsMvt()->at(0)->getListPositions()->at(i)->getY();
-     newPoint = QPointF(i, val + yOffset);
-     if(i == 0) oldPoint = newPoint;
-     painter.drawLine(oldPoint, newPoint);
-     oldPoint = newPoint;
- }
- yOffset = 350;
-
- for(int i = 0 ; i < this->listMovementToAnalyze->at(1)->getListJointsMvt()->at(0)->getJointRef()->getBufferPositions()->size() ; i++)
- {
-     qreal val = (qreal)this->listMovementToAnalyze->at(1)->getListJointsMvt()->at(0)->getJointRef()->getBufferPositions()->at(i)->getY();
-     newPoint = QPointF(i, val + yOffset);
-     if(i == 0) oldPoint = newPoint;
-     painter.drawLine(oldPoint, newPoint);
-     oldPoint = newPoint;
- }*/
-
-	/*yOffset = 450;
-
- if(this->EnregistrementVite)
-     for(int i = 0 ; i < this->EnregistrementVite->size() ; i++)
-     {
-  qreal val = (qreal)this->EnregistrementVite->at(i)->getY();
-  newPoint = QPointF(i, val + yOffset);
-  if(i == 0) oldPoint = newPoint;
-  painter.drawLine(oldPoint, newPoint);
-  oldPoint = newPoint;
-     }*/
     }
-
-    /*  freq = 5* (qreal)rand()/RAND_MAX;
-    painter.setPen(Qt::blue);
-    for(int i = 0 ; i < 450 ; i++) {
- qreal val = qCos((qreal)i/20 + freq) * 10;
- newPoint = QPointF(i, val + yOffset);
- if(i == 0) oldPoint = newPoint;
- painter.drawLine(oldPoint, newPoint);
- oldPoint = newPoint;
-    }
-    yOffset = 250;
-    freq = 5* (qreal)rand()/RAND_MAX;
-    painter.setPen(Qt::blue);*/
-
 }

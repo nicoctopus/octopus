@@ -9,9 +9,8 @@
 #include "view/blackboard.h"
 #include "view/stickman.h"
 #include "view/courbes.h"
-
-
-
+#include "view/configanalyse.h"
+#include "view/configrecordmouvement.h"
 
 namespace Ui {
     class MainWindow;
@@ -65,7 +64,8 @@ public slots :
     void slotStartLivePerformance();
     void slotChangeMovementForCourbe(QString);
     void slotSetSampleResetMode(int);
-
+    void slotChangeConfigAnalyse(float, quint16);
+    void slotConfigTempsRecord(quint16, float);
 
 signals :
     void refreshLeftTree();
@@ -76,12 +76,19 @@ signals :
     void clearComboBox();
 
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     Controller *controller;
     Movement *movement;
     QTimer *timer;
     SampleAudio* audioTemp;
+    ConfigAnalyse *configAnalyse;
+    ConfigRecordMouvement *configRecordMouvement;
+    quint16 tempLatence;
+    float tempRecordMovement;
     //QMap<qint16, Movement*> movementsMap; //Pour test ( correspond a la map dans le MANAGER
     //QMap<qint16, QTreeWidgetItem*> itemsLeftMap; //liste des QtreeWidgetItems indexé par l'id des mvt associés
     //QMap<QTreeWidgetItem*, Movement*> mapTreeItemsMovement; //map qui fait correspondre le pointeur sur le move avec le pointeur sur l'item de LeftTree

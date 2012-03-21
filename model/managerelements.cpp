@@ -16,6 +16,7 @@ ManagerElements::ManagerElements() : Manager()
     this->managerSampleAudio->getListSamplesAudios()->append(new SampleAudio("03 Scar Tissue", "../../../03 Scar Tissue.mp3", false,0,0));
     this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(1234, "localhost", false));
     this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(5678, "localhost", false));
+    this->managerClientOSC->getListClientsOSC()->append(new ClientOSC(5678, "localhost", false));
 
     /*this->managerMovements->getListMovements()->append(new Movement("bonjour"));
     JointMvt *j = new JointMvt(1);

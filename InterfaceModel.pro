@@ -47,7 +47,9 @@ SOURCES += main.cpp\
     view/threadmovestickman.cpp \
     view/myqline.cpp \
     model/managerjoints.cpp \
-    view/courbes.cpp
+    view/courbes.cpp \
+    view/configanalyse.cpp \
+    view/configrecordmouvement.cpp
 
 HEADERS  += mainwindow.h \
     model/utils.h \
@@ -95,9 +97,13 @@ HEADERS  += mainwindow.h \
     model/managermovements.h \
     view/threadmovestickman.h \
     view/myqline.h \
-    view/courbes.h
+    view/courbes.h \
+    view/configanalyse.h \
+    view/configrecordmouvement.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    view/configanalyse.ui \
+    view/configrecordmouvement.ui
 
 
 RESOURCES += \
@@ -111,6 +117,12 @@ else:macx: LIBS += -L$$PWD/FMOD/api/lib/ -lfmodex
 
 INCLUDEPATH += $$PWD/FMOD/api/inc
 DEPENDPATH += $$PWD/FMOD/api/inc
+
+
+
+
+
+
 
 
 

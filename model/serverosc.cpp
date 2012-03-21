@@ -6,6 +6,8 @@ ServerOSC::ServerOSC()
     this->recording = false;
     this->setRunnable(false);
     size1,size2,size3,size4,size5,size6,size7,size8,size9,size10 = false;
+    this->vitesse = 0.3;
+    this->amplitude = 55;
 }
 
 ServerOSC::ServerOSC(const quint16 &portNb, const bool &active) : Port(portNb, active){
@@ -14,6 +16,8 @@ ServerOSC::ServerOSC(const quint16 &portNb, const bool &active) : Port(portNb, a
     this->recording = false;
     this->setRunnable(false);
     size1,size2,size3,size4,size5,size6,size7,size8,size9,size10 = false;
+    this->vitesse = 0.3;
+    this->amplitude = 55;
 }
 
 const char* ServerOSC::className() {
@@ -340,7 +344,7 @@ bool ServerOSC::isRecording() {
 }
 
 void ServerOSC::setAnalyse() {
-    this->analyse = new Analyse(0.3,55, this->listMovements); //vitesse, tx erreur
+    this->analyse = new Analyse(this->vitesse,this->amplitude, this->listMovements); //vitesse, tx erreur
 }
 
 void ServerOSC::deleteAnalyse(){
@@ -381,4 +385,24 @@ ServerOSC::~ServerOSC()
     for(int i = 0 ; i < this->listMovements->size() ; i++)
 	delete(this->listMovements->at(i));
     delete(this->listMovements);
+}
+
+void ServerOSC::setAmplitude(quint16 &amplitude)
+{
+    this->amplitude = amplitude;
+}
+
+void ServerOSC::setVitesse(float &vitesse)
+{
+    this->vitesse = vitesse;
+}
+
+float ServerOSC::getVitesse()
+{
+    return this->vitesse;
+}
+
+quint16 ServerOSC::getAmplitude()
+{
+    return this->amplitude;
 }
