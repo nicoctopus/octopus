@@ -21,5 +21,43 @@
         <file>images_boutons/screenVisuels.png</file>
         <file>images_boutons/visuelSynapse.png</file>
         <file>liveOFF.png</file>
+        <file>images_boutons/creermouvementHOVER.png</file>
+        <file>images_boutons/creermouvementPRESSED.png</file>
+        <file>images_boutons/cadenas.png</file>
+        <file>images_boutons/cadenasgris.png</file>
+        <file>images_boutons/cadenasHOVER.png</file>
+        <file>images_boutons/cadenasPRESSED.png</file>
+        <file>images_boutons/creermouvement.png</file>
+        <file>images_boutons/creermouvementgris.png</file>
+        <file>images_boutons/delete.png</file>
+        <file>images_boutons/deletegris.png</file>
+        <file>images_boutons/deleteHOVER.png</file>
+        <file>images_boutons/deletePRESSED.png</file>
+        <file>images_boutons/enlever.png</file>
+        <file>images_boutons/nouveau.png</file>
+        <file>images_boutons/nouveauHOVER.png</file>
+        <file>images_boutons/nouveauPRESSED.png</file>
+        <file>images_boutons/pause.png</file>
+        <file>images_boutons/pauseHOVER.png</file>
+        <file>images_boutons/pausePRESSED.png</file>
+        <file>images_boutons/play.png</file>
+        <file>images_boutons/playgris.png</file>
+        <file>images_boutons/playHOVER.png</file>
+        <file>images_boutons/playPRESSED.png</file>
+        <file>images_boutons/record.png</file>
+        <file>images_boutons/recordgris.png</file>
+        <file>images_boutons/recordHOVER.png</file>
+        <file>images_boutons/recordnouveau.png</file>
+        <file>images_boutons/recordnouveauHOVER.png</file>
+        <file>images_boutons/recordnouveauPRESSED.png</file>
+        <file>images_boutons/recordPRESSED.png</file>
+        <file>images_boutons/save.png</file>
+        <file>images_boutons/savegris.png</file>
+        <file>images_boutons/saveHOVER.png</file>
+        <file>images_boutons/savePRESSED.png</file>
+        <file>images_boutons/stop.png</file>
+        <file>images_boutons/stopgris.png</file>
+        <file>images_boutons/stopHOVER.png</file>
+        <file>images_boutons/stopPRESSED.png</file>
     </qresource>
 </RCC>

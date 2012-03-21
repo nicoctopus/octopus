@@ -48,6 +48,8 @@ SOURCES += main.cpp\
     view/myqline.cpp \
     model/managerjoints.cpp \
     view/courbes.cpp \
+    view/loopspinbox.cpp
+    view/courbes.cpp \
     view/configanalyse.cpp \
     view/configrecordmouvement.cpp
 
@@ -98,6 +100,8 @@ HEADERS  += mainwindow.h \
     view/threadmovestickman.h \
     view/myqline.h \
     view/courbes.h \
+    view/loopspinbox.h
+    view/courbes.h \
     view/configanalyse.h \
     view/configrecordmouvement.h
 
@@ -117,10 +121,6 @@ else:macx: LIBS += -L$$PWD/FMOD/api/lib/ -lfmodex
 
 INCLUDEPATH += $$PWD/FMOD/api/inc
 DEPENDPATH += $$PWD/FMOD/api/inc
-
-
-
-
 
 
 

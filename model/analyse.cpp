@@ -23,7 +23,6 @@ Analyse::Analyse(float pourc,float seuil, QList<Movement*>* listMovements)
     this->ListEcartEnr = new QList<Position*>();
     this->ListEcartBuf = new QList<Position*>();
     this->playerlive = new SoundPlayer(32);
-
 }
 
 void Analyse::calculBITG(){

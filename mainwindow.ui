@@ -20,153 +20,312 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QPushButton#pushButton_stoprecord{
+   <string notr="true">QDockWidget {
 
-	background:url(:/new/prefix1/images_boutons/stopgris.png);
-	border-radius: 10px;
-	color: rgb(255, 255, 255);
+/*border: 1px solid lightgray;*/
+
+background-color: rgb(66,66,72);
+
+color: rgb(250,250,250);
+
+}
+QDockWidget::title {
+     text-align: left; /* align the text to the left */
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(150,150,150), stop: 1 rgb(50,50,50));
+     padding-left: 5px;
+ }
+QLabel{
+	color:rgb(240,240,240);
+}
+QPushButton {
+
+border-top: 1px transparent;
+
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
+
+}
+
+QLCDNumber{
+
+font: &quot;Times&quot;;
+
+background-color:rgb(200,200,200);
+
+color:rgb(255,0,0);
+
+}
+
+/*QMainWindow::separator {
+
+background: yellow;
+
+width: 10px;
+
+height: 10px;
+
+}
+
+QMainWindow::separator:hover {
+
+background: red;
+
+}*/
+
+QMainWindow{
+
+background-color: rgb(66,66,72);
+
+color: rgb(255,255,255);
+
+}
+
+
+
+QCheckBox{
+
+color:rgb(250,250,250);
+
+}
+
+QLineEdit {
+
+border: 2px solid white;
+
+border-radius: 10px;
+
+padding: 0 8px;
+
+selection-background-color: darkgray;
+
+}
+
+/****************************************************************/
+
+QPushButton#pushButton_stoprecord{
+
+border-image:url(:/new/prefix1/images_boutons/stop.png) 1 1 1 1;
+
+}
+
+QPushButton#pushButton_stoprecord:hover{
+
+border-image:url(:/new/prefix1/images_boutons/stopHOVER.png) 1 1 1 1;
+
+}
+
+QPushButton#pushButton_stoprecord:pressed{
+
+border-image:url(:/new/prefix1/images_boutons/stopPRESSED.png) 1 1 1 1;
+
 }
 
 QPushButton#ButtonAdd{
 
-	background:url(:/new/prefix1/images_boutons/nouveau.png);
-	border-radius: 10px;
-	color: rgb(255, 255, 255);
+border-image:url(:/new/prefix1/images_boutons/nouveau.png)1 1 1 1;
+
+}
+
+QPushButton#ButtonAdd:hover{
+
+border-image:url(:/new/prefix1/images_boutons/nouveauHOVER.png)1 1 1 1;
+
+}
+
+QPushButton#ButtonAdd:pressed{
+
+border-image:url(:/new/prefix1/images_boutons/nouveauPRESSED.png)1 1 1 1;
+
 }
 
 QPushButton#ButtonDelete{
 
-	background:url(:/new/prefix1/images_boutons/enlevergris.png);
-	border-radius: 10px;
-  
-	color: rgb(255, 255, 255);
+border-image:url(:/new/prefix1/images_boutons/enlever.png)1 1 1 1;
+
 }
 
+QPushButton#ButtonDelete:hover{
 
+border-image:url(:/new/prefix1/images_boutons/enleverHOVER.png)1 1 1 1;
+
+}
+
+QPushButton#ButtonDelete:pressed{
+
+border-image:url(:/new/prefix1/images_boutons/enleverPRESSED.png)1 1 1 1;
+
+}
 
 QPushButton#pushButton_creermouvement{
 
-	background:url(:/new/prefix1/images_boutons/creermouvement.png);
-	border-radius: 13px;
-	
-	color: rgb(255, 255, 255);
-  
+border-image:url(:/new/prefix1/images_boutons/creermouvement.png)1 1 1 1;
+
+}
+
+QPushButton#pushButton_creermouvement:hover{
+
+border-image:url(:/new/prefix1/images_boutons/creermouvementHOVER.png)1 1 1 1;
+
+}
+
+QPushButton#pushButton_creermouvement:pressed{
+
+border-image:url(:/new/prefix1/images_boutons/creermouvementPRESSED.png)1 1 1 1;
+
 }
 
 QPushButton#pushButton_verrouiller{
 
-	background:url(:/new/prefix1/images_boutons/cadenasgris.png);
-	border-radius: 13px;
-  
-	color: rgb(255, 255, 255);
-	
+border-image:url(:/new/prefix1/images_boutons/cadenas.png)1 1 1 1;
+
+}
+
+QPushButton#pushButton_verrouiller:hover{
+
+border-image:url(:/new/prefix1/images_boutons/cadenasHOVER.png)1 1 1 1;
+
+}
+
+QPushButton#pushButton_verrouiller:pressed{
+
+border-image:url(:/new/prefix1/images_boutons/cadenasPRESSED.png)1 1 1 1;
+
 }
 
 QPushButton#pushButton_recordmouvement{
 
-	background:url(:/new/prefix1/images_boutons/recordgris.png);
-	border-radius: 13px;
+border-image:url(:/new/prefix1/images_boutons/record.png)1 1 1 1;
 
-	color: rgb(255, 255, 255);
 }
+
+QPushButton#pushButton_recordmouvement:hover{
+
+border-image:url(:/new/prefix1/images_boutons/recordHOVER.png)1 1 1 1;
+
+}
+
+QPushButton#pushButton_recordmouvement:pressed{
+
+border-image:url(:/new/prefix1/images_boutons/recordPRESSED.png)1 1 1 1;
+
+}
+
 QPushButton#pushButton_playmouvement{
 
-	background:url(:/new/prefix1/images_boutons/playgris.png);
-	border-radius: 13px;
-	
-	color: rgb(255, 255, 255);
+border-image:url(:/new/prefix1/images_boutons/play.png)1 1 1 1;
+
+}
+
+QPushButton#pushButton_playmouvement:hover{
+
+border-image:url(:/new/prefix1/images_boutons/playHOVER.png)1 1 1 1;
+
+}
+
+QPushButton#pushButton_playmouvement:pressed{
+
+border-image:url(:/new/prefix1/images_boutons/playPRESSED.png)1 1 1 1;
+
 }
 
 QPushButton#pushButton_enregistrermouvement{
 
-	background:url(:/new/prefix1/images_boutons/savegris.png);
-	border-radius: 13px;
-	
-  
-	color: rgb(255, 255, 255);
+border-image:url(:/new/prefix1/images_boutons/save.png)1 1 1 1;
+
 }
 
+QPushButton#pushButton_enregistrermouvement:hover{
+
+border-image:url(:/new/prefix1/images_boutons/saveHOVER.png)1 1 1 1;
+
+}
+
+QPushButton#pushButton_enregistrermouvement:pressed{
+
+border-image:url(:/new/prefix1/images_boutons/savePRESSED.png)1 1 1 1;
+
+}
 
 QPushButton#pushButton_supprimermouvement{
 
-	background:url(:/new/prefix1/images_boutons/deletegris.png);
-	border-radius: 13px;
-	
-	color: rgb(255, 255, 255);
-	
+border-image:url(:/new/prefix1/images_boutons/delete.png)1 1 1 1;
+
+}
+
+QPushButton#pushButton_supprimermouvement:hover{
+
+border-image:url(:/new/prefix1/images_boutons/deleteHOVER.png)1 1 1 1;
+
+}
+
+QPushButton#pushButton_supprimermouvement:pressed{
+
+border-image:url(:/new/prefix1/images_boutons/deletePRESSED.png)1 1 1 1;
+
 }
 
 QPushButton#pushButton_playlecteur{
 
-	background:url(:/new/prefix1/images_boutons/play.png);
-	border-radius: 13px;
-	
-	color: rgb(255, 255, 255);
+border-image:url(:/new/prefix1/images_boutons/play.png)1 1 1 1;
+
+}
+
+QPushButton#pushButton_playlecteur:hover{
+
+border-image:url(:/new/prefix1/images_boutons/playHOVER.png)1 1 1 1;
+
+}
+
+QPushButton#pushButton_playlecteur:pressed{
+
+border-image:url(:/new/prefix1/images_boutons/playPRESSED.png)1 1 1 1;
+
 }
 
 QPushButton#pushButton_stoplecteur{
 
-	background:url(:/new/prefix1/images_boutons/stop.png);
-	border-radius: 13px;
-	
+border-image:url(:/new/prefix1/images_boutons/stop.png)1 1 1 1;
+
 }
 
-QPushButton#pushButton_stoplecteur{
+QPushButton#pushButton_stoplecteur:hover{
 
-	background:url(:/new/prefix1/images_boutons/stop.png);
-	border-radius: 13px;
-	
-	color: rgb(255, 255, 255);
+border-image:url(:/new/prefix1/images_boutons/stopHOVER.png)1 1 1 1;
 }
+
+QPushButton#pushButton_stoplecteur:pressed{
+
+border-image:url(:/new/prefix1/images_boutons/stopPRESSED.png)1 1 1 1;
+
+}
+
+
+
+/*
 
 QTreeView {
-     show-decoration-selected: 1;
- }
 
- QLineEdit {
-        border: 2px solid white;
-     border-radius: 10px;
-     padding: 0 8px;
-    
-     selection-background-color: darkgray;
- }
+show-decoration-selected: 1;
 
+}*/
+
+/*
 
 QTableWidgetItem{
+
 border: 1px solid #d9d9d9;
- show-decoration-selected: 1;
-     border-top-color: transparent;
-     border-bottom-color: transparent;
-}
 
- QTreeView::item {
-      border: 1px solid #d9d9d9;
-     border-top-color: transparent;
-     border-bottom-color: transparent;
- }
+show-decoration-selected: 1;
 
- QTreeView::item:hover {
-     /*background: rgb(241, 94, 34); */
-     border: 1px solid #bfcde4;
- }
+border-top-color: transparent;
 
- QTreeView::item:selected {
-     border: 1px solid #567dbc;
- }
+border-bottom-color: transparent;
 
- QTreeView::item:selected:active{
-    background: rgb(87, 141, 153); 
- }
-
- QTreeView::item:selected:!active {
-     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6b9be8, stop: 1 #577fbf);
- }
-
-LCDNumber:: {
-
-background-color: rgb(81, 255, 255);
-
-}</string>
+}*/</string>
   </property>
   <property name="dockNestingEnabled">
    <bool>true</bool>
@@ -182,7 +341,8 @@ background-color: rgb(81, 255, 255);
     <item>
      <widget class="BlackBoard" name="blackboard" native="true">
       <property name="styleSheet">
-       <string notr="true">background-color : rgb(185, 185, 185);</string>
+       <string notr="true">background-color : rgb(180, 180, 180);
+border-radius: 10px;</string>
       </property>
      </widget>
     </item>
@@ -207,24 +367,24 @@ background-color: rgb(81, 255, 255);
    </property>
    <property name="minimumSize">
     <size>
-     <width>200</width>
+     <width>218</width>
      <height>426</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>200</width>
+     <width>524287</width>
      <height>524287</height>
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.008 rgba(219, 223, 224, 255), stop:1 rgba(196, 199, 200, 255));</string>
+    <string notr="true"/>
    </property>
    <property name="features">
     <set>QDockWidget::DockWidgetFloatable</set>
    </property>
    <property name="windowTitle">
-    <string>Arborescence</string>
+    <string>Bibliothèque</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -268,7 +428,12 @@ background-color: rgb(81, 255, 255);
       </layout>
      </item>
      <item>
-      <widget class="MyLeftTree" name="leftTree" native="true"/>
+      <widget class="MyLeftTree" name="leftTree" native="true">
+       <property name="styleSheet">
+        <string notr="true">background-color : rgb(200, 200, 200);
+border-radius: 10px;</string>
+       </property>
+      </widget>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -330,6 +495,9 @@ font: 14pt &quot;Fengardo&quot;;</string>
            <height>30</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">border-radius: 5px;</string>
+         </property>
         </widget>
        </item>
       </layout>
@@ -369,7 +537,18 @@ font: 14pt &quot;Fengardo&quot;;</string>
         <bool>true</bool>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(255, 255, 255);</string>
+        <string notr="true">background-color : rgb(180, 180, 180);
+border-radius: 10px;
+</string>
+       </property>
+       <property name="html">
+        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;SALUT A¨HDAPPS &lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#bf9782;&quot;&gt;ggljjh&lt;/span&gt;&lt;br /&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;AP DAPHSAIHSPAS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -379,14 +558,34 @@ font: 14pt &quot;Fengardo&quot;;</string>
         <number>0</number>
        </property>
        <item>
-        <widget class="QLabel" name="loopLabel">
+        <widget class="QCheckBox" name="loopBox">
          <property name="text">
-          <string>Loop :</string>
+          <string> Activer Loop</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="loopSpin"/>
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="loopLabel">
+         <property name="text">
+          <string>Nb Loop :</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="LoopSpinBox" name="loopSpin"/>
        </item>
        <item>
         <spacer name="horizontalSpacer_2">
@@ -427,7 +626,7 @@ font: 14pt &quot;Fengardo&quot;;</string>
        <property name="styleSheet">
         <string notr="true">
 background-color :rgb(87, 141, 153);
-border-radius: 25px;</string>
+border-radius: 10px;</string>
        </property>
       </widget>
      </item>
@@ -536,6 +735,9 @@ border-radius: 25px;</string>
            <height>16777215</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">border-radius: 5px;</string>
+         </property>
         </widget>
        </item>
       </layout>
@@ -566,6 +768,9 @@ border-radius: 25px;</string>
     <layout class="QVBoxLayout" name="verticalLayout_7">
      <item>
       <widget class="QTabWidget" name="tabWidget">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <property name="currentIndex">
         <number>0</number>
        </property>
@@ -612,79 +817,42 @@ border-radius: 25px;</string>
    <widget class="QWidget" name="dockWidgetContents_8">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_6">
-       <item>
-        <spacer name="horizontalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="record">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>RECORD</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="start">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>START</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLCDNumber" name="timer">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>40</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>Paramètres de l'analyse</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+      <widget class="QPushButton" name="start">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>START</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="record">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>RECORD</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLCDNumber" name="timer">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>40</height>
+        </size>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -715,12 +883,18 @@ border-radius: 25px;</string>
    <header>view/mylefttree.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>LoopSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header location="global">view/loopspinbox.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>pushButton_playlecteur</tabstop>
   <tabstop>pushButton_stoplecteur</tabstop>
   <tabstop>labelTitleSong</tabstop>
-  <tabstop>pushButton_creermouvement</tabstop>
+  <tabstop>start</tabstop>
+  <tabstop>record</tabstop>
   <tabstop>textBrowser</tabstop>
   <tabstop>ButtonAdd</tabstop>
   <tabstop>pushButton_verrouiller</tabstop>

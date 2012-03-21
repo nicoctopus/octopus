@@ -27,7 +27,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->loopSpin->setVisible(false);
     ui->loopLabel->setVisible(false);
     ui->resetBox->setVisible(false);
+    ui->loopBox->setVisible(false);
 
+    ui->loopSpin->setEnabled(false);
+    ui->loopLabel->setEnabled(false);
 
 
 
@@ -36,16 +39,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->pushButton_supprimermouvement->setEnabled(false);
     ui->pushButton_verrouiller->setEnabled(false);
 
-    ui->pushButton_creermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/creermouvement.png)");
-    ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/savegris.png)");
+    ui->pushButton_creermouvement->setStyleSheet("");
+    ui->pushButton_enregistrermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/savegris.png)");
 
-    ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/recordgris.png)");
-    ui->pushButton_supprimermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/deletegris.png)");
-    ui->pushButton_verrouiller->setStyleSheet("background:url(:/new/prefix1/images_boutons/cadenasgris.png)");
-    ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/play.png)");
-    ui->pushButton_stoplecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/stop.png)");
+    ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
+    ui->pushButton_supprimermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/deletegris.png)");
+    ui->pushButton_verrouiller->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/cadenasgris.png)");
+    ui->pushButton_playlecteur->setStyleSheet("");
+    ui->pushButton_stoplecteur->setStyleSheet("");
 
     connect(ui->resetBox,SIGNAL(stateChanged(int)),this,SLOT(slotSetSampleResetMode(int)));
+    connect(ui->loopBox,SIGNAL(stateChanged(int)),this,SLOT(slotSetSampleLoopMode(int)));
+    connect(ui->loopSpin,SIGNAL(valueChanged(QString)),this,SLOT(slotSetSampleSpinBox(QString)));
 
     connect(ui->pushButton_playlecteur,SIGNAL(pressed()),this,SLOT(slotPlayPause()));
 
@@ -269,18 +274,16 @@ void MainWindow::slotPlayPause(){
     if(ok == true)
     {
         bool temp = false;
-	temp = controller->getPlayerDemo()->playDemo(sampleAudio);
+        temp = controller->getPlayerDemo()->playDemo(sampleAudio);
         ui->labelTitleSong->setText(sampleAudio->getName());
         if(temp==true){
-            //ui->pushButton_pause->setVisible(true);
-            //ui->pushButton_playlecteur->setVisible(false);
 
-            ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/pause.png)");
+
+           ui->pushButton_playlecteur->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/pause.png)");
         }else{
 
-            // ui->pushButton_pause->setVisible(false);
-            // ui->pushButton_playlecteur->setVisible(true);
-            ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/play.png)");
+
+            ui->pushButton_playlecteur->setStyleSheet("");
         }
     }
 
@@ -289,9 +292,8 @@ void MainWindow::slotPlayPause(){
 void MainWindow::slotStop(){
     controller->getPlayerDemo()->Stop();
     ui->labelTitleSong->setText("");
-    ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/play.png)");
-    //ui->pushButton_pause->setVisible(false);
-    //ui->pushButton_playlecteur->setVisible(true);
+    ui->pushButton_playlecteur->setStyleSheet("");
+
 
 }
 
@@ -309,6 +311,8 @@ void MainWindow::slotDisplayInfos(QTreeWidgetItem* item,int column){
         ui->loopSpin->setVisible(false);
         ui->resetBox->setVisible(false);
         ui->loopLabel->setVisible(false);
+        ui->loopBox->setVisible(false);
+
         return;
     }
 
@@ -387,6 +391,7 @@ QString MainWindow::textDisplay(Movement *movement)
     ui->loopSpin->setVisible(false);
     ui->resetBox->setVisible(false);
     ui->loopLabel->setVisible(false);
+    ui->loopBox->setVisible(false);
     QString text;
     text.append("<b>Name : </b>");
     text.append(movement->getName());
@@ -433,9 +438,14 @@ QString MainWindow::textDisplay(SampleAudio *sampleAudio)
     ui->loopSpin->setVisible(true);
     ui->resetBox->setVisible(true);
     ui->loopLabel->setVisible(true);
+    ui->loopBox->setVisible(true);
+
     this->audioTemp = sampleAudio;
 
     ui->resetBox->setChecked(sampleAudio->getResetActive());
+    ui->loopBox->setChecked(sampleAudio->getLoopActive());
+
+
     QString text;
     int temp;
     text.append("<b>Nom : </b>");
@@ -444,17 +454,26 @@ QString MainWindow::textDisplay(SampleAudio *sampleAudio)
     text.append("<b>URL : </b>");
     text.append(sampleAudio->getFileURL());
     text.append("<br/>");
-    text.append("<b> Nombres de boucles : </b>");
-    temp= sampleAudio->getNbLoop();
+    text.append("<b> Loop Mode : </b>");
+    if(sampleAudio->getLoopActive())
+        text.append("ON");
+    else
+        text.append("OFF");
+    text.append("<br/>");
+    if(sampleAudio->getLoopActive())
+    {
+     text.append(" Nombre Loop : ");
+     temp= sampleAudio->getNbLoop();
     if(temp==-1){
         text.append("INFINIE");
     }else if(temp==0){
-        text.append("Pas de loop");
+        text.append("One Shot");
     }else{
 
-        text.append(QString::number(temp-1));
+        text.append(QString::number(temp+1));
     }
     text.append("<br/>");
+    }
     text.append("<b> Mode Reset actif :  </b>");
     if(sampleAudio->getResetActive())
         text.append("OUI");
@@ -502,9 +521,9 @@ void MainWindow::slotUnlockStickMan(){
         }
     }
 
-    ui->pushButton_creermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/creermouvementgris.png)");
-    ui->pushButton_verrouiller->setStyleSheet("background:url(:/new/prefix1/images_boutons/cadenas.png)");
-    ui->pushButton_supprimermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/delete.png)");
+    ui->pushButton_creermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/creermouvementgris.png)");
+    ui->pushButton_verrouiller->setStyleSheet("");
+    ui->pushButton_supprimermouvement->setStyleSheet("");
 
     ui->pushButton_creermouvement->setEnabled(false);
     ui->pushButton_verrouiller->setEnabled(true);
@@ -539,8 +558,8 @@ int MainWindow::slotLockNodesForNewMouvement(){
 	this->configRecordMouvement->show();
     }
 
-    ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/record.png)");
-    ui->pushButton_verrouiller->setStyleSheet("background:url(:/new/prefix1/images_boutons/cadenasgris.png)");
+    ui->pushButton_recordmouvement->setStyleSheet("");
+    ui->pushButton_verrouiller->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/cadenasgris.png)");
 
     ui->pushButton_recordmouvement->setEnabled(true);
     ui->pushButton_verrouiller->setEnabled(false);
@@ -552,7 +571,7 @@ int MainWindow::slotLockNodesForNewMouvement(){
 void MainWindow::slotRecordNewMovement(){
 
     if(isRecording == false){
-        ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/stop.png)");
+         ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/stop.png)");
         //RECORD UN MOVEMENT
 	sleep(this->tempLatence);
 	this->controller->recordMovement(this->movement);
@@ -560,11 +579,11 @@ void MainWindow::slotRecordNewMovement(){
         isRecording = true;
     }
     else if(isRecording == true){
-        ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/recordgris.png)");
+         ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
         ui->pushButton_recordmouvement->setEnabled(false);
         ui->nommouvement->setVisible(true);
 	ui->nommouvement->setText("");
-        ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/save.png)");
+        ui->pushButton_enregistrermouvement->setStyleSheet("");
         ui->pushButton_enregistrermouvement->setEnabled(true);
 
         //ON STOP LE RECORD
@@ -579,11 +598,11 @@ void MainWindow::slotTimeOutRecord()
     //ON STOP LE RECORD
     this->controller->stopRecord(this->movement);
     //ON AFFICHE LES BOUTONS
-    ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/recordgris.png)");
+    ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
     ui->pushButton_recordmouvement->setEnabled(false);
     ui->nommouvement->setVisible(true);
     ui->nommouvement->setText("");
-    ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/save.png)");
+    ui->pushButton_enregistrermouvement->setStyleSheet("");
     ui->pushButton_enregistrermouvement->setEnabled(true);
 
     isRecording = false;
@@ -603,15 +622,14 @@ void MainWindow::slotValidNewMovement(){
 	this->refreshLeftTree();
 	//qDebug() << movement->getName() << endl;
 
-	//ui->pushButton_enregistrermouvement->setVisible(false);
-	//ui->pushButton_supprimermouvement->setVisible(false);
+
 	ui->nommouvement->setVisible(false);
-	//ui->pushButton_creermouvement->setVisible(true);
-	ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/savegris.png)");
+
+        ui->pushButton_enregistrermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/savegris.png)");
+        ui->pushButton_enregistrermouvement->setEnabled(false);
+        ui->pushButton_supprimermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/deletegris.png)");
 	ui->pushButton_enregistrermouvement->setEnabled(false);
-	ui->pushButton_supprimermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/deletegris.png)");
-	ui->pushButton_enregistrermouvement->setEnabled(false);
-	ui->pushButton_creermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/creermouvement.png)");
+        ui->pushButton_creermouvement->setStyleSheet("");
 	ui->pushButton_creermouvement->setEnabled(true);
 
 	//ui->stickMan->reCreateStickMan();
@@ -629,11 +647,11 @@ void MainWindow::slotEscNewMovement(){
 
     ui->nommouvement->setVisible(false);
 
-    ui->pushButton_creermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/creermouvement.png)");
-    ui->pushButton_enregistrermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/savegris.png)");
-    ui->pushButton_recordmouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/recordgris.png)");
-    ui->pushButton_supprimermouvement->setStyleSheet("background:url(:/new/prefix1/images_boutons/deletegris.png)");
-    ui->pushButton_verrouiller->setStyleSheet("background:url(:/new/prefix1/images_boutons/cadenasgris.png)");
+    ui->pushButton_creermouvement->setStyleSheet("");
+    ui->pushButton_enregistrermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/savegris.png)");
+    ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
+    ui->pushButton_supprimermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/deletegris.png)");
+    ui->pushButton_verrouiller->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/cadenasgris.png)");
     ui->stickMan->reCreateStickMan();
 
 }
@@ -705,7 +723,9 @@ void MainWindow::slotSetSampleResetMode(int state){
      this->audioTemp->setResetActive(false);
     }else{
        this->audioTemp->setResetActive(true);
+
     }
+    this->save(this->audioTemp);
  ui->textBrowser->setText(this->textDisplay(this->audioTemp));
 }
 
@@ -731,4 +751,32 @@ void MainWindow::slotConfigTempsRecord(quint16 tempsLatence, float tempsRecord)
     qDebug() << "youhou" << endl;
     this->tempLatence = tempsLatence;
     this->tempRecordMovement = tempsRecord;
+}
+void MainWindow::slotSetSampleLoopMode(int state){
+
+    if(state==0){
+        this->audioTemp->setLoopActive(false);
+        ui->loopSpin->setEnabled(false);
+        ui->loopLabel->setEnabled(false);
+    }else{
+        this->audioTemp->setLoopActive(true);
+        ui->loopSpin->setEnabled(true);
+        ui->loopLabel->setEnabled(true);
+    }
+     this->save(this->audioTemp);
+    ui->textBrowser->setText(this->textDisplay(this->audioTemp));
+
+}
+
+void MainWindow::slotSetSampleSpinBox(QString str){
+
+   if(str=="INF"){
+     this->audioTemp->setNbLoop(-1);
+    }else{
+      int y ;
+      y = str.toInt();
+      this->audioTemp->setNbLoop(y-1);
+    }
+   this->save(this->audioTemp);
+    ui->textBrowser->setText(this->textDisplay(this->audioTemp));
 }

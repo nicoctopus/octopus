@@ -66,6 +66,8 @@ public slots :
     void slotSetSampleResetMode(int);
     void slotChangeConfigAnalyse(float, quint16);
     void slotConfigTempsRecord(quint16, float);
+    void slotSetSampleLoopMode(int);
+    void slotSetSampleSpinBox(QString);
 
 signals :
     void refreshLeftTree();

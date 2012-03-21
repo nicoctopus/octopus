@@ -208,7 +208,7 @@ quint32 end=0;
                 chan->setPaused(false);*/
 
                 chan->stop();
-
+                if(aud->getLoopActive()){
                 this->result = system->createStream(aud->getFileURL().toStdString().c_str(),FMOD_DEFAULT,0,&sound);
                 if(result != FMOD_OK)
                     qDebug()<< "PBLM creation stream" << endl;
@@ -222,6 +222,15 @@ quint32 end=0;
                 if(result != FMOD_OK)
                     qDebug()<< "PBLM play stream arreté" << endl;
 
+                }else{
+
+                    this->result = system->createStream(aud->getFileURL().toStdString().c_str(),FMOD_DEFAULT,0,&sound);
+                    if(result != FMOD_OK)
+                        qDebug()<< "PBLM creation stream" << endl;
+
+                    this->result = system->playSound((FMOD_CHANNELINDEX) map.value(aud->getId()) , sound, FALSE,&chan);
+
+                }
             }else{
                 chan->stop();
             }
@@ -229,6 +238,7 @@ quint32 end=0;
             FMOD::Sound *sound;
             //soundlist.append(sound);
 
+            if(aud->getLoopActive()){
             this->result = system->createStream(aud->getFileURL().toStdString().c_str(),FMOD_DEFAULT,0,&sound);
             if(result != FMOD_OK)
                 qDebug()<< "PBLM creation stream" << endl;
@@ -242,6 +252,15 @@ quint32 end=0;
             if(result != FMOD_OK)
                 qDebug()<< "PBLM play stream arreté" << endl;
 
+            }else{
+
+                this->result = system->createStream(aud->getFileURL().toStdString().c_str(),FMOD_DEFAULT,0,&sound);
+                if(result != FMOD_OK)
+                    qDebug()<< "PBLM creation stream" << endl;
+
+                this->result = system->playSound((FMOD_CHANNELINDEX) map.value(aud->getId()) , sound, FALSE,&chan);
+
+            }
         }
 
 
@@ -251,22 +270,29 @@ quint32 end=0;
         int x=0;
 
 
+        if(aud->getLoopActive()){
         this->result = system->createStream(aud->getFileURL().toStdString().c_str(),FMOD_DEFAULT,0,&sound);
         if(result != FMOD_OK)
-            qDebug()<< "PBLM Creation Nouveau Stream" << endl;
-
+            qDebug()<< "PBLM creation stream" << endl;
 
         sound->getLength(&end,FMOD_TIMEUNIT_MS);
-        sound->setLoopPoints(0,FMOD_TIMEUNIT_MS,end,FMOD_TIMEUNIT_MS);
+        sound->setLoopPoints(20,FMOD_TIMEUNIT_MS,end,FMOD_TIMEUNIT_MS);
         sound->setLoopCount(aud->getNbLoop());
         sound->setMode(FMOD_LOOP_NORMAL);
 
-
-        this->result = system->playSound(FMOD_CHANNEL_FREE, sound, FALSE,&this->channel);
+        this->result = system->playSound((FMOD_CHANNELINDEX) map.value(aud->getId()) , sound, FALSE,&this->channel);
         if(result != FMOD_OK)
-            qDebug()<< "PBLM play nouveau stream" << endl;
+            qDebug()<< "PBLM play stream arreté" << endl;
 
+        }else{
 
+            this->result = system->createStream(aud->getFileURL().toStdString().c_str(),FMOD_DEFAULT,0,&sound);
+            if(result != FMOD_OK)
+                qDebug()<< "PBLM creation stream" << endl;
+
+            this->result = system->playSound((FMOD_CHANNELINDEX) map.value(aud->getId()) , sound, FALSE,&this->channel);
+
+        }
 
 
         this->result = channel->getIndex(&x);

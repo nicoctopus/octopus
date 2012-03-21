@@ -18,7 +18,7 @@ MyLeftTree::MyLeftTree(QWidget *parent) : QTreeWidget(parent)
 
     this->createActions();
 
-    this->setHeaderLabel("Left Tree");
+    this->setHeaderLabel(" ");
 
 
     this->setDragEnabled( true );
