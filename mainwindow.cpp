@@ -24,6 +24,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     this->setWindowTitle("Octopus");
     ui->nommouvement->setVisible(false);
+    ui->loopSpin->setVisible(false);
+    ui->loopLabel->setVisible(false);
+    ui->resetBox->setVisible(false);
+
+
+
 
     ui->pushButton_enregistrermouvement->setEnabled(false);
     ui->pushButton_recordmouvement->setEnabled(false);
@@ -38,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->pushButton_verrouiller->setStyleSheet("background:url(:/new/prefix1/images_boutons/cadenasgris.png)");
     ui->pushButton_playlecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/play.png)");
     ui->pushButton_stoplecteur->setStyleSheet("background:url(:/new/prefix1/images_boutons/stop.png)");
+
+    connect(ui->resetBox,SIGNAL(stateChanged(int)),this,SLOT(slotSetSampleResetMode(int)));
 
     connect(ui->pushButton_playlecteur,SIGNAL(pressed()),this,SLOT(slotPlayPause()));
 
@@ -295,6 +303,9 @@ void MainWindow::slotDisplayInfos(QTreeWidgetItem* item,int column){
     //Blindage
     if(item->text(0) == "Movements" || item->text(0) == "Samples" || item->text(0) == "Ports" || item->text(0) == "Videos" ){
         ui->textBrowser->setText("");
+        ui->loopSpin->setVisible(false);
+        ui->resetBox->setVisible(false);
+        ui->loopLabel->setVisible(false);
         return;
     }
 
@@ -370,6 +381,9 @@ void MainWindow::slotDisplayInfos(QGraphicsItem* item)
 
 QString MainWindow::textDisplay(Movement *movement)
 {
+    ui->loopSpin->setVisible(false);
+    ui->resetBox->setVisible(false);
+    ui->loopLabel->setVisible(false);
     QString text;
     text.append("<b>Name : </b>");
     text.append(movement->getName());
@@ -413,26 +427,55 @@ QString MainWindow::textDisplay(Movement *movement)
 
 QString MainWindow::textDisplay(SampleAudio *sampleAudio)
 {
+    ui->loopSpin->setVisible(true);
+    ui->resetBox->setVisible(true);
+    ui->loopLabel->setVisible(true);
+    this->audioTemp = sampleAudio;
+
+    ui->resetBox->setChecked(sampleAudio->getResetActive());
     QString text;
-    text.append("<b>Name : </b>");
+    int temp;
+    text.append("<b>Nom : </b>");
     text.append(sampleAudio->getName());
     text.append("<br/>");
     text.append("<b>URL : </b>");
     text.append(sampleAudio->getFileURL());
     text.append("<br/>");
+    text.append("<b> Nombres de boucles : </b>");
+    temp= sampleAudio->getNbLoop();
+    if(temp==-1){
+        text.append("INFINIE");
+    }else if(temp==0){
+        text.append("Pas de loop");
+    }else{
+
+        text.append(QString::number(temp-1));
+    }
+    text.append("<br/>");
+    text.append("<b> Mode Reset actif :  </b>");
+    if(sampleAudio->getResetActive())
+        text.append("OUI");
+    else
+        text.append("NON");
+    text.append("<br/>");
+    if(sampleAudio->getListIdMovement()->size()>0){
     text.append("<b>Mouvements liés : </b>");
     for(int i = 0 ; i < sampleAudio->getListIdMovement()->size() ; i ++)
     {
         text.append(QString::number(sampleAudio->getListIdMovement()->at(i)));
         text.append("<br/>");
     }
+    }
     return text;
 }
 
 QString MainWindow::textDisplay(ClientOSC *port)
 {
+    ui->loopSpin->setVisible(false);
+    ui->resetBox->setVisible(false);
+    ui->loopLabel->setVisible(false);
     QString text;
-    text.append("<b>Name : </b>");
+    text.append("<b>Nom : </b>");
     text.append(port->getName());
     text.append("<br/>");
     text.append("<b>Serveur : </b>");
@@ -648,3 +691,14 @@ void MainWindow::slotChangeMovementForCourbe(QString text)
 	    this->refreshCourbes(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
 
 }
+
+void MainWindow::slotSetSampleResetMode(int state){
+
+    if(state==0){
+     this->audioTemp->setResetActive(false);
+    }else{
+       this->audioTemp->setResetActive(true);
+    }
+ ui->textBrowser->setText(this->textDisplay(this->audioTemp));
+}
+

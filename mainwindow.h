@@ -4,6 +4,7 @@
 
 #include <QMainWindow>
 #include <QtGui>
+#include <QStringList>
 #include "model/controller.h"
 #include "view/blackboard.h"
 #include "view/stickman.h"
@@ -63,6 +64,8 @@ public slots :
     void slotDisplayInfos(QGraphicsItem* item);
     void slotStartLivePerformance();
     void slotChangeMovementForCourbe(QString);
+    void slotSetSampleResetMode(int);
+
 
 signals :
     void refreshLeftTree();
@@ -78,6 +81,7 @@ private:
     Controller *controller;
     Movement *movement;
     QTimer *timer;
+    SampleAudio* audioTemp;
     //QMap<qint16, Movement*> movementsMap; //Pour test ( correspond a la map dans le MANAGER
     //QMap<qint16, QTreeWidgetItem*> itemsLeftMap; //liste des QtreeWidgetItems indexé par l'id des mvt associés
     //QMap<QTreeWidgetItem*, Movement*> mapTreeItemsMovement; //map qui fait correspondre le pointeur sur le move avec le pointeur sur l'item de LeftTree

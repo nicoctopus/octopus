@@ -33,8 +33,8 @@ SampleAudio::SampleAudio(const SampleAudio &copie) : Sample(copie.idElement, cop
     this->b = copie.b;
 
 
-    this->resetAcvtive = false;
-    this->nbLoop = 0;
+    this->resetAcvtive = copie.resetAcvtive;
+    this->nbLoop = copie.nbLoop;
 }
 
 SampleAudio::SampleAudio(const QString &name, const QString &url, const bool &active, const qint16 &posXBlackBoard, const qint16 &posYBlackBoard)
@@ -43,6 +43,9 @@ SampleAudio::SampleAudio(const QString &name, const QString &url, const bool &ac
     this->r = rand()%167;
     this->g = 198;
     this->b = rand()%26+67;
+
+    this->resetAcvtive = false;
+    this->nbLoop = 0;
 }
 
 
