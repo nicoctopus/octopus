@@ -395,7 +395,7 @@ void StickMan::createStickMan(){
     lines.push_back(jambeDroite);
 
     QPen pen;
-    pen.setBrush(Qt::black);
+    pen.setBrush(Qt::white);
     pen.setWidth(2);
 
     //Creer les lines

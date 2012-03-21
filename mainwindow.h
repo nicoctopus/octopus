@@ -65,6 +65,9 @@ public slots :
     void slotStartLivePerformance();
     void slotChangeMovementForCourbe(QString);
     void slotSetSampleResetMode(int);
+    void slotSetSampleLoopMode(int);
+    void slotSetSampleSpinBox(QString);
+
 
 
 signals :

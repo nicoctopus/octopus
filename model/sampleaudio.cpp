@@ -9,8 +9,8 @@ SampleAudio::SampleAudio() : Sample()
     this->g = 198;
     this->b = rand()%26+67;
 
-
-    this->resetAcvtive = false;
+    this->loopActive = false;
+    this->resetActive = false;
     this->nbLoop = 0;
 }
 
@@ -21,8 +21,8 @@ SampleAudio::SampleAudio(const QString &name, const QString &url, const quint32 
     this->g = 198;
     this->b = rand()%26+67;
 
-
-    this->resetAcvtive = false;
+    this->loopActive = false;
+    this->resetActive = false;
     this->nbLoop = 0;
 }
 
@@ -32,8 +32,8 @@ SampleAudio::SampleAudio(const SampleAudio &copie) : Sample(copie.idElement, cop
     this->g = copie.g;
     this->b = copie.b;
 
-
-    this->resetAcvtive = copie.resetAcvtive;
+    this->loopActive = copie.loopActive;
+    this->resetActive = copie.resetActive;
     this->nbLoop = copie.nbLoop;
 }
 
@@ -44,21 +44,30 @@ SampleAudio::SampleAudio(const QString &name, const QString &url, const bool &ac
     this->g = 198;
     this->b = rand()%26+67;
 
-    this->resetAcvtive = false;
+    this->loopActive = false;
+    this->resetActive = false;
     this->nbLoop = 0;
 }
 
 
+bool SampleAudio::getLoopActive(){
+    return this->loopActive;
+}
+
 bool SampleAudio::getResetActive(){
-    return this->resetAcvtive;
+    return this->resetActive;
 }
 
 int SampleAudio::getNbLoop(){
     return this->nbLoop;
 }
 
+void SampleAudio::setLoopActive(bool r){
+    this->loopActive = r;
+}
+
 void SampleAudio::setResetActive(bool r){
-    this->resetAcvtive = r;
+    this->resetActive = r;
 }
 
 void SampleAudio::setNbLoop(int n){
@@ -76,7 +85,8 @@ QDataStream & operator << (QDataStream & out, const SampleAudio &valeur)
     out << valeur.nameElement;
     out << valeur.fileURL;
     out << valeur.active;
-    out << valeur.resetAcvtive;
+    out << valeur.loopActive;
+    out << valeur.resetActive;
     out << valeur.nbLoop;
     return out;
 }
@@ -94,7 +104,8 @@ QDataStream & operator >> (QDataStream & in, SampleAudio &valeur)
     in >> valeur.nameElement;
     in >> valeur.fileURL;
     in >> valeur.active;
+    in >> valeur.loopActive;
+    in >> valeur.resetActive;
     in >> valeur.nbLoop;
-    in >> valeur.resetAcvtive;
     return in;
 }
