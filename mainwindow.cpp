@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLCDTimerLive()));
     connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLabelTimeRecord()));
     connect(this, SIGNAL(emitTime(QString)), ui->timerMusic, SLOT(display(QString)));
-    this->timer->start(1000);
+    connect(this, SIGNAL(emitTimeLabelRecord(QString)), ui->labelTimeRecord, SLOT(setText(QString)));
     //ui->stickManLive->setStickManLive(true);
     //ui->stickManLive->launchTimerForDetection();
 
@@ -92,8 +92,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
     /******** RECORD MOVEMENT *******/
-    this->tempLatence = 0;
-    this->tempRecordMovement = 2000;
+    this->tempLatence = 30;
+    this->tempRecordMovement = 20;
     ui->labelTimeRecord->setVisible(false);
 }
 void MainWindow::linkActionsMenu(){
@@ -268,7 +268,7 @@ void MainWindow::movingStickMan(){
 }
 
 void MainWindow::slotPlayPause(){
-
+    this->timer->start(1000);
     SampleAudio *sampleAudio = NULL;
     bool ok = false;
     if(!ui->blackboard->scene()->selectedItems().isEmpty()){
@@ -309,8 +309,7 @@ void MainWindow::slotStop(){
     controller->getPlayerDemo()->Stop();
     ui->labelTitleSong->setText("");
     ui->pushButton_playlecteur->setStyleSheet("");
-
-
+    this->timer->stop();
 }
 
 void MainWindow::slotDisplayInfos(QTreeWidgetItem* item,int column){
@@ -600,7 +599,7 @@ int MainWindow::slotLockNodesForNewMouvement(){
 	ui->stickMan->reCreateStickMan();
 	this->configRecordMouvement = new ConfigRecordMouvement(0);
 	this->configRecordMouvement->setDefautSettings(this->tempLatence, this->tempRecordMovement);
-	connect(this->configRecordMouvement, SIGNAL(signalConfigTempsRecord(quint16,float)), this, SLOT(slotConfigTempsRecord(quint16,float)));
+	connect(this->configRecordMouvement, SIGNAL(signalConfigTempsRecord(float, float)), this, SLOT(slotConfigTempsRecord(float,float)));
 	this->configRecordMouvement->show();
     }
 
@@ -618,23 +617,18 @@ void MainWindow::slotRecordNewMovement()
 {
     if(isRecording == false){
          ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/stop.png)");
-        //RECORD UN MOVEMENT
 	ui->labelTimeRecord->setVisible(true);
-	sleep(this->tempLatence);
-	this->controller->recordMovement(this->movement);
-        //START RECORD
+	this->timer->start(100);
         isRecording = true;
     }
     else if(isRecording == true){
-         ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
+	ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
         ui->pushButton_recordmouvement->setEnabled(false);
         ui->nommouvement->setVisible(true);
 	ui->nommouvement->setText("");
         ui->pushButton_enregistrermouvement->setStyleSheet("");
         ui->pushButton_enregistrermouvement->setEnabled(true);
-
-        //ON STOP LE RECORD
-        this->controller->stopRecord(this->movement);
+	this->timer->stop();
         isRecording = false;
     }
 }
@@ -667,6 +661,7 @@ void MainWindow::slotValidNewMovement(){
 	this->controller->linkJointToJointMvt();
 	this->ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovementsByName());
 	this->refreshLeftTree();
+	ui->labelTimeRecord->setVisible(false);
 	//qDebug() << movement->getName() << endl;
 
 
@@ -700,7 +695,7 @@ void MainWindow::slotEscNewMovement(){
     ui->pushButton_supprimermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/deletegris.png)");
     ui->pushButton_verrouiller->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/cadenasgris.png)");
     ui->stickMan->reCreateStickMan();
-
+    ui->labelTimeRecord->setVisible(false);
 }
 
 
@@ -757,14 +752,48 @@ void MainWindow::updateLCDTimerLive()
 
 void MainWindow::updateLabelTimeRecord()
 {
-   /* if(isRecording && this->tempLatence > 0)
+    qDebug() << "début" << this->tempLatence << endl;
+    if(isRecording && this->tempLatence > 0)
     {
-	emit emitTime();
+	qDebug() << "bouh1" << endl;
+	emit emitTimeLabelRecord(QString::number(this->tempLatence / 10));
+	this->tempLatence -= 1;
+	this->tempRecordMovementPartantDe0 = 1;
     }
-    else if(isRecording && this->tempLatence = 0)
+    else if(isRecording && this->tempLatence == 0 && this->tempRecordMovementPartantDe0 < this->tempRecordMovement)
     {
+	qDebug() << "bouh2" << endl;
+	this->controller->recordMovement(this->movement);
+	emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
+	this->tempRecordMovementPartantDe0++;
+	this->tempLatence = -1;
+    }
+    else if(isRecording && this->tempLatence == -1 && this->tempRecordMovementPartantDe0 == this->tempRecordMovement)
+    {
+	qDebug() << "bouh4" << endl;
+	this->timer->stop();
 
-    }*/
+	//ON STOP LE RECORD
+	this->controller->stopRecord(this->movement);
+	emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
+	this->tempRecordMovementPartantDe0 = 0;
+	this->tempLatence = 30;
+	ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
+	ui->pushButton_recordmouvement->setEnabled(false);
+	ui->nommouvement->setVisible(true);
+	ui->nommouvement->setText("");
+	ui->pushButton_enregistrermouvement->setStyleSheet("");
+	ui->pushButton_enregistrermouvement->setEnabled(true);
+	isRecording = false;
+    }
+    else if(isRecording && this->tempLatence == -1 && this->tempRecordMovementPartantDe0 < this->tempRecordMovement)
+    {
+	qDebug() << "bouh3" << endl;
+	this->controller->recordMovement(this->movement);
+	emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
+	this->tempRecordMovementPartantDe0 += 1;
+    }
+    qDebug() << "fin" << endl;
 }
 
 void MainWindow::slotChangeMovementForCourbe(QString text)
@@ -805,7 +834,7 @@ void MainWindow::slotChangeConfigAnalyse(float vitesse, quint16 amplitude)
     this->controller->getServerOsc()->setAmplitude(amplitude);
 }
 
-void MainWindow::slotConfigTempsRecord(quint16 tempsLatence, float tempsRecord)
+void MainWindow::slotConfigTempsRecord(float tempsLatence, float tempsRecord)
 {
     this->tempLatence = tempsLatence;
     this->tempRecordMovement = tempsRecord;

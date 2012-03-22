@@ -73,7 +73,7 @@
         <item>
          <widget class="QSlider" name="horizontalSliderTempRecord">
           <property name="maximum">
-           <number>4000</number>
+           <number>40</number>
           </property>
           <property name="singleStep">
            <number>1</number>
