@@ -357,6 +357,61 @@ border-radius: 10px;</string>
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFichier">
+    <property name="title">
+     <string>Fichier</string>
+    </property>
+    <addaction name="actionNouveau"/>
+    <addaction name="separator"/>
+    <addaction name="actionD_marrer_live"/>
+    <addaction name="actionStopper_live"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuitter"/>
+   </widget>
+   <widget class="QMenu" name="menuEdition">
+    <property name="title">
+     <string>Edition</string>
+    </property>
+    <addaction name="actionCr_er_nouveau_mouvement"/>
+    <addaction name="actionAjouter_sample_audio"/>
+    <addaction name="actionAjouter_port"/>
+    <addaction name="separator"/>
+    <addaction name="actionSupprimer"/>
+    <addaction name="separator"/>
+    <addaction name="actionJouer_sample_audio"/>
+    <addaction name="actionArreter_sample_audio"/>
+    <addaction name="actionVisualise_mouvement"/>
+    <addaction name="separator"/>
+    <addaction name="actionLier_l_ments"/>
+    <addaction name="actionD_lier_lements"/>
+   </widget>
+   <widget class="QMenu" name="menuOutils">
+    <property name="title">
+     <string>Outils</string>
+    </property>
+    <addaction name="actionParam_tres_analyse"/>
+    <addaction name="actionParam_tre_enregistrement"/>
+   </widget>
+   <widget class="QMenu" name="menuAffichage">
+    <property name="title">
+     <string>Affichage</string>
+    </property>
+    <addaction name="actionInformations"/>
+    <addaction name="actionSquelette"/>
+    <addaction name="actionCourbes"/>
+    <addaction name="actionBiblioth_que"/>
+   </widget>
+   <widget class="QMenu" name="menuAide">
+    <property name="title">
+     <string>Aide</string>
+    </property>
+    <addaction name="actionA_propos"/>
+   </widget>
+   <addaction name="menuFichier"/>
+   <addaction name="menuEdition"/>
+   <addaction name="menuOutils"/>
+   <addaction name="menuAffichage"/>
+   <addaction name="menuAide"/>
   </widget>
   <widget class="QDockWidget" name="dockConfig">
    <property name="sizePolicy">
@@ -551,6 +606,24 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#bf9782;&quot;&gt;ggljjh&lt;/span&gt;&lt;br /&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;AP DAPHSAIHSPAS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QPushButton" name="suprButton">
+         <property name="text">
+          <string>Supprimer</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="visuButton">
+         <property name="text">
+          <string>Visualiser</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -818,6 +891,9 @@ border-radius: 10px;</string>
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockWidget_2">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
    </attribute>
@@ -901,6 +977,159 @@ border-radius: 10px;</string>
     </layout>
    </widget>
   </widget>
+  <action name="actionQuitter">
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionNouveau">
+   <property name="text">
+    <string>Nouveau</string>
+   </property>
+  </action>
+  <action name="actionD_marrer_live">
+   <property name="text">
+    <string>Démarrer live</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Space</string>
+   </property>
+  </action>
+  <action name="actionStopper_live">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Stopper live</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Space</string>
+   </property>
+  </action>
+  <action name="actionAjouter_sample_audio">
+   <property name="text">
+    <string>Ajouter sample audio</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionAjouter_port">
+   <property name="text">
+    <string>Ajouter port</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionCr_er_nouveau_mouvement">
+   <property name="text">
+    <string>Créer nouveau mouvement</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="actionSupprimer">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Supprimer</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="actionEditer">
+   <property name="text">
+    <string>Editer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionJouer_sample_audio">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Jouer sample audio</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionArreter_sample_audio">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Arrêter sample audio</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionVisualise_mouvement">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Visualiser mouvement</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionLier_l_ments">
+   <property name="text">
+    <string>Lier éléments</string>
+   </property>
+  </action>
+  <action name="actionD_lier_lements">
+   <property name="text">
+    <string>Délier élements</string>
+   </property>
+  </action>
+  <action name="actionParam_tres_analyse">
+   <property name="text">
+    <string>Paramètres analyse</string>
+   </property>
+  </action>
+  <action name="actionParam_tre_enregistrement">
+   <property name="text">
+    <string>Paramètre enregistrement</string>
+   </property>
+  </action>
+  <action name="actionInformations">
+   <property name="text">
+    <string>Informations</string>
+   </property>
+  </action>
+  <action name="actionSquelette">
+   <property name="text">
+    <string>Squelette</string>
+   </property>
+  </action>
+  <action name="actionCourbes">
+   <property name="text">
+    <string>Courbes</string>
+   </property>
+  </action>
+  <action name="actionBiblioth_que">
+   <property name="text">
+    <string>Bibliothèque</string>
+   </property>
+  </action>
+  <action name="actionA_propos">
+   <property name="text">
+    <string>A propos</string>
+   </property>
+  </action>
   <zorder>dockConfig</zorder>
   <zorder>dockWidget_2</zorder>
   <zorder>dockWidget</zorder>

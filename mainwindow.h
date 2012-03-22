@@ -38,6 +38,7 @@ public:
     void movingStickMan();
     void fillComboBox();
     void refreshCourbes(Movement* movement);
+    void linkActionsMenu();
 
 public slots :
     void slotTimeOutRecord();
@@ -69,6 +70,8 @@ public slots :
     void slotConfigTempsRecord(quint16, float);
     void slotSetSampleLoopMode(int);
     void slotSetSampleSpinBox(QString);
+    void slotRemoveButton();
+    void slotMoveStickman();
 
 signals :
     void refreshLeftTree();
@@ -88,6 +91,8 @@ private:
     Movement *movement;
     QTimer *timer;
     SampleAudio* audioTemp;
+    Movement * movTemp;
+    ClientOSC * clientTemp;
     ConfigAnalyse *configAnalyse;
     ConfigRecordMouvement *configRecordMouvement;
     quint16 tempLatence;
