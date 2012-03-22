@@ -16,10 +16,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
     this->controller = new Controller();
     this->timer = new QTimer(this);
-    connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLCDTimerLive()));
+    this->timerLive = new QTimer(this);
+    connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLCDTimerSong()));
     connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLabelTimeRecord()));
     connect(this, SIGNAL(emitTime(QString)), ui->timerMusic, SLOT(display(QString)));
     connect(this, SIGNAL(emitTimeLabelRecord(QString)), ui->labelTimeRecord, SLOT(setText(QString)));
+    connect(this->timerLive, SIGNAL(timeout()), this, SLOT(updateLCDTimerLive()));
+    connect(this, SIGNAL(emitTimeLive(QString)), ui->timer, SLOT(display(QString)));
+    emit emitTimeLive("00:00");
+    emit emitTime("00:00");
     //ui->stickManLive->setStickManLive(true);
     //ui->stickManLive->launchTimerForDetection();
 
@@ -310,6 +315,7 @@ void MainWindow::slotStop(){
     ui->labelTitleSong->setText("");
     ui->pushButton_playlecteur->setStyleSheet("");
     this->timer->stop();
+    emit emitTime("00:00");
 }
 
 void MainWindow::slotDisplayInfos(QTreeWidgetItem* item,int column){
@@ -702,6 +708,8 @@ void MainWindow::slotEscNewMovement(){
 void MainWindow::slotStartLivePerformance(){
 
     if(isLive==false){
+	this->timeTimerLive = 0;
+	this->timerLive->start(1000);
         this->controller->analizeRecord();
 	for(int i = 0 ; i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
 	    if(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName() == ui->listMovementToShowCourbe->currentText())
@@ -711,10 +719,12 @@ void MainWindow::slotStartLivePerformance(){
 	ui->stickMan->launchTimerForDetection();
         isLive=true;
     }else if(isLive==true){
+	this->timerLive->stop();
 	ui->stickMan->stopTimer();
 	ui->stickMan->setStickManLive(false);
 	//ui->widgetCourbes->setMovement(NULL);
         this->controller->stopAnalize();
+	emit emitTimeLive("00:00");
         isLive=false;
     }
 
@@ -740,29 +750,43 @@ void MainWindow::boutonAddSample()
     emit refreshLeftTree();
 }
 
-void MainWindow::updateLCDTimerLive()
+void MainWindow::updateLCDTimerSong()
 {
     int m, s;
+    QString time;
     s = controller->getPlayerDemo()->currentTime() / 1000;
     m = s/60;
     s = s%60;
-    QString time = QString::number(m) + ":" + QString::number(s);
+    if(s <10)
+	time = "0" + QString::number(m) + ":0" + QString::number(s);
+    else time = "0" + QString::number(m) + ":" + QString::number(s);
     emit emitTime(time);
+}
+
+void MainWindow::updateLCDTimerLive()
+{
+    int m, s;
+    QString time;
+    s = this->timeTimerLive;
+    m = s/60;
+    s = s%60;
+    if(s <10)
+	time = "0" + QString::number(m) + ":0" + QString::number(s);
+    else time = "0" + QString::number(m) + ":" + QString::number(s);
+    emit emitTimeLive(time);
+    this->timeTimerLive++;
 }
 
 void MainWindow::updateLabelTimeRecord()
 {
-    qDebug() << "début" << this->tempLatence << endl;
     if(isRecording && this->tempLatence > 0)
     {
-	qDebug() << "bouh1" << endl;
 	emit emitTimeLabelRecord(QString::number(this->tempLatence / 10));
 	this->tempLatence -= 1;
 	this->tempRecordMovementPartantDe0 = 1;
     }
     else if(isRecording && this->tempLatence == 0 && this->tempRecordMovementPartantDe0 < this->tempRecordMovement)
     {
-	qDebug() << "bouh2" << endl;
 	this->controller->recordMovement(this->movement);
 	emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
 	this->tempRecordMovementPartantDe0++;
@@ -770,7 +794,6 @@ void MainWindow::updateLabelTimeRecord()
     }
     else if(isRecording && this->tempLatence == -1 && this->tempRecordMovementPartantDe0 == this->tempRecordMovement)
     {
-	qDebug() << "bouh4" << endl;
 	this->timer->stop();
 
 	//ON STOP LE RECORD
@@ -788,12 +811,10 @@ void MainWindow::updateLabelTimeRecord()
     }
     else if(isRecording && this->tempLatence == -1 && this->tempRecordMovementPartantDe0 < this->tempRecordMovement)
     {
-	qDebug() << "bouh3" << endl;
 	this->controller->recordMovement(this->movement);
 	emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
 	this->tempRecordMovementPartantDe0 += 1;
     }
-    qDebug() << "fin" << endl;
 }
 
 void MainWindow::slotChangeMovementForCourbe(QString text)
