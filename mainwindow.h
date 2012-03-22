@@ -69,6 +69,8 @@ public slots :
     void slotConfigTempsRecord(float, float);
     void slotSetSampleLoopMode(int);
     void slotSetSampleSpinBox(QString);
+    void slotRemoveButton();
+    void slotMoveStickman();
 
 signals :
     void refreshLeftTree();
@@ -89,6 +91,8 @@ private:
     Movement *movement;
     QTimer *timer;
     SampleAudio* audioTemp;
+    Movement * movTemp;
+    ClientOSC * clientTemp;
     ConfigAnalyse *configAnalyse;
     ConfigRecordMouvement *configRecordMouvement;
     float tempLatence;

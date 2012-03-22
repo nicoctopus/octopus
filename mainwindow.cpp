@@ -40,6 +40,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->pushButton_supprimermouvement->setEnabled(false);
     ui->pushButton_verrouiller->setEnabled(false);
 
+
+    ui->suprButton->setVisible(false);
+    ui->editButton->setVisible(false);
+    ui->visuButton->setVisible(false);
+
     ui->pushButton_creermouvement->setStyleSheet("");
     ui->pushButton_enregistrermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/savegris.png)");
 
@@ -52,6 +57,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->resetBox,SIGNAL(stateChanged(int)),this,SLOT(slotSetSampleResetMode(int)));
     connect(ui->loopBox,SIGNAL(stateChanged(int)),this,SLOT(slotSetSampleLoopMode(int)));
     connect(ui->loopSpin,SIGNAL(valueChanged(QString)),this,SLOT(slotSetSampleSpinBox(QString)));
+
+    connect(ui->suprButton,SIGNAL(clicked()),this,SLOT(slotRemoveButton()));
+    connect(ui->visuButton,SIGNAL(clicked()),this,SLOT(slotMoveStickman()));
 
     connect(ui->pushButton_playlecteur,SIGNAL(pressed()),this,SLOT(slotPlayPause()));
 
@@ -313,6 +321,9 @@ void MainWindow::slotDisplayInfos(QTreeWidgetItem* item,int column){
         ui->resetBox->setVisible(false);
         ui->loopLabel->setVisible(false);
         ui->loopBox->setVisible(false);
+        ui->suprButton->setVisible(false);
+        ui->editButton->setVisible(false);
+        ui->visuButton->setVisible(false);
 
         return;
     }
@@ -393,6 +404,16 @@ QString MainWindow::textDisplay(Movement *movement)
     ui->resetBox->setVisible(false);
     ui->loopLabel->setVisible(false);
     ui->loopBox->setVisible(false);
+
+    ui->suprButton->setVisible(true);
+    ui->editButton->setVisible(true);
+    ui->visuButton->setVisible(true);
+
+
+    this->clientTemp = NULL;
+    this->audioTemp = NULL;
+
+    this->movTemp = movement;
     QString text;
     text.append("<b>Name : </b>");
     text.append(movement->getName());
@@ -440,6 +461,13 @@ QString MainWindow::textDisplay(SampleAudio *sampleAudio)
     ui->resetBox->setVisible(true);
     ui->loopLabel->setVisible(true);
     ui->loopBox->setVisible(true);
+
+    ui->suprButton->setVisible(true);
+    ui->editButton->setVisible(true);
+
+
+    this->movTemp = NULL;
+    this->clientTemp = NULL;
 
     this->audioTemp = sampleAudio;
 
@@ -497,6 +525,17 @@ QString MainWindow::textDisplay(ClientOSC *port)
     ui->loopSpin->setVisible(false);
     ui->resetBox->setVisible(false);
     ui->loopLabel->setVisible(false);
+
+    ui->suprButton->setVisible(true);
+    ui->editButton->setVisible(true);
+
+
+
+    this->audioTemp = NULL;
+
+    this->movTemp = NULL;
+    this->clientTemp = port;
+
     QString text;
     text.append("<b>Nom : </b>");
     text.append(port->getName());
@@ -822,4 +861,51 @@ void MainWindow::slotSetSampleSpinBox(QString str){
     }
    this->save(this->audioTemp);
     ui->textBrowser->setText(this->textDisplay(this->audioTemp));
+}
+
+void MainWindow::slotMoveStickman(){
+
+    if(this->movTemp !=NULL){
+
+        emit sigMoveStickman(movTemp);
+    }
+}
+
+void MainWindow::slotRemoveButton(){
+
+    if(this->clientTemp != NULL){
+        this->remove(this->clientTemp);
+        ui->textBrowser->setText("");
+        ui->loopSpin->setVisible(false);
+        ui->resetBox->setVisible(false);
+        ui->loopLabel->setVisible(false);
+        ui->loopBox->setVisible(false);
+        ui->suprButton->setVisible(false);
+        ui->editButton->setVisible(false);
+        ui->visuButton->setVisible(false);
+         this->clientTemp = NULL;
+    }else if(this->movTemp != NULL){
+        this->remove(this->movTemp);
+        ui->textBrowser->setText("");
+        ui->loopSpin->setVisible(false);
+        ui->resetBox->setVisible(false);
+        ui->loopLabel->setVisible(false);
+        ui->loopBox->setVisible(false);
+        ui->suprButton->setVisible(false);
+        ui->editButton->setVisible(false);
+        ui->visuButton->setVisible(false);
+         this->movTemp = NULL;
+    }else if(this->audioTemp != NULL){
+        this->remove(this->audioTemp);
+        this->audioTemp= NULL;
+        ui->textBrowser->setText("");
+        ui->loopSpin->setVisible(false);
+        ui->resetBox->setVisible(false);
+        ui->loopLabel->setVisible(false);
+        ui->loopBox->setVisible(false);
+        ui->suprButton->setVisible(false);
+        ui->editButton->setVisible(false);
+        ui->visuButton->setVisible(false);
+    }
+
 }
