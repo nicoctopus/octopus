@@ -59,7 +59,8 @@ public slots :
     void slotEscNewMovement();
     void slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int column);
     void boutonAddSample();
-    void updateLCDTimer();
+    void updateLCDTimerLive();
+    void updateLabelTimeRecord();
     void slotDisplayInfos(QGraphicsItem* item);
     void slotStartLivePerformance();
     void slotChangeMovementForCourbe(QString);
@@ -92,7 +93,7 @@ private:
     quint16 tempLatence;
     float tempRecordMovement;
     //QMap<qint16, Movement*> movementsMap; //Pour test ( correspond a la map dans le MANAGER
-    //QMap<qint16, QTreeWidgetItem*> itemsLeftMap; //liste des QtreeWidgetItems indexé par l'id des mvt associés
+    //QMap<qint16, QTreeWidgetItem*> itemsLeftMap; //liste des QtreeWidgetItems index par l'id des mvt associs
     //QMap<QTreeWidgetItem*, Movement*> mapTreeItemsMovement; //map qui fait correspondre le pointeur sur le move avec le pointeur sur l'item de LeftTree
 
 };

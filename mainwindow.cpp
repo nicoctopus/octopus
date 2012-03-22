@@ -16,7 +16,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
     this->controller = new Controller();
     this->timer = new QTimer(this);
-    connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLCDTimer()));
+    connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLCDTimerLive()));
+    connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLabelTimeRecord()));
     connect(this, SIGNAL(emitTime(QString)), ui->timerMusic, SLOT(display(QString)));
     this->timer->start(1000);
     //ui->stickManLive->setStickManLive(true);
@@ -85,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     /******** RECORD MOVEMENT *******/
     this->tempLatence = 0;
     this->tempRecordMovement = 2000;
+    ui->labelTimeRecord->setVisible(false);
 }
 
 void MainWindow::fillComboBox()
@@ -568,11 +570,12 @@ int MainWindow::slotLockNodesForNewMouvement(){
 
 }
 
-void MainWindow::slotRecordNewMovement(){
-
+void MainWindow::slotRecordNewMovement()
+{
     if(isRecording == false){
          ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/stop.png)");
         //RECORD UN MOVEMENT
+	ui->labelTimeRecord->setVisible(true);
 	sleep(this->tempLatence);
 	this->controller->recordMovement(this->movement);
         //START RECORD
@@ -698,7 +701,7 @@ void MainWindow::boutonAddSample()
     emit refreshLeftTree();
 }
 
-void MainWindow::updateLCDTimer()
+void MainWindow::updateLCDTimerLive()
 {
     int m, s;
     s = controller->getPlayerDemo()->currentTime() / 1000;
@@ -706,6 +709,18 @@ void MainWindow::updateLCDTimer()
     s = s%60;
     QString time = QString::number(m) + ":" + QString::number(s);
     emit emitTime(time);
+}
+
+void MainWindow::updateLabelTimeRecord()
+{
+   /* if(isRecording && this->tempLatence > 0)
+    {
+	emit emitTime();
+    }
+    else if(isRecording && this->tempLatence = 0)
+    {
+
+    }*/
 }
 
 void MainWindow::slotChangeMovementForCourbe(QString text)
@@ -748,7 +763,6 @@ void MainWindow::slotChangeConfigAnalyse(float vitesse, quint16 amplitude)
 
 void MainWindow::slotConfigTempsRecord(quint16 tempsLatence, float tempsRecord)
 {
-    qDebug() << "youhou" << endl;
     this->tempLatence = tempsLatence;
     this->tempRecordMovement = tempsRecord;
 }
