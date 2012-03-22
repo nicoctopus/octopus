@@ -66,7 +66,7 @@ public slots :
     void slotChangeMovementForCourbe(QString);
     void slotSetSampleResetMode(int);
     void slotChangeConfigAnalyse(float, quint16);
-    void slotConfigTempsRecord(quint16, float);
+    void slotConfigTempsRecord(float, float);
     void slotSetSampleLoopMode(int);
     void slotSetSampleSpinBox(QString);
 
@@ -74,7 +74,8 @@ signals :
     void refreshLeftTree();
     void refreshBlackBoard();
     void sigPlaySample();
-    void emitTime(QString currentTime);
+    void emitTime(QString);
+    void emitTimeLabelRecord(QString);
     void sigMoveStickman(Movement* movement);
     void clearComboBox();
 
@@ -90,8 +91,9 @@ private:
     SampleAudio* audioTemp;
     ConfigAnalyse *configAnalyse;
     ConfigRecordMouvement *configRecordMouvement;
-    quint16 tempLatence;
+    float tempLatence;
     float tempRecordMovement;
+    float tempRecordMovementPartantDe0;
     //QMap<qint16, Movement*> movementsMap; //Pour test ( correspond a la map dans le MANAGER
     //QMap<qint16, QTreeWidgetItem*> itemsLeftMap; //liste des QtreeWidgetItems index par l'id des mvt associs
     //QMap<QTreeWidgetItem*, Movement*> mapTreeItemsMovement; //map qui fait correspondre le pointeur sur le move avec le pointeur sur l'item de LeftTree

@@ -12,7 +12,7 @@ class ConfigRecordMouvement : public QDialog
 {
     Q_OBJECT
 signals:
-    void signalConfigTempsRecord(quint16 tempsLatence, float tempsRecord);
+    void signalConfigTempsRecord(float tempsLatence, float tempsRecord);
 public:
     explicit ConfigRecordMouvement(QWidget *parent = 0);
     ~ConfigRecordMouvement();
