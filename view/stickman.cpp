@@ -63,6 +63,7 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
     if(this->isStickManLive==true){
 	this->timer->start(1000);
 	this->textDetected->setText("DETECTED");
+        RESIZE = 3;
     }
 
     for(int i=0;i<nodes.size();++i){
@@ -92,7 +93,7 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
 		y=headLastY;
 	    }
 	    //qDebug(QString(nameOfNodeToMove + " z:"+QString::number(z) + "  modifSize= " + QString::number(modifSize)).toAscii());
-	    //nodes.at(i)->setRect(x/RESIZE-((WIDTH_JOINTS+modifSize)/2), y/RESIZE-((HEIGHT_JOINTS+modifSize)/2) , WIDTH_JOINTS+modifSize, HEIGHT_JOINTS+modifSize);
+            nodes.at(i)->setRect(x/RESIZE-((WIDTH_JOINTS+modifSize)/2), y/RESIZE-((HEIGHT_JOINTS+modifSize)/2) , WIDTH_JOINTS+modifSize, HEIGHT_JOINTS+modifSize);
 
 	    // ==== DEPLACMENTS LIGNES =====
 
@@ -123,9 +124,14 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
 			temp->setLastXb(hancheDroiteX);
 			temp->setLastYb(hancheDroiteY);
 		    }
-		    //QLineF line(x/RESIZE,y/RESIZE,temp->getLastXb()/RESIZE,temp->getLastYb()/RESIZE);
+                    else if(temp->getNamePointB()=="basCou"){
+                        temp->setLastXb(epauleDroiteX+50);
+                        temp->setLastYb(epauleGaucheY);
+                    }
+
+                    QLineF line(x/RESIZE,y/RESIZE,temp->getLastXb()/RESIZE,temp->getLastYb()/RESIZE);
 		    //delete temp->getGraphicsLine()->setLine();
-		    //temp->getGraphicsLine()->setLine(line);
+                    temp->getGraphicsLine()->setLine(line);
 		   // temp->getGraphicsLine()->line().translate((temp->getLastXb()-x)/RESIZE,(temp->getLastYb()-y)/RESIZE);
 		    temp->setLastXa(x);
 		    temp->setLastYa(y);
@@ -150,25 +156,25 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
 			temp->setLastXa(hancheDroiteX);
 			temp->setLastYa(hancheDroiteY);
 		    }
-		    //temp->getGraphicsLine()->setLine(temp->getLastXa()/RESIZE,temp->getLastYa()/RESIZE,x/RESIZE,y/RESIZE);
+                    temp->getGraphicsLine()->setLine(temp->getLastXa()/RESIZE,temp->getLastYa()/RESIZE,x/RESIZE,y/RESIZE);
 		    //temp->getGraphicsLine()->line().translate((x-temp->getLastXa())/RESIZE,(y-temp->getLastYa())/RESIZE);
 		    temp->setLastXb(x);
 		    temp->setLastYb(y);
 		}
 		if(temp->getNamePointA()=="epauleGauche" && temp->getNamePointB() =="epauleDroite"){
-		    //temp->getGraphicsLine()->setLine((x+50)/RESIZE,(y-100)/RESIZE,(x-50)/RESIZE,(y-100)/RESIZE);
+                    temp->getGraphicsLine()->setLine((x+50)/RESIZE,(y-100)/RESIZE,(x-50)/RESIZE,(y-100)/RESIZE);
 		    this->epauleGaucheX=x+50;
 		    this->epauleGaucheY=y-100;
 		    this->epauleDroiteX=x-50;
 		    this->epauleDroiteY=y-100;
 		}
 		if(temp->getNamePointA()=="hancheGauche" && temp->getNamePointB() =="hancheDroite"){
-		    //temp->getGraphicsLine()->setLine((x+50)/RESIZE,(y+100)/RESIZE,(x-50)/RESIZE,(y+100)/RESIZE);
+                    temp->getGraphicsLine()->setLine((x+50)/RESIZE,(y+100)/RESIZE,(x-50)/RESIZE,(y+100)/RESIZE);
 		    this->hancheGaucheX=x+50;
 		    this->hancheGaucheY=y+100;
 		    this->hancheDroiteX=x-50;
 		    this->hancheDroiteY=y+100;
-		}
+                }
 	    }
 	}
     }
@@ -216,6 +222,15 @@ void StickMan::createStickMan(){
     coord.insert("leftknee",leftknee);
     coord.insert("rightfoot",rightfoot);
     coord.insert("leftfoot",leftfoot);
+
+    this->epauleDroiteX = epauleDroite.x()*RESIZE;
+    this->epauleDroiteY = epauleDroite.y()*RESIZE;
+    this->epauleGaucheX = epauleGauche.x()*RESIZE;
+    this->epauleGaucheY = epauleGauche.y()*RESIZE;
+    this->hancheDroiteX = hancheDroite.x()*RESIZE;
+    this->hancheDroiteY = hancheDroite.y()*RESIZE;
+    this->hancheGaucheX = hancheGauche.x()*RESIZE;
+    this->hancheGaucheY = hancheGauche.y()*RESIZE;
 
     MyQLine* cou = new MyQLine(head, basCou);
     cou->setNamePointA("head");
@@ -403,7 +418,7 @@ void StickMan::createStickMan(){
 	QGraphicsLineItem *line = new QGraphicsLineItem(*(lines.at(j)));
 	lines.at(j)->setGraphicsLine(line);
 	line->setPen(pen);
-	this->scene()->addItem(line);
+        this->scene()->addItem(line);
 
     }
 

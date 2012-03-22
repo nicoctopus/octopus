@@ -32,7 +32,7 @@ void MyQLine::setYAOrigin(int yAOrigin){
     this->yAOrigin = yAOrigin;
 }
 
-QString MyQLine::getNamePointB(){
+QString MyQLine::getNamePointB() {
     return namePointB;
 }
 

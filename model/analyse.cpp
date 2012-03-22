@@ -132,11 +132,11 @@ void Analyse::calculBITG(){
 
 				Position* posEcartBuf = new Position();
 
-				ListEcartBuf->append(this->listMovementToAnalyze->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->ecartPivot(this->listMovementToAnalyze->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r+ecartCourant), posEcartBuf));
-			    }
-			}
+                                ListEcartBuf->append(this->listMovementToAnalyze->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r)->ecartPivot(this->listMovementToAnalyze->at(m)->getListJointsMvt()->at(jt)->getJointRef()->getBufferPositions()->at(r+ecartCourant), posEcartBuf));
+                            }
+                        }
 
-			if(ListEcartEnr->size() < ListEcartBuf->size())
+                        if(ListEcartEnr->size() < ListEcartBuf->size())
 			{
 			    int size = this->ListEcartBuf->size();
 			    for(int i = this->ListEcartEnr->size() ; i < size ; i++)
