@@ -78,9 +78,11 @@ background: red;
 
 QMainWindow{
 
-background-color: rgb(66,66,72);
+/*background-color: rgb(66,66,72);*/
+  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(90,90,100), stop: 1 rgb(66,66,72));
 
-color: rgb(255,255,255);
+	police size: 10px
 
 }
 
@@ -139,6 +141,23 @@ border-image:url(:/new/prefix1/images_boutons/nouveauHOVER.png)1 1 1 1;
 QPushButton#ButtonAdd:pressed{
 
 border-image:url(:/new/prefix1/images_boutons/nouveauPRESSED.png)1 1 1 1;
+
+}
+QPushButton#buttonRemove{
+
+border-image:url(:/new/prefix1/images_boutons/enlever.png)1 1 1 1;
+
+}
+
+QPushButton#buttonRemove:hover{
+
+border-image:url(:/new/prefix1/images_boutons/enleverHOVER.png)1 1 1 1;
+
+}
+
+QPushButton#buttonRemove:pressed{
+
+border-image:url(:/new/prefix1/images_boutons/enleverPRESSED.png)1 1 1 1;
 
 }
 
@@ -342,7 +361,7 @@ border-bottom-color: transparent;
      <widget class="BlackBoard" name="blackboard" native="true">
       <property name="styleSheet">
        <string notr="true">background-color : rgb(180, 180, 180);
-border-radius: 10px;</string>
+border-radius: 6px;</string>
       </property>
      </widget>
     </item>
@@ -390,16 +409,6 @@ border-radius: 10px;</string>
      <string>Outils</string>
     </property>
     <addaction name="actionParam_tres_analyse"/>
-    <addaction name="actionParam_tre_enregistrement"/>
-   </widget>
-   <widget class="QMenu" name="menuAffichage">
-    <property name="title">
-     <string>Affichage</string>
-    </property>
-    <addaction name="actionInformations"/>
-    <addaction name="actionSquelette"/>
-    <addaction name="actionCourbes"/>
-    <addaction name="actionBiblioth_que"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -410,7 +419,6 @@ border-radius: 10px;</string>
    <addaction name="menuFichier"/>
    <addaction name="menuEdition"/>
    <addaction name="menuOutils"/>
-   <addaction name="menuAffichage"/>
    <addaction name="menuAide"/>
   </widget>
   <widget class="QDockWidget" name="dockConfig">
@@ -422,7 +430,7 @@ border-radius: 10px;</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>218</width>
+     <width>272</width>
      <height>426</height>
     </size>
    </property>
@@ -447,6 +455,14 @@ border-radius: 10px;</string>
    <widget class="QWidget" name="dockWidgetContents_5">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
+      <widget class="MyLeftTree" name="leftTree" native="true">
+       <property name="styleSheet">
+        <string notr="true">background-color : rgb(200, 200, 200);
+border-radius: 6px;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <spacer name="horizontalSpacer_3">
@@ -462,73 +478,107 @@ border-radius: 10px;</string>
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="ButtonAdd">
-         <property name="minimumSize">
-          <size>
-           <width>15</width>
-           <height>15</height>
-          </size>
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <property name="spacing">
+          <number>20</number>
          </property>
-         <property name="maximumSize">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
+         <item>
+          <widget class="QPushButton" name="buttonRemove">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="ButtonAdd">
+           <property name="minimumSize">
+            <size>
+             <width>15</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
      <item>
-      <widget class="MyLeftTree" name="leftTree" native="true">
-       <property name="styleSheet">
-        <string notr="true">background-color : rgb(200, 200, 200);
-border-radius: 10px;</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="spacing">
+        <number>-1</number>
+       </property>
        <item>
-        <widget class="QPushButton" name="pushButton_playlecteur">
-         <property name="minimumSize">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <property name="spacing">
+          <number>10</number>
          </property>
-         <property name="maximumSize">
-          <size>
-           <width>27</width>
-           <height>27</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_stoplecteur">
-         <property name="minimumSize">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>27</width>
-           <height>27</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
+         <item>
+          <widget class="QPushButton" name="pushButton_playlecteur">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>5</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>27</width>
+             <height>27</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_stoplecteur">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>27</width>
+             <height>27</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QLCDNumber" name="timerMusic">
@@ -544,6 +594,12 @@ font: 14pt &quot;Fengardo&quot;;</string>
        </item>
        <item>
         <widget class="QTextBrowser" name="labelTitleSong">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="maximumSize">
           <size>
            <width>200</width>
@@ -578,6 +634,9 @@ font: 14pt &quot;Fengardo&quot;;</string>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Informations</string>
    </property>
@@ -593,7 +652,7 @@ font: 14pt &quot;Fengardo&quot;;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color : rgb(180, 180, 180);
-border-radius: 10px;
+border-radius: 6px;
 </string>
        </property>
        <property name="html">
@@ -686,6 +745,9 @@ p, li { white-space: pre-wrap; }
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockWidget_3">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Squelette</string>
    </property>
@@ -699,7 +761,7 @@ p, li { white-space: pre-wrap; }
        <property name="styleSheet">
         <string notr="true">
 background-color :rgb(87, 141, 153);
-border-radius: 10px;</string>
+border-radius: 6px;</string>
        </property>
       </widget>
      </item>
@@ -837,6 +899,9 @@ border-radius: 10px;</string>
      <width>250</width>
      <height>149</height>
     </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
     <string>Courbes graphiques</string>
@@ -995,7 +1060,7 @@ border-radius: 10px;</string>
     <string>Démarrer live</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Space</string>
+    <string>Space</string>
    </property>
   </action>
   <action name="actionStopper_live">
@@ -1006,7 +1071,7 @@ border-radius: 10px;</string>
     <string>Stopper live</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Space</string>
+    <string>Space</string>
    </property>
   </action>
   <action name="actionAjouter_sample_audio">
@@ -1163,11 +1228,8 @@ border-radius: 10px;</string>
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>pushButton_playlecteur</tabstop>
-  <tabstop>pushButton_stoplecteur</tabstop>
   <tabstop>labelTitleSong</tabstop>
   <tabstop>textBrowser</tabstop>
-  <tabstop>ButtonAdd</tabstop>
   <tabstop>pushButton_verrouiller</tabstop>
   <tabstop>pushButton_recordmouvement</tabstop>
   <tabstop>pushButton_enregistrermouvement</tabstop>

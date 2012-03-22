@@ -15,7 +15,7 @@ MyLeftTree::MyLeftTree(QWidget *parent) : QTreeWidget(parent)
     ports->setText(0,"Ports");
     videos = new QTreeWidgetItem(this);
     videos->setText(0,"Videos");
-
+    this->header()->close();
     this->createActions();
 
     this->setHeaderLabel(" ");

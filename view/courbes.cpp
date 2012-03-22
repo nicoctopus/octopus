@@ -47,19 +47,19 @@ void Courbes::timerEvent(QTimerEvent *) {
 }
 void Courbes::paintEvent(QPaintEvent *e) {
     QPainter painter(this);
-    painter.scale(0.9, 0.8);
+    painter.scale(1.5, 0.5);
     QPointF oldPoint, newPoint;
     quint16 yOffset = 0;
     quint16 xOffset = 0;
 
-    yOffset = 0;
+    yOffset = 50;
     if(this->joint)
     {
 	QPen pen;
 	pen.setColor(Qt::blue);
 	pen.setWidth(1);
 	painter.setPen(pen);
-	xOffset = SIZE_MAX_BUFFERS;
+	xOffset = SIZE_MAX_BUFFERS / 2;
 	for(int i = 0 ; i < this->joint->getListPositions()->size() ; i++)
 	{
 	    qreal val = (qreal)this->joint->getListPositions()->at(i)->getX();
@@ -70,15 +70,15 @@ void Courbes::paintEvent(QPaintEvent *e) {
 	}
 	pen.setColor(Qt::red);
 	painter.setPen(pen);
-	for(int i = 0  ; i < this->joint->getJointRef()->getBufferPositions()->size() ; i++)
+	for(int i = this->joint->getJointRef()->getBufferPositions()->size() / 2  ; i < this->joint->getJointRef()->getBufferPositions()->size() ; i++)
 	{
 	    qreal val = (qreal)this->joint->getJointRef()->getBufferPositions()->at(i)->getX();
-	    newPoint = QPointF(i, val + yOffset);
-	    if(i == 0) oldPoint = newPoint;
+	    newPoint = QPointF(i - this->joint->getJointRef()->getBufferPositions()->size() / 2, val + yOffset);
+	    if(i == this->joint->getJointRef()->getBufferPositions()->size() / 2) oldPoint = newPoint;
 	    painter.drawLine(oldPoint, newPoint);
 	    oldPoint = newPoint;
 	}
-	yOffset = 100;
+	yOffset = 150;
 	pen.setColor(Qt::blue);
 	painter.setPen(pen);
 	for(int i = 0 ; i < this->joint->getListPositions()->size() ; i++)
@@ -91,15 +91,15 @@ void Courbes::paintEvent(QPaintEvent *e) {
 	}
 	pen.setColor(Qt::red);
 	painter.setPen(pen);
-	for(int i = 0 ; i < this->joint->getJointRef()->getBufferPositions()->size() ; i++)
+	for(int i = this->joint->getJointRef()->getBufferPositions()->size() / 2 ; i < this->joint->getJointRef()->getBufferPositions()->size() ; i++)
 	{
 	    qreal val = (qreal)this->joint->getJointRef()->getBufferPositions()->at(i)->getY();
-	    newPoint = QPointF(i, val + yOffset);
-	    if(i == 0) oldPoint = newPoint;
+	    newPoint = QPointF(i - this->joint->getJointRef()->getBufferPositions()->size() / 2, val + yOffset);
+	    if(i == this->joint->getJointRef()->getBufferPositions()->size() / 2) oldPoint = newPoint;
 	    painter.drawLine(oldPoint, newPoint);
 	    oldPoint = newPoint;
 	}
-	yOffset = 200;
+	yOffset = 250;
 	pen.setColor(Qt::blue);
 	painter.setPen(pen);
 	for(int i = 0 ; i < this->joint->getListPositions()->size() ; i++)
@@ -112,11 +112,11 @@ void Courbes::paintEvent(QPaintEvent *e) {
 	}
 	pen.setColor(Qt::red);
 	painter.setPen(pen);
-	for(int i = 0 ; i < this->joint->getJointRef()->getBufferPositions()->size() ; i++)
+	for(int i = this->joint->getJointRef()->getBufferPositions()->size() / 2 ; i < this->joint->getJointRef()->getBufferPositions()->size() ; i++)
 	{
 	    qreal val = (qreal)this->joint->getJointRef()->getBufferPositions()->at(i)->getZ();
-	    newPoint = QPointF(i, val + yOffset);
-	    if(i == 0) oldPoint = newPoint;
+	    newPoint = QPointF(i - this->joint->getJointRef()->getBufferPositions()->size() / 2, val + yOffset);
+	    if(i == this->joint->getJointRef()->getBufferPositions()->size() / 2) oldPoint = newPoint;
 	    painter.drawLine(oldPoint, newPoint);
 	    oldPoint = newPoint;
 	}

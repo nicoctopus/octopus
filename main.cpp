@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 {
     srand(time(NULL)); //Attention multiple SRAND
     QApplication a(argc, argv);
-    MainWindow w;   
+    MainWindow w;
     w.show();
 
     return a.exec();
