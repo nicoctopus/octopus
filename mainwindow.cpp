@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
     ui->suprButton->setVisible(false);
-    ui->editButton->setVisible(false);
+
     ui->visuButton->setVisible(false);
 
     ui->pushButton_creermouvement->setStyleSheet("");
@@ -96,7 +96,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->tempRecordMovement = 20;
     ui->labelTimeRecord->setVisible(false);
 }
-
+void MainWindow::linkActionsMenu(){
+    connect(ui->actionAjouter_sample_audio,SIGNAL(triggered()),this,SLOT(boutonAddSample()));
+    connect(ui->actionArreter_sample_audio,SIGNAL(triggered()),this,SLOT(slotStop()));
+    connect(ui->actionCr_er_nouveau_mouvement,SIGNAL(triggered()),this,SLOT(slotUnlockStickMan()));
+    connect(ui->actionD_marrer_live,SIGNAL(triggered()),this,SLOT(slotStartLivePerformance()));
+    connect(ui->actionJouer_sample_audio,SIGNAL(triggered()),this,SLOT(slotPlayPause()));
+}
 void MainWindow::fillComboBox()
 {
     emit clearComboBox();
@@ -322,7 +328,7 @@ void MainWindow::slotDisplayInfos(QTreeWidgetItem* item,int column){
         ui->loopLabel->setVisible(false);
         ui->loopBox->setVisible(false);
         ui->suprButton->setVisible(false);
-        ui->editButton->setVisible(false);
+
         ui->visuButton->setVisible(false);
 
         return;
@@ -406,7 +412,6 @@ QString MainWindow::textDisplay(Movement *movement)
     ui->loopBox->setVisible(false);
 
     ui->suprButton->setVisible(true);
-    ui->editButton->setVisible(true);
     ui->visuButton->setVisible(true);
 
 
@@ -463,7 +468,7 @@ QString MainWindow::textDisplay(SampleAudio *sampleAudio)
     ui->loopBox->setVisible(true);
 
     ui->suprButton->setVisible(true);
-    ui->editButton->setVisible(true);
+
 
 
     this->movTemp = NULL;
@@ -527,7 +532,7 @@ QString MainWindow::textDisplay(ClientOSC *port)
     ui->loopLabel->setVisible(false);
 
     ui->suprButton->setVisible(true);
-    ui->editButton->setVisible(true);
+
 
 
 
@@ -881,7 +886,7 @@ void MainWindow::slotRemoveButton(){
         ui->loopLabel->setVisible(false);
         ui->loopBox->setVisible(false);
         ui->suprButton->setVisible(false);
-        ui->editButton->setVisible(false);
+
         ui->visuButton->setVisible(false);
          this->clientTemp = NULL;
     }else if(this->movTemp != NULL){
@@ -892,7 +897,6 @@ void MainWindow::slotRemoveButton(){
         ui->loopLabel->setVisible(false);
         ui->loopBox->setVisible(false);
         ui->suprButton->setVisible(false);
-        ui->editButton->setVisible(false);
         ui->visuButton->setVisible(false);
          this->movTemp = NULL;
     }else if(this->audioTemp != NULL){
@@ -904,7 +908,6 @@ void MainWindow::slotRemoveButton(){
         ui->loopLabel->setVisible(false);
         ui->loopBox->setVisible(false);
         ui->suprButton->setVisible(false);
-        ui->editButton->setVisible(false);
         ui->visuButton->setVisible(false);
     }
 

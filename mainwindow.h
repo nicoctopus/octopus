@@ -38,6 +38,7 @@ public:
     void movingStickMan();
     void fillComboBox();
     void refreshCourbes(Movement* movement);
+    void linkActionsMenu();
 
 public slots :
     void slotTimeOutRecord();

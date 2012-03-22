@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-TARGET = InterfaceModel
+TARGET = Octopus
 TEMPLATE = app
 
 
