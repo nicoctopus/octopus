@@ -24,7 +24,7 @@
 
 /*border: 1px solid lightgray;*/
 
-background-color: rgb(66,66,72);
+background-color: rgb(66,66,140);
 
 color: rgb(250,250,250);
 
@@ -354,7 +354,9 @@ border-bottom-color: transparent;
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
-    <string notr="true">background-color : rgb(87, 141, 153);</string>
+    <string notr="true">
+ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(66,155,221), stop: 1 rgb(46,135,201));</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
