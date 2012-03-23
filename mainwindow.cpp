@@ -61,6 +61,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->pushButton_playlecteur->setStyleSheet("");
     ui->pushButton_stoplecteur->setStyleSheet("");
 
+
+
     connect(ui->resetBox,SIGNAL(stateChanged(int)),this,SLOT(slotSetSampleResetMode(int)));
     connect(ui->loopBox,SIGNAL(stateChanged(int)),this,SLOT(slotSetSampleLoopMode(int)));
     connect(ui->loopSpin,SIGNAL(valueChanged(QString)),this,SLOT(slotSetSampleSpinBox(QString)));
@@ -81,6 +83,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->pushButton_supprimermouvement, SIGNAL(clicked()), this, SLOT(slotEscNewMovement()));
     connect(ui->leftTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(slotDisplayInfos(QTreeWidgetItem*,int)));
     connect(ui->ButtonAdd, SIGNAL(clicked()), this, SLOT(boutonAddSample()));
+
 
     connect(this->controller->getServerOsc(), SIGNAL(jointMvtTooBig()), this, SLOT(slotTimeOutRecord()));
 
@@ -116,7 +119,10 @@ void MainWindow::linkActionsMenu(){
     connect(ui->actionVisualise_mouvement,SIGNAL(triggered()),this,SLOT(slotMoveStickman()));
     connect(ui->actionQuitter,SIGNAL(triggered()),this,SLOT(slotAboutToQuit()));
     connect(ui->actionA_propos,SIGNAL(triggered()),this,SLOT(about()));
+    connect(ui->actionNouveau,SIGNAL(triggered()),ui->blackboard,SLOT(slotNettoyerBlackBoard()));
 }
+
+
 
 
 void MainWindow::about()
@@ -933,43 +939,81 @@ void MainWindow::slotMoveStickman(){
 void MainWindow::slotRemoveButton(){
 
     if(this->clientTemp != NULL){
-        this->remove(this->clientTemp);
-        ui->textBrowser->setText("");
-        ui->loopSpin->setVisible(false);
-        ui->resetBox->setVisible(false);
-        ui->loopLabel->setVisible(false);
-        ui->loopBox->setVisible(false);
-        ui->suprButton->setVisible(false);
+        int ret = QMessageBox::question(this,tr(" <b> Supprimer l'Elément' ? </b>"), tr(" <b> Voulez-vous vraiment supprimer ce Port ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::No);
 
-        ui->visuButton->setVisible(false);
-         this->clientTemp = NULL;
+        switch (ret) {
+           case QMessageBox::Yes:
+            this->remove(this->clientTemp);
+            ui->textBrowser->setText("");
+            ui->loopSpin->setVisible(false);
+            ui->resetBox->setVisible(false);
+            ui->loopLabel->setVisible(false);
+            ui->loopBox->setVisible(false);
+            ui->suprButton->setVisible(false);
+
+            ui->visuButton->setVisible(false);
+             this->clientTemp = NULL;
+               break;
+           case QMessageBox::No:
+               break;
+           default:
+               // should never be reached
+               break;
+         }
+
     }else if(this->movTemp != NULL){
-        this->remove(this->movTemp);
-        ui->textBrowser->setText("");
-        ui->loopSpin->setVisible(false);
-        ui->resetBox->setVisible(false);
-        ui->loopLabel->setVisible(false);
-        ui->loopBox->setVisible(false);
-        ui->suprButton->setVisible(false);
-        ui->visuButton->setVisible(false);
-         this->movTemp = NULL;
+        int ret = QMessageBox::question(this,tr(" <b> Supprimer l'Elément' ? </b>"), tr(" <b> Voulez-vous vraiment supprimer ce Mouvement ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::No);
+
+        switch (ret) {
+           case QMessageBox::Yes:
+            this->remove(this->movTemp);
+            ui->textBrowser->setText("");
+            ui->loopSpin->setVisible(false);
+            ui->resetBox->setVisible(false);
+            ui->loopLabel->setVisible(false);
+            ui->loopBox->setVisible(false);
+            ui->suprButton->setVisible(false);
+
+            ui->visuButton->setVisible(false);
+             this->movTemp = NULL;
+               break;
+           case QMessageBox::No:
+               break;
+           default:
+               // should never be reached
+               break;
+         }
     }else if(this->audioTemp != NULL){
-        this->remove(this->audioTemp);
-        this->audioTemp= NULL;
-        ui->textBrowser->setText("");
-        ui->loopSpin->setVisible(false);
-        ui->resetBox->setVisible(false);
-        ui->loopLabel->setVisible(false);
-        ui->loopBox->setVisible(false);
-        ui->suprButton->setVisible(false);
-        ui->visuButton->setVisible(false);
+        int ret = QMessageBox::question(this,tr(" <b> Supprimer l'Elément' ? </b>"), tr(" <b> Voulez-vous vraiment supprimer ce Sample ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::No);
+
+        switch (ret) {
+           case QMessageBox::Yes:
+            this->remove(this->audioTemp);
+            ui->textBrowser->setText("");
+            ui->loopSpin->setVisible(false);
+            ui->resetBox->setVisible(false);
+            ui->loopLabel->setVisible(false);
+            ui->loopBox->setVisible(false);
+            ui->suprButton->setVisible(false);
+
+            ui->visuButton->setVisible(false);
+             this->audioTemp = NULL;
+               break;
+           case QMessageBox::No:
+               break;
+           default:
+               // should never be reached
+               break;
+         }
     }
 
 }
 
 void MainWindow::slotAboutToQuit(){
 
-    int ret = QMessageBox::question(this,tr("Quitter Octopus ?"), tr("Voulez-vous quitter Octopus ?"),QMessageBox::Yes,QMessageBox::No);
+
+    int ret = QMessageBox::question(this,tr(" <b> Quitter Octopus ? </b>"), tr(" <b> Voulez-vous quitter Octopus ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
+
 
     switch (ret) {
        case QMessageBox::Yes:

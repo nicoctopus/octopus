@@ -76,6 +76,7 @@ public slots :
     void about();
     void slotAboutToQuit();
 
+
 signals :
     void refreshLeftTree();
     void refreshBlackBoard();
@@ -85,6 +86,7 @@ signals :
     void emitTimeLive(QString);
     void sigMoveStickman(Movement* movement);
     void clearComboBox();
+
 
 
 private slots:

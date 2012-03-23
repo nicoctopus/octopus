@@ -55,6 +55,7 @@ public slots:
     void slotLiaison();
     void liaison();
     void slotEnleverBlackboard();
+    void slotNettoyerBlackBoard();
 
 protected :
     void contextMenuEvent(QContextMenuEvent  *event);
