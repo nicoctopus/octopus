@@ -65,47 +65,4 @@ void Courbes::paintEvent(QPaintEvent *e) {
 	    oldPoint = newPoint;
 	}
     }
-    /*yOffset = 150;
- pen.setColor(Qt::blue);
- painter.setPen(pen);
- for(int i = 0 ; i < this->listPositionMouvement->size() ; i++)
- {
-     qreal val = (qreal)this->listPositionMouvement->at(i);
-     newPoint = QPointF(i + xOffset, val + yOffset);
-     if(i == 0) oldPoint = newPoint;
-     painter.drawLine(oldPoint, newPoint);
-     oldPoint = newPoint;
- }
- pen.setColor(Qt::red);
- painter.setPen(pen);
- for(int i = this->listPositionBuffer->size() / 2 ; i < this->listPositionBuffer->size() ; i++)
- {
-     qreal val = (qreal)this->listPositionBuffer->at(i);
-     newPoint = QPointF(i - this->listPositionBuffer->size() / 2, val + yOffset);
-     if(i == this->listPositionBuffer->size() / 2) oldPoint = newPoint;
-     painter.drawLine(oldPoint, newPoint);
-     oldPoint = newPoint;
- }
- yOffset = 250;
- pen.setColor(Qt::blue);
- painter.setPen(pen);
- for(int i = 0 ; i < this->listPositionMouvement->size() ; i++)
- {
-     qreal val = (qreal)this->listPositionMouvement->at(i);
-     newPoint = QPointF(i + xOffset, val + yOffset);
-     if(i == 0) oldPoint = newPoint;
-     painter.drawLine(oldPoint, newPoint);
-     oldPoint = newPoint;
- }
- pen.setColor(Qt::red);
- painter.setPen(pen);
- for(int i = this->listPositionBuffer->size() / 2 ; i < this->listPositionBuffer->size() ; i++)
- {
-     qreal val = (qreal)this->listPositionBuffer->at(i);
-     newPoint = QPointF(i - this->listPositionBuffer->size() / 2, val + yOffset);
-     if(i == this->listPositionBuffer->size() / 2) oldPoint = newPoint;
-     painter.drawLine(oldPoint, newPoint);
-     oldPoint = newPoint;
- }
-    }*/
 }

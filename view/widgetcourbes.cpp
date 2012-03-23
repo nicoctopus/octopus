@@ -6,8 +6,6 @@ WidgetCourbes::WidgetCourbes(QWidget *parent) :
     ui(new Ui::WidgetCourbes)
 {
     ui->setupUi(this);
-    /*QScrollArea * sa = new QScrollArea(parent);
-    sa->setWidget(this);*/
 }
 
 void WidgetCourbes::setJointMvt(JointMvt *jointMouvement)
