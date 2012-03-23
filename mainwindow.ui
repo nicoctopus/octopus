@@ -24,7 +24,7 @@
 
 /*border: 1px solid lightgray;*/
 
-background-color: rgb(66,66,72);
+background-color: rgb(66,66,140);
 
 color: rgb(250,250,250);
 
@@ -355,7 +355,9 @@ border-bottom-color: transparent;
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
-    <string notr="true">background-color : rgb(87, 141, 153);</string>
+    <string notr="true">
+ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(66,155,221), stop: 1 rgb(46,135,201));</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -897,8 +899,8 @@ border-radius: 6px;</string>
    </property>
    <property name="minimumSize">
     <size>
-     <width>250</width>
-     <height>149</height>
+     <width>317</width>
+     <height>155</height>
     </size>
    </property>
    <property name="features">
@@ -935,6 +937,13 @@ border-radius: 6px;</string>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="pushButton_AffichageCourbe">
+         <property name="text">
+          <string>Afficher les courbes</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <spacer name="horizontalSpacer">
          <property name="orientation">

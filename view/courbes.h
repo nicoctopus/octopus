@@ -4,21 +4,18 @@
 #include "QWidget"
 #include "QTabWidget"
 #include "QPainter"
-#include "../model/movement.h"
+#include "../model/position.h"
 
 class Courbes : public QWidget
 {
 public:
-    Courbes(QWidget * parent, JointMvt* joint);
-    void setMovement(Movement *movement);
-    void setIndexJointMvtDuMouvement(quint8 index);
-    void creationTab();
-    void setTabWidget(QTabWidget* tabWidget);
+    Courbes(QWidget * parent);
+    void setPositions(QList<Position *> *listPositionMouvement, QList<Position *> *listPositionBuffer, int val);
+
 private :
-    Movement *movement;
-    quint8 indexJointMvtDuMouvement;
-    QTabWidget *tabWidget;
-    JointMvt* joint;
+    QList<qint32>*listPositionMouvement;
+    QList<Position*>*listPositionBuffer;
+    int valeur;
 
 protected:
     void paintEvent(QPaintEvent *);

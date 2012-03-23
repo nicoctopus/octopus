@@ -50,7 +50,8 @@ SOURCES += main.cpp\
     view/courbes.cpp \
     view/loopspinbox.cpp \
     view/configrecordmouvement.cpp \
-    view/configanalyse.cpp
+    view/configanalyse.cpp \
+    view/widgetcourbes.cpp
 
 HEADERS  += mainwindow.h \
     model/utils.h \
@@ -101,11 +102,13 @@ HEADERS  += mainwindow.h \
     view/courbes.h \
     view/loopspinbox.h \
     view/configrecordmouvement.h \
-    view/configanalyse.h
+    view/configanalyse.h \
+    view/widgetcourbes.h
 
 FORMS    += mainwindow.ui \
     view/configanalyse.ui \
-    view/configrecordmouvement.ui
+    view/configrecordmouvement.ui \
+    view/widgetcourbes.ui
 
 
 RESOURCES += \
@@ -119,6 +122,9 @@ else:macx: LIBS += -L$$PWD/FMOD/api/lib/ -lfmodex
 
 INCLUDEPATH += $$PWD/FMOD/api/inc
 DEPENDPATH += $$PWD/FMOD/api/inc
+
+
+
 
 
 
