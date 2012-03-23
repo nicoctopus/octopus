@@ -4,6 +4,8 @@
 #include "QWidget"
 #include "QTabWidget"
 #include "QPainter"
+#include <QTimer>
+#include <QDebug>
 #include "../model/position.h"
 
 class Courbes : public QWidget

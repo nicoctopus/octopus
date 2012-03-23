@@ -94,6 +94,8 @@ signals :
 private slots:
     void on_pushButton_clicked();
 
+    void on_pushButton_AffichageCourbe_clicked();
+
 private:
     Ui::MainWindow *ui;
     Controller *controller;

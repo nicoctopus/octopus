@@ -42,8 +42,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->loopSpin->setEnabled(false);
 
-
-
+    ui->listMovementToShowCourbe->setEnabled(false);
 
     ui->pushButton_enregistrermouvement->setEnabled(false);
     ui->pushButton_recordmouvement->setEnabled(false);
@@ -63,8 +62,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->pushButton_verrouiller->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/cadenasgris.png)");
     ui->pushButton_playlecteur->setStyleSheet("");
     ui->pushButton_stoplecteur->setStyleSheet("");
-
-
 
     connect(ui->resetBox,SIGNAL(stateChanged(int)),this,SLOT(slotSetSampleResetMode(int)));
     connect(ui->loopBox,SIGNAL(stateChanged(int)),this,SLOT(slotSetSampleLoopMode(int)));
@@ -86,7 +83,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->pushButton_supprimermouvement, SIGNAL(clicked()), this, SLOT(slotEscNewMovement()));
     connect(ui->leftTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(slotDisplayInfos(QTreeWidgetItem*,int)));
     connect(ui->ButtonAdd, SIGNAL(clicked()), this, SLOT(boutonAddSample()));
-
 
     connect(this->controller->getServerOsc(), SIGNAL(jointMvtTooBig()), this, SLOT(slotTimeOutRecord()));
 
@@ -173,13 +169,15 @@ void MainWindow::initCourbes()
 void MainWindow::refreshCourbes(Movement* movement)
 {
     int size = ui->tabWidget->count();
-    for(int i = 0 ; i < size ; i++){
-        ui->tabWidget->removeTab(0);
+    for(int i = 0 ; i < size ; i++)
+    {
+	delete ui->tabWidget->widget(0);
+	ui->tabWidget->removeTab(0);
     }
     for(int i=0; i<movement->getListJointsMvt()->size();i++){
-        WidgetCourbes *wc = new WidgetCourbes(ui->tabWidget);
-        wc->setJointMvt(movement->getListJointsMvt()->at(i));
-        ui->tabWidget->addTab(wc,movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
+	WidgetCourbes *wc = new WidgetCourbes(ui->tabWidget);
+	wc->setJointMvt(movement->getListJointsMvt()->at(i));
+	ui->tabWidget->addTab(wc,movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
     }
 }
 
@@ -595,7 +593,6 @@ QString MainWindow::textDisplay(ClientOSC *port)
     ui->loopSpin->setVisible(false);
     ui->resetBox->setVisible(false);
 
-
     ui->suprButton->setVisible(true);
 
 
@@ -892,9 +889,9 @@ void MainWindow::updateLabelTimeRecord()
 void MainWindow::slotChangeMovementForCourbe(QString text)
 {
     for(int i = 0 ; i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
-        if(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName() == text)
-            //ui->widgetCourbes->setMovement(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
-            this->refreshCourbes(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
+	if(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName() == text)
+	    //ui->widgetCourbes->setMovement(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
+	    this->refreshCourbes(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
 
 }
 
@@ -1057,5 +1054,32 @@ void MainWindow::slotAboutToQuit(){
     default:
         // should never be reached
         break;
+    }
+}
+
+void MainWindow::on_pushButton_AffichageCourbe_clicked()
+{
+    if(ui->pushButton_AffichageCourbe->text() == "Afficher les courbes")
+    {
+	ui->pushButton_AffichageCourbe->setText("Masquer les courbes");
+	for(int i = 0 ; i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
+	    if(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName() == ui->listMovementToShowCourbe->currentText())
+	    {
+		this->refreshCourbes(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
+	    }
+	ui->tabWidget->setEnabled(true);
+	ui->listMovementToShowCourbe->setEnabled(true);
+    }
+    else
+    {
+	ui->pushButton_AffichageCourbe->setText("Afficher les courbes");
+	int size = ui->tabWidget->count();
+	for(int i = 0 ; i < size ; i++)
+	{
+	    delete ui->tabWidget->widget(0);
+	    ui->tabWidget->removeTab(0);
+	}
+	ui->tabWidget->setEnabled(false);
+	ui->listMovementToShowCourbe->setEnabled(false);
     }
 }
