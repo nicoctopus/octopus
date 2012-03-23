@@ -114,7 +114,7 @@ void MainWindow::linkActionsMenu(){
     connect(ui->actionStopper_live,SIGNAL(triggered()),this,SLOT(slotStartLivePerformance()));
     connect(ui->actionSupprimer,SIGNAL(triggered()),this,SLOT(slotRemoveButton()));
     connect(ui->actionVisualise_mouvement,SIGNAL(triggered()),this,SLOT(slotMoveStickman()));
-    connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
+    connect(ui->actionQuitter,SIGNAL(triggered()),this,SLOT(slotAboutToQuit()));
     connect(ui->actionA_propos,SIGNAL(triggered()),this,SLOT(about()));
 }
 
@@ -965,4 +965,20 @@ void MainWindow::slotRemoveButton(){
         ui->visuButton->setVisible(false);
     }
 
+}
+
+void MainWindow::slotAboutToQuit(){
+
+    int ret = QMessageBox::question(this,tr("Quitter Octopus ?"), tr("Voulez-vous quitter Octopus ?"),QMessageBox::Yes,QMessageBox::No);
+
+    switch (ret) {
+       case QMessageBox::Yes:
+           qApp->quit();
+           break;
+       case QMessageBox::No:
+           break;
+       default:
+           // should never be reached
+           break;
+     }
 }

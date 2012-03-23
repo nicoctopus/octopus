@@ -74,6 +74,7 @@ public slots :
     void slotRemoveButton();
     void slotMoveStickman();
     void about();
+    void slotAboutToQuit();
 
 signals :
     void refreshLeftTree();
