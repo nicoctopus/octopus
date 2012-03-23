@@ -151,7 +151,9 @@ void MainWindow::refreshCourbes(Movement* movement)
 	ui->tabWidget->removeTab(0);
     }
     for(int i=0; i<movement->getListJointsMvt()->size();i++){
-	ui->tabWidget->addTab(new Courbes(ui->tabWidget, movement->getListJointsMvt()->at(i)),movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
+	WidgetCourbes *wc = new WidgetCourbes(ui->tabWidget);
+	wc->setJointMvt(movement->getListJointsMvt()->at(i));
+	ui->tabWidget->addTab(wc,movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
     }
 }
 

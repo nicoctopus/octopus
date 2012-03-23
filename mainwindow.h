@@ -11,6 +11,7 @@
 #include "view/courbes.h"
 #include "view/configanalyse.h"
 #include "view/configrecordmouvement.h"
+#include "view/widgetcourbes.h"
 
 namespace Ui {
     class MainWindow;
