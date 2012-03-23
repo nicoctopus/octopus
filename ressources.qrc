@@ -59,5 +59,17 @@
         <file>images_boutons/stopgris.png</file>
         <file>images_boutons/stopHOVER.png</file>
         <file>images_boutons/stopPRESSED.png</file>
+        <file>images_boutons/playlive.png</file>
+        <file>images_boutons/playliveHOOVER.png</file>
+        <file>images_boutons/playlivePRESSED.png</file>
+        <file>images_boutons/recorddisabled.png</file>
+        <file>images_boutons/recorddisabledHOVER.png</file>
+        <file>images_boutons/recorddisabledPRESSED.png</file>
+        <file>images_boutons/recordlive.png</file>
+        <file>images_boutons/recordliveHOVER.png</file>
+        <file>images_boutons/recordlivePRESSED.png</file>
+        <file>images_boutons/stoplive.png</file>
+        <file>images_boutons/stopliveHOVER.png</file>
+        <file>images_boutons/stoplivePRESSED.png</file>
     </qresource>
 </RCC>

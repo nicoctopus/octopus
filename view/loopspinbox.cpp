@@ -17,6 +17,7 @@ LoopSpinBox::LoopSpinBox(QWidget* p): QSpinBox(p)
                 for( int i = 0; i < textes.count(); i++ ) values[textes[i]] = i;
             }
             //resize( 100, 40 );
+        setSuffix(" boucle(s)");
             setRange( 1, 11 );
             setWrapping(true);
 

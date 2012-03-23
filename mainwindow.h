@@ -76,6 +76,7 @@ public slots :
     void slotMoveStickman();
     void about();
     void slotAboutToQuit();
+    void slotLancerSynapse();
 
 
 signals :
@@ -107,6 +108,7 @@ private:
     float tempRecordMovement;
     float tempRecordMovementPartantDe0;
     qint16 timeTimerLive;
+    QProcess *proc;
     //QMap<qint16, Movement*> movementsMap; //Pour test ( correspond a la map dans le MANAGER
     //QMap<qint16, QTreeWidgetItem*> itemsLeftMap; //liste des QtreeWidgetItems index par l'id des mvt associs
     //QMap<QTreeWidgetItem*, Movement*> mapTreeItemsMovement; //map qui fait correspondre le pointeur sur le move avec le pointeur sur l'item de LeftTree

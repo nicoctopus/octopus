@@ -24,7 +24,10 @@
 
 /*border: 1px solid lightgray;*/
 
-background-color: rgb(66,66,140);
+/*background-color: rgb(66,66,140);*/
+ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(90,90,100), stop: 1 rgb(66,66,72));
+
 
 color: rgb(250,250,250);
 
@@ -388,6 +391,7 @@ border-radius: 6px;</string>
     <addaction name="actionD_marrer_live"/>
     <addaction name="actionStopper_live"/>
     <addaction name="separator"/>
+    <addaction name="actionLancer_SYNAPSE"/>
     <addaction name="actionQuitter"/>
    </widget>
    <widget class="QMenu" name="menuEdition">
@@ -695,7 +699,7 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QCheckBox" name="loopBox">
          <property name="text">
-          <string> Activer Loop</string>
+          <string> Activer Boucles</string>
          </property>
         </widget>
        </item>
@@ -711,13 +715,6 @@ p, li { white-space: pre-wrap; }
           </size>
          </property>
         </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="loopLabel">
-         <property name="text">
-          <string>Nb Loop :</string>
-         </property>
-        </widget>
        </item>
        <item>
         <widget class="LoopSpinBox" name="loopSpin"/>
@@ -738,7 +735,7 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QCheckBox" name="resetBox">
          <property name="text">
-          <string> Activer Reset</string>
+          <string> Mode Reset</string>
          </property>
         </widget>
        </item>
@@ -977,6 +974,125 @@ border-radius: 6px;</string>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+         <property name="spacing">
+          <number>25</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="start">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#start{
+      border-top: 3px transparent;
+border-bottom: 3px transparent;
+border-right: 3px transparent;
+border-left: 3px transparent;
+border-image:url(:/new/prefix1/images_boutons/playlive.png)3 3 3 3 ;
+}
+QPushButton#start:hover{
+border-top: 3px transparent;
+border-bottom: 3px transparent;
+border-right: 3px transparent;
+border-left: 3px transparent;
+border-image:url(:/new/prefix1/images_boutons/playliveHOOVER.png)3 3 3 3 ;
+}
+
+QPushButton#start:pressed{
+border-top: 3px transparent;
+border-bottom: 3px transparent;
+border-right: 3px transparent;
+border-left: 3px transparent;
+border-image:url(:/new/prefix1/images_boutons/playlivePRESSED.png)3 3 3 3 ;
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="record">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#record{
+      border-top: 3px transparent;
+border-bottom: 3px transparent;
+border-right: 3px transparent;
+border-left: 3px transparent;
+border-image:url(:/new/prefix1/images_boutons/recorddisabled.png)3 3 3 3 ;
+}
+QPushButton#record:hover{
+border-top: 3px transparent;
+border-bottom: 3px transparent;
+border-right: 3px transparent;
+border-left: 3px transparent;
+border-image:url(:/new/prefix1/images_boutons/recorddisabledHOVER.png)3 3 3 3 ;
+}
+
+QPushButton#record:pressed{
+border-top: 3px transparent;
+border-bottom: 3px transparent;
+border-right: 3px transparent;
+border-left: 3px transparent;
+border-image:url(:/new/prefix1/images_boutons/recorddisabledPRESSED.png)3 3 3 3 ;
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <spacer name="horizontalSpacer_6">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -988,44 +1104,6 @@ border-radius: 6px;</string>
           </size>
          </property>
         </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="record">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>RECORD</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="start">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>START</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLCDNumber" name="timer">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>40</height>
-          </size>
-         </property>
-        </widget>
        </item>
        <item>
         <widget class="QPushButton" name="pushButton">
@@ -1047,6 +1125,24 @@ border-radius: 6px;</string>
          </property>
         </spacer>
        </item>
+       <item>
+        <widget class="QLabel" name="timer">
+         <property name="font">
+          <font>
+           <family>Gill Sans MT</family>
+           <pointsize>36</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color:rgb(255,255,255);</string>
+         </property>
+         <property name="text">
+          <string>00:12</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
@@ -1062,7 +1158,10 @@ border-radius: 6px;</string>
   </action>
   <action name="actionNouveau">
    <property name="text">
-    <string>Nouveau</string>
+    <string>Effacer le Tableau</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="actionD_marrer_live">
@@ -1203,6 +1302,11 @@ border-radius: 6px;</string>
   <action name="actionA_propos">
    <property name="text">
     <string>A propos</string>
+   </property>
+  </action>
+  <action name="actionLancer_SYNAPSE">
+   <property name="text">
+    <string>Lancer &quot;SYNAPSE&quot;</string>
    </property>
   </action>
   <zorder>dockConfig</zorder>
