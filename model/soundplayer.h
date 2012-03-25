@@ -26,6 +26,8 @@ private:
     QList <FMOD::Sound*> soundlist;
     QMap <quint32,int> map;
 
+    SampleAudio * audTempDemo;
+
 
 
 

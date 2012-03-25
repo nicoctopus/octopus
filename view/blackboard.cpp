@@ -371,7 +371,7 @@ void BlackBoard::createActions()
     this->actionLier = new QAction(tr("&Lier/Délier"), this);
     this->actionLier->setStatusTip(tr("lier ou délier le mouvement avec un sample ou un port"));
     connect(this->actionLier, SIGNAL(triggered()), this, SLOT(slotLiaison()));
-    this->actionEnleverBlackboard = new QAction(tr("&Enlever diu blackboard"), this);
+    this->actionEnleverBlackboard = new QAction(tr("&Enlever du blackboard"), this);
     this->actionEnleverBlackboard->setStatusTip(tr("Enlever la forme du blackboard"));
     connect(this->actionEnleverBlackboard, SIGNAL(triggered()), this, SLOT(slotEnleverBlackboard()));
 }

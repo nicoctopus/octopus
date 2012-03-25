@@ -45,13 +45,18 @@ bool SoundPlayer::playDemo(SampleAudio*aud){
     bool paused=0;
     int nbr=0;
 
+
     //soundlist.append(sound);
 
 
-    this->system->getChannelsPlaying(&nbr);
+    this->result=this->system->getChannelsPlaying(&nbr);
+    if(result != FMOD_OK)
+       qDebug()<< "PBLM recup nb channel" << endl;
 
 
     if(nbr>0){
+
+
         this->result=this->system->getChannel(0,&channel);
         if(result != FMOD_OK)
             qDebug()<< "PBLM recup index" << endl;
@@ -66,17 +71,30 @@ bool SoundPlayer::playDemo(SampleAudio*aud){
     }
 
 
-    if(playing){
+    if(playing){  
 
+        if(paused && aud->getId()==audTempDemo->getId()){
 
-        if(paused){
             channel->setPaused(false);
             return true;
-        }else{
+        }else if( paused && aud->getId()!=audTempDemo->getId()){
+
+            this->result = system->createSound(aud->getFileURL().toStdString().c_str(),FMOD_DEFAULT,0,&soundDemo);
+            if(result != FMOD_OK)
+                qDebug()<< "PBLM creation stream" << endl;
+
+
+            this->result = system->playSound((FMOD_CHANNELINDEX) 0, soundDemo, FALSE,&channel);
+            if(result != FMOD_OK)
+                qDebug()<< "PBLM play stream arreté" << endl;
+
+            this->audTempDemo = aud;
+            return true;
+
+        }else if ( !paused){
             channel->setPaused(true);
             return false;
-        }
-
+         }
 
     }else{
 
@@ -89,11 +107,12 @@ bool SoundPlayer::playDemo(SampleAudio*aud){
         if(result != FMOD_OK)
             qDebug()<< "PBLM play stream arreté" << endl;
 
-
+        this->audTempDemo = aud;
         return true;
+
     }
 
-    return true;
+   // return true;
 
 }
 
@@ -131,6 +150,7 @@ quint32 SoundPlayer::TimeEnd(SampleAudio* aud){
 
     soundDemo->getLength(&time,FMOD_TIMEUNIT_MS);
 
+    //qDebug()<< time <<endl;
     return time;
 
 }

@@ -1196,7 +1196,7 @@ border-image:url(:/new/prefix1/images_boutons/recorddisabledPRESSED.png)3 3 3 3 
     <string>Ajouter port</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+P</string>
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionCr_er_nouveau_mouvement">
@@ -1215,7 +1215,7 @@ border-image:url(:/new/prefix1/images_boutons/recorddisabledPRESSED.png)3 3 3 3 
     <string>Supprimer</string>
    </property>
    <property name="shortcut">
-    <string>Del</string>
+    <string>Ctrl+R</string>
    </property>
   </action>
   <action name="actionEditer">
@@ -1307,6 +1307,14 @@ border-image:url(:/new/prefix1/images_boutons/recorddisabledPRESSED.png)3 3 3 3 
   <action name="actionLancer_SYNAPSE">
    <property name="text">
     <string>Lancer &quot;SYNAPSE&quot;</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionQuitter_SYNAPSE">
+   <property name="text">
+    <string>Quitter &quot;SYNAPSE&quot;</string>
    </property>
   </action>
   <zorder>dockConfig</zorder>

@@ -125,11 +125,11 @@ QMimeData *MyLeftTree::mimeData(const QList<QTreeWidgetItem *> items) const
 
 void MyLeftTree::contextMenuEvent(QContextMenuEvent *event)
 {
-    if(this->currentItem())
+    if(this->currentItem()->parent())
     {
 	QMenu menu(this);
 	menu.addAction(this->actionRemove);
-	menu.addAction(this->actionEdit);
+
 	menu.exec(event->globalPos());
 	this->setCurrentItem(NULL);
     }
@@ -141,10 +141,6 @@ void MyLeftTree::createActions()
     this->actionRemove->setShortcut(tr("Ctrl+R"));
     this->actionRemove->setStatusTip(tr("Remove the object"));
     connect(this->actionRemove, SIGNAL(triggered()), this, SLOT(slotRemove()));
-    this->actionEdit = new QAction(tr("&Edit"), this);
-    this->actionEdit->setShortcut(tr("Ctrl+E"));
-    this->actionEdit->setStatusTip(tr("Edit the object"));
-    connect(this->actionEdit, SIGNAL(triggered()), this, SLOT(slotEdit()));
 }
 
 void MyLeftTree::slotRemove()
@@ -166,10 +162,7 @@ void MyLeftTree::slotRemove()
     }
 }
 
-void MyLeftTree::slotEdit()
-{
 
-}
 
 void MyLeftTree::setListMovements(QList<Movement*>* listMovements)
 {

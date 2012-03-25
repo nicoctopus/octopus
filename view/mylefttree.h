@@ -35,7 +35,7 @@ signals:
 public slots:
     void refresh();
     void slotRemove();
-    void slotEdit();
+
 
 private:
     QTreeWidgetItem *movements;
@@ -53,7 +53,7 @@ private:
     QMap<QTreeWidgetItem*, ClientOSC*> mapTreeItemsPort; //map qui fait correspondre le pointeur sur le port avec le pointeur sur l'item de LeftTree
 
     QAction *actionRemove;
-    QAction *actionEdit;
+
 
     void createActions();
     
