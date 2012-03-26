@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->stickMan->setLabelDetected(ui->labelDetected);
     //this->proc= new QProcess(this);
 
-    ui->timer->setStyleSheet("color:rgb(255,255,255);");
+    ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));");
     this->setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
     this->setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
     // this->setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
@@ -23,11 +23,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->timerLive = new QTimer(this);
     connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLCDTimerSong()));
     connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLabelTimeRecord()));
-    connect(this, SIGNAL(emitTime(QString)), ui->timerMusic, SLOT(display(QString)));
+    connect(this, SIGNAL(emitTime(QString)), ui->timerMusic, SLOT(setText(QString)));
     connect(this, SIGNAL(emitTimeLabelRecord(QString)), ui->labelTimeRecord, SLOT(setText(QString)));
     connect(this->timerLive, SIGNAL(timeout()), this, SLOT(updateLCDTimerLive()));
     connect(this, SIGNAL(emitTimeLive(QString)), ui->timer, SLOT(setText(QString)));
-    emit emitTimeLive("00:00");
     emit emitTime("00:00");
     //ui->stickManLive->setStickManLive(true);
     //ui->stickManLive->launchTimerForDetection();
@@ -834,7 +833,8 @@ void MainWindow::slotLancerSynapse(){
             ui->actionD_marrer_live->setEnabled(false);
             ui->actionStopper_live->setEnabled(true);
             ui->start->setStyleSheet("QPushButton#start{ border-top: 3px transparent; border-bottom: 3px transparent; border-right: 3px transparent;border-left: 3px transparent;   border-image:url(:/new/prefix1/images_boutons/stoplive.png)3 3 3 3 ; } QPushButton#start:hover{border-top: 3px transparent; border-bottom: 3px transparent;  border-right: 3px transparent; border-left: 3px transparent;  border-image:url(:/new/prefix1/images_boutons/stopliveHOVER.png)3 3 3 3 ; }QPushButton#start:pressed{  border-top: 3px transparent; border-bottom: 3px transparent;        border-right: 3px transparent;border-left: 3px transparent;border-image:url(:/new/prefix1/images_boutons/stoplivePRESSED.png)3 3 3 3 ; }");
-            isLive=true;
+
+	    isLive=true;
 
 	   // }else{
 
@@ -854,13 +854,14 @@ void MainWindow::slotLancerSynapse(){
             ui->actionLancer_SYNAPSE->setEnabled(true);
 
             this->timerLive->stop();
-            ui->timer->setStyleSheet("color:rgb(255,255,255);");
+	    ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));");
             ui->stickMan->stopTimer();
             ui->stickMan->setStickManLive(false);
             //ui->widgetCourbes->setMovement(NULL);
             this->controller->stopAnalize();
             emit emitTimeLive("00:00");
             ui->start->setStyleSheet("QPushButton#start{ border-top: 3px transparent; border-bottom: 3px transparent; border-right: 3px transparent;border-left: 3px transparent;   border-image:url(:/new/prefix1/images_boutons/playlive.png)3 3 3 3 ; } QPushButton#start:hover{border-top: 3px transparent; border-bottom: 3px transparent;  border-right: 3px transparent; border-left: 3px transparent;  border-image:url(:/new/prefix1/images_boutons/playliveHOOVER.png)3 3 3 3 ; }QPushButton#start:pressed{  border-top: 3px transparent; border-bottom: 3px transparent;        border-right: 3px transparent;border-left: 3px transparent;border-image:url(:/new/prefix1/images_boutons/playlivePRESSED.png)3 3 3 3 ; }");
+	    ui->centralWidget->setStyleSheet(" background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180)); border: 2px solid; border-color: rgb(240,240,240);");
 
             isLive=false;
         }
@@ -911,10 +912,15 @@ void MainWindow::slotLancerSynapse(){
             time = "0" + QString::number(m) + ":0" + QString::number(s);
         else time = "0" + QString::number(m) + ":" + QString::number(s);
         if(s%2==0){
-            ui->timer->setStyleSheet("color:rgb(255,0,0);");
+	     ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));");
+	    ui->centralWidget->setStyleSheet(" background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180)); border: 2px solid; border-color: rgb(240,240,240);");
+
         }
         else{
-            ui->timer->setStyleSheet("color:rgb(255,255,255);");
+	       ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(246,114,0), stop: 1 rgb(214,100,0));");
+	       ui->centralWidget->setStyleSheet(" background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(246,114,0), stop: 1 rgb(214,100,0)); border: 2px solid; border-color: rgb(240,240,240);");
+
+
 
         }
         emit emitTimeLive(time);

@@ -33,22 +33,22 @@ void StickMan::setStickManLive(bool isStickManLive){
 
 void StickMan::launchTimerForDetection(){
     this->timer->start(3000);
-    this->textDetected->setText("ARE YOU DETECTED?");
-    this->textDetected->setStyleSheet("background:none;border:none;font-size: 20px;color:rgb(240,240,240);");
+    this->textDetected->setText("ETES VOUS DETECTE ?");
+    this->textDetected->setStyleSheet("background:none;border:none;color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));");
 
 }
 
 void StickMan::stopTimer(){
     this->timer->stop();
     this->textDetected->setText("");
-    this->textDetected->setStyleSheet("background:none;border:none;font-size: 20px;color:rgb(240,240,240);");
+    this->textDetected->setStyleSheet("background:none;border:none;color:rgb(240,240,240);");
     this->reCreateStickMan();
 }
 
 void StickMan::slotTimeOutTimer(){
     this->reCreateStickMan();
-    this->textDetected->setText("NOT DETECTED!");
-    this->textDetected->setStyleSheet("background:none;border:none;font-size: 20px;color:rgb(180,0,0);");
+    this->textDetected->setText("PAS DETECTE...");
+    this->textDetected->setStyleSheet("background:none;border:none;color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(246,114,0), stop: 1 rgb(214,100,0));");
 }
 
 //-----------------------------------------------------------

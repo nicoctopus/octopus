@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
@@ -33,9 +36,16 @@
       </property>
       <property name="maximumSize">
        <size>
-        <width>390</width>
+        <width>405</width>
         <height>100</height>
        </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));
+
+border-color: rgb(240,240,240);
+border-radius: 6px;</string>
       </property>
       <widget class="QLabel" name="label">
        <property name="geometry">
@@ -45,6 +55,10 @@
          <width>62</width>
          <height>16</height>
         </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(220,220,220), stop: 1 rgb(213,213,213));</string>
        </property>
        <property name="text">
         <string>Axe des X</string>
@@ -62,9 +76,16 @@
       </property>
       <property name="maximumSize">
        <size>
-        <width>390</width>
+        <width>405</width>
         <height>100</height>
        </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));
+
+border-color: rgb(240,240,240);
+border-radius: 6px;</string>
       </property>
       <widget class="QLabel" name="label_2">
        <property name="geometry">
@@ -74,6 +95,10 @@
          <width>62</width>
          <height>16</height>
         </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(220,220,220), stop: 1 rgb(213,213,213));</string>
        </property>
        <property name="text">
         <string>Axe des Y</string>
@@ -91,9 +116,16 @@
       </property>
       <property name="maximumSize">
        <size>
-        <width>390</width>
+        <width>405</width>
         <height>100</height>
        </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));
+
+border-color: rgb(240,240,240);
+border-radius: 6px;</string>
       </property>
       <widget class="QLabel" name="label_3">
        <property name="geometry">
@@ -103,6 +135,10 @@
          <width>62</width>
          <height>16</height>
         </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(220,220,220), stop: 1 rgb(213,213,213));</string>
        </property>
        <property name="text">
         <string>Axe des Z</string>
@@ -117,7 +153,7 @@
   <customwidget>
    <class>Courbes</class>
    <extends>QWidget</extends>
-   <header location="global">view/courbes.h</header>
+   <header>view/courbes.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
