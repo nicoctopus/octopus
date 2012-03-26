@@ -8,6 +8,7 @@ SoundPlayer::SoundPlayer(int nbr)
 
     }
 
+
     this->result = system->init(nbr, FMOD_INIT_NORMAL, NULL);
     if(result != FMOD_OK){
         qDebug()<< "PBLM init system !" << endl;
@@ -144,6 +145,7 @@ quint32 SoundPlayer::finSampleEnCours(){
 
     quint32 time=0;
 
+    if(audTempDemo!= NULL){
     this->result = system->createStream(audTempDemo->getFileURL().toStdString().c_str(),FMOD_DEFAULT,0,&soundDemo);
     if(result != FMOD_OK)
         qDebug()<< "PBLM creation stream" << endl;
@@ -151,7 +153,11 @@ quint32 SoundPlayer::finSampleEnCours(){
     soundDemo->getLength(&time,FMOD_TIMEUNIT_MS);
 
     //qDebug()<< time <<endl;
+
     return time;
+}else{
+        return 0;
+    }
 
 
 }
@@ -219,7 +225,7 @@ SoundPlayer::~SoundPlayer(){
 
 void SoundPlayer::play(SampleAudio* aud){
 quint32 end=0;
-
+FMOD::Channel * chanTemp;
     if(map.contains(aud->getId())){
         FMOD::Channel *chan;
         FMOD::Sound *sound;
@@ -271,7 +277,10 @@ quint32 end=0;
 
                 }
             }else{
+                qDebug()<<"STOP"<<endl;
                 chan->stop();
+                map.remove(aud->getId());
+
             }
         }else{
             FMOD::Sound *sound;
@@ -319,22 +328,29 @@ quint32 end=0;
         sound->setLoopCount(aud->getNbLoop());
         sound->setMode(FMOD_LOOP_NORMAL);
 
-        this->result = system->playSound((FMOD_CHANNELINDEX) map.value(aud->getId()) , sound, FALSE,&this->channel);
+        this->result = system->playSound(FMOD_CHANNEL_FREE, sound, FALSE,&this->channel);
         if(result != FMOD_OK)
             qDebug()<< "PBLM play stream arreté" << endl;
 
         }else{
+           /*
+            this->system->getChannel(map.size(),&this->channel);
 
+            qDebug()<< "ALlo : "<< map.size()<<endl;
+            int tempo=1000;
+            this->channel->getIndex(&tempo);
+            qDebug()<< "Channel Index : "<<  tempo << endl;*/
             this->result = system->createStream(aud->getFileURL().toStdString().c_str(),FMOD_DEFAULT,0,&sound);
             if(result != FMOD_OK)
                 qDebug()<< "PBLM creation stream" << endl;
 
-            this->result = system->playSound((FMOD_CHANNELINDEX) map.value(aud->getId()) , sound, FALSE,&this->channel);
+            this->result = system->playSound(FMOD_CHANNEL_FREE, sound, FALSE,&this->channel);
 
         }
 
 
-        this->result = channel->getIndex(&x);
+        this->result = this->channel->getIndex(&x);
+        qDebug()<< "Channel : "<< x<<endl;
         if(result != FMOD_OK)
             qDebug()<< "PBLM Index" << endl;
 

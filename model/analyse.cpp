@@ -193,7 +193,7 @@ void Analyse::calculBITG(){
 					this->listMovementToAnalyze->at(m)->getListJointsMvt()->at(w)->getJointRef()->getBufferPositions()->at(s)->setZ(0);
 
 				    }
-				    qDebug()<< "Remise 0"<< endl;
+
 				}
 				qDebug() << "   Nom du Mouv : " << this->listMovementToAnalyze->at(m)->getName() << endl;
 				qDebug()<< "   Nom du Sample : "<< this->listMovementToAnalyze->at(m)->getSampleAudio()->getName()<< endl;
