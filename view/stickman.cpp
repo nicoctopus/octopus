@@ -34,17 +34,21 @@ void StickMan::setStickManLive(bool isStickManLive){
 void StickMan::launchTimerForDetection(){
     this->timer->start(3000);
     this->textDetected->setText("ARE YOU DETECTED?");
+    this->textDetected->setStyleSheet("background:none;border:none;font-size: 20px;color:rgb(240,240,240);");
+
 }
 
 void StickMan::stopTimer(){
     this->timer->stop();
     this->textDetected->setText("");
+    this->textDetected->setStyleSheet("background:none;border:none;font-size: 20px;color:rgb(240,240,240);");
     this->reCreateStickMan();
 }
 
 void StickMan::slotTimeOutTimer(){
     this->reCreateStickMan();
     this->textDetected->setText("NOT DETECTED!");
+    this->textDetected->setStyleSheet("background:none;border:none;font-size: 20px;color:rgb(180,0,0);");
 }
 
 //-----------------------------------------------------------
@@ -63,6 +67,7 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
     if(this->isStickManLive==true){
 	this->timer->start(1000);
 	this->textDetected->setText("DETECTED");
+    this->textDetected->setStyleSheet("background:none;border:none;font-size: 20px;color:rgb(0,130,0);");
         RESIZE = 3;
     }
 
@@ -470,6 +475,10 @@ void StickMan::selectedNodes(){
 
     }
 
+}
+
+void StickMan::setLabelDetected(QLabel* label){
+    this->textDetected = label;
 }
 
 //-----------------------------------------------------------

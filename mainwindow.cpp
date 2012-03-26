@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
     //this->proc= new QProcess(this);
-
+    ui->stickMan->setLabelDetected(ui->labelDetected);
     ui->timer->setStyleSheet("color:rgb(255,255,255);");
     this->setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
     this->setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
