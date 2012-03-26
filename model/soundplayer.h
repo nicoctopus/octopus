@@ -42,6 +42,7 @@ public:
     void Stop();
     quint32 Position(SampleAudio*);
     quint32 currentTime();
+    quint32 finSampleEnCours();
 
 };
 

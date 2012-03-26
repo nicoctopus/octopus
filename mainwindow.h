@@ -101,7 +101,7 @@ private:
     Ui::MainWindow *ui;
     Controller *controller;
     Movement *movement;
-    QTimer *timer, *timerLive;
+    QTimer *timer, *timerLive, *timerSong;
     SampleAudio* audioTemp;
     Movement * movTemp;
     ClientOSC * clientTemp;
