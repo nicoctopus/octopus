@@ -301,10 +301,8 @@ void MainWindow::slotLancerSynapse(){
     void MainWindow::save(SampleAudio *sampleAudio)
     {
         QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
-        //qDebug() << "test" << endl;
         controller->getManagerElements()->getManagetSampleAudio()->save(sampleAudio, fichierSampleAudio);
         fichierSampleAudio.sync();
-        //emit refreshBlackBoard();
     }
 
     void MainWindow::remove(Movement *movement)
@@ -315,6 +313,7 @@ void MainWindow::slotLancerSynapse(){
         emit refreshLeftTree();
         emit refreshBlackBoard();
         this->fillComboBox();
+	ui->textBrowser->setText("");
     }
 
     void MainWindow::remove(SampleAudio *sampleAudio)
@@ -323,6 +322,7 @@ void MainWindow::slotLancerSynapse(){
         ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
         emit refreshLeftTree();
         emit refreshBlackBoard();
+	ui->textBrowser->setText("");
     }
 
     void MainWindow::remove(ClientOSC *clientOSC)
@@ -331,6 +331,7 @@ void MainWindow::slotLancerSynapse(){
         ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
         emit refreshLeftTree();
         emit refreshBlackBoard();
+	ui->textBrowser->setText("");
     }
 
     void MainWindow::slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int){

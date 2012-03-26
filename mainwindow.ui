@@ -360,14 +360,23 @@ border-bottom-color: transparent;
    <property name="styleSheet">
     <string notr="true">
  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 rgb(66,155,221), stop: 1 rgb(46,135,201));</string>
+                                       stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));
+
+border: 2px solid; /* trait gris */
+border-color: rgb(240,240,240);</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="BlackBoard" name="blackboard" native="true">
       <property name="styleSheet">
-       <string notr="true">background-color : rgb(180, 180, 180);
-border-radius: 6px;</string>
+       <string notr="true">border-radius: 6px;
+
+
+
+background-color: qradialgradient(spread:pad, cx:0.499, cy:1, radius:0.952, fx:0.497, fy:1, stop:0 rgba(11, 36, 57, 255), stop:0.630931 rgba(16, 50, 80, 255), stop:1 rgba(40, 70, 100, 255));
+
+border: 2px solid; /* trait gris */
+border-color: rgb(240,240,240);</string>
       </property>
      </widget>
     </item>
@@ -379,7 +388,7 @@ border-radius: 6px;</string>
      <x>0</x>
      <y>0</y>
      <width>1191</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -528,7 +537,7 @@ border-radius: 6px;</string>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <property name="spacing">
-        <number>-1</number>
+        <number>6</number>
        </property>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -658,18 +667,22 @@ font: 14pt &quot;Fengardo&quot;;</string>
         <bool>true</bool>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color : rgb(180, 180, 180);
-border-radius: 6px;
-</string>
+        <string notr="true">
+ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));
+
+border: 2px solid; /* trait gris */
+border-color: rgb(240,240,240);
+border-radius: 6px;</string>
        </property>
        <property name="html">
         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;SALUT A¨HDAPPS &lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#bf9782;&quot;&gt;ggljjh&lt;/span&gt;&lt;br /&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;AP DAPHSAIHSPAS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande'; font-size:13pt;&quot;&gt;SALUT A¨HDAPPS &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande'; font-size:13pt; color:#bf9782;&quot;&gt;ggljjh&lt;/span&gt;&lt;span style=&quot; font-family:'Lucida Grande'; font-size:13pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Lucida Grande'; font-size:13pt; color:#ffffff;&quot;&gt;AP DAPHSAIHSPAS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -759,23 +772,60 @@ p, li { white-space: pre-wrap; }
      <item>
       <widget class="StickMan" name="stickMan" native="true">
        <property name="styleSheet">
-        <string notr="true">
-background-color :rgb(87, 141, 153);
-border-radius: 6px;</string>
+        <string notr="true">border-radius: 6px;
+
+
+
+background-color: qradialgradient(spread:pad, cx:0.499, cy:1, radius:0.952, fx:0.497, fy:1, stop:0 rgba(11, 36, 57, 255), stop:0.630931 rgba(16, 50, 80, 255), stop:1 rgba(40, 70, 100, 255));
+
+border: 2px solid; /* trait gris */
+border-color: rgb(240,240,240);</string>
        </property>
-       <widget class="QLabel" name="labelTimeRecord">
-        <property name="geometry">
-         <rect>
-          <x>330</x>
-          <y>40</y>
-          <width>51</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_12">
+          <item>
+           <widget class="QLabel" name="labelDetected">
+            <property name="styleSheet">
+             <string notr="true">background:none;
+border:none;
+font-size: 20px;
+color:rgb(240,240,240);</string>
+            </property>
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelTimeRecord">
+            <property name="styleSheet">
+             <string notr="true">background:none;
+border:none;
+font-size: 20px;
+color:rgb(240,240,240);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
      </item>
      <item>
@@ -1334,19 +1384,19 @@ border-image:url(:/new/prefix1/images_boutons/recorddisabledPRESSED.png)3 3 3 3 
   <customwidget>
    <class>StickMan</class>
    <extends>QWidget</extends>
-   <header>view/stickman.h</header>
+   <header>stickman.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>BlackBoard</class>
    <extends>QWidget</extends>
-   <header>view/blackboard.h</header>
+   <header>blackboard.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>MyLeftTree</class>
    <extends>QWidget</extends>
-   <header>view/mylefttree.h</header>
+   <header>mylefttree.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
