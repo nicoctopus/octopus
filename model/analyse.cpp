@@ -69,7 +69,12 @@ void Analyse::calculBITG(){
      PasVitesse = TempsEnregistrement*(seuilFrequence/10)+1;
  }*/
 
-	nbEcarts=10;
+        if(TempsEnregistrement < 50){
+        nbEcarts=5;
+        }else{
+
+          nbEcarts=10;
+        }
 	difNbEcarts = nbEcarts* this->seuilFrequence;
 
 	//qDebug()<< "Seuil frequence : "<< this->seuilFrequence<<endl;

@@ -21,7 +21,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->controller = new Controller();
     this->timer = new QTimer(this);
     this->timerLive = new QTimer(this);
-    connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLCDTimerSong()));
+    this->timerSong = new QTimer(this);
+    connect(this->timerSong, SIGNAL(timeout()), this, SLOT(updateLCDTimerSong()));
     connect(this->timer, SIGNAL(timeout()), this, SLOT(updateLabelTimeRecord()));
     connect(this, SIGNAL(emitTime(QString)), ui->timerMusic, SLOT(setText(QString)));
     connect(this, SIGNAL(emitTimeLabelRecord(QString)), ui->labelTimeRecord, SLOT(setText(QString)));
@@ -97,7 +98,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     //CONNECTS POUR STICKMAN LIVE
     for(int i=0;i<this->controller->getManagerJoints()->getListJoints()->size();i++){
-        connect(this->controller->getManagerJoints()->getListJoints()->at(i),SIGNAL(sigNewPosAddedToBuffer(QString,int,int,int)),ui->stickMan,SLOT(slotMoveNode(QString,int,int,int)));
+	connect(this->controller->getManagerJoints()->getListJoints()->at(i),SIGNAL(sigNewPosAddedToBuffer(QString,int,int,int)),ui->stickMan,SLOT(slotMoveNode(QString,int,int,int)));
     }
 
 
@@ -121,7 +122,7 @@ void MainWindow::linkActionsMenu(){
     connect(ui->actionNouveau,SIGNAL(triggered()),ui->blackboard,SLOT(slotNettoyerBlackBoard()));
     //connect(ui->actionLancer_SYNAPSE,SIGNAL(triggered()),this,SLOT(slotLancerSynapse()));
 
-   // connect(proc,SIGNAL(stateChanged(QProcess::ProcessState)),this,SLOT(slotTestProc(QProcess::ProcessState)));
+    // connect(proc,SIGNAL(stateChanged(QProcess::ProcessState)),this,SLOT(slotTestProc(QProcess::ProcessState)));
 
 
 
@@ -131,9 +132,9 @@ void MainWindow::linkActionsMenu(){
 void MainWindow::slotTestProc(QProcess::ProcessState st){
     //qDebug()<< "STATE : "<< st << endl;
     if(st==2)
-        ui->actionLancer_SYNAPSE->setText("Quitter SYNAPSE");
+	ui->actionLancer_SYNAPSE->setText("Quitter SYNAPSE");
     if(st==0){
-        ui->actionLancer_SYNAPSE->setText("Lancer SYNAPSE");
+	ui->actionLancer_SYNAPSE->setText("Lancer SYNAPSE");
     }
 }
 
@@ -144,1025 +145,1041 @@ void MainWindow::slotLancerSynapse(){
 
 
     if(this->proc->state()==0){
-        qDebug()<< "Lancement Synapse"<<endl;
-        //veridict = proc->startDetached("../../../Synapse/Synapse.app/Contents/MacOS/Synapse");
+	qDebug()<< "Lancement Synapse"<<endl;
+	//veridict = proc->startDetached("../../../Synapse/Synapse.app/Contents/MacOS/Synapse");
 
-        int ret = QMessageBox::information(this,tr(" <b> Démarrer Synapse ? </b>"), tr(" <b> Vérifier que votre Microsoft Kinect est bien connectée à votre ordianteur, avant de démarrer Synapse !  </b> "),QMessageBox::Ok | QMessageBox::Cancel,QMessageBox::Ok);
+	int ret = QMessageBox::information(this,tr(" <b> Démarrer Synapse ? </b>"), tr(" <b> Vérifier que votre Microsoft Kinect est bien connectée à votre ordianteur, avant de démarrer Synapse !  </b> "),QMessageBox::Ok | QMessageBox::Cancel,QMessageBox::Ok);
 
 
-        switch (ret) {
-        case QMessageBox::Ok:
-            this->proc->start("../../../Synapse/Synapse.app/Contents/MacOS/Synapse");
-            break;
-        case QMessageBox::Cancel:
-            break;
-        default:
-            // should never be reached
-            break;
-        }
-        //qDebug () << endl << veridict << endl;
-     }else if(proc->state()==2){
+	switch (ret) {
+	case QMessageBox::Ok:
+	    this->proc->start("../../../Synapse/Synapse.app/Contents/MacOS/Synapse");
+	    break;
+	case QMessageBox::Cancel:
+	    break;
+	default:
+	    // should never be reached
+	    break;
+	}
+	//qDebug () << endl << veridict << endl;
+    }else if(proc->state()==2){
 
-        int ret = QMessageBox::question(this,tr(" <b> Quitter Synapse ? </b>"), tr(" <b> Voulez-vous vraiment arreter Synapse ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
+	int ret = QMessageBox::question(this,tr(" <b> Quitter Synapse ? </b>"), tr(" <b> Voulez-vous vraiment arreter Synapse ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
 
-        switch (ret) {
-        case QMessageBox::Yes:
-            proc->close();
-            qDebug()<< "STOP SYNAPSE"<<endl;
-            break;
-        case QMessageBox::No:
-            break;
-        default:
-            // should never be reached
-            break;
+	switch (ret) {
+	case QMessageBox::Yes:
+	    proc->close();
+	    qDebug()<< "STOP SYNAPSE"<<endl;
+	    break;
+	case QMessageBox::No:
+	    break;
+	default:
+	    // should never be reached
+	    break;
+	}
+    }else{
+	qDebug()<< "Pas de lancement Synapse"<<endl;
+    }
+
 }
-        }else{
-            qDebug()<< "Pas de lancement Synapse"<<endl;
-        }
-
-    }
 
 
 
 
-    void MainWindow::about()
+void MainWindow::about()
+{
+    QMessageBox::about(this, tr("A propos d'Octopus"),
+		       tr("Cette application a été développée par Nicolas Danic, Alix Laplane, Emmanuel de Wiliencourt, Robin Flecchia, Damien Rubio et Thibaut Pilon."));
+}
+
+
+void MainWindow::fillComboBox()
+{
+    emit clearComboBox();
+    QStringList stringList;
+    for(int i = 0 ;  i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
+	stringList.append(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName());
+    ui->listMovementToShowCourbe->addItems(stringList);
+}
+
+void MainWindow::initCourbes()
+{
+    this->fillComboBox();
+    //this->ui->widgetCourbes->setTabWidget(ui->tabWidget);
+    ui->tabWidget->removeTab(0);
+    connect(ui->listMovementToShowCourbe, SIGNAL(currentIndexChanged(QString)), this, SLOT(slotChangeMovementForCourbe(QString)));
+    connect(this, SIGNAL(clearComboBox()), ui->listMovementToShowCourbe, SLOT(clear()));
+}
+
+void MainWindow::refreshCourbes(Movement* movement)
+{
+    int size = ui->tabWidget->count();
+    for(int i = 0 ; i < size ; i++)
     {
-        QMessageBox::about(this, tr("A propos d'Octopus"),
-                           tr("Cette application a été développée par Nicolas Danic, Alix Laplane, Emmanuel de Wiliencourt, Robin Flecchia, Damien Rubio et Thibaut Pilon."));
+	delete ui->tabWidget->widget(0);
+	ui->tabWidget->removeTab(0);
     }
+    for(int i=0; i<movement->getListJointsMvt()->size();i++){
+	WidgetCourbes *wc = new WidgetCourbes(ui->tabWidget);
+	wc->setJointMvt(movement->getListJointsMvt()->at(i));
+	ui->tabWidget->addTab(wc,movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
+    }
+}
+
+void MainWindow::initTreeView()
+{
+    //Initialisation du TreeView
+    connect(this, SIGNAL(refreshLeftTree()), ui->leftTree, SLOT(refresh()));
+    ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovementsByName());
+    ui->leftTree->setListPorts(this->controller->getManagerElements()->getManagerClientOSC()->getListClientsOSC());
+    ui->leftTree->setListSamplesAudio(this->controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudios());
+    emit refreshLeftTree();
+    connect(ui->leftTree, SIGNAL(remove(Movement*)), this, SLOT(remove(Movement*)));
+    connect(ui->leftTree, SIGNAL(remove(SampleAudio*)), this, SLOT(remove(SampleAudio*)));
+    connect(ui->leftTree, SIGNAL(remove(ClientOSC*)), this, SLOT(remove(ClientOSC*)));
+}
+
+void MainWindow::initBlackBoard()
+{
+    ui->blackboard->setListMovements(controller->getManagerElements()->getManagerMovements()->getListMovementsActive());
+    ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
+    ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
+    connect(ui->blackboard, SIGNAL(save(Movement*)), this, SLOT(save(Movement*)));
+    connect(ui->blackboard, SIGNAL(save(ClientOSC*)), this, SLOT(save(ClientOSC*)));
+    connect(ui->blackboard, SIGNAL(save(SampleAudio*)), this, SLOT(save(SampleAudio*)));
+    connect(ui->blackboard, SIGNAL(remove(Movement*)), this, SLOT(remove(Movement*)));
+    connect(ui->blackboard, SIGNAL(remove(SampleAudio*)), this, SLOT(remove(SampleAudio*)));
+    connect(ui->blackboard, SIGNAL(remove(ClientOSC*)), this, SLOT(remove(ClientOSC*)));
+    connect(ui->blackboard, SIGNAL(visualisation(Movement*)), ui->stickMan, SLOT(slotMoveStickMan(Movement*)));
+
+    connect(this, SIGNAL(refreshBlackBoard()), ui->blackboard, SLOT(refresh()));
+    //connect(ui->blackboard->scene(), SIGNAL(selectionChanged()), this, SLOT(slotDisplayInfos()));
+    connect(ui->leftTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(slotLeftTreeDoubleClicked(QTreeWidgetItem*,int)));
+    connect(this, SIGNAL(sigPlaySample()), this, SLOT(slotStop()));
+    connect(this, SIGNAL(sigPlaySample()), this, SLOT(slotPlayPause()));
+    emit refreshBlackBoard();
+}
+
+Controller* MainWindow::getController()
+{
+    return this->controller;
+}
+
+//------------------------------------------------
+//                  Destructeur
+//------------------------------------------------
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+//------------------------------------------------
+//                   METHODES
+//------------------------------------------------
 
 
-    void MainWindow::fillComboBox()
+void MainWindow::slotNewSelectionOnStickMan(){
+    ui->stickMan->selectedNodes();
+}
+
+//------------------------------------------------
+//                   SLOT
+//------------------------------------------------
+void MainWindow::save(Movement *movement)
+{
+    controller->getManagerElements()->saveMovement(movement);
+    this->fillComboBox();
+}
+
+void MainWindow::save(ClientOSC *clientOSC)
+{
+    QSettings fichierClientOSC("clientOSC.ini", QSettings::IniFormat);
+    controller->getManagerElements()->getManagerClientOSC()->save(clientOSC, fichierClientOSC);
+    fichierClientOSC.sync();
+}
+
+void MainWindow::save(SampleAudio *sampleAudio)
+{
+    QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
+    controller->getManagerElements()->getManagetSampleAudio()->save(sampleAudio, fichierSampleAudio);
+    fichierSampleAudio.sync();
+}
+
+void MainWindow::remove(Movement *movement)
+{
+    this->controller->getManagerElements()->remove(movement);
+    ui->blackboard->setListMovements(controller->getManagerElements()->getManagerMovements()->getListMovementsActive());
+    this->ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovementsByName());
+    emit refreshLeftTree();
+    emit refreshBlackBoard();
+    this->fillComboBox();
+    ui->textBrowser->setText("");
+}
+
+void MainWindow::remove(SampleAudio *sampleAudio)
+{
+    this->controller->getManagerElements()->remove(sampleAudio);
+    ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
+    emit refreshLeftTree();
+    emit refreshBlackBoard();
+    ui->textBrowser->setText("");
+}
+
+void MainWindow::remove(ClientOSC *clientOSC)
+{
+    this->controller->getManagerElements()->remove(clientOSC);
+    ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
+    emit refreshLeftTree();
+    emit refreshBlackBoard();
+    ui->textBrowser->setText("");
+}
+
+void MainWindow::slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int){
+
+    if(item->text(0) == "Movements" || item->text(0) == "Samples" || item->text(0) == "Videos" || item->text(0) == "Ports"){
+	return;
+    }
+    if(item->parent()->text(0) == "Samples"){
+	emit sigPlaySample();
+    }
+    else if(item->parent()->text(0) == "Movements"){
+	movingStickMan();
+    }
+}
+
+//------------- Pour stickMan -------
+void MainWindow::movingStickMan(){
+    Movement *movement = NULL;
+    if(!ui->leftTree->selectedItems().isEmpty())
     {
-        emit clearComboBox();
-        QStringList stringList;
-        for(int i = 0 ;  i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
-            stringList.append(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName());
-        ui->listMovementToShowCourbe->addItems(stringList);
+	if(ui->leftTree->selectedItems().at(0)->parent()->text(0) == "Movements")
+	{
+	    movement = (Movement*)(ui->leftTree->getMapTreeItemsMovement().value(ui->leftTree->selectedItems().at(0)));
+	    emit sigMoveStickman(movement);
+	}
     }
 
-    void MainWindow::initCourbes()
+}
+
+void MainWindow::slotPlayPause(){
+    SampleAudio *sampleAudio = NULL;
+    bool ok = false;
+    if(!ui->blackboard->scene()->selectedItems().isEmpty()){
+	if(ui->blackboard->scene()->selectedItems().at(0)->type() == 65539)
+	{
+	    Triangle *triangle = (Triangle*)(ui->blackboard->scene()->selectedItems().at(0));
+	    sampleAudio = triangle->getSampleAudio();
+	    ok = true;
+	}
+    }
+    else if(!ui->leftTree->selectedItems().isEmpty())
     {
-        this->fillComboBox();
-        //this->ui->widgetCourbes->setTabWidget(ui->tabWidget);
-        ui->tabWidget->removeTab(0);
-        connect(ui->listMovementToShowCourbe, SIGNAL(currentIndexChanged(QString)), this, SLOT(slotChangeMovementForCourbe(QString)));
-        connect(this, SIGNAL(clearComboBox()), ui->listMovementToShowCourbe, SLOT(clear()));
+	if(ui->leftTree->selectedItems().at(0)->parent()){
+	if(ui->leftTree->selectedItems().at(0)->parent()->text(0) == "Samples")
+	{
+	    sampleAudio = (SampleAudio*)(ui->leftTree->getMapTreeItemsSample().value(ui->leftTree->selectedItems().at(0)));
+	    ok = true;
+	}
+	}
     }
-
-    void MainWindow::refreshCourbes(Movement* movement)
+    if(ok == true)
     {
-        int size = ui->tabWidget->count();
-        for(int i = 0 ; i < size ; i++)
-        {
-            delete ui->tabWidget->widget(0);
-            ui->tabWidget->removeTab(0);
-        }
-        for(int i=0; i<movement->getListJointsMvt()->size();i++){
-            WidgetCourbes *wc = new WidgetCourbes(ui->tabWidget);
-            wc->setJointMvt(movement->getListJointsMvt()->at(i));
-            ui->tabWidget->addTab(wc,movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
-        }
+	bool temp = false;
+
+	temp = controller->getPlayerDemo()->playDemo(sampleAudio);
+	this->timerSong->start(1000);
+	if(temp==true){
+
+	    ui->labelTitleSong->setText(sampleAudio->getName());
+	    ui->pushButton_playlecteur->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/pause.png)");
+	    ui->actionJouer_sample_audio->setEnabled(false);
+	    ui->actionArreter_sample_audio->setEnabled(true);
+	}else{
+
+	    ui->actionJouer_sample_audio->setEnabled(true);
+	    ui->actionArreter_sample_audio->setEnabled(false);
+	    ui->pushButton_playlecteur->setStyleSheet("");
+	}
     }
 
-    void MainWindow::initTreeView()
-    {
-        //Initialisation du TreeView
-        connect(this, SIGNAL(refreshLeftTree()), ui->leftTree, SLOT(refresh()));
-        ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovementsByName());
-        ui->leftTree->setListPorts(this->controller->getManagerElements()->getManagerClientOSC()->getListClientsOSC());
-        ui->leftTree->setListSamplesAudio(this->controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudios());
-        emit refreshLeftTree();
-        connect(ui->leftTree, SIGNAL(remove(Movement*)), this, SLOT(remove(Movement*)));
-        connect(ui->leftTree, SIGNAL(remove(SampleAudio*)), this, SLOT(remove(SampleAudio*)));
-        connect(ui->leftTree, SIGNAL(remove(ClientOSC*)), this, SLOT(remove(ClientOSC*)));
+}
+
+void MainWindow::slotStop(){
+    controller->getPlayerDemo()->Stop();
+    ui->actionArreter_sample_audio->setEnabled(false);
+    ui->actionJouer_sample_audio->setEnabled(true);
+    ui->labelTitleSong->setText("");
+    ui->pushButton_playlecteur->setStyleSheet("");
+    this->timerSong->stop();
+    emit emitTime("00:00");
+}
+
+void MainWindow::slotDisplayInfos(QTreeWidgetItem* item,int column){
+    //Deselctionner les elements du blackboard pour le lecteur
+    QList<QGraphicsItem*> itemsSelectedOnBlackboard = ui->blackboard->scene()->selectedItems();
+    for(int i=0; i<itemsSelectedOnBlackboard.size();i++){
+	itemsSelectedOnBlackboard.at(i)->setSelected(false);
     }
-
-    void MainWindow::initBlackBoard()
-    {
-        ui->blackboard->setListMovements(controller->getManagerElements()->getManagerMovements()->getListMovementsActive());
-        ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
-        ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
-        connect(ui->blackboard, SIGNAL(save(Movement*)), this, SLOT(save(Movement*)));
-        connect(ui->blackboard, SIGNAL(save(ClientOSC*)), this, SLOT(save(ClientOSC*)));
-        connect(ui->blackboard, SIGNAL(save(SampleAudio*)), this, SLOT(save(SampleAudio*)));
-        connect(ui->blackboard, SIGNAL(remove(Movement*)), this, SLOT(remove(Movement*)));
-        connect(ui->blackboard, SIGNAL(remove(SampleAudio*)), this, SLOT(remove(SampleAudio*)));
-        connect(ui->blackboard, SIGNAL(remove(ClientOSC*)), this, SLOT(remove(ClientOSC*)));
-        connect(ui->blackboard, SIGNAL(visualisation(Movement*)), ui->stickMan, SLOT(slotMoveStickMan(Movement*)));
-
-        connect(this, SIGNAL(refreshBlackBoard()), ui->blackboard, SLOT(refresh()));
-        //connect(ui->blackboard->scene(), SIGNAL(selectionChanged()), this, SLOT(slotDisplayInfos()));
-        connect(ui->leftTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(slotLeftTreeDoubleClicked(QTreeWidgetItem*,int)));
-        connect(this, SIGNAL(sigPlaySample()), this, SLOT(slotStop()));
-        connect(this, SIGNAL(sigPlaySample()), this, SLOT(slotPlayPause()));
-        emit refreshBlackBoard();
-    }
-
-    Controller* MainWindow::getController()
-    {
-        return this->controller;
-    }
-
-    //------------------------------------------------
-    //                  Destructeur
-    //------------------------------------------------
-
-    MainWindow::~MainWindow()
-    {
-        delete ui;
-    }
-
-    //------------------------------------------------
-    //                   METHODES
-    //------------------------------------------------
-
-
-    void MainWindow::slotNewSelectionOnStickMan(){
-        ui->stickMan->selectedNodes();
-    }
-
-    //------------------------------------------------
-    //                   SLOT
-    //------------------------------------------------
-    void MainWindow::save(Movement *movement)
-    {
-        controller->getManagerElements()->saveMovement(movement);
-        this->fillComboBox();
-    }
-
-    void MainWindow::save(ClientOSC *clientOSC)
-    {
-        QSettings fichierClientOSC("clientOSC.ini", QSettings::IniFormat);
-        controller->getManagerElements()->getManagerClientOSC()->save(clientOSC, fichierClientOSC);
-        fichierClientOSC.sync();
-    }
-
-    void MainWindow::save(SampleAudio *sampleAudio)
-    {
-        QSettings fichierSampleAudio("sampleaudio.ini", QSettings::IniFormat);
-        controller->getManagerElements()->getManagetSampleAudio()->save(sampleAudio, fichierSampleAudio);
-        fichierSampleAudio.sync();
-    }
-
-    void MainWindow::remove(Movement *movement)
-    {
-        this->controller->getManagerElements()->remove(movement);
-        ui->blackboard->setListMovements(controller->getManagerElements()->getManagerMovements()->getListMovementsActive());
-        this->ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovementsByName());
-        emit refreshLeftTree();
-        emit refreshBlackBoard();
-        this->fillComboBox();
+    ui->actionSupprimer->setEnabled(true);
+    ui->actionJouer_sample_audio->setEnabled(false);
+    ui->actionVisualise_mouvement->setEnabled(false);
+    //Blindage
+    if(item->text(0) == "Movements" || item->text(0) == "Samples" || item->text(0) == "Ports" || item->text(0) == "Videos" ){
 	ui->textBrowser->setText("");
+	ui->loopSpin->setVisible(false);
+	ui->resetBox->setVisible(false);
+
+	ui->loopBox->setVisible(false);
+	ui->suprButton->setVisible(false);
+
+	ui->visuButton->setVisible(false);
+	ui->actionSupprimer->setEnabled(false);
+	return;
     }
 
-    void MainWindow::remove(SampleAudio *sampleAudio)
+    QString text;
+    if(item->parent()->text(0) == "Movements")
     {
-        this->controller->getManagerElements()->remove(sampleAudio);
-        ui->blackboard->setListSamplesAudio(controller->getManagerElements()->getManagetSampleAudio()->getListSamplesAudiosActive());
-        emit refreshLeftTree();
-        emit refreshBlackBoard();
-	ui->textBrowser->setText("");
+	Movement *temp = ui->leftTree->getMapTreeItemsMovement().value(item);
+	text = this->textDisplay(temp);
+	ui->actionVisualise_mouvement->setEnabled(true);
     }
-
-    void MainWindow::remove(ClientOSC *clientOSC)
+    else if(item->parent()->text(0) == "Samples")
     {
-        this->controller->getManagerElements()->remove(clientOSC);
-        ui->blackboard->setListPorts(controller->getManagerElements()->getManagerClientOSC()->getListClientsOSCActive());
-        emit refreshLeftTree();
-        emit refreshBlackBoard();
-	ui->textBrowser->setText("");
+	SampleAudio *temp = ui->leftTree->getMapTreeItemsSample().value(item);
+	text = this->textDisplay(temp);
+	ui->actionJouer_sample_audio->setEnabled(true);
     }
-
-    void MainWindow::slotLeftTreeDoubleClicked(QTreeWidgetItem* item, int){
-
-        if(item->text(0) == "Movements" || item->text(0) == "Samples" || item->text(0) == "Videos" || item->text(0) == "Ports"){
-            return;
-        }
-        if(item->parent()->text(0) == "Samples"){
-            emit sigPlaySample();
-        }
-        else if(item->parent()->text(0) == "Movements"){
-            movingStickMan();
-        }
-    }
-
-    //------------- Pour stickMan -------
-    void MainWindow::movingStickMan(){
-        Movement *movement = NULL;
-        if(!ui->leftTree->selectedItems().isEmpty())
-        {
-            if(ui->leftTree->selectedItems().at(0)->parent()->text(0) == "Movements")
-            {
-                movement = (Movement*)(ui->leftTree->getMapTreeItemsMovement().value(ui->leftTree->selectedItems().at(0)));
-                emit sigMoveStickman(movement);
-            }
-        }
-
-    }
-
-    void MainWindow::slotPlayPause(){
-        this->timer->start(1000);
-        SampleAudio *sampleAudio = NULL;
-        bool ok = false;
-        if(!ui->blackboard->scene()->selectedItems().isEmpty()){
-            if(ui->blackboard->scene()->selectedItems().at(0)->type() == 65539)
-            {
-                Triangle *triangle = (Triangle*)(ui->blackboard->scene()->selectedItems().at(0));
-                sampleAudio = triangle->getSampleAudio();
-                ok = true;
-            }
-        }
-        else if(!ui->leftTree->selectedItems().isEmpty())
-        {
-            if(ui->leftTree->selectedItems().at(0)->parent()->text(0) == "Samples")
-            {
-                sampleAudio = (SampleAudio*)(ui->leftTree->getMapTreeItemsSample().value(ui->leftTree->selectedItems().at(0)));
-                ok = true;
-            }
-        }
-        if(ok == true)
-        {
-            bool temp = false;
-
-            temp = controller->getPlayerDemo()->playDemo(sampleAudio);
-
-            if(temp==true){
-
-                ui->labelTitleSong->setText(sampleAudio->getName());
-                ui->pushButton_playlecteur->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/pause.png)");
-                ui->actionJouer_sample_audio->setEnabled(false);
-                ui->actionArreter_sample_audio->setEnabled(true);
-            }else{
-
-                ui->actionJouer_sample_audio->setEnabled(true);
-                ui->actionArreter_sample_audio->setEnabled(false);
-                ui->pushButton_playlecteur->setStyleSheet("");
-            }
-        }
-
-    }
-
-    void MainWindow::slotStop(){
-        controller->getPlayerDemo()->Stop();
-        ui->actionArreter_sample_audio->setEnabled(false);
-        ui->actionJouer_sample_audio->setEnabled(true);
-        ui->labelTitleSong->setText("");
-        ui->pushButton_playlecteur->setStyleSheet("");
-        this->timer->stop();
-        emit emitTime("00:00");
-    }
-
-    void MainWindow::slotDisplayInfos(QTreeWidgetItem* item,int column){
-        //Deselctionner les elements du blackboard pour le lecteur
-        QList<QGraphicsItem*> itemsSelectedOnBlackboard = ui->blackboard->scene()->selectedItems();
-        for(int i=0; i<itemsSelectedOnBlackboard.size();i++){
-            itemsSelectedOnBlackboard.at(i)->setSelected(false);
-        }
-        ui->actionSupprimer->setEnabled(true);
-        ui->actionJouer_sample_audio->setEnabled(false);
-        ui->actionVisualise_mouvement->setEnabled(false);
-        //Blindage
-        if(item->text(0) == "Movements" || item->text(0) == "Samples" || item->text(0) == "Ports" || item->text(0) == "Videos" ){
-            ui->textBrowser->setText("");
-            ui->loopSpin->setVisible(false);
-            ui->resetBox->setVisible(false);
-
-            ui->loopBox->setVisible(false);
-            ui->suprButton->setVisible(false);
-
-            ui->visuButton->setVisible(false);
-            ui->actionSupprimer->setEnabled(false);
-            return;
-        }
-
-        QString text;
-        if(item->parent()->text(0) == "Movements")
-        {
-            Movement *temp = ui->leftTree->getMapTreeItemsMovement().value(item);
-            text = this->textDisplay(temp);
-            ui->actionVisualise_mouvement->setEnabled(true);
-        }
-        else if(item->parent()->text(0) == "Samples")
-        {
-            SampleAudio *temp = ui->leftTree->getMapTreeItemsSample().value(item);
-            text = this->textDisplay(temp);
-            ui->actionJouer_sample_audio->setEnabled(true);
-        }
-        else if(item->parent()->text(0) == "Ports")
-        {
-            ClientOSC *temp = ui->leftTree->getMapTreeItemsPort().value(item);
-            text = textDisplay(temp);
-        }
-
-        ui->textBrowser->setText(text);
-    }
-
-    //void MainWindow::slotDisplayInfos()
-    //{
-    //    QList<QGraphicsItem*> itemsSelected = ui->blackboard->scene()->selectedItems();
-    //    QString text;
-    //    for( int i=0; i<itemsSelected.size();i++)
-    //    {
-    //        if(itemsSelected.at(i)->type() == 65537)
-    //        {
-    //            EllipseDuProjet *ellipse = (EllipseDuProjet*)itemsSelected.at(i);
-    //            text = this->textDisplay(ellipse->getMovement());
-    //        }
-    //        if(itemsSelected.at(i)->type() == 65539)
-    //        {
-    //            Triangle *triangle = (Triangle*)itemsSelected.at(i);
-    //            text = this->textDisplay(triangle->getSampleAudio());
-    //        }
-    //        if(itemsSelected.at(i)->type() == 65538)
-    //        {
-    //            Diamond *diamond = (Diamond*)itemsSelected.at(i);
-    //	    text = this->textDisplay(diamond->getPort());
-    //        }
-    //        ui->blackboard->setLastX(itemsSelected.at(0)->pos().x());
-    //        ui->blackboard->setLastY(itemsSelected.at(0)->pos().y());
-    //        qDebug() << "mainWindow" << endl;
-
-    //        ui->textBrowser->setText(text);
-    //    }
-    //}
-    void MainWindow::slotDisplayInfos(QGraphicsItem* item)
+    else if(item->parent()->text(0) == "Ports")
     {
-        ui->actionJouer_sample_audio->setEnabled(false);
-        ui->actionVisualise_mouvement->setEnabled(false);
-        ui->actionSupprimer->setEnabled(true);
-        QString text;
-        if(item->type() == 65537)
-        {
-            EllipseDuProjet *ellipse = (EllipseDuProjet*)item;
-            text = this->textDisplay(ellipse->getMovement());
-            ui->actionVisualise_mouvement->setEnabled(true);
-        }
-        if(item->type() == 65539)
-        {
-            Triangle *triangle = (Triangle*)item;
-            text = this->textDisplay(triangle->getSampleAudio());
-            ui->actionJouer_sample_audio->setEnabled(true);
-        }
-        if(item->type() == 65538)
-        {
-            Diamond *diamond = (Diamond*)item;
-            text = this->textDisplay(diamond->getPort());
-        }
-
-        ui->textBrowser->setText(text);
+	ClientOSC *temp = ui->leftTree->getMapTreeItemsPort().value(item);
+	text = textDisplay(temp);
     }
 
-    QString MainWindow::textDisplay(Movement *movement)
+    ui->textBrowser->setText(text);
+}
+
+//void MainWindow::slotDisplayInfos()
+//{
+//    QList<QGraphicsItem*> itemsSelected = ui->blackboard->scene()->selectedItems();
+//    QString text;
+//    for( int i=0; i<itemsSelected.size();i++)
+//    {
+//        if(itemsSelected.at(i)->type() == 65537)
+//        {
+//            EllipseDuProjet *ellipse = (EllipseDuProjet*)itemsSelected.at(i);
+//            text = this->textDisplay(ellipse->getMovement());
+//        }
+//        if(itemsSelected.at(i)->type() == 65539)
+//        {
+//            Triangle *triangle = (Triangle*)itemsSelected.at(i);
+//            text = this->textDisplay(triangle->getSampleAudio());
+//        }
+//        if(itemsSelected.at(i)->type() == 65538)
+//        {
+//            Diamond *diamond = (Diamond*)itemsSelected.at(i);
+//	    text = this->textDisplay(diamond->getPort());
+//        }
+//        ui->blackboard->setLastX(itemsSelected.at(0)->pos().x());
+//        ui->blackboard->setLastY(itemsSelected.at(0)->pos().y());
+//        qDebug() << "mainWindow" << endl;
+
+//        ui->textBrowser->setText(text);
+//    }
+//}
+void MainWindow::slotDisplayInfos(QGraphicsItem* item)
+{
+    ui->actionJouer_sample_audio->setEnabled(false);
+    ui->actionVisualise_mouvement->setEnabled(false);
+    ui->actionSupprimer->setEnabled(true);
+    QString text;
+    if(item->type() == 65537)
     {
-        ui->loopSpin->setVisible(false);
-        ui->resetBox->setVisible(false);
-
-        ui->loopBox->setVisible(false);
-
-        ui->suprButton->setVisible(true);
-        ui->visuButton->setVisible(true);
-
-
-        this->clientTemp = NULL;
-        this->audioTemp = NULL;
-
-        this->movTemp = movement;
-        QString text;
-        text.append("<b>Name : </b>");
-        text.append(movement->getName());
-        text.append("<br/>");
-        text.append("<b>Nombre de joints mouvements : </b>");
-        text.append(QString::number(movement->getListJointsMvt()->size()));
-        text.append("<br/>");
-        text.append("<b>Nombre de positions : </b>");
-        if(!movement->getListJointsMvt()->isEmpty())
-            text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size()));
-        else text.append("0 position");
-        text.append("<br/>");
-        text.append("<b>Temps du mouvement : </b>");
-        if(!movement->getListJointsMvt()->isEmpty())
-        {
-            text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size() * INTERVAL_TIME));
-            text.append(" ms ");
-        }
-        else text.append("0 ms");
-        text.append("<br/>");
-        for(int i = 0 ; i < movement->getListJointsMvt()->size() ; i++)
-        {
-            text.append("- ");
-            text.append(movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
-            text.append("<br/>");
-        }
-        text.append("<br/><b>SampleAudio : </b><br/>");
-        if(movement->getSampleAudio())
-            text.append(movement->getSampleAudio()->getName());
-        else ("Aucun");
-        text.append("<br/><b>Clients OSC : </b><br/>");
-        if(!movement->getListClients()->isEmpty())
-            for(int i = 0 ; i < movement->getListClients()->size() ; i++)
-            {
-                text.append(movement->getListClients()->at(i)->getName());
-                text.append(("<br/>"));
-            }
-        else text.append("Aucun");
-        return text;
+	EllipseDuProjet *ellipse = (EllipseDuProjet*)item;
+	text = this->textDisplay(ellipse->getMovement());
+	ui->actionVisualise_mouvement->setEnabled(true);
     }
-
-    QString MainWindow::textDisplay(SampleAudio *sampleAudio)
+    if(item->type() == 65539)
     {
-        ui->loopSpin->setVisible(true);
-        ui->resetBox->setVisible(true);
-
-        ui->loopBox->setVisible(true);
-
-        ui->suprButton->setVisible(true);
-
-
-
-        this->movTemp = NULL;
-        this->clientTemp = NULL;
-
-        this->audioTemp = sampleAudio;
-
-        ui->resetBox->setChecked(sampleAudio->getResetActive());
-        ui->loopBox->setChecked(sampleAudio->getLoopActive());
-
-
-        QString text;
-        int temp;
-        int min;
-        int sec;
-
-        text.append("<b>Nom : </b>");
-        text.append(sampleAudio->getName());
-        text.append("<br/>");
-        text.append("<b>Durée : </b>");
-        min = this->controller->getPlayerDemo()->TimeEnd(sampleAudio)/60000;
-        sec = this->controller->getPlayerDemo()->TimeEnd(sampleAudio)%60000;
-        sec = sec/1000;
-        text.append(QString::number(min)+":"+QString::number(sec));
-        text.append("<br/>");
-        text.append("<b>URL : </b>");
-        text.append(sampleAudio->getFileURL());
-        text.append("<br/>");
-        text.append("<b> Loop Mode : </b>");
-        if(sampleAudio->getLoopActive())
-            text.append("ON");
-        else
-            text.append("OFF");
-        text.append("<br/>");
-        if(sampleAudio->getLoopActive())
-        {
-            text.append(" Nombre Loop : ");
-            temp= sampleAudio->getNbLoop();
-            if(temp==-1){
-                text.append("INFINIE");
-            }else if(temp==0){
-                text.append("One Shot");
-            }else{
-
-                text.append(QString::number(temp+1));
-            }
-            text.append("<br/>");
-        }
-        text.append("<b> Mode Reset actif :  </b>");
-        if(sampleAudio->getResetActive())
-            text.append("OUI");
-        else
-            text.append("NON");
-        text.append("<br/>");
-        if(sampleAudio->getListIdMovement()->size()>0){
-            text.append("<b>Mouvements liés : </b>");
-            for(int i = 0 ; i < sampleAudio->getListIdMovement()->size() ; i ++)
-            {
-                text.append(QString::number(sampleAudio->getListIdMovement()->at(i)));
-                text.append("<br/>");
-            }
-        }
-        return text;
+	Triangle *triangle = (Triangle*)item;
+	text = this->textDisplay(triangle->getSampleAudio());
+	ui->actionJouer_sample_audio->setEnabled(true);
     }
-
-    QString MainWindow::textDisplay(ClientOSC *port)
+    if(item->type() == 65538)
     {
-        ui->loopSpin->setVisible(false);
-        ui->resetBox->setVisible(false);
-
-        ui->suprButton->setVisible(true);
-
-
-
-
-        this->audioTemp = NULL;
-
-        this->movTemp = NULL;
-        this->clientTemp = port;
-
-        QString text;
-        text.append("<b>Nom : </b>");
-        text.append(port->getName());
-        text.append("<br/>");
-        text.append("<b>Serveur : </b>");
-        text.append(port->getHost());
-        text.append("<br/>");
-        text.append("<b>Mouvements liés : </b>");
-        for(int i = 0 ; i < port->getListIdMovement()->size() ; i ++)
-        {
-            text.append(QString::number(port->getListIdMovement()->at(i)));
-            text.append("<br/>");
-        }
-        return text;
+	Diamond *diamond = (Diamond*)item;
+	text = this->textDisplay(diamond->getPort());
     }
 
-    //Permet de selectionner les joints pour un nouveau mouvement
-    void MainWindow::slotUnlockStickMan(){
-        QList<QGraphicsItem *> items = ui->stickMan->scene()->items();
-        for (int i = 0; i < items.size(); ++i) {
-            if((items.at(i)->type()) == 3){ //3 est le type de QGraphicsRectItems
-                items.at(i)->setFlags(QGraphicsItem::ItemIsSelectable);
-            }
-        }
+    ui->textBrowser->setText(text);
+}
 
-        ui->pushButton_creermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/creermouvementgris.png)");
-        ui->pushButton_verrouiller->setStyleSheet("");
-        ui->pushButton_supprimermouvement->setStyleSheet("");
+QString MainWindow::textDisplay(Movement *movement)
+{
+    ui->loopSpin->setVisible(false);
+    ui->resetBox->setVisible(false);
 
-        ui->pushButton_creermouvement->setEnabled(false);
-        ui->pushButton_verrouiller->setEnabled(true);
-        ui->pushButton_supprimermouvement->setEnabled(true);
+    ui->loopBox->setVisible(false);
+
+    ui->suprButton->setVisible(true);
+    ui->visuButton->setVisible(true);
 
 
-    }
+    this->clientTemp = NULL;
+    this->audioTemp = NULL;
 
-    //Enregistre les joints du nouveau mouvement
-    int MainWindow::slotLockNodesForNewMouvement(){
-
-        QList<JointGraphic*> nodesSelected = ui->stickMan->getNodesSelected();
-
-        if(nodesSelected.size() == 0){
-            QMessageBox msgBox;
-            msgBox.setText("Aucuns joints selectionnés. Veuillez en selectionner au moins un.");
-            msgBox.exec();
-            return 0;
-        }
-        else
-        {
-            QString nomsDesJoints;
-            movement = new Movement();
-            for (int i = 0; i < nodesSelected.size(); ++i) {
-                movement->addJointMvt(controller->getManagerJoints()->getJoint(nodesSelected.at(i)->getName()));
-                nomsDesJoints = nomsDesJoints + nodesSelected.at(i)->getName() + "\n";
-            }
-            ui->stickMan->reCreateStickMan();
-            this->configRecordMouvement = new ConfigRecordMouvement(0);
-            this->configRecordMouvement->setDefautSettings(this->tempLatence, this->tempRecordMovement);
-            connect(this->configRecordMouvement, SIGNAL(signalConfigTempsRecord(float, float)), this, SLOT(slotConfigTempsRecord(float,float)));
-            this->configRecordMouvement->show();
-        }
-
-        ui->pushButton_recordmouvement->setStyleSheet("");
-        ui->pushButton_verrouiller->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/cadenasgris.png)");
-
-        ui->pushButton_recordmouvement->setEnabled(true);
-        ui->pushButton_verrouiller->setEnabled(false);
-
-        return 1;
-
-    }
-
-    void MainWindow::slotRecordNewMovement()
+    this->movTemp = movement;
+    QString text;
+    text.append("<b>Name : </b>");
+    text.append(movement->getName());
+    text.append("<br/>");
+    text.append("<b>Nombre de joints mouvements : </b>");
+    text.append(QString::number(movement->getListJointsMvt()->size()));
+    text.append("<br/>");
+    text.append("<b>Nombre de positions : </b>");
+    if(!movement->getListJointsMvt()->isEmpty())
+	text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size()));
+    else text.append("0 position");
+    text.append("<br/>");
+    text.append("<b>Temps du mouvement : </b>");
+    if(!movement->getListJointsMvt()->isEmpty())
     {
-        if(isRecording == false){
-            ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/stop.png)");
-            ui->labelTimeRecord->setVisible(true);
-            this->timer->start(100);
-            isRecording = true;
-        }
-        else if(isRecording == true){
-            ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
-            ui->pushButton_recordmouvement->setEnabled(false);
-            ui->nommouvement->setVisible(true);
-            ui->nommouvement->setText("");
-            ui->pushButton_enregistrermouvement->setStyleSheet("");
-            ui->pushButton_enregistrermouvement->setEnabled(true);
-            this->timer->stop();
-            isRecording = false;
-        }
+	text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size() * INTERVAL_TIME));
+	text.append(" ms ");
     }
-
-    void MainWindow::slotTimeOutRecord()
+    else text.append("0 ms");
+    text.append("<br/>");
+    for(int i = 0 ; i < movement->getListJointsMvt()->size() ; i++)
     {
-        //qDebug() << "test"<< endl;
-        //ON STOP LE RECORD
-        this->controller->stopRecord(this->movement);
-        //ON AFFICHE LES BOUTONS
-        ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
-        ui->pushButton_recordmouvement->setEnabled(false);
-        ui->nommouvement->setVisible(true);
-        ui->nommouvement->setText("");
-        ui->pushButton_enregistrermouvement->setStyleSheet("");
-        ui->pushButton_enregistrermouvement->setEnabled(true);
+	text.append("- ");
+	text.append(movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
+	text.append("<br/>");
+    }
+    text.append("<br/><b>SampleAudio : </b><br/>");
+    if(movement->getSampleAudio())
+	text.append(movement->getSampleAudio()->getName());
+    else ("Aucun");
+    text.append("<br/><b>Clients OSC : </b><br/>");
+    if(!movement->getListClients()->isEmpty())
+	for(int i = 0 ; i < movement->getListClients()->size() ; i++)
+	{
+	    text.append(movement->getListClients()->at(i)->getName());
+	    text.append(("<br/>"));
+	}
+    else text.append("Aucun");
+    return text;
+}
 
-        isRecording = false;
+QString MainWindow::textDisplay(SampleAudio *sampleAudio)
+{
+    ui->loopSpin->setVisible(true);
+    ui->resetBox->setVisible(true);
+
+    ui->loopBox->setVisible(true);
+
+    ui->suprButton->setVisible(true);
+
+
+
+    this->movTemp = NULL;
+    this->clientTemp = NULL;
+
+    this->audioTemp = sampleAudio;
+
+    ui->resetBox->setChecked(sampleAudio->getResetActive());
+    ui->loopBox->setChecked(sampleAudio->getLoopActive());
+
+
+    QString text;
+    int temp;
+    int min;
+    int sec;
+
+    text.append("<b>Nom : </b>");
+    text.append(sampleAudio->getName());
+    text.append("<br/>");
+    text.append("<b>Durée : </b>");
+    min = this->controller->getPlayerDemo()->TimeEnd(sampleAudio)/60000;
+    sec = this->controller->getPlayerDemo()->TimeEnd(sampleAudio)%60000;
+    sec = sec/1000;
+    text.append(QString::number(min)+":"+QString::number(sec));
+    text.append("<br/>");
+    text.append("<b>URL : </b>");
+    text.append(sampleAudio->getFileURL());
+    text.append("<br/>");
+    text.append("<b> Loop Mode : </b>");
+    if(sampleAudio->getLoopActive())
+	text.append("ON");
+    else
+	text.append("OFF");
+    text.append("<br/>");
+    if(sampleAudio->getLoopActive())
+    {
+	text.append(" Nombre Loop : ");
+	temp= sampleAudio->getNbLoop();
+	if(temp==-1){
+	    text.append("INFINIE");
+	}else if(temp==0){
+	    text.append("One Shot");
+	}else{
+
+	    text.append(QString::number(temp+1));
+	}
+	text.append("<br/>");
+    }
+    text.append("<b> Mode Reset actif :  </b>");
+    if(sampleAudio->getResetActive())
+	text.append("OUI");
+    else
+	text.append("NON");
+    text.append("<br/>");
+    if(sampleAudio->getListIdMovement()->size()>0){
+	text.append("<b>Mouvements liés : </b>");
+	for(int i = 0 ; i < sampleAudio->getListIdMovement()->size() ; i ++)
+	{
+	    text.append(QString::number(sampleAudio->getListIdMovement()->at(i)));
+	    text.append("<br/>");
+	}
+    }
+    return text;
+}
+
+QString MainWindow::textDisplay(ClientOSC *port)
+{
+    ui->loopSpin->setVisible(false);
+    ui->resetBox->setVisible(false);
+
+    ui->suprButton->setVisible(true);
+
+
+
+
+    this->audioTemp = NULL;
+
+    this->movTemp = NULL;
+    this->clientTemp = port;
+
+    QString text;
+    text.append("<b>Nom : </b>");
+    text.append(port->getName());
+    text.append("<br/>");
+    text.append("<b>Serveur : </b>");
+    text.append(port->getHost());
+    text.append("<br/>");
+    text.append("<b>Mouvements liés : </b>");
+    for(int i = 0 ; i < port->getListIdMovement()->size() ; i ++)
+    {
+	text.append(QString::number(port->getListIdMovement()->at(i)));
+	text.append("<br/>");
+    }
+    return text;
+}
+
+//Permet de selectionner les joints pour un nouveau mouvement
+void MainWindow::slotUnlockStickMan(){
+    QList<QGraphicsItem *> items = ui->stickMan->scene()->items();
+    for (int i = 0; i < items.size(); ++i) {
+	if((items.at(i)->type()) == 3){ //3 est le type de QGraphicsRectItems
+	    items.at(i)->setFlags(QGraphicsItem::ItemIsSelectable);
+	}
     }
 
-    void MainWindow::slotValidNewMovement(){
-        if(ui->nommouvement->text().isEmpty() == true){
-            QMessageBox msg;
-            msg.setText("Veuillez entrer un nom au mouvement");
-            msg.exec();
-        }
-        else{
-            this->movement->setName(ui->nommouvement->text());
-            this->controller->getManagerElements()->addMovement(movement);
-            this->controller->linkJointToJointMvt();
-            this->ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovementsByName());
-            this->refreshLeftTree();
-            ui->labelTimeRecord->setVisible(false);
-            //qDebug() << movement->getName() << endl;
+    ui->pushButton_creermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/creermouvementgris.png)");
+    ui->pushButton_verrouiller->setStyleSheet("");
+    ui->pushButton_supprimermouvement->setStyleSheet("");
+
+    ui->pushButton_creermouvement->setEnabled(false);
+    ui->pushButton_verrouiller->setEnabled(true);
+    ui->pushButton_supprimermouvement->setEnabled(true);
 
 
-            ui->nommouvement->setVisible(false);
+}
 
-            ui->pushButton_enregistrermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/savegris.png)");
-            ui->pushButton_enregistrermouvement->setEnabled(false);
-            ui->pushButton_supprimermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/deletegris.png)");
-            ui->pushButton_enregistrermouvement->setEnabled(false);
-            ui->pushButton_creermouvement->setStyleSheet("");
-            ui->pushButton_creermouvement->setEnabled(true);
+//Enregistre les joints du nouveau mouvement
+int MainWindow::slotLockNodesForNewMouvement(){
 
-            //ui->stickMan->reCreateStickMan();
+    QList<JointGraphic*> nodesSelected = ui->stickMan->getNodesSelected();
 
-        }
+    if(nodesSelected.size() == 0){
+	QMessageBox msgBox;
+	msgBox.setText("Aucuns joints selectionnés. Veuillez en selectionner au moins un.");
+	msgBox.exec();
+	return 0;
+    }
+    else
+    {
+	QString nomsDesJoints;
+	movement = new Movement();
+	for (int i = 0; i < nodesSelected.size(); ++i) {
+	    movement->addJointMvt(controller->getManagerJoints()->getJoint(nodesSelected.at(i)->getName()));
+	    nomsDesJoints = nomsDesJoints + nodesSelected.at(i)->getName() + "\n";
+	}
+	ui->stickMan->reCreateStickMan();
+	this->configRecordMouvement = new ConfigRecordMouvement(0);
+	this->configRecordMouvement->setDefautSettings(this->tempLatence, this->tempRecordMovement);
+	connect(this->configRecordMouvement, SIGNAL(signalConfigTempsRecord(float, float)), this, SLOT(slotConfigTempsRecord(float,float)));
+	this->configRecordMouvement->show();
+    }
+
+    ui->pushButton_recordmouvement->setStyleSheet("");
+    ui->pushButton_verrouiller->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/cadenasgris.png)");
+
+    ui->pushButton_recordmouvement->setEnabled(true);
+    ui->pushButton_verrouiller->setEnabled(false);
+
+    return 1;
+
+}
+
+void MainWindow::slotRecordNewMovement()
+{
+    if(isRecording == false){
+	ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/stop.png)");
+	ui->labelTimeRecord->setVisible(true);
+	this->timer->start(100);
+	isRecording = true;
+    }
+    else if(isRecording == true){
+	ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
+	ui->pushButton_recordmouvement->setEnabled(false);
+	ui->nommouvement->setVisible(true);
+	ui->nommouvement->setText("");
+	ui->pushButton_enregistrermouvement->setStyleSheet("");
+	ui->pushButton_enregistrermouvement->setEnabled(true);
+	this->timer->stop();
+	isRecording = false;
+    }
+}
+
+void MainWindow::slotTimeOutRecord()
+{
+    //qDebug() << "test"<< endl;
+    //ON STOP LE RECORD
+    this->controller->stopRecord(this->movement);
+    //ON AFFICHE LES BOUTONS
+    ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
+    ui->pushButton_recordmouvement->setEnabled(false);
+    ui->nommouvement->setVisible(true);
+    ui->nommouvement->setText("");
+    ui->pushButton_enregistrermouvement->setStyleSheet("");
+    ui->pushButton_enregistrermouvement->setEnabled(true);
+
+    isRecording = false;
+}
+
+void MainWindow::slotValidNewMovement(){
+    if(ui->nommouvement->text().isEmpty() == true){
+	QMessageBox msg;
+	msg.setText("Veuillez entrer un nom au mouvement");
+	msg.exec();
+    }
+    else{
+	this->movement->setName(ui->nommouvement->text());
+	this->controller->getManagerElements()->addMovement(movement);
+	this->controller->linkJointToJointMvt();
+	this->ui->leftTree->setListMovements(this->controller->getManagerElements()->getManagerMovements()->getListMovementsByName());
+	this->refreshLeftTree();
+	ui->labelTimeRecord->setVisible(false);
+	//qDebug() << movement->getName() << endl;
+
+
+	ui->nommouvement->setVisible(false);
+
+	ui->pushButton_enregistrermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/savegris.png)");
+	ui->pushButton_enregistrermouvement->setEnabled(false);
+	ui->pushButton_supprimermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/deletegris.png)");
+	ui->pushButton_enregistrermouvement->setEnabled(false);
+	ui->pushButton_creermouvement->setStyleSheet("");
+	ui->pushButton_creermouvement->setEnabled(true);
+
+	//ui->stickMan->reCreateStickMan();
 
     }
 
-    void MainWindow::slotEscNewMovement(){
-        ui->pushButton_creermouvement->setEnabled(true);
-        ui->pushButton_enregistrermouvement->setEnabled(false);
-        ui->pushButton_recordmouvement->setEnabled(false);
-        ui->pushButton_supprimermouvement->setEnabled(false);
-        ui->pushButton_verrouiller->setEnabled(false);
+}
 
-        ui->nommouvement->setVisible(false);
+void MainWindow::slotEscNewMovement(){
+    ui->pushButton_creermouvement->setEnabled(true);
+    ui->pushButton_enregistrermouvement->setEnabled(false);
+    ui->pushButton_recordmouvement->setEnabled(false);
+    ui->pushButton_supprimermouvement->setEnabled(false);
+    ui->pushButton_verrouiller->setEnabled(false);
 
-        ui->pushButton_creermouvement->setStyleSheet("");
-        ui->pushButton_enregistrermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/savegris.png)");
-        ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
-        ui->pushButton_supprimermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/deletegris.png)");
-        ui->pushButton_verrouiller->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/cadenasgris.png)");
-        ui->stickMan->reCreateStickMan();
-        ui->labelTimeRecord->setVisible(false);
+    ui->nommouvement->setVisible(false);
+
+    ui->pushButton_creermouvement->setStyleSheet("");
+    ui->pushButton_enregistrermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/savegris.png)");
+    ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
+    ui->pushButton_supprimermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/deletegris.png)");
+    ui->pushButton_verrouiller->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/cadenasgris.png)");
+    ui->stickMan->reCreateStickMan();
+    ui->labelTimeRecord->setVisible(false);
+}
+
+
+void MainWindow::slotStartLivePerformance(){
+
+    if(isLive==false){
+
+	//if(this->proc->state()==2){
+
+
+	// ui->actionLancer_SYNAPSE->setEnabled(false);
+
+	this->timeTimerLive = 0;
+	this->timerLive->start(1000);
+	this->controller->analizeRecord();
+	ui->stickMan->setStickManLive(true);
+	ui->stickMan->launchTimerForDetection();
+	ui->actionD_marrer_live->setEnabled(false);
+	ui->actionStopper_live->setEnabled(true);
+	ui->start->setStyleSheet("QPushButton#start{ border-top: 3px transparent; border-bottom: 3px transparent; border-right: 3px transparent;border-left: 3px transparent;   border-image:url(:/new/prefix1/images_boutons/stoplive.png)3 3 3 3 ; } QPushButton#start:hover{border-top: 3px transparent; border-bottom: 3px transparent;  border-right: 3px transparent; border-left: 3px transparent;  border-image:url(:/new/prefix1/images_boutons/stopliveHOVER.png)3 3 3 3 ; }QPushButton#start:pressed{  border-top: 3px transparent; border-bottom: 3px transparent;        border-right: 3px transparent;border-left: 3px transparent;border-image:url(:/new/prefix1/images_boutons/stoplivePRESSED.png)3 3 3 3 ; }");
+
+	isLive=true;
+
+	// }else{
+
+	//int ret = QMessageBox::warning(this,tr(" <b> Lancer d'abord Synapse ! </b>"), tr(" <b> Merci de lancer Synapse à partir du Menu de l'application : Fichier->Lancer SYNAPSE avant de commencer votre performance !' </b> "),QMessageBox::Ok ,QMessageBox::Ok);
+	//}
+
+    }else if(isLive==true){
+	ui->pushButton_AffichageCourbe->setText("Afficher les courbes");
+	int size = ui->tabWidget->count();
+	for(int i = 0 ; i < size ; i++)
+	{
+	    delete ui->tabWidget->widget(0);
+	    ui->tabWidget->removeTab(0);
+	}
+	ui->tabWidget->setEnabled(false);
+	ui->listMovementToShowCourbe->setEnabled(false);
+	ui->actionLancer_SYNAPSE->setEnabled(true);
+
+	this->timerLive->stop();
+	ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));");
+	ui->stickMan->stopTimer();
+	ui->stickMan->setStickManLive(false);
+	//ui->widgetCourbes->setMovement(NULL);
+	this->controller->stopAnalize();
+	emit emitTimeLive("00:00");
+	ui->start->setStyleSheet("QPushButton#start{ border-top: 3px transparent; border-bottom: 3px transparent; border-right: 3px transparent;border-left: 3px transparent;   border-image:url(:/new/prefix1/images_boutons/playlive.png)3 3 3 3 ; } QPushButton#start:hover{border-top: 3px transparent; border-bottom: 3px transparent;  border-right: 3px transparent; border-left: 3px transparent;  border-image:url(:/new/prefix1/images_boutons/playliveHOOVER.png)3 3 3 3 ; }QPushButton#start:pressed{  border-top: 3px transparent; border-bottom: 3px transparent;        border-right: 3px transparent;border-left: 3px transparent;border-image:url(:/new/prefix1/images_boutons/playlivePRESSED.png)3 3 3 3 ; }");
+	ui->centralWidget->setStyleSheet(" background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180)); border: 2px solid; border-color: rgb(240,240,240);");
+
+	isLive=false;
     }
 
 
-    void MainWindow::slotStartLivePerformance(){
-
-        if(isLive==false){
-
-	    //if(this->proc->state()==2){
 
 
-	   // ui->actionLancer_SYNAPSE->setEnabled(false);
+}
 
-            this->timeTimerLive = 0;
-            this->timerLive->start(1000);
-            this->controller->analizeRecord();
-            ui->stickMan->setStickManLive(true);
-            ui->stickMan->launchTimerForDetection();
-            ui->actionD_marrer_live->setEnabled(false);
-            ui->actionStopper_live->setEnabled(true);
-            ui->start->setStyleSheet("QPushButton#start{ border-top: 3px transparent; border-bottom: 3px transparent; border-right: 3px transparent;border-left: 3px transparent;   border-image:url(:/new/prefix1/images_boutons/stoplive.png)3 3 3 3 ; } QPushButton#start:hover{border-top: 3px transparent; border-bottom: 3px transparent;  border-right: 3px transparent; border-left: 3px transparent;  border-image:url(:/new/prefix1/images_boutons/stopliveHOVER.png)3 3 3 3 ; }QPushButton#start:pressed{  border-top: 3px transparent; border-bottom: 3px transparent;        border-right: 3px transparent;border-left: 3px transparent;border-image:url(:/new/prefix1/images_boutons/stoplivePRESSED.png)3 3 3 3 ; }");
+void MainWindow::boutonAddSample()
+{
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Select Music Files"),
+						      QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
 
-	    isLive=true;
+    if (files.isEmpty())
+	return;
+    else
+    {
+	for(int i = 0 ; i < files.size() ; i++)
+	{
+	    this->controller->getManagerElements()->getManagetSampleAudio()->addSample(files.at(i).split("/").last(), files.at(i));
+	}
+    }
+    emit refreshLeftTree();
+}
 
-	   // }else{
+void MainWindow::updateLCDTimerSong()
+{
+    int m, s;
+    QString time;
 
-		//int ret = QMessageBox::warning(this,tr(" <b> Lancer d'abord Synapse ! </b>"), tr(" <b> Merci de lancer Synapse à partir du Menu de l'application : Fichier->Lancer SYNAPSE avant de commencer votre performance !' </b> "),QMessageBox::Ok ,QMessageBox::Ok);
-	    //}
 
-        }else if(isLive==true){
-	    ui->pushButton_AffichageCourbe->setText("Afficher les courbes");
-	    int size = ui->tabWidget->count();
-	    for(int i = 0 ; i < size ; i++)
+    if(controller->getPlayerDemo()->currentTime()!=controller->getPlayerDemo()->finSampleEnCours()){
+
+	s = controller->getPlayerDemo()->currentTime() / 1000;
+	m = s/60;
+	s = s%60;
+	if(s <10)
+	    time = "0" + QString::number(m) + ":0" + QString::number(s);
+	else time = "0" + QString::number(m) + ":" + QString::number(s);
+	emit emitTime(time);
+
+
+   }else{
+
+	m=0;
+	s=0;
+	time = "0" + QString::number(m) + ":0" + QString::number(s);
+	emit emitTime(time);
+	ui->pushButton_playlecteur->setStyleSheet("");
+
+    }
+}
+
+void MainWindow::updateLCDTimerLive()
+{
+    int m, s;
+    QString time;
+    s = this->timeTimerLive;
+    m = s/60;
+    s = s%60;
+    if(s <10)
+	time = "0" + QString::number(m) + ":0" + QString::number(s);
+    else time = "0" + QString::number(m) + ":" + QString::number(s);
+    if(s%2==0){
+	ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));");
+	ui->centralWidget->setStyleSheet(" background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180)); border: 2px solid; border-color: rgb(240,240,240);");
+
+    }
+    else{
+	ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(246,114,0), stop: 1 rgb(214,100,0));");
+	ui->centralWidget->setStyleSheet(" background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(246,114,0), stop: 1 rgb(214,100,0)); border: 2px solid; border-color: rgb(240,240,240);");
+
+
+
+    }
+    emit emitTimeLive(time);
+    this->timeTimerLive++;
+}
+
+void MainWindow::updateLabelTimeRecord()
+{
+    if(isRecording && this->tempLatence > 0)
+    {
+	emit emitTimeLabelRecord(QString::number(this->tempLatence / 10));
+	this->tempLatence -= 1;
+	this->tempRecordMovementPartantDe0 = 1;
+    }
+    else if(isRecording && this->tempLatence == 0 && this->tempRecordMovementPartantDe0 < this->tempRecordMovement)
+    {
+	this->controller->recordMovement(this->movement);
+	emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
+	this->tempRecordMovementPartantDe0++;
+	this->tempLatence = -1;
+    }
+    else if(isRecording && this->tempLatence == -1 && this->tempRecordMovementPartantDe0 == this->tempRecordMovement)
+    {
+	this->timer->stop();
+
+	//ON STOP LE RECORD
+	this->controller->stopRecord(this->movement);
+	emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
+	this->tempRecordMovementPartantDe0 = 0;
+	this->tempLatence = 0;
+	ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
+	ui->pushButton_recordmouvement->setEnabled(false);
+	ui->nommouvement->setVisible(true);
+	ui->nommouvement->setText("");
+	ui->pushButton_enregistrermouvement->setStyleSheet("");
+	ui->pushButton_enregistrermouvement->setEnabled(true);
+	isRecording = false;
+    }
+    else if(isRecording && this->tempLatence == -1 && this->tempRecordMovementPartantDe0 < this->tempRecordMovement)
+    {
+	this->controller->recordMovement(this->movement);
+	emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
+	this->tempRecordMovementPartantDe0 += 1;
+    }
+}
+
+void MainWindow::slotChangeMovementForCourbe(QString text)
+{
+    for(int i = 0 ; i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
+	if(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName() == text)
+	    //ui->widgetCourbes->setMovement(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
+	    this->refreshCourbes(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
+
+}
+
+void MainWindow::slotSetSampleResetMode(int state){
+
+    if(state==0){
+	this->audioTemp->setResetActive(false);
+    }else{
+	this->audioTemp->setResetActive(true);
+
+    }
+    this->save(this->audioTemp);
+    ui->textBrowser->setText(this->textDisplay(this->audioTemp));
+}
+
+
+/******** SLOTS DIALOG CONFIG ANALYSE *********/
+void MainWindow::on_pushButton_clicked()
+{
+    this->configAnalyse = new ConfigAnalyse(0);
+    this->configAnalyse->setParamDefaut(this->controller->getServerOsc()->getVitesse(), this->controller->getServerOsc()->getAmplitude());
+    this->configAnalyse->show();
+    /*********** DIALOG CONFIG ANALYSE *******/
+    connect(this->configAnalyse, SIGNAL(signalConfigAnalyse(float,quint16)), this, SLOT(slotChangeConfigAnalyse(float, quint16)));
+}
+
+void MainWindow::slotChangeConfigAnalyse(float vitesse, quint16 amplitude)
+{
+    this->controller->getServerOsc()->setVitesse(vitesse);
+    this->controller->getServerOsc()->setAmplitude(amplitude);
+}
+
+void MainWindow::slotConfigTempsRecord(float tempsLatence, float tempsRecord)
+{
+    this->tempLatence = tempsLatence;
+    this->tempRecordMovement = tempsRecord;
+}
+void MainWindow::slotSetSampleLoopMode(int state){
+
+    if(state==0){
+	this->audioTemp->setLoopActive(false);
+	ui->loopSpin->setEnabled(false);
+
+    }else{
+	this->audioTemp->setLoopActive(true);
+	ui->loopSpin->setEnabled(true);
+
+    }
+    this->save(this->audioTemp);
+    ui->textBrowser->setText(this->textDisplay(this->audioTemp));
+
+}
+
+void MainWindow::slotSetSampleSpinBox(QString str){
+
+    if(str=="INF"){
+	this->audioTemp->setNbLoop(-1);
+    }else{
+	int y ;
+	y = str.toInt();
+	this->audioTemp->setNbLoop(y-1);
+    }
+    this->save(this->audioTemp);
+    ui->textBrowser->setText(this->textDisplay(this->audioTemp));
+}
+
+void MainWindow::slotMoveStickman(){
+
+    if(this->movTemp !=NULL){
+
+	emit sigMoveStickman(movTemp);
+    }
+}
+
+void MainWindow::slotRemoveButton(){
+
+    if(this->clientTemp != NULL){
+	int ret = QMessageBox::question(this,tr(" <b> Supprimer l'Elément' ? </b>"), tr(" <b> Voulez-vous vraiment supprimer ce Port ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::No);
+
+	switch (ret) {
+	case QMessageBox::Yes:
+	    this->remove(this->clientTemp);
+	    ui->textBrowser->setText("");
+	    ui->loopSpin->setVisible(false);
+	    ui->resetBox->setVisible(false);
+
+	    ui->loopBox->setVisible(false);
+	    ui->suprButton->setVisible(false);
+
+	    ui->visuButton->setVisible(false);
+	    this->clientTemp = NULL;
+	    break;
+	case QMessageBox::No:
+	    break;
+	default:
+	    // should never be reached
+	    break;
+	}
+
+    }else if(this->movTemp != NULL){
+	int ret = QMessageBox::question(this,tr(" <b> Supprimer l'Elément' ? </b>"), tr(" <b> Voulez-vous vraiment supprimer ce Mouvement ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::No);
+
+	switch (ret) {
+	case QMessageBox::Yes:
+	    this->remove(this->movTemp);
+	    ui->textBrowser->setText("");
+	    ui->loopSpin->setVisible(false);
+	    ui->resetBox->setVisible(false);
+
+	    ui->loopBox->setVisible(false);
+	    ui->suprButton->setVisible(false);
+
+	    ui->visuButton->setVisible(false);
+	    this->movTemp = NULL;
+	    break;
+	case QMessageBox::No:
+	    break;
+	default:
+	    // should never be reached
+	    break;
+	}
+    }else if(this->audioTemp != NULL){
+	int ret = QMessageBox::question(this,tr(" <b> Supprimer l'Elément' ? </b>"), tr(" <b> Voulez-vous vraiment supprimer ce Sample ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::No);
+
+	switch (ret) {
+	case QMessageBox::Yes:
+	    this->remove(this->audioTemp);
+	    ui->textBrowser->setText("");
+	    ui->loopSpin->setVisible(false);
+	    ui->resetBox->setVisible(false);
+
+	    ui->loopBox->setVisible(false);
+	    ui->suprButton->setVisible(false);
+
+	    ui->visuButton->setVisible(false);
+	    this->audioTemp = NULL;
+	    break;
+	case QMessageBox::No:
+	    break;
+	default:
+	    // should never be reached
+	    break;
+	}
+    }
+
+}
+
+void MainWindow::slotAboutToQuit(){
+
+
+    int ret = QMessageBox::question(this,tr(" <b> Quitter Octopus ? </b>"), tr(" <b> Voulez-vous quitter Octopus ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
+
+
+    switch (ret) {
+    case QMessageBox::Yes:
+	//if(proc->state()!=0)
+	//  proc->close();
+	qApp->quit();
+	break;
+    case QMessageBox::No:
+	break;
+    default:
+	// should never be reached
+	break;
+    }
+}
+
+void MainWindow::on_pushButton_AffichageCourbe_clicked()
+{
+    if(ui->pushButton_AffichageCourbe->text() == "Afficher les courbes")
+    {
+	ui->pushButton_AffichageCourbe->setText("Masquer les courbes");
+	for(int i = 0 ; i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
+	    if(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName() == ui->listMovementToShowCourbe->currentText())
 	    {
-		delete ui->tabWidget->widget(0);
-		ui->tabWidget->removeTab(0);
+		this->refreshCourbes(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
 	    }
-	    ui->tabWidget->setEnabled(false);
-	    ui->listMovementToShowCourbe->setEnabled(false);
-            ui->actionLancer_SYNAPSE->setEnabled(true);
-
-            this->timerLive->stop();
-	    ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));");
-            ui->stickMan->stopTimer();
-            ui->stickMan->setStickManLive(false);
-            //ui->widgetCourbes->setMovement(NULL);
-            this->controller->stopAnalize();
-            emit emitTimeLive("00:00");
-            ui->start->setStyleSheet("QPushButton#start{ border-top: 3px transparent; border-bottom: 3px transparent; border-right: 3px transparent;border-left: 3px transparent;   border-image:url(:/new/prefix1/images_boutons/playlive.png)3 3 3 3 ; } QPushButton#start:hover{border-top: 3px transparent; border-bottom: 3px transparent;  border-right: 3px transparent; border-left: 3px transparent;  border-image:url(:/new/prefix1/images_boutons/playliveHOOVER.png)3 3 3 3 ; }QPushButton#start:pressed{  border-top: 3px transparent; border-bottom: 3px transparent;        border-right: 3px transparent;border-left: 3px transparent;border-image:url(:/new/prefix1/images_boutons/playlivePRESSED.png)3 3 3 3 ; }");
-	    ui->centralWidget->setStyleSheet(" background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180)); border: 2px solid; border-color: rgb(240,240,240);");
-
-            isLive=false;
-        }
-
-
-
-
+	ui->tabWidget->setEnabled(true);
+	ui->listMovementToShowCourbe->setEnabled(true);
     }
-
-    void MainWindow::boutonAddSample()
+    else
     {
-        QStringList files = QFileDialog::getOpenFileNames(this, tr("Select Music Files"),
-                                                          QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
-
-        if (files.isEmpty())
-            return;
-        else
-        {
-            for(int i = 0 ; i < files.size() ; i++)
-            {
-                this->controller->getManagerElements()->getManagetSampleAudio()->addSample(files.at(i).split("/").last(), files.at(i));
-            }
-        }
-        emit refreshLeftTree();
+	ui->pushButton_AffichageCourbe->setText("Afficher les courbes");
+	int size = ui->tabWidget->count();
+	for(int i = 0 ; i < size ; i++)
+	{
+	    delete ui->tabWidget->widget(0);
+	    ui->tabWidget->removeTab(0);
+	}
+	ui->tabWidget->setEnabled(false);
+	ui->listMovementToShowCourbe->setEnabled(false);
     }
-
-    void MainWindow::updateLCDTimerSong()
-    {
-        int m, s;
-        QString time;
-        s = controller->getPlayerDemo()->currentTime() / 1000;
-        m = s/60;
-        s = s%60;
-        if(s <10)
-            time = "0" + QString::number(m) + ":0" + QString::number(s);
-        else time = "0" + QString::number(m) + ":" + QString::number(s);
-        emit emitTime(time);
-    }
-
-    void MainWindow::updateLCDTimerLive()
-    {
-        int m, s;
-        QString time;
-        s = this->timeTimerLive;
-        m = s/60;
-        s = s%60;
-        if(s <10)
-            time = "0" + QString::number(m) + ":0" + QString::number(s);
-        else time = "0" + QString::number(m) + ":" + QString::number(s);
-        if(s%2==0){
-	     ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));");
-	    ui->centralWidget->setStyleSheet(" background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180)); border: 2px solid; border-color: rgb(240,240,240);");
-
-        }
-        else{
-	       ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(246,114,0), stop: 1 rgb(214,100,0));");
-	       ui->centralWidget->setStyleSheet(" background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(246,114,0), stop: 1 rgb(214,100,0)); border: 2px solid; border-color: rgb(240,240,240);");
-
-
-
-        }
-        emit emitTimeLive(time);
-        this->timeTimerLive++;
-    }
-
-    void MainWindow::updateLabelTimeRecord()
-    {
-        if(isRecording && this->tempLatence > 0)
-        {
-            emit emitTimeLabelRecord(QString::number(this->tempLatence / 10));
-            this->tempLatence -= 1;
-            this->tempRecordMovementPartantDe0 = 1;
-        }
-        else if(isRecording && this->tempLatence == 0 && this->tempRecordMovementPartantDe0 < this->tempRecordMovement)
-        {
-            this->controller->recordMovement(this->movement);
-            emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
-            this->tempRecordMovementPartantDe0++;
-            this->tempLatence = -1;
-        }
-        else if(isRecording && this->tempLatence == -1 && this->tempRecordMovementPartantDe0 == this->tempRecordMovement)
-        {
-            this->timer->stop();
-
-            //ON STOP LE RECORD
-            this->controller->stopRecord(this->movement);
-            emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
-            this->tempRecordMovementPartantDe0 = 0;
-	    this->tempLatence = 0;
-            ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
-            ui->pushButton_recordmouvement->setEnabled(false);
-            ui->nommouvement->setVisible(true);
-            ui->nommouvement->setText("");
-            ui->pushButton_enregistrermouvement->setStyleSheet("");
-            ui->pushButton_enregistrermouvement->setEnabled(true);
-            isRecording = false;
-        }
-        else if(isRecording && this->tempLatence == -1 && this->tempRecordMovementPartantDe0 < this->tempRecordMovement)
-        {
-            this->controller->recordMovement(this->movement);
-            emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
-            this->tempRecordMovementPartantDe0 += 1;
-        }
-    }
-
-    void MainWindow::slotChangeMovementForCourbe(QString text)
-    {
-        for(int i = 0 ; i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
-            if(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName() == text)
-                //ui->widgetCourbes->setMovement(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
-                this->refreshCourbes(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
-
-    }
-
-    void MainWindow::slotSetSampleResetMode(int state){
-
-        if(state==0){
-            this->audioTemp->setResetActive(false);
-        }else{
-            this->audioTemp->setResetActive(true);
-
-        }
-        this->save(this->audioTemp);
-        ui->textBrowser->setText(this->textDisplay(this->audioTemp));
-    }
-
-
-    /******** SLOTS DIALOG CONFIG ANALYSE *********/
-    void MainWindow::on_pushButton_clicked()
-    {
-        this->configAnalyse = new ConfigAnalyse(0);
-        this->configAnalyse->setParamDefaut(this->controller->getServerOsc()->getVitesse(), this->controller->getServerOsc()->getAmplitude());
-        this->configAnalyse->show();
-        /*********** DIALOG CONFIG ANALYSE *******/
-        connect(this->configAnalyse, SIGNAL(signalConfigAnalyse(float,quint16)), this, SLOT(slotChangeConfigAnalyse(float, quint16)));
-    }
-
-    void MainWindow::slotChangeConfigAnalyse(float vitesse, quint16 amplitude)
-    {
-        this->controller->getServerOsc()->setVitesse(vitesse);
-        this->controller->getServerOsc()->setAmplitude(amplitude);
-    }
-
-    void MainWindow::slotConfigTempsRecord(float tempsLatence, float tempsRecord)
-    {
-        this->tempLatence = tempsLatence;
-        this->tempRecordMovement = tempsRecord;
-    }
-    void MainWindow::slotSetSampleLoopMode(int state){
-
-        if(state==0){
-            this->audioTemp->setLoopActive(false);
-            ui->loopSpin->setEnabled(false);
-
-        }else{
-            this->audioTemp->setLoopActive(true);
-            ui->loopSpin->setEnabled(true);
-
-        }
-        this->save(this->audioTemp);
-        ui->textBrowser->setText(this->textDisplay(this->audioTemp));
-
-    }
-
-    void MainWindow::slotSetSampleSpinBox(QString str){
-
-        if(str=="INF"){
-            this->audioTemp->setNbLoop(-1);
-        }else{
-            int y ;
-            y = str.toInt();
-            this->audioTemp->setNbLoop(y-1);
-        }
-        this->save(this->audioTemp);
-        ui->textBrowser->setText(this->textDisplay(this->audioTemp));
-    }
-
-    void MainWindow::slotMoveStickman(){
-
-        if(this->movTemp !=NULL){
-
-            emit sigMoveStickman(movTemp);
-        }
-    }
-
-    void MainWindow::slotRemoveButton(){
-
-        if(this->clientTemp != NULL){
-            int ret = QMessageBox::question(this,tr(" <b> Supprimer l'Elément' ? </b>"), tr(" <b> Voulez-vous vraiment supprimer ce Port ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::No);
-
-            switch (ret) {
-            case QMessageBox::Yes:
-                this->remove(this->clientTemp);
-                ui->textBrowser->setText("");
-                ui->loopSpin->setVisible(false);
-                ui->resetBox->setVisible(false);
-
-                ui->loopBox->setVisible(false);
-                ui->suprButton->setVisible(false);
-
-                ui->visuButton->setVisible(false);
-                this->clientTemp = NULL;
-                break;
-            case QMessageBox::No:
-                break;
-            default:
-                // should never be reached
-                break;
-            }
-
-        }else if(this->movTemp != NULL){
-            int ret = QMessageBox::question(this,tr(" <b> Supprimer l'Elément' ? </b>"), tr(" <b> Voulez-vous vraiment supprimer ce Mouvement ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::No);
-
-            switch (ret) {
-            case QMessageBox::Yes:
-                this->remove(this->movTemp);
-                ui->textBrowser->setText("");
-                ui->loopSpin->setVisible(false);
-                ui->resetBox->setVisible(false);
-
-                ui->loopBox->setVisible(false);
-                ui->suprButton->setVisible(false);
-
-                ui->visuButton->setVisible(false);
-                this->movTemp = NULL;
-                break;
-            case QMessageBox::No:
-                break;
-            default:
-                // should never be reached
-                break;
-            }
-        }else if(this->audioTemp != NULL){
-            int ret = QMessageBox::question(this,tr(" <b> Supprimer l'Elément' ? </b>"), tr(" <b> Voulez-vous vraiment supprimer ce Sample ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::No);
-
-            switch (ret) {
-            case QMessageBox::Yes:
-                this->remove(this->audioTemp);
-                ui->textBrowser->setText("");
-                ui->loopSpin->setVisible(false);
-                ui->resetBox->setVisible(false);
-
-                ui->loopBox->setVisible(false);
-                ui->suprButton->setVisible(false);
-
-                ui->visuButton->setVisible(false);
-                this->audioTemp = NULL;
-                break;
-            case QMessageBox::No:
-                break;
-            default:
-                // should never be reached
-                break;
-            }
-        }
-
-    }
-
-    void MainWindow::slotAboutToQuit(){
-
-
-        int ret = QMessageBox::question(this,tr(" <b> Quitter Octopus ? </b>"), tr(" <b> Voulez-vous quitter Octopus ? </b> "),QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
-
-
-        switch (ret) {
-        case QMessageBox::Yes:
-	    //if(proc->state()!=0)
-	      //  proc->close();
-            qApp->quit();
-            break;
-        case QMessageBox::No:
-            break;
-        default:
-            // should never be reached
-            break;
-        }
-    }
-
-    void MainWindow::on_pushButton_AffichageCourbe_clicked()
-    {
-        if(ui->pushButton_AffichageCourbe->text() == "Afficher les courbes")
-        {
-            ui->pushButton_AffichageCourbe->setText("Masquer les courbes");
-            for(int i = 0 ; i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
-                if(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName() == ui->listMovementToShowCourbe->currentText())
-                {
-                    this->refreshCourbes(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
-                }
-            ui->tabWidget->setEnabled(true);
-            ui->listMovementToShowCourbe->setEnabled(true);
-        }
-        else
-        {
-            ui->pushButton_AffichageCourbe->setText("Afficher les courbes");
-            int size = ui->tabWidget->count();
-            for(int i = 0 ; i < size ; i++)
-            {
-                delete ui->tabWidget->widget(0);
-                ui->tabWidget->removeTab(0);
-            }
-            ui->tabWidget->setEnabled(false);
-            ui->listMovementToShowCourbe->setEnabled(false);
-        }
-    }
+}
