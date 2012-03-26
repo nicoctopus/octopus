@@ -40,6 +40,7 @@ private:
     QString messageSynapse;
     friend QDataStream & operator << (QDataStream &, const Joint &);
     friend QDataStream & operator >> (QDataStream &, Joint &);
+    qint32 compteur;
 };
 
 Q_DECLARE_METATYPE(Joint)

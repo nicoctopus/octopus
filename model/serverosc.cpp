@@ -8,7 +8,7 @@ ServerOSC::ServerOSC()
     size1,size2,size3,size4,size5,size6,size7,size8,size9,size10 = false;
     this->vitesse = 0.3;
     this->amplitude = 55;
-    socket->bindTo(this->portNumber);
+    //socket->bindTo(this->portNumber);
 }
 
 ServerOSC::ServerOSC(const quint16 &portNb, const bool &active) : Port(portNb, active){
@@ -19,7 +19,7 @@ ServerOSC::ServerOSC(const quint16 &portNb, const bool &active) : Port(portNb, a
     size1,size2,size3,size4,size5,size6,size7,size8,size9,size10 = false;
     this->vitesse = 0.3;
     this->amplitude = 55;
-    socket->bindTo(this->portNumber);
+    //socket->bindTo(this->portNumber);
 }
 
 const char* ServerOSC::className() {
@@ -32,7 +32,7 @@ const char* ServerOSC::className() {
 void ServerOSC::run() {
 
 
-   // socket->bindTo(this->portNumber);
+    socket->bindTo(this->portNumber);
     //socket ouverte
 
 /*

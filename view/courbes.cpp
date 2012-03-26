@@ -2,7 +2,7 @@
 
 Courbes::Courbes(QWidget * parent) : QWidget(parent)
 {
-    startTimer(40);
+    startTimer(120);
     this->listPositionBuffer = NULL;
     this->listPositionMouvement = new QList<qint32>();
 }

@@ -8,6 +8,7 @@ Joint::Joint()
 {
     this->bufferPositions = new QList<Position*>();
     this->id = ++idJointStatic;
+    compteur = 0;
 }
 
 Joint::Joint(const QString &nom, QList<Position*> *bufferPositions)
@@ -35,12 +36,14 @@ Joint::Joint(const QString &nom, QList<Position*> *bufferPositions)
 	this->messageSynapse = "/head_trackjointpos";
     else if(this->nom == "torso")
 	this->messageSynapse = "/torso_trackjointpos";
+    compteur = 0;
 }
 Joint::Joint(const Joint &joint)
 {
     this->id = joint.id;
     this->nom = joint.nom;
     this->bufferPositions = new QList<Position*>(*(joint.bufferPositions));
+    compteur = 0;
 }
 
 Joint::Joint(const QString &nom)
@@ -68,6 +71,7 @@ Joint::Joint(const QString &nom)
 	this->messageSynapse = "/head_trackjointpos";
     else if(this->nom == "torso")
 	this->messageSynapse = "/torso_trackjointpos";
+    compteur = 0;
 }
 
 /**
@@ -111,6 +115,7 @@ Joint::~Joint()
 // une derivee grace a la valeur a  t-1
 void Joint::addPosition(const float &x, const float &y, const float &z)
 {
+    compteur++;
     if(this->bufferPositions->length() < SIZE_MAX_BUFFERS && this->bufferPositions->length() >= 1){
 	this->bufferPositions->append(new Position(x, y, z));
     }
@@ -123,7 +128,8 @@ void Joint::addPosition(const float &x, const float &y, const float &z)
 	this->bufferPositions->removeFirst();
 	this->bufferPositions->append(new Position(x, y, z));
     }
-    emit sigNewPosAddedToBuffer(this->getNom(),-x/3,-y/3,z/3);
+    if(compteur%3==0)
+	emit sigNewPosAddedToBuffer(this->getNom(),-x/3,-y/3,z/3);
 }
 
 /**
