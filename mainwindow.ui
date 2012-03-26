@@ -388,7 +388,7 @@ border-color: rgb(240,240,240);</string>
      <x>0</x>
      <y>0</y>
      <width>1191</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -679,10 +679,10 @@ border-radius: 6px;</string>
         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande'; font-size:13pt;&quot;&gt;SALUT A¨HDAPPS &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lucida Grande'; font-size:13pt; color:#bf9782;&quot;&gt;ggljjh&lt;/span&gt;&lt;span style=&quot; font-family:'Lucida Grande'; font-size:13pt;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'Lucida Grande'; font-size:13pt; color:#ffffff;&quot;&gt;AP DAPHSAIHSPAS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;SALUT A¨HDAPPS &lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#bf9782;&quot;&gt;ggljjh&lt;/span&gt;&lt;br /&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;AP DAPHSAIHSPAS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -806,9 +806,22 @@ font-size: 20px;
 color:rgb(240,240,240);</string>
             </property>
             <property name="text">
-             <string>TextLabel</string>
+             <string/>
             </property>
            </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
           <item>
            <widget class="QLabel" name="labelTimeRecord">
@@ -1384,25 +1397,25 @@ border-image:url(:/new/prefix1/images_boutons/recorddisabledPRESSED.png)3 3 3 3 
   <customwidget>
    <class>StickMan</class>
    <extends>QWidget</extends>
-   <header>stickman.h</header>
+   <header>view/stickman.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>BlackBoard</class>
    <extends>QWidget</extends>
-   <header>blackboard.h</header>
+   <header>view/blackboard.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>MyLeftTree</class>
    <extends>QWidget</extends>
-   <header>mylefttree.h</header>
+   <header location="global">view/mylefttree.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>LoopSpinBox</class>
    <extends>QSpinBox</extends>
-   <header location="global">view/loopspinbox.h</header>
+   <header>view/loopspinbox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

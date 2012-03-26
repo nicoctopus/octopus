@@ -10,6 +10,7 @@ bool isLive = false;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->stickMan->setLabelDetected(ui->labelDetected);
     //this->proc= new QProcess(this);
 
     ui->timer->setStyleSheet("color:rgb(255,255,255);");
