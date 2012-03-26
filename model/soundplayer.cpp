@@ -139,6 +139,25 @@ quint32 SoundPlayer::currentTime(){
 
 }
 
+
+quint32 SoundPlayer::finSampleEnCours(){
+
+    quint32 time=0;
+
+    this->result = system->createStream(audTempDemo->getFileURL().toStdString().c_str(),FMOD_DEFAULT,0,&soundDemo);
+    if(result != FMOD_OK)
+        qDebug()<< "PBLM creation stream" << endl;
+
+    soundDemo->getLength(&time,FMOD_TIMEUNIT_MS);
+
+    //qDebug()<< time <<endl;
+    return time;
+
+
+}
+
+
+
 quint32 SoundPlayer::TimeEnd(SampleAudio* aud){
 
     //FMOD::Sound *sound;

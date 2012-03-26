@@ -576,6 +576,7 @@ void MainWindow::slotLancerSynapse(){
         ui->loopBox->setVisible(true);
 
         ui->suprButton->setVisible(true);
+        ui->visuButton->setVisible(false);
 
 
 
@@ -648,6 +649,7 @@ void MainWindow::slotLancerSynapse(){
         ui->resetBox->setVisible(false);
 
         ui->suprButton->setVisible(true);
+        ui->visuButton->setVisible(false);
 
 
 
@@ -884,7 +886,11 @@ void MainWindow::slotLancerSynapse(){
     void MainWindow::updateLCDTimerSong()
     {
         int m, s;
+        int end;
         QString time;
+
+        if(controller->getPlayerDemo()->currentTime()!=controller->getPlayerDemo()->finSampleEnCours()){
+
         s = controller->getPlayerDemo()->currentTime() / 1000;
         m = s/60;
         s = s%60;
@@ -892,6 +898,17 @@ void MainWindow::slotLancerSynapse(){
             time = "0" + QString::number(m) + ":0" + QString::number(s);
         else time = "0" + QString::number(m) + ":" + QString::number(s);
         emit emitTime(time);
+
+
+        }else{
+
+            m=0;
+            s=0;
+            time = "0" + QString::number(m) + ":0" + QString::number(s);
+            emit emitTime(time);
+            ui->pushButton_playlecteur->setStyleSheet("");
+
+        }
     }
 
     void MainWindow::updateLCDTimerLive()
