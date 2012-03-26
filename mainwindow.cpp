@@ -102,7 +102,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
     /******** RECORD MOVEMENT *******/
-    this->tempLatence = 30;
+    this->tempLatence = 0;
     this->tempRecordMovement = 20;
     ui->labelTimeRecord->setVisible(false);
 }
@@ -942,7 +942,7 @@ void MainWindow::slotLancerSynapse(){
             this->controller->stopRecord(this->movement);
             emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
             this->tempRecordMovementPartantDe0 = 0;
-            this->tempLatence = 30;
+	    this->tempLatence = 0;
             ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
             ui->pushButton_recordmouvement->setEnabled(false);
             ui->nommouvement->setVisible(true);
@@ -1120,8 +1120,8 @@ void MainWindow::slotLancerSynapse(){
 
         switch (ret) {
         case QMessageBox::Yes:
-            if(proc->state()!=0)
-                proc->close();
+	    //if(proc->state()!=0)
+	      //  proc->close();
             qApp->quit();
             break;
         case QMessageBox::No:

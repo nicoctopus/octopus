@@ -20,7 +20,7 @@ BlackBoard::BlackBoard(QWidget *parent): QGraphicsView(parent), timerId(0)
     connect(this->scene(), SIGNAL(selectionChanged()), this, SLOT(liaison()));
     //Menu clique droit
     this->createActions();
-    //this->setSceneRect(0,0,1000,1000);
+    this->setSceneRect(0,0,800,300);
     //this->SetCenter(QPointF(250.0,250.0));//fontion modifiée de centerOn()
 
 }
