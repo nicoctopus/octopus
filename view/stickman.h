@@ -12,8 +12,7 @@
 #include "myqline.h"
 #include "model/movement.h"
 #include <QTimer>
-
-
+#include <QLabel>
 
 class StickMan : public QGraphicsView
 {
@@ -31,6 +30,7 @@ class StickMan : public QGraphicsView
         void setStickManLive(bool isStickManLive);
         void launchTimerForDetection();
         void stopTimer();
+        void setLabelDetected(QLabel* label);
 
     public slots:
         void slotMoveStickMan(Movement* movement);
@@ -43,7 +43,7 @@ class StickMan : public QGraphicsView
         void sigMoveNode(QString,int,int,int);
 
     private:
-        QGraphicsSimpleTextItem * textDetected;
+        QLabel * textDetected;
         QMap<QString, QPoint> coord;
         QList<MyQLine*> lines;
         QList<JointGraphic*> nodes;
