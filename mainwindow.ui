@@ -763,6 +763,19 @@ p, li { white-space: pre-wrap; }
 background-color :rgb(87, 141, 153);
 border-radius: 6px;</string>
        </property>
+       <widget class="QLabel" name="labelTimeRecord">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>40</y>
+          <width>51</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </widget>
      </item>
      <item>
@@ -859,13 +872,6 @@ border-radius: 6px;</string>
          </property>
          <property name="text">
           <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelTimeRecord">
-         <property name="text">
-          <string>TextLabel</string>
          </property>
         </widget>
        </item>
