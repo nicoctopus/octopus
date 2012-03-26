@@ -10,7 +10,7 @@ bool isLive = false;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->proc= new QProcess(this);
+    //this->proc= new QProcess(this);
 
     ui->timer->setStyleSheet("color:rgb(255,255,255);");
     this->setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
@@ -102,7 +102,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
     /******** RECORD MOVEMENT *******/
-    this->tempLatence = 30;
+    this->tempLatence = 0;
     this->tempRecordMovement = 20;
     ui->labelTimeRecord->setVisible(false);
 }
@@ -119,9 +119,9 @@ void MainWindow::linkActionsMenu(){
     connect(ui->actionQuitter,SIGNAL(triggered()),this,SLOT(slotAboutToQuit()));
     connect(ui->actionA_propos,SIGNAL(triggered()),this,SLOT(about()));
     connect(ui->actionNouveau,SIGNAL(triggered()),ui->blackboard,SLOT(slotNettoyerBlackBoard()));
-    connect(ui->actionLancer_SYNAPSE,SIGNAL(triggered()),this,SLOT(slotLancerSynapse()));
+    //connect(ui->actionLancer_SYNAPSE,SIGNAL(triggered()),this,SLOT(slotLancerSynapse()));
 
-    connect(proc,SIGNAL(stateChanged(QProcess::ProcessState)),this,SLOT(slotTestProc(QProcess::ProcessState)));
+   // connect(proc,SIGNAL(stateChanged(QProcess::ProcessState)),this,SLOT(slotTestProc(QProcess::ProcessState)));
 
 
 
@@ -821,18 +821,14 @@ void MainWindow::slotLancerSynapse(){
 
         if(isLive==false){
 
-            if(this->proc->state()==2){
+	    //if(this->proc->state()==2){
 
 
-            ui->actionLancer_SYNAPSE->setEnabled(false);
+	   // ui->actionLancer_SYNAPSE->setEnabled(false);
 
             this->timeTimerLive = 0;
             this->timerLive->start(1000);
             this->controller->analizeRecord();
-            for(int i = 0 ; i < this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->size() ; i++)
-                if(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i)->getName() == ui->listMovementToShowCourbe->currentText())
-                    //ui->widgetCourbes->setMovement(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
-                    this->refreshCourbes(this->controller->getManagerElements()->getManagerMovements()->getListMovementsActive()->at(i));
             ui->stickMan->setStickManLive(true);
             ui->stickMan->launchTimerForDetection();
             ui->actionD_marrer_live->setEnabled(false);
@@ -840,13 +836,21 @@ void MainWindow::slotLancerSynapse(){
             ui->start->setStyleSheet("QPushButton#start{ border-top: 3px transparent; border-bottom: 3px transparent; border-right: 3px transparent;border-left: 3px transparent;   border-image:url(:/new/prefix1/images_boutons/stoplive.png)3 3 3 3 ; } QPushButton#start:hover{border-top: 3px transparent; border-bottom: 3px transparent;  border-right: 3px transparent; border-left: 3px transparent;  border-image:url(:/new/prefix1/images_boutons/stopliveHOVER.png)3 3 3 3 ; }QPushButton#start:pressed{  border-top: 3px transparent; border-bottom: 3px transparent;        border-right: 3px transparent;border-left: 3px transparent;border-image:url(:/new/prefix1/images_boutons/stoplivePRESSED.png)3 3 3 3 ; }");
             isLive=true;
 
-            }else{
+	   // }else{
 
-                int ret = QMessageBox::warning(this,tr(" <b> Lancer d'abord Synapse ! </b>"), tr(" <b> Merci de lancer Synapse à partir du Menu de l'application : Fichier->Lancer SYNAPSE avant de commencer votre performance !' </b> "),QMessageBox::Ok ,QMessageBox::Ok);
-            }
+		//int ret = QMessageBox::warning(this,tr(" <b> Lancer d'abord Synapse ! </b>"), tr(" <b> Merci de lancer Synapse à partir du Menu de l'application : Fichier->Lancer SYNAPSE avant de commencer votre performance !' </b> "),QMessageBox::Ok ,QMessageBox::Ok);
+	    //}
 
         }else if(isLive==true){
-
+	    ui->pushButton_AffichageCourbe->setText("Afficher les courbes");
+	    int size = ui->tabWidget->count();
+	    for(int i = 0 ; i < size ; i++)
+	    {
+		delete ui->tabWidget->widget(0);
+		ui->tabWidget->removeTab(0);
+	    }
+	    ui->tabWidget->setEnabled(false);
+	    ui->listMovementToShowCourbe->setEnabled(false);
             ui->actionLancer_SYNAPSE->setEnabled(true);
 
             this->timerLive->stop();
@@ -955,7 +959,7 @@ void MainWindow::slotLancerSynapse(){
             this->controller->stopRecord(this->movement);
             emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
             this->tempRecordMovementPartantDe0 = 0;
-            this->tempLatence = 30;
+	    this->tempLatence = 0;
             ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
             ui->pushButton_recordmouvement->setEnabled(false);
             ui->nommouvement->setVisible(true);
@@ -1133,8 +1137,8 @@ void MainWindow::slotLancerSynapse(){
 
         switch (ret) {
         case QMessageBox::Yes:
-            if(proc->state()!=0)
-                proc->close();
+	    //if(proc->state()!=0)
+	      //  proc->close();
             qApp->quit();
             break;
         case QMessageBox::No:
