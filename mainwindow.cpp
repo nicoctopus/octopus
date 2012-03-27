@@ -550,43 +550,62 @@ QString MainWindow::textDisplay(Movement *movement)
 
     this->movTemp = movement;
     QString text;
-    text.append("<b>Name : </b>");
-    text.append(movement->getName());
-    text.append("<br/>");
-    text.append("<b>Nombre de joints mouvements : </b>");
-    text.append(QString::number(movement->getListJointsMvt()->size()));
-    text.append("<br/>");
-    text.append("<b>Nombre de positions : </b>");
-    if(!movement->getListJointsMvt()->isEmpty())
-	text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size()));
-    else text.append("0 position");
-    text.append("<br/>");
-    text.append("<b>Temps du mouvement : </b>");
-    if(!movement->getListJointsMvt()->isEmpty())
-    {
-	text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size() * INTERVAL_TIME));
-	text.append(" ms ");
+    text.append("<table style=\"margin: 0 auto;\">");
+    text.append("<tr>");
+    text.append("<td align=right style=\"font-weight: bold;\">Nom :</td>");
+    text.append("<td align=left>"+movement->getName()+"</td>");
+    text.append("</tr>");
+    text.append("<tr>");
+    text.append("<td align=right style=\"font-weight: bold;\">Nombre d'articulations :</td>");
+    text.append("<td align=left>"+QString::number(movement->getListJointsMvt()->size())+"</td>");
+    text.append("</tr>");
+    text.append("<tr>");
+    text.append("<td align=right style=\"font-weight: bold;\">Temps d'éxécution :</td>");
+    text.append("<td align=left>");
+    if(!movement->getListJointsMvt()->isEmpty()) {
+	if(movement->getListJointsMvt()->at(0)->getListPositions()->size()>0) {
+	    text.append(QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size() * INTERVAL_TIME) +" ms ");
+	    text.append("("+QString::number(movement->getListJointsMvt()->at(0)->getListPositions()->size())+" positions)");
+	}
+	else
+	    text.append("0 ms");
     }
-    else text.append("0 ms");
-    text.append("<br/>");
-    for(int i = 0 ; i < movement->getListJointsMvt()->size() ; i++)
-    {
-	text.append("- ");
+    else
+	text.append("0 ms");
+    text.append("</td>");
+    text.append("</tr>");
+    text.append("<tr>");
+    text.append("<td align=right style=\"font-weight: bold;\">Membres :</td>");
+    text.append("<td align=left>");
+    for(int i = 0 ; i < movement->getListJointsMvt()->size() ; i++) {
 	text.append(movement->getListJointsMvt()->at(i)->getJointRef()->getNom());
-	text.append("<br/>");
+	if(i+1<movement->getListJointsMvt()->size())
+	    text.append("<br>");
     }
-    text.append("<br/><b>SampleAudio : </b><br/>");
+    text.append("<tr>");
+    text.append("<td align=right style=\"font-weight: bold;\">Audio :</td>");
+    text.append("<td align=left>");
     if(movement->getSampleAudio())
 	text.append(movement->getSampleAudio()->getName());
-    else ("Aucun");
-    text.append("<br/><b>Clients OSC : </b><br/>");
+    else
+	text.append("Aucun");
+    text.append("</td>");
+    text.append("</tr>");
+    text.append("<tr>");
+    text.append("<td align=right style=\"font-weight: bold;\">Port(s) OSC :</td>");
+    text.append("<td align=left>");
     if(!movement->getListClients()->isEmpty())
 	for(int i = 0 ; i < movement->getListClients()->size() ; i++)
 	{
 	    text.append(movement->getListClients()->at(i)->getName());
-	    text.append(("<br/>"));
+	    if(i+1<movement->getListJointsMvt()->size())
+		text.append(("<br/>"));
 	}
-    else text.append("Aucun");
+    else
+	text.append("Aucun");
+    text.append("</td>");
+    text.append("</tr>");
+    text.append("</table>");
     return text;
 }
 
@@ -594,18 +613,11 @@ QString MainWindow::textDisplay(SampleAudio *sampleAudio)
 {
     ui->loopSpin->setVisible(true);
     ui->resetBox->setVisible(true);
-
     ui->loopBox->setVisible(true);
-
     ui->suprButton->setVisible(true);
-
-
-
     this->movTemp = NULL;
     this->clientTemp = NULL;
-
     this->audioTemp = sampleAudio;
-
     ui->resetBox->setChecked(sampleAudio->getResetActive());
     ui->loopBox->setChecked(sampleAudio->getLoopActive());
 
@@ -614,53 +626,56 @@ QString MainWindow::textDisplay(SampleAudio *sampleAudio)
     int temp;
     int min;
     int sec;
-
-    text.append("<b>Nom : </b>");
-    text.append(sampleAudio->getName());
-    text.append("<br/>");
-    text.append("<b>Durée : </b>");
     min = this->controller->getPlayerDemo()->TimeEnd(sampleAudio)/60000;
     sec = this->controller->getPlayerDemo()->TimeEnd(sampleAudio)%60000;
     sec = sec/1000;
-    text.append(QString::number(min)+":"+QString::number(sec));
-    text.append("<br/>");
-    text.append("<b>URL : </b>");
-    text.append(sampleAudio->getFileURL());
-    text.append("<br/>");
-    text.append("<b> Loop Mode : </b>");
-    if(sampleAudio->getLoopActive())
-	text.append("ON");
-    else
-	text.append("OFF");
-    text.append("<br/>");
+    text.append("<table style=\"margin: 0 auto;\">");
+    text.append("<tr>");
+    text.append("<td align=right style=\"font-weight: bold;\">Nom :</td>");
+    text.append("<td align=left>"+sampleAudio->getName()+"</td>");
+    text.append("</tr>");
+    text.append("<tr>");
+    text.append("<td align=right style=\"font-weight: bold;\">Durée :</td>");
+    text.append("<td align=left>"+QString::number(min)+":"+QString::number(sec)+"</td>");
+    text.append("</tr>");
+    text.append("<tr>");
+    text.append("<td align=right style=\"font-weight: bold;\">URL :</td>");
+    text.append("<td align=left>"+sampleAudio->getFileURL()+"</td>");
+    text.append("</tr>");
+    text.append("<tr>");
+    text.append("<td align=right style=\"font-weight: bold;\">Boucle :</td>");
     if(sampleAudio->getLoopActive())
     {
-	text.append(" Nombre Loop : ");
+	text.append("<td align=left>");
 	temp= sampleAudio->getNbLoop();
-	if(temp==-1){
-	    text.append("INFINIE");
-	}else if(temp==0){
-	    text.append("One Shot");
-	}else{
+	if(temp == -1)
+	    text.append("Infinie");
+	else
+	    text.append(QString::number(temp+1) + "x");
 
-	    text.append(QString::number(temp+1));
-	}
-	text.append("<br/>");
+	text.append("</td>");
     }
-    text.append("<b> Mode Reset actif :  </b>");
-    if(sampleAudio->getResetActive())
-	text.append("OUI");
     else
-	text.append("NON");
-    text.append("<br/>");
+	text.append("<td align=left>Aucune</td>");
+    text.append("</tr>");
+    text.append("<tr>");
+    text.append("<td align=right style=\"font-weight: bold;\">Répété :</td>");
+    if(sampleAudio->getResetActive())
+	text.append("<td align=left>Oui</td>");
+    else
+	text.append("<td align=left>Non</td>");
+    text.append("</tr>");
     if(sampleAudio->getListIdMovement()->size()>0){
-	text.append("<b>Mouvements liés : </b>");
+	text.append("<tr><td align=right style=\"font-weight: bold;\">Mouvements liés :</td><td align=left>");
 	for(int i = 0 ; i < sampleAudio->getListIdMovement()->size() ; i ++)
 	{
 	    text.append(QString::number(sampleAudio->getListIdMovement()->at(i)));
-	    text.append("<br/>");
+	    if(i+1 < sampleAudio->getListIdMovement()->size())
+		text.append("<br/>");
 	}
+	text.append("</td></tr>");
     }
+    text.append("</table>");
     return text;
 }
 
