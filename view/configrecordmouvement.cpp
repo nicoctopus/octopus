@@ -55,7 +55,7 @@ void ConfigRecordMouvement::on_buttonBox_accepted()
 {
     if(ui->checkBox->isChecked() == false)
     {
-	emit signalConfigTempsRecord(20, 40);
+	emit signalConfigTempsRecord(0, 40);
     }
     else
     {
