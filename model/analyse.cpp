@@ -203,9 +203,11 @@ void Analyse::calculBITG(){
 				qDebug() << "   Nom du Mouv : " << this->listMovementToAnalyze->at(m)->getName() << endl;
 				qDebug()<< "   Nom du Sample : "<< this->listMovementToAnalyze->at(m)->getSampleAudio()->getName()<< endl;
 
+                                if(this->listMovementToAnalyze->at(m)->getSampleAudio()!=NULL){
 
 				this->playerlive->play(this->listMovementToAnalyze->at(m)->getSampleAudio());
 
+                                 }
 				//sleep(2);
 				//p->Stop();
 				//sleep(1);
