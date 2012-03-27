@@ -47,7 +47,7 @@ void StickMan::stopTimer(){
 
 void StickMan::slotTimeOutTimer(){
     this->reCreateStickMan();
-    this->textDetected->setText("PAS DETECTE...");
+    this->textDetected->setText("NON DETECTE...");
     this->textDetected->setStyleSheet("background:none;border:none;color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(246,114,0), stop: 1 rgb(214,100,0));");
 }
 
@@ -66,7 +66,7 @@ void StickMan::slotMoveNode(QString nameOfNodeToMove, int x, int y, int z){
 
     if(this->isStickManLive==true){
 	this->timer->start(1000);
-	this->textDetected->setText("DETECTED");
+	this->textDetected->setText("DETECTE");
     this->textDetected->setStyleSheet("background:none;border:none;font-size: 20px;color:rgb(0,130,0);");
         RESIZE = 3;
     }

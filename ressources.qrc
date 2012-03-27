@@ -71,5 +71,10 @@
         <file>images_boutons/stoplive.png</file>
         <file>images_boutons/stopliveHOVER.png</file>
         <file>images_boutons/stoplivePRESSED.png</file>
+        <file>images_boutons/branch-closed.png</file>
+        <file>images_boutons/branch-end.png</file>
+        <file>images_boutons/branch-more.png</file>
+        <file>images_boutons/branch-open.png</file>
+        <file>images_boutons/vline.png</file>
     </qresource>
 </RCC>

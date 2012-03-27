@@ -21,14 +21,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QDockWidget {
-
-/*border: 1px solid lightgray;*/
-
-/*background-color: rgb(66,66,140);*/
  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                        stop: 0 rgb(90,90,100), stop: 1 rgb(66,66,72));
-
-
 color: rgb(250,250,250);
 
 }
@@ -38,21 +32,6 @@ QDockWidget::title {
                                        stop: 0 rgb(150,150,150), stop: 1 rgb(50,50,50));
      padding-left: 5px;
  }
-/*QLabel{
-	color:rgb(240,240,240);
-}*/
-
-/*QPushButton {
-
-border-top: 1px transparent;
-
-border-bottom: 1px transparent;
-
-border-right: 1px transparent;
-
-border-left: 1px transparent;
-
-}*/
 
 QLCDNumber{
 
@@ -64,53 +43,14 @@ color:rgb(255,0,0);
 
 }
 
-/*QMainWindow::separator {
-
-background: yellow;
-
-width: 10px;
-
-height: 10px;
-
-}
-
-QMainWindow::separator:hover {
-
-background: red;
-
-}*/
-
 QMainWindow{
 
-/*background-color: rgb(66,66,72);*/
   background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                        stop: 0 rgb(90,90,100), stop: 1 rgb(66,66,72));
 
 	police size: 10px
 
 }
-
-
-
-/*QCheckBox{
-
-color:rgb(250,250,250);
-
-}*/
-
-/*QLineEdit {
-
-border: 2px solid white;
-
-border-radius: 10px;
-
-padding: 0 8px;
-
-selection-background-color: darkgray;
-
-}*/
-
-/****************************************************************/
 
 QPushButton#pushButton_stoprecord{
 
@@ -324,31 +264,7 @@ QPushButton#pushButton_stoplecteur:pressed{
 
 border-image:url(:/new/prefix1/images_boutons/stopPRESSED.png)1 1 1 1;
 
-}
-
-
-
-/*
-
-QTreeView {
-
-show-decoration-selected: 1;
-
-}*/
-
-/*
-
-QTableWidgetItem{
-
-border: 1px solid #d9d9d9;
-
-show-decoration-selected: 1;
-
-border-top-color: transparent;
-
-border-bottom-color: transparent;
-
-}*/</string>
+}</string>
   </property>
   <property name="dockNestingEnabled">
    <bool>true</bool>
@@ -473,12 +389,60 @@ border-color: rgb(240,240,240);</string>
      <item>
       <widget class="MyLeftTree" name="leftTree" native="true">
        <property name="styleSheet">
-        <string notr="true"> background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));
+        <string notr="true">QTreeWidget{
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(240,240,240), stop: 1 rgb(220,220,220));
+border-radius: 6px;
+}
 
-border: 2px solid; /* trait gris */
-border-color: rgb(240,240,240);
-border-radius: 6px;</string>
+/******/
+QTreeWidget::item {
+     border: 1px solid rgba(0,0,0,0 );
+     border-top-color: transparent;
+     border-bottom-color: transparent;
+ }
+
+QTreeWidget::item:hover {
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #e7effd, stop: 1 #cbdaf1);
+     border: 1px solid #bfcde4;
+ }
+
+ QTreeWidget::item:selected {
+     border: 0.5px solid #567dbc;
+	 background: red;
+ }
+QTreeView::item:selected:active{
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6ea1f1, stop: 1 #567dbc);
+ }
+
+ QTreeView::item:selected:!active {
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6b9be8, stop: 1 #577fbf);
+ }
+
+/*********/
+QTreeWidget::branch:has-siblings:!adjoins-item {
+     border-image: url(:/new/prefix1/images_boutons/vline.png) 1 1 1 1;
+ }
+
+ QTreeWidget::branch:has-siblings:adjoins-item {
+     border-image: url(:/new/prefix1/images_boutons/branch-more.png) 1 1 1 1;
+ }
+
+ QTreeWidget::branch:!has-children:!has-siblings:adjoins-item {
+     border-image: url(:/new/prefix1/images_boutons/branch-end.png) 1 1 1 1;
+ }
+	
+ QTreeWidget::branch:has-children:!has-siblings:closed,
+ QTreeWidget::branch:closed:has-children:has-siblings {
+         border-image: none;
+         image: url(:/new/prefix1/images_boutons/branch-closed.png);
+ }
+
+ QTreeWidget::branch:open:has-children:!has-siblings,
+ QTreeWidget::branch:open:has-children:has-siblings  {
+         border-image: none;
+         image: url(:/new/prefix1/images_boutons/branch-open.png);
+ }</string>
        </property>
       </widget>
      </item>
@@ -672,7 +636,7 @@ border-radius: 6px;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));
+                                       stop: 0 rgb(240,240,240), stop: 1 rgb(220,220,220));
 border: 2px solid; /* trait gris */
 border-color: rgb(240,240,240);
 border-radius: 6px;</string>
