@@ -290,6 +290,15 @@ void MainWindow::save(Movement *movement)
 {
     controller->getManagerElements()->saveMovement(movement);
     this->fillComboBox();
+    ui->pushButton_AffichageCourbe->setText("Afficher les courbes");
+    int size = ui->tabWidget->count();
+    for(int i = 0 ; i < size ; i++)
+    {
+	delete ui->tabWidget->widget(0);
+	ui->tabWidget->removeTab(0);
+    }
+    ui->tabWidget->setEnabled(false);
+    ui->listMovementToShowCourbe->setEnabled(false);
 }
 
 void MainWindow::save(ClientOSC *clientOSC)
