@@ -324,6 +324,15 @@ void MainWindow::remove(Movement *movement)
     emit refreshLeftTree();
     emit refreshBlackBoard();
     this->fillComboBox();
+    ui->pushButton_AffichageCourbe->setText("Afficher les courbes");
+    int size = ui->tabWidget->count();
+    for(int i = 0 ; i < size ; i++)
+    {
+	delete ui->tabWidget->widget(0);
+	ui->tabWidget->removeTab(0);
+    }
+    ui->tabWidget->setEnabled(false);
+    ui->listMovementToShowCourbe->setEnabled(false);
     ui->textBrowser->setText("");
 }
 
@@ -758,6 +767,8 @@ void MainWindow::slotRecordNewMovement()
 	ui->pushButton_enregistrermouvement->setStyleSheet("");
 	ui->pushButton_enregistrermouvement->setEnabled(true);
 	this->timer->stop();
+	this->tempLatence = 0;
+	this->controller->stopRecord(this->movement);
 	isRecording = false;
     }
 }
