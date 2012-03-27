@@ -20,18 +20,44 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDockWidget {
+   <string notr="true">
+ 
+
+QDockWidget {
+
+/*border: 1px solid lightgray;*/
+
+/*background-color: rgb(66,66,140);*/
  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                        stop: 0 rgb(90,90,100), stop: 1 rgb(66,66,72));
+	police-size: 10px;
+background-color: qradialgradient(spread:pad, cx:0.499, cy:1, radius:0.952, fx:0.497, fy:1, stop:0 rgba(20, 20, 20, 255), stop:0.630931 rgba(40, 40, 40, 255), stop:1 rgba(70, 70, 70, 255));
+
+
 color: rgb(250,250,250);
 
 }
 QDockWidget::title {
      text-align: left; /* align the text to the left */
      background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 rgb(150,150,150), stop: 1 rgb(50,50,50));
+                                       stop: 0 rgb(100,100,100), stop: 1 rgb(40,40,40));
      padding-left: 5px;
  }
+/*QLabel{
+	color:rgb(240,240,240);
+}*/
+
+/*QPushButton {
+
+border-top: 1px transparent;
+
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
+
+}*/
 
 QLCDNumber{
 
@@ -43,228 +69,483 @@ color:rgb(255,0,0);
 
 }
 
-QMainWindow{
+/*QMainWindow::separator {
 
-  background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 rgb(90,90,100), stop: 1 rgb(66,66,72));
+background: yellow;
 
-	police size: 10px
+width: 10px;
+
+height: 10px;
 
 }
 
-QPushButton#pushButton_stoprecord{
+QMainWindow::separator:hover {
 
+background: red;
+
+}*/
+
+QMainWindow{
+
+/*background-color: rgb(66,66,72);*/
+
+	police size: 10px;
+background-color: qradialgradient(spread:pad, cx:0.499, cy:1, radius:0.952, fx:0.497, fy:1, stop:0 rgba(20, 20, 20, 255), stop:0.630931 rgba(40, 40, 40, 255), stop:1 rgba(70, 70, 70, 255));
+
+}
+
+
+
+/*QCheckBox{
+
+color:rgb(250,250,250);
+
+}*/
+
+/*QLineEdit {
+
+border: 2px solid white;
+
+border-radius: 10px;
+
+padding: 0 8px;
+
+selection-background-color: darkgray;
+
+}*/
+
+/****************************************************************/
+
+QPushButton#pushButton_stoprecord{
+border-top: 1px transparent;
+
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/stop.png) 1 1 1 1;
 
 }
 
 QPushButton#pushButton_stoprecord:hover{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/stopHOVER.png) 1 1 1 1;
 
 }
 
 QPushButton#pushButton_stoprecord:pressed{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/stopPRESSED.png) 1 1 1 1;
 
 }
 
 QPushButton#ButtonAdd{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/nouveau.png)1 1 1 1;
 
 }
 
 QPushButton#ButtonAdd:hover{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/nouveauHOVER.png)1 1 1 1;
 
 }
 
 QPushButton#ButtonAdd:pressed{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/nouveauPRESSED.png)1 1 1 1;
 
 }
 QPushButton#buttonRemove{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/enlever.png)1 1 1 1;
 
 }
 
-QPushButton#buttonRemove:hover{
-
-border-image:url(:/new/prefix1/images_boutons/enleverHOVER.png)1 1 1 1;
-
-}
-
-QPushButton#buttonRemove:pressed{
-
-border-image:url(:/new/prefix1/images_boutons/enleverPRESSED.png)1 1 1 1;
-
-}
 
 QPushButton#ButtonDelete{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/enlever.png)1 1 1 1;
 
 }
 
 QPushButton#ButtonDelete:hover{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/enleverHOVER.png)1 1 1 1;
 
 }
 
 QPushButton#ButtonDelete:pressed{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/enleverPRESSED.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_creermouvement{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/creermouvement.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_creermouvement:hover{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/creermouvementHOVER.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_creermouvement:pressed{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/creermouvementPRESSED.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_verrouiller{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/cadenas.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_verrouiller:hover{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/cadenasHOVER.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_verrouiller:pressed{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/cadenasPRESSED.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_recordmouvement{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/record.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_recordmouvement:hover{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/recordHOVER.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_recordmouvement:pressed{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/recordPRESSED.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_playmouvement{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/play.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_playmouvement:hover{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/playHOVER.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_playmouvement:pressed{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/playPRESSED.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_enregistrermouvement{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/save.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_enregistrermouvement:hover{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/saveHOVER.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_enregistrermouvement:pressed{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/savePRESSED.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_supprimermouvement{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/delete.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_supprimermouvement:hover{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/deleteHOVER.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_supprimermouvement:pressed{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/deletePRESSED.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_playlecteur{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/play.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_playlecteur:hover{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/playHOVER.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_playlecteur:pressed{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/playPRESSED.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_stoplecteur{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/stop.png)1 1 1 1;
 
 }
 
 QPushButton#pushButton_stoplecteur:hover{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/stopHOVER.png)1 1 1 1;
 }
 
 QPushButton#pushButton_stoplecteur:pressed{
+border-top: 1px transparent;
 
+border-bottom: 1px transparent;
+
+border-right: 1px transparent;
+
+border-left: 1px transparent;
 border-image:url(:/new/prefix1/images_boutons/stopPRESSED.png)1 1 1 1;
 
-}</string>
+}
+
+
+
+/*
+
+QTreeView {
+
+show-decoration-selected: 1;
+
+}*/
+
+/*
+
+QTableWidgetItem{
+
+border: 1px solid #d9d9d9;
+
+show-decoration-selected: 1;
+
+border-top-color: transparent;
+
+border-bottom-color: transparent;
+
+}*/</string>
   </property>
   <property name="dockNestingEnabled">
    <bool>true</bool>
@@ -388,61 +669,19 @@ border-color: rgb(240,240,240);</string>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="MyLeftTree" name="leftTree" native="true">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16770000</height>
+        </size>
+       </property>
        <property name="styleSheet">
-        <string notr="true">QTreeWidget{
-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 rgb(240,240,240), stop: 1 rgb(220,220,220));
-border-radius: 6px;
-}
+        <string notr="true"> background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));
 
-/******/
-QTreeWidget::item {
-     border: 1px solid rgba(0,0,0,0 );
-     border-top-color: transparent;
-     border-bottom-color: transparent;
- }
-
-QTreeWidget::item:hover {
-     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #e7effd, stop: 1 #cbdaf1);
-     border: 1px solid #bfcde4;
- }
-
- QTreeWidget::item:selected {
-     border: 0.5px solid #567dbc;
-	 background: red;
- }
-QTreeView::item:selected:active{
-     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6ea1f1, stop: 1 #567dbc);
- }
-
- QTreeView::item:selected:!active {
-     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #6b9be8, stop: 1 #577fbf);
- }
-
-/*********/
-QTreeWidget::branch:has-siblings:!adjoins-item {
-     border-image: url(:/new/prefix1/images_boutons/vline.png) 1 1 1 1;
- }
-
- QTreeWidget::branch:has-siblings:adjoins-item {
-     border-image: url(:/new/prefix1/images_boutons/branch-more.png) 1 1 1 1;
- }
-
- QTreeWidget::branch:!has-children:!has-siblings:adjoins-item {
-     border-image: url(:/new/prefix1/images_boutons/branch-end.png) 1 1 1 1;
- }
-	
- QTreeWidget::branch:has-children:!has-siblings:closed,
- QTreeWidget::branch:closed:has-children:has-siblings {
-         border-image: none;
-         image: url(:/new/prefix1/images_boutons/branch-closed.png);
- }
-
- QTreeWidget::branch:open:has-children:!has-siblings,
- QTreeWidget::branch:open:has-children:has-siblings  {
-         border-image: none;
-         image: url(:/new/prefix1/images_boutons/branch-open.png);
- }</string>
+border: 2px solid; /* trait gris */
+border-color: rgb(240,240,240);
+border-radius: 6px;</string>
        </property>
       </widget>
      </item>
@@ -483,7 +722,7 @@ QTreeWidget::branch:has-siblings:!adjoins-item {
           <widget class="QPushButton" name="ButtonAdd">
            <property name="minimumSize">
             <size>
-             <width>15</width>
+             <width>0</width>
              <height>15</height>
             </size>
            </property>
@@ -505,64 +744,57 @@ QTreeWidget::branch:has-siblings:!adjoins-item {
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <property name="spacing">
-        <number>6</number>
+        <number>10</number>
        </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_9">
-         <property name="spacing">
-          <number>10</number>
+        <widget class="QPushButton" name="pushButton_playlecteur">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <item>
-          <widget class="QPushButton" name="pushButton_playlecteur">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>5</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>27</width>
-             <height>27</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_stoplecteur">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>27</width>
-             <height>27</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-        </layout>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>27</width>
+           <height>27</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_stoplecteur">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>27</width>
+           <height>27</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="timerMusic">
@@ -636,7 +868,7 @@ QTreeWidget::branch:has-siblings:!adjoins-item {
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 rgb(240,240,240), stop: 1 rgb(220,220,220));
+                                       stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));
 border: 2px solid; /* trait gris */
 border-color: rgb(240,240,240);
 border-radius: 6px;</string>
@@ -646,9 +878,7 @@ border-radius: 6px;</string>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;SALUT A¨HDAPPS &lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#bf9782;&quot;&gt;ggljjh&lt;/span&gt;&lt;br /&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;AP DAPHSAIHSPAS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -681,25 +911,16 @@ p, li { white-space: pre-wrap; }
           <string notr="true">color:rgb(240,240,240);</string>
          </property>
          <property name="text">
-          <string> Activer Boucles</string>
+          <string> Activer</string>
          </property>
         </widget>
        </item>
        <item>
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+        <widget class="LoopSpinBox" name="loopSpin">
+         <property name="styleSheet">
+          <string notr="true">background:none;</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="LoopSpinBox" name="loopSpin"/>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer_2">
@@ -720,7 +941,7 @@ p, li { white-space: pre-wrap; }
           <string notr="true">color:rgb(240,240,240);</string>
          </property>
          <property name="text">
-          <string> Mode Reset</string>
+          <string>Répéter</string>
          </property>
         </widget>
        </item>
@@ -819,7 +1040,7 @@ color:rgb(240,240,240);</string>
         <widget class="QPushButton" name="pushButton_creermouvement">
          <property name="minimumSize">
           <size>
-           <width>25</width>
+           <width>0</width>
            <height>25</height>
           </size>
          </property>
@@ -838,7 +1059,7 @@ color:rgb(240,240,240);</string>
         <widget class="QPushButton" name="pushButton_verrouiller">
          <property name="minimumSize">
           <size>
-           <width>25</width>
+           <width>0</width>
            <height>25</height>
           </size>
          </property>
@@ -857,7 +1078,7 @@ color:rgb(240,240,240);</string>
         <widget class="QPushButton" name="pushButton_recordmouvement">
          <property name="minimumSize">
           <size>
-           <width>25</width>
+           <width>0</width>
            <height>25</height>
           </size>
          </property>
@@ -876,7 +1097,7 @@ color:rgb(240,240,240);</string>
         <widget class="QPushButton" name="pushButton_enregistrermouvement">
          <property name="minimumSize">
           <size>
-           <width>25</width>
+           <width>0</width>
            <height>25</height>
           </size>
          </property>
@@ -895,7 +1116,7 @@ color:rgb(240,240,240);</string>
         <widget class="QPushButton" name="pushButton_supprimermouvement">
          <property name="minimumSize">
           <size>
-           <width>25</width>
+           <width>0</width>
            <height>25</height>
           </size>
          </property>
@@ -986,6 +1207,15 @@ color:rgb(240,240,240);</string>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QPushButton" name="pushButton_AffichageCourbe">
+         <property name="styleSheet">
+          <string notr="true">
+     
+border-radius: 6px;
+border: 1px solid;
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                       stop: 0 rgb(150,150,150), stop: 1 rgb(255,255,255));
+font-size: 12px;</string>
+         </property>
          <property name="text">
           <string>Afficher les courbes</string>
          </property>
@@ -1038,7 +1268,7 @@ color:rgb(240,240,240);</string>
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>0</width>
              <height>50</height>
             </size>
            </property>
@@ -1094,7 +1324,7 @@ border-image:url(:/new/prefix1/images_boutons/playlivePRESSED.png)3 3 3 3 ;
            </property>
            <property name="minimumSize">
             <size>
-             <width>50</width>
+             <width>0</width>
              <height>50</height>
             </size>
            </property>
@@ -1157,6 +1387,9 @@ border-image:url(:/new/prefix1/images_boutons/recorddisabledPRESSED.png)3 3 3 3 
        </item>
        <item>
         <widget class="QPushButton" name="pushButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Configurer l'analyse</string>
          </property>
@@ -1186,7 +1419,8 @@ border-image:url(:/new/prefix1/images_boutons/recorddisabledPRESSED.png)3 3 3 3 
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));</string>
+          <string notr="true">color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));
+padding-right: 10px;</string>
          </property>
          <property name="text">
           <string>00:00</string>

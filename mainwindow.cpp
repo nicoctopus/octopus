@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     ui->stickMan->setLabelDetected(ui->labelDetected);
     //this->proc= new QProcess(this);
+    ui->pushButton->setVisible(false);
 
     ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));");
     this->setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
