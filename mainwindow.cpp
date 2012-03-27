@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     ui->stickMan->setLabelDetected(ui->labelDetected);
     //this->proc= new QProcess(this);
+    ui->pushButton->setVisible(false);
 
     ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));");
     this->setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
@@ -290,6 +291,15 @@ void MainWindow::save(Movement *movement)
 {
     controller->getManagerElements()->saveMovement(movement);
     this->fillComboBox();
+    ui->pushButton_AffichageCourbe->setText("Afficher les courbes");
+    int size = ui->tabWidget->count();
+    for(int i = 0 ; i < size ; i++)
+    {
+	delete ui->tabWidget->widget(0);
+	ui->tabWidget->removeTab(0);
+    }
+    ui->tabWidget->setEnabled(false);
+    ui->listMovementToShowCourbe->setEnabled(false);
 }
 
 void MainWindow::save(ClientOSC *clientOSC)
