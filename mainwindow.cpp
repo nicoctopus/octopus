@@ -972,6 +972,7 @@ void MainWindow::updateLabelTimeRecord()
 	emit emitTimeLabelRecord(QString::number(this->tempLatence / 10));
 	this->tempLatence -= 1;
 	this->tempRecordMovementPartantDe0 = 1;
+	ui->labelTimeRecord->setStyleSheet("background-color:transparent;border:none;color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(246,114,0), stop: 1 rgb(214,100,0));");
     }
     else if(isRecording && this->tempLatence == 0 && this->tempRecordMovementPartantDe0 < this->tempRecordMovement)
     {
@@ -979,6 +980,7 @@ void MainWindow::updateLabelTimeRecord()
 	emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
 	this->tempRecordMovementPartantDe0++;
 	this->tempLatence = -1;
+	ui->labelTimeRecord->setStyleSheet("background-color:transparent;border:none;color:rgb(0,130,0);");
     }
     else if(isRecording && this->tempLatence == -1 && this->tempRecordMovementPartantDe0 == this->tempRecordMovement)
     {

@@ -56,12 +56,11 @@ void Controller::stopRecord(Movement *movement)
 {
     this->serveurOSC->setRunnable(false);
     this->client->setRunnable(false);
-
     this->troncage(movement);
     /**
       *AFFICHAGE des infos sur le MVT
       **/
-    qDebug() << movement->getName() << endl;
+    /*qDebug() << movement->getName() << endl;
     for(int j=0;j<movement->getListJointsMvt()->size();j++) {
 	qDebug() << "Taille du joint mouvement "
 		 << movement->getListJointsMvt()->at(j)->getJointRef()->getNom() << " :"
@@ -79,7 +78,7 @@ void Controller::stopRecord(Movement *movement)
 		qDebug()     << "Z : " << movement->getListJointsMvt()->at(j)->getListPositions()->at(k)->getZ() << endl;
 		qDebug()     << endl<<endl;
 	}
-    }
+    }*/
 }
 
 void Controller::recordMovement(Movement *movement)
