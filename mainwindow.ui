@@ -294,6 +294,54 @@ background-color: qradialgradient(spread:pad, cx:0.499, cy:1, radius:0.952, fx:0
 border: 2px solid; /* trait gris */
 border-color: rgb(240,240,240);</string>
       </property>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="styleSheet">
+            <string notr="true">background: none;
+color:rgb(140,140,140);
+border:none;</string>
+           </property>
+           <property name="text">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Pour lier des élements:&lt;/span&gt; maintenez la touche &lt;span style=&quot; font-weight:600;&quot;&gt;alt&lt;/span&gt; enfoncée et cliquez sur le mouvement à lier puis sur le sample&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
     </item>
    </layout>
@@ -480,6 +528,9 @@ QTreeWidget::branch:has-siblings:!adjoins-item {
              <height>20</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string>Enlever le sample selectionné</string>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -498,6 +549,9 @@ QTreeWidget::branch:has-siblings:!adjoins-item {
              <width>20</width>
              <height>20</height>
             </size>
+           </property>
+           <property name="toolTip">
+            <string>Ajouter un sample</string>
            </property>
            <property name="text">
             <string/>
@@ -533,6 +587,9 @@ QTreeWidget::branch:has-siblings:!adjoins-item {
            <height>27</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>Lecture/Pause du sample</string>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -557,6 +614,9 @@ QTreeWidget::branch:has-siblings:!adjoins-item {
            <width>27</width>
            <height>27</height>
           </size>
+         </property>
+         <property name="toolTip">
+          <string>Arrêt de la lecture du sample</string>
          </property>
          <property name="text">
           <string/>
@@ -663,6 +723,9 @@ p, li { white-space: pre-wrap; }
        </item>
        <item>
         <widget class="QPushButton" name="visuButton">
+         <property name="toolTip">
+          <string>visualiser le mouvement sur le stickman</string>
+         </property>
          <property name="text">
           <string>Visualiser</string>
          </property>
@@ -687,6 +750,9 @@ p, li { white-space: pre-wrap; }
        </item>
        <item>
         <widget class="LoopSpinBox" name="loopSpin">
+         <property name="toolTip">
+          <string>nombre de boucle du sample à effectuer au moment de la detection du mouvement</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">background:none;</string>
          </property>
@@ -820,6 +886,9 @@ color:rgb(240,240,240);</string>
            <height>27</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>Créer un nouveau mouvement</string>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -838,6 +907,10 @@ color:rgb(240,240,240);</string>
            <width>27</width>
            <height>27</height>
           </size>
+         </property>
+         <property name="toolTip">
+          <string>Vérouiller les parties du corps faisant partis du 
+mouvement en cliquant sur les joints du stickman</string>
          </property>
          <property name="text">
           <string/>
@@ -858,6 +931,9 @@ color:rgb(240,240,240);</string>
            <height>27</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>Commencer l'enregistrement du mouvement avec les paramètres choisis</string>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -877,6 +953,9 @@ color:rgb(240,240,240);</string>
            <height>27</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>Valider le mouvement</string>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -895,6 +974,10 @@ color:rgb(240,240,240);</string>
            <width>27</width>
            <height>27</height>
           </size>
+         </property>
+         <property name="toolTip">
+          <string>Annuler le nouveau mouvement 
+en cours de création</string>
          </property>
          <property name="text">
           <string/>
@@ -977,14 +1060,11 @@ color:rgb(240,240,240);</string>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QPushButton" name="pushButton_AffichageCourbe">
+         <property name="toolTip">
+          <string/>
+         </property>
          <property name="styleSheet">
-          <string notr="true">
-     
-border-radius: 6px;
-border: 1px solid;
-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
-                                       stop: 0 rgb(150,150,150), stop: 1 rgb(255,255,255));
-font-size: 12px;</string>
+          <string notr="true"/>
          </property>
          <property name="text">
           <string>Afficher les courbes</string>
@@ -1054,6 +1134,9 @@ font-size: 12px;</string>
              <weight>75</weight>
              <bold>true</bold>
             </font>
+           </property>
+           <property name="toolTip">
+            <string>Commencer la performance</string>
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton#start{
