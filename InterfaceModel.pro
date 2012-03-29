@@ -7,7 +7,9 @@
 QT       += core gui
 TARGET = Octopus
 TEMPLATE = app
+CONFIG += x86_64
 
+ICON = Octopus.icns
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -118,10 +120,10 @@ RESOURCES += \
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/FMOD/api/lib/release/ -lfmodex
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/FMOD/api/lib/debug/ -lfmodex
-else:macx: LIBS += -L$$PWD/FMOD/api/lib/ -lfmodex
+else:macx: LIBS += -L/Developer/FMOD/api/lib -lfmodex
 
-INCLUDEPATH += $$PWD/FMOD/api/inc
-DEPENDPATH += $$PWD/FMOD/api/inc
+INCLUDEPATH += /Developer/FMOD/api/inc
+DEPENDPATH += /Developer/FMOD/api/inc
 
 
 

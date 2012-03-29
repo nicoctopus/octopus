@@ -78,7 +78,7 @@ public slots :
     void slotAboutToQuit();
     void slotLancerSynapse();
     void slotTestProc(QProcess::ProcessState);
-
+    void slotParametreAnalyse();
 
 signals :
     void refreshLeftTree();
@@ -93,7 +93,7 @@ signals :
 
 
 private slots:
-    void on_pushButton_clicked();
+
 
     void on_pushButton_AffichageCourbe_clicked();
 

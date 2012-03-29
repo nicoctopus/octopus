@@ -9,10 +9,15 @@ bool isLive = false;
 //------------------------------------------------
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
+
+    this->setWindowIcon(QIcon());
     ui->stickMan->setLabelDetected(ui->labelDetected);
     //this->proc= new QProcess(this);
-    ui->pushButton->setVisible(false);
+    //ui->pushButton->setVisible(false);
+
+    this->tempRecordMovementPartantDe0=0;
 
     ui->timer->setStyleSheet("color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180));");
     this->setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
@@ -57,6 +62,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->visuButton->setVisible(false);
 
     ui->pushButton_creermouvement->setStyleSheet("");
+
+    ui->pushButtonImageOctopus->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/OctopusContour.png)");
     ui->pushButton_enregistrermouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/savegris.png)");
 
     ui->pushButton_recordmouvement->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/recordgris.png)");
@@ -114,7 +121,7 @@ void MainWindow::linkActionsMenu(){
     connect(ui->actionCr_er_nouveau_mouvement,SIGNAL(triggered()),this,SLOT(slotUnlockStickMan()));
     connect(ui->actionD_marrer_live,SIGNAL(triggered()),this,SLOT(slotStartLivePerformance()));
     connect(ui->actionJouer_sample_audio,SIGNAL(triggered()),this,SLOT(slotPlayPause()));
-    connect(ui->actionParam_tres_analyse,SIGNAL(triggered()),this,SLOT(on_pushButton_clicked()));
+    connect(ui->actionParam_tres_analyse,SIGNAL(triggered()),this,SLOT(slotParametreAnalyse()));
     connect(ui->actionStopper_live,SIGNAL(triggered()),this,SLOT(slotStartLivePerformance()));
     connect(ui->actionSupprimer,SIGNAL(triggered()),this,SLOT(slotRemoveButton()));
     connect(ui->actionVisualise_mouvement,SIGNAL(triggered()),this,SLOT(slotMoveStickman()));
@@ -512,6 +519,8 @@ void MainWindow::slotDisplayInfos(QGraphicsItem* item)
     ui->actionJouer_sample_audio->setEnabled(false);
     ui->actionVisualise_mouvement->setEnabled(false);
     ui->actionSupprimer->setEnabled(true);
+    ui->visuButton->setVisible(false);
+
     QString text;
     if(item->type() == 65537)
     {
@@ -872,6 +881,7 @@ void MainWindow::slotStartLivePerformance(){
 	ui->actionD_marrer_live->setEnabled(false);
 	ui->actionStopper_live->setEnabled(true);
 	ui->start->setStyleSheet("QPushButton#start{ border-top: 3px transparent; border-bottom: 3px transparent; border-right: 3px transparent;border-left: 3px transparent;   border-image:url(:/new/prefix1/images_boutons/stoplive.png)3 3 3 3 ; } QPushButton#start:hover{border-top: 3px transparent; border-bottom: 3px transparent;  border-right: 3px transparent; border-left: 3px transparent;  border-image:url(:/new/prefix1/images_boutons/stopliveHOVER.png)3 3 3 3 ; }QPushButton#start:pressed{  border-top: 3px transparent; border-bottom: 3px transparent;        border-right: 3px transparent;border-left: 3px transparent;border-image:url(:/new/prefix1/images_boutons/stoplivePRESSED.png)3 3 3 3 ; }");
+        ui->pushButtonImageOctopus->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/ocotpusOrange.png)");
 
 	isLive=true;
 
@@ -900,7 +910,8 @@ void MainWindow::slotStartLivePerformance(){
 	this->controller->stopAnalize();
 	emit emitTimeLive("00:00");
 	ui->start->setStyleSheet("QPushButton#start{ border-top: 3px transparent; border-bottom: 3px transparent; border-right: 3px transparent;border-left: 3px transparent;   border-image:url(:/new/prefix1/images_boutons/playlive.png)3 3 3 3 ; } QPushButton#start:hover{border-top: 3px transparent; border-bottom: 3px transparent;  border-right: 3px transparent; border-left: 3px transparent;  border-image:url(:/new/prefix1/images_boutons/playliveHOOVER.png)3 3 3 3 ; }QPushButton#start:pressed{  border-top: 3px transparent; border-bottom: 3px transparent;        border-right: 3px transparent;border-left: 3px transparent;border-image:url(:/new/prefix1/images_boutons/playlivePRESSED.png)3 3 3 3 ; }");
-	ui->centralWidget->setStyleSheet(" background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180)); border: 2px solid; border-color: rgb(240,240,240);");
+        ui->pushButtonImageOctopus->setStyleSheet("border-image:url(:/new/prefix1/images_boutons/OctopusContour.png)");
+        ui->centralWidget->setStyleSheet(" background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(220,220,220), stop: 1 rgb(180,180,180)); border: 2px solid; border-color: rgb(240,240,240);");
 
 	isLive=false;
     }
@@ -983,8 +994,11 @@ void MainWindow::updateLCDTimerLive()
 
 void MainWindow::updateLabelTimeRecord()
 {
+
+
     if(isRecording && this->tempLatence > 0)
     {
+
 	emit emitTimeLabelRecord(QString::number(this->tempLatence / 10));
 	this->tempLatence -= 1;
 	this->tempRecordMovementPartantDe0 = 1;
@@ -992,6 +1006,8 @@ void MainWindow::updateLabelTimeRecord()
     }
     else if(isRecording && this->tempLatence == 0 && this->tempRecordMovementPartantDe0 < this->tempRecordMovement)
     {
+
+
 	this->controller->recordMovement(this->movement);
 	emit emitTimeLabelRecord(QString::number(this->tempRecordMovementPartantDe0 / 10));
 	this->tempRecordMovementPartantDe0++;
@@ -1046,7 +1062,7 @@ void MainWindow::slotSetSampleResetMode(int state){
 
 
 /******** SLOTS DIALOG CONFIG ANALYSE *********/
-void MainWindow::on_pushButton_clicked()
+void MainWindow::slotParametreAnalyse()
 {
     this->configAnalyse = new ConfigAnalyse(0);
     this->configAnalyse->setParamDefaut(this->controller->getServerOsc()->getVitesse(), this->controller->getServerOsc()->getAmplitude());

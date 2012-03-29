@@ -93,17 +93,7 @@ border-image:url(:/new/prefix1/images_boutons/enlever.png)1 1 1 1;
 
 }
 
-QPushButton#buttonRemove:hover{
 
-border-image:url(:/new/prefix1/images_boutons/enleverHOVER.png)1 1 1 1;
-
-}
-
-QPushButton#buttonRemove:pressed{
-
-border-image:url(:/new/prefix1/images_boutons/enleverPRESSED.png)1 1 1 1;
-
-}
 
 QPushButton#ButtonDelete{
 
@@ -1239,12 +1229,27 @@ border-image:url(:/new/prefix1/images_boutons/recorddisabledPRESSED.png)3 3 3 3 
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="pushButtonImageOctopus">
          <property name="enabled">
           <bool>false</bool>
          </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>60</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <property name="text">
-          <string>Configurer l'analyse</string>
+          <string/>
          </property>
         </widget>
        </item>
